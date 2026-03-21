@@ -1,0 +1,37 @@
+{
+  "schemaVersion": 1,
+  "id": "projectk",
+  "version": "${version}",
+  "name": "ProjectK",
+  "description": "",
+  "authors": [
+    "Hashibutogarasu"
+  ],
+  "contact": {
+    "homepage": ""
+  },
+  "license": "unlicense",
+  "icon": "assets/projectk/icon.png",
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "com.karasu256.projectk.fabric.ProjectKFabric"
+    ],
+    "client": [
+      "com.karasu256.projectk.fabric.client.ProjectkFabricClient"
+    ]
+  },
+  "mixins": [
+    "projectk.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": ">=0.18.4",
+    "minecraft": "~1.21.1",
+    "java": ">=21",
+    "architectury": ">=13.0.8",
+    "fabric-api": "*"
+  },
+  "suggests": {
+    "another-mod": "*"
+  }
+}
