@@ -22,7 +22,10 @@ subprojects {
         archivesName = "$rootProject.archives_name-$project.name"
     }
 
-    repositories {}
+    repositories {
+        maven { url = "https://maven.createmod.net" }
+        maven { url = "https://maven.ithundxr.dev/snapshots" }
+    }
 
     dependencies {
         minecraft "net.minecraft:minecraft:$rootProject.minecraft_version"
