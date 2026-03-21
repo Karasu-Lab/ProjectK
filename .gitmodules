@@ -1,0 +1,12 @@
+    [submodule "modules/Mekanism"]
+	path = modules/Mekanism
+	url = https://github.com/mekanism/Mekanism.git
+[submodule "modules/Applied-Energistics-2"]
+	path = modules/Applied-Energistics-2
+	url = https://github.com/AppliedEnergistics/Applied-Energistics-2.git
+[submodule "modules/Create"]
+	path = modules/Create
+	url = https://github.com/Creators-of-Create/Create.git
+[submodule "modules/RoughlyEnoughItems"]
+	path = modules/RoughlyEnoughItems
+	url = https://github.com/shedaniel/RoughlyEnoughItems.git
