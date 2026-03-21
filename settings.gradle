@@ -8,7 +8,7 @@ pluginManagement {
     }
 }
 
-rootProject.name = 'projectk'
+rootProject.name = 'ProjectK'
 
 include 'common'
 include 'fabric'
