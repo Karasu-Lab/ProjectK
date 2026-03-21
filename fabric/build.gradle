@@ -40,6 +40,8 @@ dependencies {
     shadowBundle project(path: ':common', configuration: 'transformProductionFabric')
 
     modImplementation "com.terraformersmc:modmenu:${rootProject.modmenu_version}"
+    modRuntimeOnly "me.shedaniel:RoughlyEnoughItems-fabric:$rootProject.rei_version"
+    modRuntimeOnly "me.shedaniel:RoughlyEnoughItems-default-plugin-fabric:$rootProject.rei_version"
 }
 
 processResources {

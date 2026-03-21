@@ -62,5 +62,12 @@ versionRange="[1.0,)"
 ordering="NONE"
 side="BOTH"
 
+[[dependencies.projectk]]
+modId="rei"
+type="optional"
+versionRange="[16.0,)"
+ordering="NONE"
+side="BOTH"
+
 [[mixins]]
 config = "projectk.mixins.json"

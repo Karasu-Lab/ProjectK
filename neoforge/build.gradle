@@ -23,11 +23,13 @@ configurations {
 }
 
 repositories {
+    mavenCentral()
     maven {
         name = 'NeoForged'
         url = 'https://maven.neoforged.net/releases'
     }
     maven { url "https://cursemaven.com" }
+    maven { url "https://maven.shedaniel.me" }
 }
 
 dependencies {
@@ -44,6 +46,7 @@ dependencies {
     runtimeOnly "curse.maven:mekanism-268560:7621971"
     compileOnly "curse.maven:mekanism-268560:7621971"
 
+    compileOnly "org.appliedenergistics:appliedenergistics2:$ae2_api_version:api"
     runtimeOnly "curse.maven:applied-energistics-2-223794:7027323"
     compileOnly "curse.maven:applied-energistics-2-223794:7027323"
 
@@ -52,6 +55,9 @@ dependencies {
     compileOnly("dev.engine-room.flywheel:flywheel-neoforge-api-${minecraft_version}:${flywheel_version}")
     runtimeOnly("dev.engine-room.flywheel:flywheel-neoforge-${minecraft_version}:${flywheel_version}")
     implementation("com.tterrag.registrate:Registrate:${registrate_version}")
+
+    modRuntimeOnly "me.shedaniel:RoughlyEnoughItems-neoforge:$rei_version"
+    modCompileOnly "me.shedaniel:RoughlyEnoughItems-default-plugin-neoforge:$rei_version"
 }
 
 processResources {
