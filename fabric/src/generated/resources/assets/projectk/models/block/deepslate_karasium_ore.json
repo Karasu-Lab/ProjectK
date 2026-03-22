@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:block/cube_all",
+  "textures": {
+    "all": "projectk:block/deepslate_karasium_ore"
+  }
+}

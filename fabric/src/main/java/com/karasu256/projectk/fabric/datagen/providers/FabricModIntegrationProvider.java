@@ -1,5 +1,6 @@
 package com.karasu256.projectk.fabric.datagen.providers;
 
+import com.karasu256.projectk.datagen.providers.CommonRecipeProvider;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricRecipeProvider;
 import net.minecraft.core.HolderLookup;
@@ -16,6 +17,7 @@ public class FabricModIntegrationProvider extends FabricRecipeProvider {
     }
 
     @Override
-    protected void buildRecipes(RecipeOutput exporter) {
+    public void buildRecipes(RecipeOutput exporter) {
+        CommonRecipeProvider.generate(exporter);
     }
 }

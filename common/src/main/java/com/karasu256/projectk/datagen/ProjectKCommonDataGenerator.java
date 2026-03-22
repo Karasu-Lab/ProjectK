@@ -11,10 +11,12 @@ import java.util.concurrent.CompletableFuture;
 
 public class ProjectKCommonDataGenerator {
 
-    public static void gatherData(ProviderRegistry registry, CompletableFuture<HolderLookup.Provider> registries) {
+    public static void gatherData(ProviderRegistry registry, CompletableFuture<HolderLookup.Provider> registries, boolean includeRecipes) {
         CommonBlockTagsProvider blockTagsProvider = registry.register(output -> new CommonBlockTagsProvider(output, registries));
         registry.register(output -> new CommonItemTagsProvider(output, registries, blockTagsProvider.contentsGetter()));
-        registry.register(output -> new CommonRecipeProvider(output, registries));
+        if (includeRecipes) {
+            registry.register(output -> new CommonRecipeProvider(output, registries));
+        }
         registry.register(output -> new ProjectKLootTableProvider(output, registries));
     }
 

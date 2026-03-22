@@ -14,8 +14,12 @@ public class CommonRecipeProvider extends RecipeProvider {
         super(output, registries);
     }
 
+    public static void generate(RecipeOutput output) {
+        // Implement default common recipes here
+    }
+
     @Override
     protected void buildRecipes(RecipeOutput output) {
-        // Implement default common recipes here
+        generate(output);
     }
 }

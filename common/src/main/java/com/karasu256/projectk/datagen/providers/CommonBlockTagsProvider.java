@@ -1,14 +1,14 @@
 package com.karasu256.projectk.datagen.providers;
 
+import com.karasu256.projectk.block.ProjectKBlocks;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.tags.IntrinsicHolderTagsProvider;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.world.level.block.Block;
 
 import java.util.concurrent.CompletableFuture;
-
-import static com.karasu256.projectk.ProjectK.MOD_ID;
 
 @SuppressWarnings("deprecation")
 public class CommonBlockTagsProvider extends IntrinsicHolderTagsProvider<Block> {
@@ -19,6 +19,11 @@ public class CommonBlockTagsProvider extends IntrinsicHolderTagsProvider<Block> 
 
     @Override
     protected void addTags(HolderLookup.Provider provider) {
-        // Implement default common block tags here
+        tag(BlockTags.MINEABLE_WITH_PICKAXE)
+                .add(ProjectKBlocks.KARASIUM_ORE.getKey())
+                .add(ProjectKBlocks.DEEPSLATE_KARASIUM_ORE.getKey());
+        tag(BlockTags.NEEDS_IRON_TOOL)
+                .add(ProjectKBlocks.KARASIUM_ORE.getKey())
+                .add(ProjectKBlocks.DEEPSLATE_KARASIUM_ORE.getKey());
     }
 }
