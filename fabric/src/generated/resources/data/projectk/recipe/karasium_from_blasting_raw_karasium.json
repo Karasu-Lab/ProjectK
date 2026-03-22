@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:blasting",
+  "category": "misc",
+  "cookingtime": 100,
+  "experience": 0.7,
+  "group": "karasium",
+  "ingredient": {
+    "item": "projectk:raw_karasium"
+  },
+  "result": {
+    "id": "projectk:karasium"
+  }
+}

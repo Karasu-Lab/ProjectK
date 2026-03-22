@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_raw_karasium": {
+      "conditions": {
+        "items": [
+          {
+            "items": "projectk:raw_karasium"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "minecraft:karasium_from_smelting_raw_karasium"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_raw_karasium"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "minecraft:karasium_from_smelting_raw_karasium"
+    ]
+  }
+}
