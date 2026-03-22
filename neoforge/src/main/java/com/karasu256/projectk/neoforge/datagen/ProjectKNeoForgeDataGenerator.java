@@ -21,7 +21,7 @@ import static com.karasu256.projectk.ProjectK.MOD_ID;
 public class ProjectKNeoForgeDataGenerator {
 
     @SubscribeEvent
-    public static void gatherData(GatherDataEvent event) {
+    public static void gatherData(@NotNull GatherDataEvent event) {
         DataGenerator generator = event.getGenerator();
 
         ProjectKCommonDataGenerator.gatherData(new ProjectKCommonDataGenerator.ProviderRegistry() {

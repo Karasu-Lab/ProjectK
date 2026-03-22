@@ -1,9 +1,9 @@
 package com.karasu256.projectk.integration;
 
 public interface IModIntegration {
-    void bootStrap();
+    void bootstrap();
 
-    void onBootStrap();
+    void onBootstrap();
 
     boolean isModLoaded();
 

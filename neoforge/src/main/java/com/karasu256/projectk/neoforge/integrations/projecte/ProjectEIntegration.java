@@ -4,7 +4,7 @@ import com.karasu256.projectk.neoforge.integrations.AbstractNeoForgeModIntegrati
 
 public class ProjectEIntegration extends AbstractNeoForgeModIntegration implements IProjectEIntegration {
     @Override
-    public void onBootStrap() {
+    public void onBootstrap() {
     }
 
     @Override

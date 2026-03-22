@@ -11,10 +11,10 @@ public abstract class AbstractModIntegration implements IModIntegration {
     }
 
     @Override
-    public final void bootStrap() {
+    public final void bootstrap() {
         if (isModLoaded()) {
             LOGGER.info("{} was detected. Bootstrapping...", getModId());
-            onBootStrap();
+            onBootstrap();
         }
     }
 }
