@@ -3,6 +3,7 @@ package com.karasu256.projectk.neoforge.datagen;
 import com.karasu256.projectk.datagen.ProjectKCommonDataGenerator;
 import com.karasu256.projectk.neoforge.datagen.providers.NeoForgeBlockStateProvider;
 import com.karasu256.projectk.neoforge.datagen.providers.NeoForgeModIntegrationProvider;
+import com.karasu256.projectk.neoforge.datagen.providers.ProjectEConversionProvider;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.DataProvider;
 import net.neoforged.bus.api.SubscribeEvent;
@@ -25,14 +26,8 @@ public class ProjectKNeoForgeDataGenerator {
             }
         }, event.getLookupProvider(), false);
 
-        generator.addProvider(
-                event.includeServer(),
-                new NeoForgeModIntegrationProvider(generator.getPackOutput(), event.getLookupProvider())
-        );
-
-        generator.addProvider(
-                event.includeClient(),
-                new NeoForgeBlockStateProvider(generator.getPackOutput(), event.getExistingFileHelper())
-        );
+        generator.addProvider(event.includeServer(), new NeoForgeModIntegrationProvider(generator.getPackOutput(), event.getLookupProvider()));
+        generator.addProvider(event.includeClient(), new NeoForgeBlockStateProvider(generator.getPackOutput(), event.getExistingFileHelper()));
+        generator.addProvider(event.includeClient(), new ProjectEConversionProvider(generator.getPackOutput(), event.getLookupProvider()));
     }
 }
