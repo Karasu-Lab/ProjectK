@@ -16,3 +16,6 @@
 [submodule "modules/Registrate"]
 	path = modules/Registrate
 	url = https://github.com/tterrag1098/Registrate.git
+[submodule "modules/ProjectE"]
+	path = modules/ProjectE
+	url = https://github.com/sinkillerj/ProjectE.git
