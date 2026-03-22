@@ -27,6 +27,7 @@ repositories {
         name = "Terraformers"
         url = "https://maven.terraformersmc.com/"
     }
+    maven { url = "https://mvn.devos.one/snapshots/" }
 }
 
 dependencies {

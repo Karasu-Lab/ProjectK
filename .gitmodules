@@ -10,3 +10,9 @@
 [submodule "modules/RoughlyEnoughItems"]
 	path = modules/RoughlyEnoughItems
 	url = https://github.com/shedaniel/RoughlyEnoughItems.git
+[submodule "modules/Registrate-Refabricated"]
+	path = modules/Registrate-Refabricated
+	url = https://github.com/Fabricators-of-Create/Registrate-Refabricated.git
+[submodule "modules/Registrate"]
+	path = modules/Registrate
+	url = https://github.com/tterrag1098/Registrate.git

@@ -32,6 +32,6 @@
     "fabric-api": "*"
   },
   "suggests": {
-    "another-mod": "*"
+    "roughlyenoughitems": ">=16.0.799"
   }
 }
