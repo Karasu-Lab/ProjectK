@@ -1,8 +1,8 @@
 package com.karasu256.projectk.neoforge.integrations.projecte;
 
-import com.karasu256.projectk.neoforge.integrations.AbstractModIntegration;
+import com.karasu256.projectk.neoforge.integrations.AbstractNeoForgeModIntegration;
 
-public class ProjectEIntegration extends AbstractModIntegration implements IProjectEIntegration {
+public class ProjectEIntegration extends AbstractNeoForgeModIntegration implements IProjectEIntegration {
     @Override
     public void onBootStrap() {
     }

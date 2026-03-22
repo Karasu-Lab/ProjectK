@@ -1,4 +1,4 @@
-package com.karasu256.projectk.neoforge.integrations;
+package com.karasu256.projectk.integration;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
