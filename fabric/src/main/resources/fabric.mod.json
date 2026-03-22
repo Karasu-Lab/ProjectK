@@ -19,6 +19,9 @@
     ],
     "client": [
       "com.karasu256.projectk.fabric.client.ProjectkFabricClient"
+    ],
+    "fabric-datagen": [
+      "com.karasu256.projectk.fabric.datagen.ProjectKFabricDataGenerator"
     ]
   },
   "mixins": [

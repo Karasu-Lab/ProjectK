@@ -22,6 +22,26 @@ configurations {
     }
 }
 
+sourceSets {
+    main {
+        resources {
+            srcDir 'src/generated/resources'
+        }
+    }
+}
+
+loom {
+    runs {
+        data {
+            data()
+            programArgs "--mod", "projectk", "--all", 
+                        "--output", project.file("src/generated/resources").getAbsolutePath(),
+                        "--existing", project(":common").file("src/main/resources").getAbsolutePath(),
+                        "--existing", project.file("src/main/resources").getAbsolutePath()
+        }
+    }
+}
+
 repositories {
     mavenCentral()
     maven {
