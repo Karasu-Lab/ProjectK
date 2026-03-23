@@ -22,6 +22,9 @@
     ],
     "fabric-datagen": [
       "com.karasu256.projectk.fabric.datagen.ProjectKFabricDataGenerator"
+    ],
+    "modmenu": [
+      "com.karasu256.projectk.fabric.integrations.modmenu.ModMenuIntegration"
     ]
   },
   "mixins": [
