@@ -9,7 +9,6 @@ import java.util.function.Predicate;
 import java.util.function.Supplier;
 
 public class ModIntegrationSupplier<T extends IModIntegration> implements Supplier<T> {
-
     private static final String MOD_ID_FIELD = "MOD_ID";
 
     private final String className;
@@ -22,6 +21,7 @@ public class ModIntegrationSupplier<T extends IModIntegration> implements Suppli
         this.modId = resolveModId(className);
     }
 
+    @Nullable
     private static String resolveModId(@NotNull String className) {
         try {
             Class<?> clazz = Class.forName(className, false, Thread.currentThread().getContextClassLoader());
@@ -29,8 +29,6 @@ public class ModIntegrationSupplier<T extends IModIntegration> implements Suppli
             field.setAccessible(true);
             return (String) field.get(null);
         } catch (Throwable t) {
-            // Fabric might throw RuntimeException during transformation if environment is wrong.
-            // In such cases, we just return null to indicate the modId could not be resolved.
             return null;
         }
     }

@@ -14,7 +14,6 @@ public class FabricModIntegrationSupplier<T extends IModIntegration> extends Mod
         this.environmentValid = checkEnvironment(className);
     }
 
-
     @Override
     public boolean isModLoaded() {
         return environmentValid && super.isModLoaded();

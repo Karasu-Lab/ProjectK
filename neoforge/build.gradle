@@ -34,10 +34,10 @@ loom {
     runs {
         data {
             data()
-            programArgs "--mod", "projectk", "--all", 
-                        "--output", project.file("src/generated/resources").getAbsolutePath(),
-                        "--existing", project(":common").file("src/main/resources").getAbsolutePath(),
-                        "--existing", project.file("src/main/resources").getAbsolutePath()
+            programArgs "--mod", "projectk", "--all",
+                    "--output", project.file("src/generated/resources").getAbsolutePath(),
+                    "--existing", project(":common").file("src/main/resources").getAbsolutePath(),
+                    "--existing", project.file("src/main/resources").getAbsolutePath()
         }
     }
 }
@@ -78,6 +78,7 @@ dependencies {
 
     modRuntimeOnly "me.shedaniel:RoughlyEnoughItems-neoforge:$rei_version"
     modCompileOnly "me.shedaniel:RoughlyEnoughItems-default-plugin-neoforge:$rei_version"
+    api "me.shedaniel.cloth:cloth-config-neoforge:$cloth_config_version"
 }
 
 processResources {

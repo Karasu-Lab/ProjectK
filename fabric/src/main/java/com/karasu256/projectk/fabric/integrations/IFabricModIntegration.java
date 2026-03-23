@@ -10,6 +10,6 @@ public interface IFabricModIntegration extends IModIntegration {
 
     @Override
     default boolean isModLoaded() {
-        return FabricLoader.getInstance().isModLoaded(getModId());
+        return isModLoaded(getModId());
     }
 }

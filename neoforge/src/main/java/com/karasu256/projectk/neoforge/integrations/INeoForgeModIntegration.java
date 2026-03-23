@@ -10,6 +10,6 @@ public interface INeoForgeModIntegration extends IModIntegration {
 
     @Override
     default boolean isModLoaded() {
-        return ModList.get().isLoaded(getModId());
+        return isModLoaded(getModId());
     }
 }

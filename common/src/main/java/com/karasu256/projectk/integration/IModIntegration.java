@@ -1,19 +1,26 @@
 package com.karasu256.projectk.integration;
 
 import org.jetbrains.annotations.NotNull;
-
-import java.util.function.Supplier;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public interface IModIntegration {
-    static <T extends IModIntegration> void bootstrap(@NotNull Supplier<T> modIntegration) {
-        modIntegration.get().bootstrap();
+    Logger LOGGER = LoggerFactory.getLogger("ProjectK Mod Loader");
+
+    static void bootstrap(boolean isLoaded, Runnable onBootstrap) {
+        if (isLoaded) {
+            onBootstrap.run();
+        }
     }
 
     void bootstrap();
 
-    void onBootstrap();
-
+    @SuppressWarnings("unused")
     boolean isModLoaded();
 
     String getModId();
+
+    static <T extends IModIntegration> void bootstrap(@NotNull ModIntegrationSupplier<T> supplier) {
+        IModIntegration.bootstrap(supplier.isModLoaded(), () -> supplier.get().bootstrap());
+    }
 }
