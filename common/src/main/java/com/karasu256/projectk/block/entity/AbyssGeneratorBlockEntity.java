@@ -9,13 +9,13 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 
-public class KGeneratorBlockEntity extends BlockEntity implements IAbyssEnergy {
+public class AbyssGeneratorBlockEntity extends BlockEntity implements IAbyssEnergy {
     private long energy;
     private final long capacity = 10000;
     private static final String ENERGY_TAG = "Energy";
 
-    public KGeneratorBlockEntity(BlockPos pos, BlockState state) {
-        super(BlockEntitiesRegistry.K_GENERATOR.get(), pos, state);
+    public AbyssGeneratorBlockEntity(BlockPos pos, BlockState state) {
+        super(BlockEntitiesRegistry.ABYSS_GENERATOR.get(), pos, state);
     }
 
     @Override

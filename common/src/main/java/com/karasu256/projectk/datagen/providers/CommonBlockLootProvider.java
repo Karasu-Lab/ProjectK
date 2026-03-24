@@ -21,7 +21,7 @@ public class CommonBlockLootProvider extends BlockLootSubProvider {
     protected void generate() {
         this.add(ProjectKBlocks.KARASIUM_ORE.get(), block -> createOreDrop(block, ProjectKItems.RAW_KARASIUM.get()));
         this.add(ProjectKBlocks.DEEPSLATE_KARASIUM_ORE.get(), block -> createOreDrop(block, ProjectKItems.RAW_KARASIUM.get()));
-        this.dropSelf(ProjectKBlocks.K_GENERATOR.get());
+        this.dropSelf(ProjectKBlocks.ABYSS_GENERATOR.get());
     }
 
     @Override

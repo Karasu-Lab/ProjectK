@@ -30,7 +30,7 @@ public class CreativeTabsRegistry {
     }
 
     private static ItemStack icon() {
-        return new ItemStack(ProjectKBlocks.K_GENERATOR.get());
+        return new ItemStack(ProjectKBlocks.ABYSS_GENERATOR.get());
     }
 
     private static void displayItems(CreativeModeTab.ItemDisplayParameters parameters, CreativeModeTab.Output output) {

@@ -1,6 +1,6 @@
 package com.karasu256.projectk.block.custom;
 
-import com.karasu256.projectk.block.entity.KGeneratorBlockEntity;
+import com.karasu256.projectk.block.entity.AbyssGeneratorBlockEntity;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 
@@ -12,14 +12,14 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.Nullable;
 
-public class KGenerator extends AbstractGeneratorBlock {
-    public KGenerator() {
+public class AbyssGenerator extends AbstractGeneratorBlock {
+    public AbyssGenerator() {
         super(BlockBehaviour.Properties.ofFullCopy(Blocks.STONE));
     }
 
     @Override
     public @Nullable BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-        return new KGeneratorBlockEntity(pos, state);
+        return new AbyssGeneratorBlockEntity(pos, state);
     }
 
     @Override
