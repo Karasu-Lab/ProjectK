@@ -1,6 +1,7 @@
 package com.karasu256.projectk.fabric.datagen.providers;
 
 import com.karasu256.projectk.ProjectK;
+import com.karasu256.projectk.block.ProjectKBlocks;
 import com.karasu256.projectk.datagen.providers.CommonBlockStateProvider;
 import com.karasu256.projectk.datagen.providers.CommonItemModelProvider;
 import dev.architectury.registry.registries.RegistrySupplier;
@@ -8,6 +9,7 @@ import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricModelProvider;
 import net.minecraft.data.models.BlockModelGenerators;
 import net.minecraft.data.models.ItemModelGenerators;
+import net.minecraft.data.models.model.ModelLocationUtils;
 import net.minecraft.data.models.model.ModelTemplates;
 import net.minecraft.data.models.model.TextureMapping;
 import net.minecraft.data.models.model.TextureSlot;
@@ -38,7 +40,13 @@ public class ProjectKFabricModelProvider extends FabricModelProvider implements 
 
     @Override
     public void simpleBlock(Block block) {
-        this.blockModelGenerators.createTrivialCube(block);
+        if (block == ProjectKBlocks.ABYSS_CORE.get()) {
+            TextureMapping textures = TextureMapping.cube(block);
+            ResourceLocation modelLocation = ModelTemplates.CUBE_ALL.create(block, textures, this.blockModelGenerators.modelOutput);
+            this.blockModelGenerators.blockStateOutput.accept(BlockModelGenerators.createSimpleBlock(block, modelLocation));
+        } else {
+            this.blockModelGenerators.createTrivialCube(block);
+        }
     }
 
     @Override
@@ -47,13 +55,13 @@ public class ProjectKFabricModelProvider extends FabricModelProvider implements 
                 .put(TextureSlot.SIDE, ResourceLocation.fromNamespaceAndPath(ProjectK.MOD_ID, "block/" + base + "/" + side))
                 .put(TextureSlot.BOTTOM, ResourceLocation.fromNamespaceAndPath(ProjectK.MOD_ID, "block/" + base + "/" + bottom))
                 .put(TextureSlot.TOP, ResourceLocation.fromNamespaceAndPath(ProjectK.MOD_ID, "block/" + base + "/" + top));
-
         ResourceLocation modelLocation = ModelTemplates.CUBE_BOTTOM_TOP.create(block, textures, this.blockModelGenerators.modelOutput);
         this.blockModelGenerators.blockStateOutput.accept(BlockModelGenerators.createSimpleBlock(block, modelLocation));
     }
 
     @Override
     public void simpleBlockItem(Block block) {
+        this.blockModelGenerators.delegateItemModel(block, ModelLocationUtils.getModelLocation(block));
     }
 
     @Override

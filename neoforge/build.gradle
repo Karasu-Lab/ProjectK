@@ -77,10 +77,11 @@ dependencies {
     implementation("com.tterrag.registrate:Registrate:${registrate_version}")
 
     modCompileOnly "me.shedaniel:RoughlyEnoughItems-neoforge:$rei_version"
-     modRuntimeOnly "me.shedaniel:RoughlyEnoughItems-neoforge:$rei_version"
-     modCompileOnly "me.shedaniel:RoughlyEnoughItems-api:$rei_version"
-     modCompileOnly "me.shedaniel:RoughlyEnoughItems-default-plugin-neoforge:$rei_version"
+    modRuntimeOnly "me.shedaniel:RoughlyEnoughItems-neoforge:$rei_version"
+    modCompileOnly "me.shedaniel:RoughlyEnoughItems-api:$rei_version"
+    modCompileOnly "me.shedaniel:RoughlyEnoughItems-default-plugin-neoforge:$rei_version"
     api "me.shedaniel.cloth:cloth-config-neoforge:$cloth_config_version"
+    implementation "software.bernie.geckolib:geckolib-neoforge-${minecraft_version}:${geckolib_version}"
 }
 
 processResources {

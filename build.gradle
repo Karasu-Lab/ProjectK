@@ -25,6 +25,15 @@ subprojects {
     repositories {
         maven { url = "https://maven.createmod.net" }
         maven { url = "https://maven.ithundxr.dev/snapshots" }
+        exclusiveContent {
+            forRepository {
+                maven {
+                    name = 'GeckoLib'
+                    url = 'https://dl.cloudsmith.io/public/geckolib3/geckolib/maven/'
+                }
+            }
+            filter { includeGroupAndSubgroups('software.bernie.geckolib') }
+        }
     }
 
     dependencies {

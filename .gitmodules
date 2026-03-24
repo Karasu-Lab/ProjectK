@@ -22,3 +22,6 @@
 [submodule "modules/Botania"]
 	path = modules/Botania
 	url = https://github.com/VazkiiMods/Botania.git
+[submodule "modules/geckolib"]
+	path = modules/geckolib
+	url = https://github.com/bernie-g/geckolib.git

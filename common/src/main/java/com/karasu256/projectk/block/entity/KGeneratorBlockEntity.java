@@ -11,7 +11,8 @@ import net.minecraft.world.level.block.state.BlockState;
 
 public class KGeneratorBlockEntity extends BlockEntity implements IAbyssEnergy {
     private long energy;
-    private long capacity = 10000;
+    private final long capacity = 10000;
+    private static final String ENERGY_TAG = "Energy";
 
     public KGeneratorBlockEntity(BlockPos pos, BlockState state) {
         super(BlockEntitiesRegistry.K_GENERATOR.get(), pos, state);
@@ -55,12 +56,12 @@ public class KGeneratorBlockEntity extends BlockEntity implements IAbyssEnergy {
     @Override
     protected void saveAdditional(CompoundTag nbt, HolderLookup.Provider registries) {
         super.saveAdditional(nbt, registries);
-        nbt.putLong("Energy", energy);
+        nbt.putLong(ENERGY_TAG, energy);
     }
 
     @Override
     protected void loadAdditional(CompoundTag nbt, HolderLookup.Provider registries) {
         super.loadAdditional(nbt, registries);
-        energy = nbt.getLong("Energy");
+        energy = nbt.getLong(ENERGY_TAG);
     }
 }

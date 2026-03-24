@@ -23,5 +23,8 @@ public class CommonBlockStateProvider {
 
         generator.cubeBottomTop(ProjectKBlocks.K_GENERATOR.get(), "k_generator", "k_generator_side", "k_generator_bottom", "k_generator_top");
         generator.simpleBlockItem(ProjectKBlocks.K_GENERATOR.get());
+
+        generator.simpleBlock(ProjectKBlocks.ABYSS_CORE.get());
+        generator.simpleBlockItem(ProjectKBlocks.ABYSS_CORE.get());
     }
 }
