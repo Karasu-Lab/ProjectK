@@ -13,7 +13,7 @@ import org.jetbrains.annotations.NotNull;
 import org.joml.Matrix4f;
 
 public class AbyssEnergyEntityRenderer extends EntityRenderer<AbyssEnergyEntity> {
-    private static final ResourceLocation TEXTURE = ResourceLocation.fromNamespaceAndPath("minecraft", "textures/particles/sculk_charge_pop_0.png");
+    private static final ResourceLocation TEXTURE = ResourceLocation.fromNamespaceAndPath("minecraft", "textures/particle/sculk_charge_pop_0.png");
 
     public AbyssEnergyEntityRenderer(EntityRendererProvider.Context context) {
         super(context);
