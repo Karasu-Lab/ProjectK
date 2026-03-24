@@ -12,6 +12,10 @@ public final class ProjectKNeoForge {
     public ProjectKNeoForge(ModContainer container) {
         ProjectK.init();
         ProjectKNeoForgeConfig.init(container);
-        ModIntegrationBootstrapper.bootstrap(new NeoForgeModIntegrationSupplier<>("com.karasu256.projectk.neoforge.integrations.projecte.ProjectEIntegration"));
+        ModIntegrationBootstrapper.bootstrap(
+            new NeoForgeModIntegrationSupplier<>("com.karasu256.projectk.neoforge.integrations.projecte.ProjectEIntegration"),
+            new NeoForgeModIntegrationSupplier<>("com.karasu256.projectk.neoforge.integrations.mekanism.MekanismIntegration"),
+            new NeoForgeModIntegrationSupplier<>("com.karasu256.projectk.neoforge.integrations.forge.ForgeEnergyIntegration")
+        );
     }
 }

@@ -1,15 +1,14 @@
 package com.karasu256.projectk.event;
 
+import com.karasu256.projectk.energy.IAbyssEnergy;
 import dev.architectury.event.EventResult;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
-import org.jetbrains.annotations.NotNull;
-
-import com.karasu256.projectk.energy.IAbyssEnergy;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import org.jetbrains.annotations.NotNull;
 
 public class ModEvents {
     public static void init() {
