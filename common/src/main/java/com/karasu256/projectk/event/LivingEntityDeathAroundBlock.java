@@ -5,17 +5,13 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
 
-@SuppressWarnings("UnusedReturnValue")
-public interface LivingDeathAroundBlock {
-    default int getRadius() {
-        return 5;
-    }
+public interface LivingEntityDeathAroundBlock {
+    int getRadius();
 
-    default Block getBlock() {
-        return Blocks.WITHER_ROSE;
-    }
+    boolean shouldTrigger(LivingEntityDeathAroundBlock invoker, int radius, LivingEntity entity, BlockPos pos, Level level);
+
+    Block getBlock();
 
     EventResult die(LivingEntity entity, BlockPos pos, Level level);
 }

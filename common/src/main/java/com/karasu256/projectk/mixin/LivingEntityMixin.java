@@ -1,5 +1,6 @@
 package com.karasu256.projectk.mixin;
 
+import com.karasu256.projectk.event.LivingEntityDeathAroundBlock;
 import com.karasu256.projectk.event.ProjectKEntityEvents;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.Entity;
@@ -19,13 +20,11 @@ public class LivingEntityMixin {
         var entity = (LivingEntity) (Object) this;
         var level = entity.level();
         if (removalReason.equals(Entity.RemovalReason.KILLED) && !level.isClientSide) {
+            LivingEntityDeathAroundBlock invoker = ProjectKEntityEvents.LIVING_DEATH_AROUND_ANY_BLOCK.invoker();
             BlockPos entityPos = entity.blockPosition();
-            var invoker = ProjectKEntityEvents.LIVING_DEATH_AROUND_ANY_BLOCK.invoker();
-            var radius = invoker.getRadius();
-            for (BlockPos pos : BlockPos.betweenClosed(entityPos.offset(-radius, -radius, -radius), entityPos.offset(radius, radius, radius))) {
-                if (level.getBlockState(pos).is(invoker.getBlock())) {
-                    invoker.die(entity, entityPos, level);
-                }
+            int radius = invoker.getRadius();
+            if (invoker.shouldTrigger(invoker, radius, entity, entityPos, level)) {
+                invoker.die(entity, entityPos, level);
             }
         }
     }
