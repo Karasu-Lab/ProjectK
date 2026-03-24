@@ -11,11 +11,11 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "projectk:k_generator"
+          "name": "projectk:abyss_generator"
         }
       ],
       "rolls": 1.0
     }
   ],
-  "random_sequence": "projectk:blocks/k_generator"
+  "random_sequence": "projectk:blocks/abyss_generator"
 }
