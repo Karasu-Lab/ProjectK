@@ -1,4 +1,4 @@
-package com.karasu256.projectk.integration;
+package com.karasu256.projectk.api.integration;
 
 import org.jetbrains.annotations.NotNull;
 

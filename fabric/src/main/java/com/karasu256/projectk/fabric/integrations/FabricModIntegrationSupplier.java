@@ -1,7 +1,7 @@
 package com.karasu256.projectk.fabric.integrations;
 
-import com.karasu256.projectk.integration.IModIntegration;
-import com.karasu256.projectk.integration.ModIntegrationSupplier;
+import com.karasu256.projectk.api.integration.IModIntegration;
+import com.karasu256.projectk.api.integration.ModIntegrationSupplier;
 import net.fabricmc.api.Environment;
 import net.fabricmc.loader.api.FabricLoader;
 import org.jetbrains.annotations.NotNull;
@@ -10,7 +10,7 @@ public class FabricModIntegrationSupplier<T extends IModIntegration> extends Mod
     private final boolean environmentValid;
 
     public FabricModIntegrationSupplier(@NotNull String className) {
-        super(className, s -> FabricLoader.getInstance().isModLoaded(s));
+        super(className, IFabricModIntegration::isModLoaded);
         this.environmentValid = checkEnvironment(className);
     }
 
@@ -23,12 +23,9 @@ public class FabricModIntegrationSupplier<T extends IModIntegration> extends Mod
         try {
             Class<?> clazz = Class.forName(className, false, Thread.currentThread().getContextClassLoader());
             Environment env = clazz.getAnnotation(Environment.class);
-            if (env != null) {
-                return env.value() == FabricLoader.getInstance().getEnvironmentType();
-            }
+            return env != null && env.value() == FabricLoader.getInstance().getEnvironmentType();
         } catch (Throwable t) {
             return false;
         }
-        return true;
     }
 }

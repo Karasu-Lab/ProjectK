@@ -1,4 +1,4 @@
-package com.karasu256.projectk.integration;
+package com.karasu256.projectk.api.integration;
 
 public abstract class AbstractModIntegration implements IModIntegration {
     @Override

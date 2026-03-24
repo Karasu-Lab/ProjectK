@@ -1,8 +1,8 @@
 package com.karasu256.projectk;
 
 import com.karasu256.projectk.block.ProjectKBlocks;
-import com.karasu256.projectk.config.ProjectKModConfig;
 import com.karasu256.projectk.data.ProjectKDataComponets;
+import com.karasu256.projectk.event.ModEvents;
 import com.karasu256.projectk.item.ProjectKItems;
 import com.karasu256.projectk.registry.BlocksRegistry;
 import com.karasu256.projectk.registry.CreativeTabsRegistry;
@@ -16,6 +16,7 @@ public final class ProjectK {
         ProjectKBlocks.init();
         ProjectKItems.init();
         ProjectKDataComponets.init();
+        ModEvents.init();
 
         DataComponentTypesRegistry.register();
         BlocksRegistry.register();
