@@ -28,16 +28,16 @@ public class AbyssGeneratorRenderer implements BlockEntityRenderer<AbyssGenerato
 
         poseStack.pushPose();
         poseStack.translate(0.5, 1.25, 0.5);
-        
+
         long time = blockEntity.getLevel() != null ? blockEntity.getLevel().getGameTime() : 0;
-        float rotation = (time + partialTick) * blockEntity.getRotationSpeed() * 5.0f; // Multiplied by 5 for visible speed
-        
+        float rotation = (time + partialTick) * blockEntity.getRotationSpeed() * 5.0f;
+
         poseStack.mulPose(Axis.YP.rotationDegrees(rotation));
-        
+
         poseStack.scale(0.75f, 0.75f, 0.75f);
 
         itemRenderer.renderStatic(heldItem, ItemDisplayContext.GROUND, 15728880, packedOverlay, poseStack, bufferSource, blockEntity.getLevel(), 0);
-        
+
         poseStack.popPose();
     }
 }

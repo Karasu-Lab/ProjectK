@@ -57,6 +57,7 @@ public final class ProjectKNeoForge {
     private void onRegisterRenderers(EntityRenderersEvent.RegisterRenderers event) {
         NeoForgeGeckoLibHelper.setEvent(event);
         GeckoLibBridge.get().registerBlockRenderer(BlockEntitiesRegistry.ABYSS_CORE.get());
+        ProjectKClient.registerRenderers();
         NeoForgeGeckoLibHelper.setEvent(null);
     }
 }

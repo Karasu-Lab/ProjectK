@@ -42,18 +42,18 @@ public class AbyssCore extends BaseEntityBlock {
     @Override
     @NotNull
     protected VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
-        return Block.box(6.0, 1.0, 6.0, 10.0, 5.0, 10.0);
+        return Block.box(4.0, 0.0, 4.0, 12.0, 8.0, 12.0);
     }
 
     @Override
     @NotNull
     protected VoxelShape getOcclusionShape(BlockState state, BlockGetter level, BlockPos pos) {
-        return Block.box(6.0, 1.0, 6.0, 10.0, 5.0, 10.0);
+        return Block.box(4.0, 0.0, 4.0, 12.0, 8.0, 12.0);
     }
 
     @Override
     @NotNull
     protected VoxelShape getVisualShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
-        return Block.box(6.0, 1.0, 6.0, 10.0, 5.0, 10.0);
+        return Block.box(4.0, 0.0, 4.0, 12.0, 8.0, 12.0);
     }
 }

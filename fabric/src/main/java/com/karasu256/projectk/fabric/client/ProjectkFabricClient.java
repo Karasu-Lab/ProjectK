@@ -13,6 +13,7 @@ public final class ProjectkFabricClient implements ClientModInitializer {
     @Override
     public void onInitializeClient() {
         ProjectKClient.init();
+        ProjectKClient.registerRenderers();
         ProjectKClient.initLate();
         GeckoLibBridge.get().registerBlockRenderer(BlockEntitiesRegistry.ABYSS_CORE.get());
 

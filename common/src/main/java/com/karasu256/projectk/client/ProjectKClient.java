@@ -12,11 +12,14 @@ import dev.architectury.registry.client.rendering.BlockEntityRendererRegistry;
 
 public class ProjectKClient {
     public static void init() {
+        EntityRendererRegistry.register(EntitiesRegistry.ABYSS_ENERGY_ENTITY, AbyssEnergyEntityRenderer::new);
+    }
+
+    public static void registerRenderers() {
+        BlockEntityRendererRegistry.register(BlockEntitiesRegistry.ABYSS_GENERATOR.get(), AbyssGeneratorRenderer::new);
     }
 
     public static void initLate() {
-        EntityRendererRegistry.register(EntitiesRegistry.ABYSS_ENERGY_ENTITY, AbyssEnergyEntityRenderer::new);
-        BlockEntityRendererRegistry.register(BlockEntitiesRegistry.ABYSS_GENERATOR.get(), AbyssGeneratorRenderer::new);
         ParticleProviderRegistry.register(ParticlesRegistry.ABYSS_PARTICLE.get(), AbyssParticle.Provider::new);
     }
 }
