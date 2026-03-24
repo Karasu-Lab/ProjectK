@@ -21,7 +21,7 @@ public class CommonBlockStateProvider {
         generator.simpleBlock(ProjectKBlocks.DEEPSLATE_KARASIUM_ORE.get());
         generator.simpleBlockItem(ProjectKBlocks.DEEPSLATE_KARASIUM_ORE.get());
 
-        generator.cubeBottomTop(ProjectKBlocks.ABYSS_GENERATOR.get(), "k_generator", "k_generator_side", "k_generator_bottom", "k_generator_top");
+        generator.cubeBottomTop(ProjectKBlocks.ABYSS_GENERATOR.get(), "abyss_generator", "abyss_generator_side", "abyss_generator_bottom", "abyss_generator_top");
         generator.simpleBlockItem(ProjectKBlocks.ABYSS_GENERATOR.get());
 
         generator.simpleBlock(ProjectKBlocks.ABYSS_CORE.get());

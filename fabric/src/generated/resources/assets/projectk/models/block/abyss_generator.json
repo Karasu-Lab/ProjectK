@@ -1,8 +1,8 @@
 {
   "parent": "minecraft:block/cube_bottom_top",
   "textures": {
-    "bottom": "projectk:block/k_generator/k_generator_bottom",
-    "side": "projectk:block/k_generator/k_generator_side",
-    "top": "projectk:block/k_generator/k_generator_top"
+    "bottom": "projectk:block/abyss_generator/abyss_generator_bottom",
+    "side": "projectk:block/abyss_generator/abyss_generator_side",
+    "top": "projectk:block/abyss_generator/abyss_generator_top"
   }
 }
