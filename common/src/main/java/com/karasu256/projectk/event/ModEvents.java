@@ -1,13 +1,13 @@
 package com.karasu256.projectk.event;
 
-import com.karasu256.projectk.energy.IAbyssEnergy;
+import com.karasu256.projectk.entity.AbyssEnergyEntity;
+import com.karasu256.projectk.registry.EntitiesRegistry;
 import dev.architectury.event.EventResult;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.entity.BlockEntity;
 import org.jetbrains.annotations.NotNull;
 
 public class ModEvents {
@@ -33,13 +33,11 @@ public class ModEvents {
 
         @Override
         public EventResult die(LivingEntity entity, BlockPos pos, Level level) {
-            int radius = getRadius();
-            BlockPos entityPos = entity.blockPosition();
-            for (BlockPos p : BlockPos.betweenClosed(entityPos.offset(-radius, -radius, -radius), entityPos.offset(radius, radius, radius))) {
-                BlockEntity be = level.getBlockEntity(p);
-                if (be instanceof IAbyssEnergy abyssEnergy) {
-                    abyssEnergy.insert(100, false);
-                }
+            if (!level.isClientSide) {
+                AbyssEnergyEntity aeEntity = new AbyssEnergyEntity(EntitiesRegistry.ABYSS_ENERGY_ENTITY.get(), level);
+                aeEntity.setPos(entity.getX(), entity.getY(), entity.getZ());
+                aeEntity.setEnergy(100);
+                level.addFreshEntity(aeEntity);
             }
             return EventResult.pass();
         }

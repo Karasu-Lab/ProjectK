@@ -8,6 +8,8 @@ import com.karasu256.projectk.registry.BlockEntitiesRegistry;
 import com.karasu256.projectk.registry.BlocksRegistry;
 import com.karasu256.projectk.registry.CreativeTabsRegistry;
 import com.karasu256.projectk.registry.DataComponentTypesRegistry;
+import com.karasu256.projectk.registry.EntitiesRegistry;
+import com.karasu256.projectk.registry.ParticlesRegistry;
 import com.karasu256.projectk.registry.ItemsRegistry;
 
 public final class ProjectK {
@@ -20,6 +22,8 @@ public final class ProjectK {
         ModEvents.init();
 
         DataComponentTypesRegistry.register();
+        EntitiesRegistry.register();
+        ParticlesRegistry.register();
         BlocksRegistry.register();
         BlockEntitiesRegistry.register();
         ItemsRegistry.register();
