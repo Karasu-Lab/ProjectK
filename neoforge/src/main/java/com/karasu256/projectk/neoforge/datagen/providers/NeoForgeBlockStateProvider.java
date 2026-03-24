@@ -29,7 +29,17 @@ public class NeoForgeBlockStateProvider extends BlockStateProvider implements Co
     }
 
     @Override
-    public void simpleBlockItem(@NotNull Block block) {
+    public void cubeBottomTop(Block block, String base, String side, String bottom, String top) {
+        simpleBlock(block, models().cubeBottomTop(
+                net.minecraft.core.registries.BuiltInRegistries.BLOCK.getKey(block).getPath(),
+                ResourceLocation.fromNamespaceAndPath(ProjectK.MOD_ID, "block/" + base + "/" + side),
+                ResourceLocation.fromNamespaceAndPath(ProjectK.MOD_ID, "block/" + base + "/" + bottom),
+                ResourceLocation.fromNamespaceAndPath(ProjectK.MOD_ID, "block/" + base + "/" + top)
+        ));
+    }
+
+    @Override
+    public void simpleBlockItem(Block block) {
         String name = net.minecraft.core.registries.BuiltInRegistries.BLOCK.getKey(block).getPath();
         itemModels().withExistingParent(name, ResourceLocation.fromNamespaceAndPath(ProjectK.MOD_ID, "block/" + name));
     }

@@ -7,8 +7,13 @@ import net.fabricmc.fabric.api.datagen.v1.provider.FabricModelProvider;
 import net.minecraft.data.models.BlockModelGenerators;
 import net.minecraft.data.models.ItemModelGenerators;
 import net.minecraft.data.models.model.ModelTemplates;
+import net.minecraft.data.models.model.TextureMapping;
+import net.minecraft.data.models.model.TextureSlot;
+import net.minecraft.data.models.model.TexturedModel;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
+import com.karasu256.projectk.ProjectK;
 
 public class ProjectKFabricModelProvider extends FabricModelProvider implements CommonBlockStateProvider.Generator, CommonBlockStateProvider.ItemGenerator {
 
@@ -34,6 +39,17 @@ public class ProjectKFabricModelProvider extends FabricModelProvider implements 
     @Override
     public void simpleBlock(Block block) {
         this.blockModelGenerators.createTrivialCube(block);
+    }
+
+    @Override
+    public void cubeBottomTop(Block block, String base, String side, String bottom, String top) {
+        TextureMapping textures = new TextureMapping()
+                .put(TextureSlot.SIDE, ResourceLocation.fromNamespaceAndPath(ProjectK.MOD_ID, "block/" + base + "/" + side))
+                .put(TextureSlot.BOTTOM, ResourceLocation.fromNamespaceAndPath(ProjectK.MOD_ID, "block/" + base + "/" + bottom))
+                .put(TextureSlot.TOP, ResourceLocation.fromNamespaceAndPath(ProjectK.MOD_ID, "block/" + base + "/" + top));
+
+        ResourceLocation modelLocation = ModelTemplates.CUBE_BOTTOM_TOP.create(block, textures, this.blockModelGenerators.modelOutput);
+        this.blockModelGenerators.blockStateOutput.accept(BlockModelGenerators.createSimpleBlock(block, modelLocation));
     }
 
     @Override

@@ -12,6 +12,7 @@ public class CommonBlockStateProvider {
     public interface Generator {
         void simpleBlock(Block block);
         void simpleBlockItem(Block block);
+        void cubeBottomTop(Block block, String base, String side, String bottom, String top);
     }
 
     public interface ItemGenerator {
@@ -25,8 +26,8 @@ public class CommonBlockStateProvider {
         generator.simpleBlock(ProjectKBlocks.DEEPSLATE_KARASIUM_ORE.get());
         generator.simpleBlockItem(ProjectKBlocks.DEEPSLATE_KARASIUM_ORE.get());
 
-        // generator.simpleBlock(ProjectKBlocks.K_GENERATOR.get());
-        // generator.simpleBlockItem(ProjectKBlocks.K_GENERATOR.get());
+        generator.cubeBottomTop(ProjectKBlocks.K_GENERATOR.get(), "k_generator", "k_generator_side", "k_generator_bottom", "k_generator_top");
+        generator.simpleBlockItem(ProjectKBlocks.K_GENERATOR.get());
     }
 
     public static void generateItems(@NotNull ItemGenerator generator) {
