@@ -1,5 +1,8 @@
 {
   "category.projectk": "ProjectK",
   "item.projectk.wither_bone": "Wither Bone",
+   "rei.category.projectk.wither_rose_transformation": "Wither Rose World-Crafting",
+   "rei.category.projectk.wither_rose_transformation.requirement": "Soul Sand Valley required",
+   "rei.category.projectk.wither_rose_transformation.instruction": "Drop items together, then ignite!",
   "gui.configscreen.title": "ProjectK Config"
 }

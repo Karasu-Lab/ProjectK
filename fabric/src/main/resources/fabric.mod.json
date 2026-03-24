@@ -25,6 +25,9 @@
     ],
     "modmenu": [
       "com.karasu256.projectk.fabric.integrations.modmenu.ModMenuIntegration"
+    ],
+    "rei-client": [
+      "com.karasu256.projectk.compat.rei.ProjectKREIClientPlugin"
     ]
   },
   "mixins": [
