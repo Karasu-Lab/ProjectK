@@ -19,3 +19,6 @@
 [submodule "modules/ProjectE"]
 	path = modules/ProjectE
 	url = https://github.com/sinkillerj/ProjectE.git
+[submodule "modules/Botania"]
+	path = modules/Botania
+	url = https://github.com/VazkiiMods/Botania.git
