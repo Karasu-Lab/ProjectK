@@ -2,6 +2,7 @@ package com.karasu256.projectk.event;
 
 import com.karasu256.projectk.entity.AbyssEnergyEntity;
 import com.karasu256.projectk.registry.EntitiesRegistry;
+import com.karasu256.projectk.energy.IAbyssEnergy;
 import dev.architectury.event.EventResult;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.LivingEntity;
@@ -36,7 +37,7 @@ public class ModEvents {
             if (!level.isClientSide) {
                 AbyssEnergyEntity aeEntity = new AbyssEnergyEntity(EntitiesRegistry.ABYSS_ENERGY_ENTITY.get(), level);
                 aeEntity.setPos(entity.getX(), entity.getY(), entity.getZ());
-                aeEntity.setEnergy(100);
+                aeEntity.setEnergy(IAbyssEnergy.calculateEnergy(entity));
                 level.addFreshEntity(aeEntity);
             }
             return EventResult.pass();
