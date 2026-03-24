@@ -1,0 +1,22 @@
+package com.karasu256.projectk.energy;
+
+import java.awt.*;
+
+public class AbyssEnergyColor {
+    public static final Color PURPLE = new Color(180, 50, 255);
+    public static final Color BLUE = new Color(50, 160, 255);
+    public static final Color GOLD = new Color(255, 215, 0);
+    public static final Color WHITE = new Color(255, 255, 255);
+
+    public static Color getColor(long energy) {
+        if (energy >= 1_000_000_000_000_000L) {
+            return WHITE;
+        } else if (energy >= 1_000_000_000_000L) {
+            return GOLD;
+        } else if (energy >= 1_000_000L) {
+            return BLUE;
+        } else {
+            return PURPLE;
+        }
+    }
+}
