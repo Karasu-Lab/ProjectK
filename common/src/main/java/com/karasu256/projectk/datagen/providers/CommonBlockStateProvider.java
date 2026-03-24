@@ -1,9 +1,6 @@
 package com.karasu256.projectk.datagen.providers;
 
 import com.karasu256.projectk.block.ProjectKBlocks;
-import com.karasu256.projectk.item.ProjectKItems;
-import dev.architectury.registry.registries.RegistrySupplier;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import org.jetbrains.annotations.NotNull;
 
@@ -11,12 +8,10 @@ public class CommonBlockStateProvider {
 
     public interface Generator {
         void simpleBlock(Block block);
-        void simpleBlockItem(Block block);
-        void cubeBottomTop(Block block, String base, String side, String bottom, String top);
-    }
 
-    public interface ItemGenerator {
-        void simpleItem(RegistrySupplier<Item> item);
+        void simpleBlockItem(Block block);
+
+        void cubeBottomTop(Block block, String base, String side, String bottom, String top);
     }
 
     public static void generate(@NotNull Generator generator) {
@@ -28,11 +23,5 @@ public class CommonBlockStateProvider {
 
         generator.cubeBottomTop(ProjectKBlocks.K_GENERATOR.get(), "k_generator", "k_generator_side", "k_generator_bottom", "k_generator_top");
         generator.simpleBlockItem(ProjectKBlocks.K_GENERATOR.get());
-    }
-
-    public static void generateItems(@NotNull ItemGenerator generator) {
-        generator.simpleItem(ProjectKItems.KARASIUM);
-        generator.simpleItem(ProjectKItems.RAW_KARASIUM);
-        generator.simpleItem(ProjectKItems.KARASIUM_DUST);
     }
 }

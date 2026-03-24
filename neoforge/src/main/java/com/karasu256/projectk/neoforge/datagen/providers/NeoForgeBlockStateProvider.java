@@ -2,8 +2,9 @@ package com.karasu256.projectk.neoforge.datagen.providers;
 
 import com.karasu256.projectk.ProjectK;
 import com.karasu256.projectk.datagen.providers.CommonBlockStateProvider;
-import net.minecraft.data.PackOutput;
+import com.karasu256.projectk.datagen.providers.CommonItemModelProvider;
 import dev.architectury.registry.registries.RegistrySupplier;
+import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
@@ -11,7 +12,7 @@ import net.neoforged.neoforge.client.model.generators.BlockStateProvider;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import org.jetbrains.annotations.NotNull;
 
-public class NeoForgeBlockStateProvider extends BlockStateProvider implements CommonBlockStateProvider.Generator, CommonBlockStateProvider.ItemGenerator {
+public class NeoForgeBlockStateProvider extends BlockStateProvider implements CommonBlockStateProvider.Generator, CommonItemModelProvider.ItemGenerator {
 
     public NeoForgeBlockStateProvider(PackOutput output, ExistingFileHelper helper) {
         super(output, ProjectK.MOD_ID, helper);
@@ -20,7 +21,7 @@ public class NeoForgeBlockStateProvider extends BlockStateProvider implements Co
     @Override
     protected void registerStatesAndModels() {
         CommonBlockStateProvider.generate(this);
-        CommonBlockStateProvider.generateItems(this);
+        CommonItemModelProvider.generate(this);
     }
 
     @Override
@@ -30,12 +31,7 @@ public class NeoForgeBlockStateProvider extends BlockStateProvider implements Co
 
     @Override
     public void cubeBottomTop(Block block, String base, String side, String bottom, String top) {
-        simpleBlock(block, models().cubeBottomTop(
-                net.minecraft.core.registries.BuiltInRegistries.BLOCK.getKey(block).getPath(),
-                ResourceLocation.fromNamespaceAndPath(ProjectK.MOD_ID, "block/" + base + "/" + side),
-                ResourceLocation.fromNamespaceAndPath(ProjectK.MOD_ID, "block/" + base + "/" + bottom),
-                ResourceLocation.fromNamespaceAndPath(ProjectK.MOD_ID, "block/" + base + "/" + top)
-        ));
+        simpleBlock(block, models().cubeBottomTop(net.minecraft.core.registries.BuiltInRegistries.BLOCK.getKey(block).getPath(), ResourceLocation.fromNamespaceAndPath(ProjectK.MOD_ID, "block/" + base + "/" + side), ResourceLocation.fromNamespaceAndPath(ProjectK.MOD_ID, "block/" + base + "/" + bottom), ResourceLocation.fromNamespaceAndPath(ProjectK.MOD_ID, "block/" + base + "/" + top)));
     }
 
     @Override
@@ -46,7 +42,6 @@ public class NeoForgeBlockStateProvider extends BlockStateProvider implements Co
 
     @Override
     public void simpleItem(@NotNull RegistrySupplier<Item> item) {
-        itemModels().withExistingParent(item.getId().getPath(), "item/generated")
-                .texture("layer0", ResourceLocation.fromNamespaceAndPath(ProjectK.MOD_ID, "item/" + item.getId().getPath()));
+        itemModels().withExistingParent(item.getId().getPath(), "item/generated").texture("layer0", ResourceLocation.fromNamespaceAndPath(ProjectK.MOD_ID, "item/" + item.getId().getPath()));
     }
 }

@@ -1,6 +1,8 @@
 package com.karasu256.projectk.fabric.datagen.providers;
 
+import com.karasu256.projectk.ProjectK;
 import com.karasu256.projectk.datagen.providers.CommonBlockStateProvider;
+import com.karasu256.projectk.datagen.providers.CommonItemModelProvider;
 import dev.architectury.registry.registries.RegistrySupplier;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricModelProvider;
@@ -9,13 +11,11 @@ import net.minecraft.data.models.ItemModelGenerators;
 import net.minecraft.data.models.model.ModelTemplates;
 import net.minecraft.data.models.model.TextureMapping;
 import net.minecraft.data.models.model.TextureSlot;
-import net.minecraft.data.models.model.TexturedModel;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
-import com.karasu256.projectk.ProjectK;
 
-public class ProjectKFabricModelProvider extends FabricModelProvider implements CommonBlockStateProvider.Generator, CommonBlockStateProvider.ItemGenerator {
+public class ProjectKFabricModelProvider extends FabricModelProvider implements CommonBlockStateProvider.Generator, CommonItemModelProvider.ItemGenerator {
 
     private BlockModelGenerators blockModelGenerators;
     private ItemModelGenerators itemModelGenerators;
@@ -33,7 +33,7 @@ public class ProjectKFabricModelProvider extends FabricModelProvider implements 
     @Override
     public void generateItemModels(ItemModelGenerators itemModelGenerators) {
         this.itemModelGenerators = itemModelGenerators;
-        CommonBlockStateProvider.generateItems(this);
+        CommonItemModelProvider.generate(this);
     }
 
     @Override

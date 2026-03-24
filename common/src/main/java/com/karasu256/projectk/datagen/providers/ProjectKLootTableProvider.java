@@ -16,7 +16,8 @@ import java.util.concurrent.CompletableFuture;
 public class ProjectKLootTableProvider extends LootTableProvider {
     public ProjectKLootTableProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> registries) {
         super(output, Set.of(), List.of(
-                new SubProviderEntry(CommonBlockLootProvider::new, LootContextParamSets.BLOCK)
+                new SubProviderEntry(CommonBlockLootProvider::new, LootContextParamSets.BLOCK),
+                new SubProviderEntry(CommonEntityLootProvider::new, LootContextParamSets.ENTITY)
         ), registries);
     }
 
