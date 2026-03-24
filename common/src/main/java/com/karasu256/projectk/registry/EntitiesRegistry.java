@@ -14,8 +14,8 @@ public class EntitiesRegistry {
     private static final DeferredRegister<EntityType<?>> ENTITIES = DeferredRegister.create(MOD_ID, Registries.ENTITY_TYPE);
 
     public static final RegistrySupplier<EntityType<AbyssEnergyEntity>> ABYSS_ENERGY_ENTITY = ENTITIES.register(Id.id("abyss_energy_entity"),
-            () -> EntityType.Builder.<AbyssEnergyEntity>of(AbyssEnergyEntity::new, MobCategory.MISC)
-                    .sized(0.5f, 0.5f)
+            () -> EntityType.Builder.of(AbyssEnergyEntity::new, MobCategory.MISC)
+                    .sized(0.1f, 0.1f)
                     .build(Id.id("abyss_energy_entity").toString()));
 
     public static void register() {

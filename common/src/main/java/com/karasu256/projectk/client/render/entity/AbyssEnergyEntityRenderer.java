@@ -27,6 +27,7 @@ public class AbyssEnergyEntityRenderer extends EntityRenderer<AbyssEnergyEntity>
         poseStack.pushPose();
         
         poseStack.translate(0.0, 0.2, 0.0);
+        poseStack.scale(0.5f, 0.5f, 0.5f);
         
         poseStack.mulPose(this.entityRenderDispatcher.cameraOrientation());
 

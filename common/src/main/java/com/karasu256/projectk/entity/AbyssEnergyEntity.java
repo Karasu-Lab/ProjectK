@@ -1,9 +1,12 @@
 package com.karasu256.projectk.entity;
 
+import com.karasu256.projectk.block.custom.IGeneratorBlock;
+import com.karasu256.projectk.energy.AbyssEnergyColor;
 import com.karasu256.projectk.energy.IProjectKEnergy;
 import com.karasu256.projectk.registry.ParticlesRegistry;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.Component;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -13,6 +16,7 @@ import net.minecraft.world.entity.MoverType;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.phys.Vec3;
+import org.jetbrains.annotations.NotNull;
 
 public class AbyssEnergyEntity extends Entity {
     private static final EntityDataAccessor<Long> ENERGY = SynchedEntityData.defineId(AbyssEnergyEntity.class, EntityDataSerializers.LONG);
@@ -21,6 +25,38 @@ public class AbyssEnergyEntity extends Entity {
     public AbyssEnergyEntity(EntityType<?> type, Level level) {
         super(type, level);
         this.noPhysics = true;
+    }
+
+    @Override
+    public boolean shouldRenderAtSqrDistance(double distance) {
+        return distance < 1024.0;
+    }
+
+    @Override
+    @NotNull
+    public Component getDisplayName() {
+        return Component.empty();
+    }
+
+    @Override
+    @NotNull
+    public Component getName() {
+        return Component.empty();
+    }
+
+    @Override
+    public boolean isPickable() {
+        return false;
+    }
+
+    @Override
+    public boolean isAttackable() {
+        return false;
+    }
+
+    @Override
+    public boolean isPushable() {
+        return false;
     }
 
     @Override
@@ -73,25 +109,25 @@ public class AbyssEnergyEntity extends Entity {
     private void moveSmoothly(Vec3 targetPos) {
         Vec3 dir = targetPos.subtract(position()).normalize();
         Vec3 currentMov = getDeltaMovement();
-        
+
         double accel = 0.02;
         double friction = 0.92;
-        
+
         Vec3 newMov = currentMov.add(dir.scale(accel)).scale(friction);
         setDeltaMovement(newMov);
         move(MoverType.SELF, getDeltaMovement());
     }
 
     private boolean isValidTarget(BlockPos pos) {
-        BlockEntity be = level().getBlockEntity(pos);
-        return be instanceof IProjectKEnergy energyAcceptor && energyAcceptor.getAmount() < energyAcceptor.getCapacity();
+        if (level().getBlockState(pos).getBlock() instanceof IGeneratorBlock) {
+            BlockEntity be = level().getBlockEntity(pos);
+            return be instanceof IProjectKEnergy energyAcceptor && energyAcceptor.getAmount() < energyAcceptor.getCapacity();
+        }
+        return false;
     }
 
     private void findTargetGenerator() {
-        BlockPos.betweenClosedStream(blockPosition().offset(-10, -10, -10), blockPosition().offset(10, 10, 10))
-                .filter(this::isValidTarget)
-                .findFirst()
-                .ifPresent(pos -> targetGenerator = pos.immutable());
+        BlockPos.betweenClosedStream(blockPosition().offset(-10, -10, -10), blockPosition().offset(10, 10, 10)).filter(this::isValidTarget).findFirst().ifPresent(pos -> targetGenerator = pos.immutable());
     }
 
     private void insertEnergy() {
@@ -103,13 +139,7 @@ public class AbyssEnergyEntity extends Entity {
 
     private void spawnParticles() {
         for (int i = 0; i < 3; i++) {
-            level().addParticle(
-                    ParticlesRegistry.ABYSS_PARTICLE.get(),
-                    getX() + (random.nextDouble() - 0.5) * 0.3,
-                    getY() + (random.nextDouble() - 0.5) * 0.3,
-                    getZ() + (random.nextDouble() - 0.5) * 0.3,
-                    0, 0, 0
-            );
+            level().addParticle(ParticlesRegistry.ABYSS_PARTICLE.get(), getX() + (random.nextDouble() - 0.5) * 0.3, getY() + (random.nextDouble() - 0.5) * 0.3, getZ() + (random.nextDouble() - 0.5) * 0.3, 0, 0, 0);
         }
     }
 
