@@ -8,6 +8,9 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import org.jetbrains.annotations.NotNull;
 
+import com.karasu256.projectk.energy.IAbyssEnergy;
+import net.minecraft.world.level.block.entity.BlockEntity;
+
 public class ModEvents {
     public static void init() {
         ProjectKEntityEvents.LIVING_DEATH_AROUND_ANY_BLOCK.register(new LivingEntityDeathAroundWitherLose());
@@ -31,6 +34,14 @@ public class ModEvents {
 
         @Override
         public EventResult die(LivingEntity entity, BlockPos pos, Level level) {
+            int radius = getRadius();
+            BlockPos entityPos = entity.blockPosition();
+            for (BlockPos p : BlockPos.betweenClosed(entityPos.offset(-radius, -radius, -radius), entityPos.offset(radius, radius, radius))) {
+                BlockEntity be = level.getBlockEntity(p);
+                if (be instanceof IAbyssEnergy abyssEnergy) {
+                    abyssEnergy.insert(100, false);
+                }
+            }
             return EventResult.pass();
         }
 

@@ -4,6 +4,7 @@ import com.karasu256.projectk.block.ProjectKBlocks;
 import com.karasu256.projectk.data.ProjectKDataComponets;
 import com.karasu256.projectk.event.ModEvents;
 import com.karasu256.projectk.item.ProjectKItems;
+import com.karasu256.projectk.registry.BlockEntitiesRegistry;
 import com.karasu256.projectk.registry.BlocksRegistry;
 import com.karasu256.projectk.registry.CreativeTabsRegistry;
 import com.karasu256.projectk.registry.DataComponentTypesRegistry;
@@ -20,6 +21,7 @@ public final class ProjectK {
 
         DataComponentTypesRegistry.register();
         BlocksRegistry.register();
+        BlockEntitiesRegistry.register();
         ItemsRegistry.register();
         CreativeTabsRegistry.register();
     }
