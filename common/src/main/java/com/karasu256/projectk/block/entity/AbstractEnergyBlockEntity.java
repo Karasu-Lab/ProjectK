@@ -12,7 +12,6 @@ import net.minecraft.world.level.block.state.BlockState;
 public abstract class AbstractEnergyBlockEntity<T extends IEnergy> extends AbstractContainerBlockEntity implements IEnergyBlock<T>, ICapacity {
     protected long energy;
     protected final long capacity;
-    protected static final String ENERGY_TAG = "Energy";
 
     public AbstractEnergyBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state, long capacity) {
         super(type, pos, state);
@@ -54,12 +53,15 @@ public abstract class AbstractEnergyBlockEntity<T extends IEnergy> extends Abstr
     @Override
     protected void saveAdditional(CompoundTag nbt, HolderLookup.Provider registries) {
         super.saveAdditional(nbt, registries);
-        nbt.putLong(ENERGY_TAG, energy);
+        nbt.putLong(getEnergyType().getNbtId().toString(), energy);
     }
 
     @Override
     protected void loadAdditional(CompoundTag nbt, HolderLookup.Provider registries) {
         super.loadAdditional(nbt, registries);
-        energy = nbt.getLong(ENERGY_TAG);
+        String key = getEnergyType().getNbtId().toString();
+        if (nbt.contains(key)) {
+            energy = nbt.getLong(key);
+        }
     }
 }

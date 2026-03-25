@@ -2,20 +2,16 @@ package com.karasu256.projectk.client.animation;
 
 import com.karasu256.projectk.api.animation.IAnimSpeed;
 import com.karasu256.projectk.api.nbt.AbstractNbtReadAndWrite;
+import com.karasu256.projectk.utils.Id;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.resources.ResourceLocation;
 
 public class AnimSpeed extends AbstractNbtReadAndWrite implements IAnimSpeed {
     private float speed;
-    protected String nbtKey = "AnimSpeed";
 
     public AnimSpeed(float initialSpeed) {
         this.speed = initialSpeed;
-    }
-
-    public AnimSpeed(float initialSpeed, String nbtKey) {
-        this.speed = initialSpeed;
-        this.nbtKey = nbtKey;
     }
 
     @Override
@@ -30,13 +26,19 @@ public class AnimSpeed extends AbstractNbtReadAndWrite implements IAnimSpeed {
 
     @Override
     public void readNbt(CompoundTag nbt, HolderLookup.Provider registries) {
-        if (nbt.contains(nbtKey)) {
-            speed = nbt.getFloat(nbtKey);
+        String key = getNbtId().toString();
+        if (nbt.contains(key)) {
+            speed = nbt.getFloat(key);
         }
     }
 
     @Override
     public void writeNbt(CompoundTag nbt, HolderLookup.Provider registries) {
-        nbt.putFloat(nbtKey, speed);
+        nbt.putFloat(getNbtId().toString(), speed);
+    }
+
+    @Override
+    public ResourceLocation getNbtId() {
+        return Id.id("anim_speed");
     }
 }
