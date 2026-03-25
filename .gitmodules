@@ -25,3 +25,6 @@
 [submodule "modules/geckolib"]
 	path = modules/geckolib
 	url = https://github.com/bernie-g/geckolib.git
+[submodule "core"]
+	path = core
+	url = https://github.com/Karasu-Lab/KarasuCore.git
