@@ -8,7 +8,6 @@ import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.renderer.entity.ItemRenderer;
-import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 
@@ -24,14 +23,12 @@ public class AbyssGeneratorRenderer implements BlockEntityRenderer<AbyssGenerato
         }
 
         ItemRenderer itemRenderer = Minecraft.getInstance().getItemRenderer();
-        BakedModel bakedModel = itemRenderer.getModel(heldItem, blockEntity.getLevel(), null, 0);
 
         poseStack.pushPose();
         poseStack.translate(0.5, 1.25, 0.5);
 
         long time = blockEntity.getLevel() != null ? blockEntity.getLevel().getGameTime() : 0;
-        float rotation = (time + partialTick) * blockEntity.getRotationSpeed() * 5.0f;
-
+        float rotation = (time + partialTick) * blockEntity.getRotationAnimSpeed().getRotationSpeed() * 5.0f;
         poseStack.mulPose(Axis.YP.rotationDegrees(rotation));
 
         poseStack.scale(0.75f, 0.75f, 0.75f);
