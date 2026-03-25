@@ -56,7 +56,7 @@ dependencies {
 
     modImplementation "dev.architectury:architectury-fabric:$architectury_api_version"
 
-    common(project(path: ':common', configuration: 'namedElements')) { transitive false }
+    common project(":common")
     shadowBundle project(path: ':common', configuration: 'transformProductionFabric')
 
     modImplementation "com.terraformersmc:modmenu:${modmenu_version}"
@@ -68,8 +68,7 @@ dependencies {
     }
 
     modImplementation "software.bernie.geckolib:geckolib-fabric-${minecraft_version}:${geckolib_version}"
-
-    implementation (project(path: ":core:fabric", configuration: "namedElements")) { transitive false }
+    modImplementation "com.karasu256.karasulab:karasucore-fabric:$karasucore_version"
 }
 
 processResources {
