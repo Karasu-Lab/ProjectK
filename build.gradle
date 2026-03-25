@@ -17,6 +17,12 @@ subprojects {
     apply plugin: 'dev.architectury.loom'
     apply plugin: 'architectury-plugin'
     apply plugin: 'maven-publish'
+    
+    loom {
+        runs.all {
+            ideConfigGenerated = false
+        }
+    }
 
     base {
         archivesName = "$archives_name-$project.name"
