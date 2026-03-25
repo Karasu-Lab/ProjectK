@@ -14,3 +14,10 @@ include 'common'
 include 'fabric'
 include 'neoforge'
 include 'core'
+include 'core:common'
+include 'core:fabric'
+include 'core:neoforge'
+
+project(':core:common').projectDir = file('core/common')
+project(':core:fabric').projectDir = file('core/fabric')
+project(':core:neoforge').projectDir = file('core/neoforge')

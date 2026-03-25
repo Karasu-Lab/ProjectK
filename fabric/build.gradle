@@ -8,10 +8,7 @@ architectury {
 }
 
 configurations {
-    common {
-        canBeResolved = true
-        canBeConsumed = false
-    }
+    common
     compileClasspath.extendsFrom common
     runtimeClasspath.extendsFrom common
     developmentFabric.extendsFrom common
@@ -71,6 +68,8 @@ dependencies {
     }
 
     modImplementation "software.bernie.geckolib:geckolib-fabric-${minecraft_version}:${geckolib_version}"
+
+    implementation (project(path: ":core:fabric", configuration: "namedElements")) { transitive false }
 }
 
 processResources {

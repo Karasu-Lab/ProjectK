@@ -8,10 +8,7 @@ architectury {
 }
 
 configurations {
-    common {
-        canBeResolved = true
-        canBeConsumed = false
-    }
+    common
     compileClasspath.extendsFrom common
     runtimeClasspath.extendsFrom common
     developmentNeoForge.extendsFrom common
@@ -82,6 +79,8 @@ dependencies {
     modCompileOnly "me.shedaniel:RoughlyEnoughItems-default-plugin-neoforge:$rei_version"
     api "me.shedaniel.cloth:cloth-config-neoforge:$cloth_config_version"
     implementation "software.bernie.geckolib:geckolib-neoforge-${minecraft_version}:${geckolib_version}"
+
+    implementation (project(path: ":core:neoforge", configuration: "namedElements")) { transitive false }
 }
 
 processResources {
