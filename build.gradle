@@ -5,12 +5,12 @@ plugins {
 }
 
 architectury {
-    minecraft = project.minecraft_version
+    minecraft = minecraft_version
 }
 
 allprojects {
-    group = rootProject.maven_group
-    version = rootProject.mod_version
+    group = maven_group
+    version = mod_version
 }
 
 subprojects {
@@ -19,7 +19,7 @@ subprojects {
     apply plugin: 'maven-publish'
 
     base {
-        archivesName = "$rootProject.archives_name-$project.name"
+        archivesName = "$archives_name-$project.name"
     }
 
     repositories {
@@ -37,11 +37,11 @@ subprojects {
     }
 
     dependencies {
-        minecraft "net.minecraft:minecraft:$rootProject.minecraft_version"
+        minecraft "net.minecraft:minecraft:$minecraft_version"
         mappings loom.officialMojangMappings()
 
-        compileOnly "org.appliedenergistics:guideme:$rootProject.guideme_version:api"
-        runtimeOnly "org.appliedenergistics:guideme:$rootProject.guideme_version"
+        compileOnly "org.appliedenergistics:guideme:$guideme_version:api"
+        runtimeOnly "org.appliedenergistics:guideme:$guideme_version"
     }
 
     java {
