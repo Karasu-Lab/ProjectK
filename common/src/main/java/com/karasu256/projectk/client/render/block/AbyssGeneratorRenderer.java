@@ -3,13 +3,9 @@ package com.karasu256.projectk.client.render.block;
 import com.karasu256.projectk.block.entity.AbyssGeneratorBlockEntity;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
-import net.minecraft.client.renderer.entity.ItemRenderer;
-import net.minecraft.world.item.ItemDisplayContext;
-import net.minecraft.world.item.ItemStack;
 
 public class AbyssGeneratorRenderer implements BlockEntityRenderer<AbyssGeneratorBlockEntity> {
     public AbyssGeneratorRenderer(BlockEntityRendererProvider.Context context) {
@@ -17,13 +13,6 @@ public class AbyssGeneratorRenderer implements BlockEntityRenderer<AbyssGenerato
 
     @Override
     public void render(AbyssGeneratorBlockEntity blockEntity, float partialTick, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight, int packedOverlay) {
-        ItemStack heldItem = blockEntity.getHeldItem();
-        if (heldItem.isEmpty()) {
-            return;
-        }
-
-        ItemRenderer itemRenderer = Minecraft.getInstance().getItemRenderer();
-
         poseStack.pushPose();
         poseStack.translate(0.5, 1.25, 0.5);
 
@@ -33,7 +22,7 @@ public class AbyssGeneratorRenderer implements BlockEntityRenderer<AbyssGenerato
 
         poseStack.scale(0.75f, 0.75f, 0.75f);
 
-        itemRenderer.renderStatic(heldItem, ItemDisplayContext.GROUND, 15728880, packedOverlay, poseStack, bufferSource, blockEntity.getLevel(), 0);
+        HoldableBlockEntityRenderer.renderItem(blockEntity, poseStack, bufferSource, 15728880, packedOverlay);
 
         poseStack.popPose();
     }
