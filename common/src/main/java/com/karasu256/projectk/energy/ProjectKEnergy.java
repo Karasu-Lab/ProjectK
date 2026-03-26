@@ -1,6 +1,6 @@
 package com.karasu256.projectk.energy;
 
-import com.karasu256.projectk.api.integration.ModIntegrationRegistry;
+import com.karasu256.karasulab.karasucore.api.ModIntegrationRegistry;
 
 /**
  * Utility class for AbyssEnergy conversion.

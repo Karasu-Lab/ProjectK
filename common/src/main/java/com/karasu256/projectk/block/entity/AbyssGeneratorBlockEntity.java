@@ -1,6 +1,7 @@
 package com.karasu256.projectk.block.entity;
 
 import com.karasu256.projectk.energy.AbyssEnergy;
+import com.karasu256.karasulab.karasucore.api.data.IEnergy;
 import com.karasu256.projectk.energy.IAbyssEnergy;
 import com.karasu256.projectk.registry.BlockEntitiesRegistry;
 import net.minecraft.core.BlockPos;

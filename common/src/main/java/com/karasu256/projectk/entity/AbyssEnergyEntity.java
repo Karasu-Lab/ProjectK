@@ -1,7 +1,8 @@
 package com.karasu256.projectk.entity;
 
+import com.karasu256.karasulab.karasucore.api.data.ICapacity;
 import com.karasu256.projectk.energy.AbyssEnergyColor;
-import com.karasu256.projectk.energy.IEnergyBlock;
+import com.karasu256.karasulab.karasucore.api.block.IEnergyBlock;
 import com.karasu256.projectk.energy.IProjectKEnergy;
 import com.karasu256.projectk.registry.ParticlesRegistry;
 import net.minecraft.core.BlockPos;
@@ -120,7 +121,7 @@ public class AbyssEnergyEntity extends Entity {
 
     private boolean isValidTarget(BlockPos pos) {
         BlockEntity be = level().getBlockEntity(pos);
-        return be instanceof IEnergyBlock<?> energyAcceptor && energyAcceptor.getAmount() < energyAcceptor.getCapacity();
+        return be instanceof IEnergyBlock<?> energyAcceptor && be instanceof ICapacity capacityProvider && energyAcceptor.getAmount() < capacityProvider.getCapacity();
     }
 
     private void findTargetGenerator() {

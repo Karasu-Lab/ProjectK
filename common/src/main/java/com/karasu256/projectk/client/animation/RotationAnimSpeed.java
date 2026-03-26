@@ -1,6 +1,6 @@
 package com.karasu256.projectk.client.animation;
 
-import com.karasu256.projectk.api.animation.IRotationAnimSpeed;
+import com.karasu256.karasulab.karasucore.api.client.model.animation.IRotationAnimSpeed;
 import com.karasu256.projectk.utils.Id;
 import net.minecraft.resources.ResourceLocation;
 

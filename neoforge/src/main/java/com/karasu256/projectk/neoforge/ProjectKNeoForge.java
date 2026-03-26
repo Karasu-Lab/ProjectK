@@ -1,7 +1,7 @@
 package com.karasu256.projectk.neoforge;
 
 import com.karasu256.projectk.ProjectK;
-import com.karasu256.projectk.api.integration.ModIntegrationBootstrapper;
+import com.karasu256.karasulab.karasucore.api.ModIntegrationBootstrapper;
 import com.karasu256.karasulab.karasucore.bridge.geckolib.GeckoLibBridge;
 import com.karasu256.projectk.client.ProjectKClient;
 import com.karasu256.projectk.client.ProjectKCoreShaders;

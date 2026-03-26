@@ -1,6 +1,6 @@
 package com.karasu256.projectk.block.entity;
 
-import com.karasu256.projectk.api.animation.IRotationAnimSpeed;
+import com.karasu256.karasulab.karasucore.api.client.model.animation.IRotationAnimSpeed;
 import com.karasu256.projectk.client.animation.RotationAnimSpeed;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
@@ -8,13 +8,19 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
-import net.minecraft.world.level.block.entity.BlockEntity;
+import com.karasu256.karasulab.karasucore.api.block.entity.impl.KarasuCoreBlockEntity;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.HolderLookup;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.protocol.Packet;
+import net.minecraft.network.protocol.game.ClientGamePacketListener;
+import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public abstract class AbstractAnimatableBlockEntity extends BlockEntity {
+public abstract class AbstractAnimatableBlockEntity extends KarasuCoreBlockEntity {
     protected final IRotationAnimSpeed rotationSpeed = new RotationAnimSpeed(1.0f);
 
     public AbstractAnimatableBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
@@ -25,11 +31,6 @@ public abstract class AbstractAnimatableBlockEntity extends BlockEntity {
         return rotationSpeed;
     }
 
-    protected void sync() {
-        if (level != null && !level.isClientSide) {
-            level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), 3);
-        }
-    }
 
     @Override
     protected void saveAdditional(CompoundTag nbt, HolderLookup.Provider registries) {
