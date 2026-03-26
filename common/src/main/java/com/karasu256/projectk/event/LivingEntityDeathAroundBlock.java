@@ -6,7 +6,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 
-public interface LivingEntityDeathAroundBlock {
+public interface LivingEntityDeathAroundBlock extends IEvent {
     int getRadius();
 
     boolean shouldTrigger(LivingEntityDeathAroundBlock invoker, int radius, LivingEntity entity, BlockPos pos, Level level);

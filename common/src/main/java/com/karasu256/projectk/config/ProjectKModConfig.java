@@ -1,10 +1,8 @@
 package com.karasu256.projectk.config;
 
-import me.shedaniel.autoconfig.AutoConfig;
 import me.shedaniel.autoconfig.ConfigData;
 import me.shedaniel.autoconfig.annotation.Config;
 import me.shedaniel.autoconfig.annotation.ConfigEntry;
-import me.shedaniel.autoconfig.serializer.GsonConfigSerializer;
 
 import static com.karasu256.projectk.ProjectK.MOD_ID;
 

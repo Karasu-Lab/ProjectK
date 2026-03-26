@@ -1,11 +1,9 @@
 package com.karasu256.projectk.energy;
 
-public interface IProjectKEnergy {
-    long insert(long maxAmount, boolean simulate);
+import com.karasu256.karasulab.karasucore.api.block.ICableInputable;
+import com.karasu256.karasulab.karasucore.api.block.ICableOutputable;
+import com.karasu256.karasulab.karasucore.api.data.ICapacity;
+import com.karasu256.karasulab.karasucore.api.data.IEnergy;
 
-    long extract(long maxAmount, boolean simulate);
-
-    long getAmount();
-
-    long getCapacity();
+public interface IProjectKEnergy extends ICableOutputable, ICableInputable, IEnergy, ICapacity {
 }
