@@ -69,5 +69,12 @@ versionRange="[16.0,)"
 ordering="NONE"
 side="BOTH"
 
+[[dependencies.projectk]]
+modId="karasucore"
+type="required"
+versionRange="[0.0.1-SNAPSHOT,)"
+ordering="NONE"
+side="BOTH"
+
 [[mixins]]
 config = "projectk.mixins.json"

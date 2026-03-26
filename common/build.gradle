@@ -16,5 +16,4 @@ dependencies {
     modCompileOnly "me.shedaniel:RoughlyEnoughItems-default-plugin:$rei_version"
 
     modImplementation "com.karasu256.karasulab:karasucore-common:$karasucore_version"
-    modImplementation "com.karasu256.karasulab:karasucore-common:$karasucore_version:sources"
 }

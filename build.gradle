@@ -15,7 +15,7 @@ allprojects {
 
 tasks.register('publishCore', Exec) {
     workingDir file('core')
-    commandLine 'cmd', '/c', 'gradle', 'publishToMavenLocal'
+    commandLine 'cmd', '/c', 'gradle', 'clean', 'publishToMavenLocal'
 }
 
 subprojects {

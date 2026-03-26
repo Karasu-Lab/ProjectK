@@ -70,7 +70,6 @@ dependencies {
     shadowBundle project(path: ':common', configuration: 'transformProductionFabric')
 
     modImplementation "com.karasu256.karasulab:karasucore-fabric:$karasucore_version"
-    modImplementation "com.karasu256.karasulab:karasucore-fabric:$karasucore_version:sources"
 }
 
 processResources {

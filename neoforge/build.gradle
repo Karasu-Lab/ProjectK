@@ -40,6 +40,7 @@ loom {
 }
 
 repositories {
+    mavenLocal()
     mavenCentral()
     maven {
         name = 'NeoForged'
@@ -72,13 +73,15 @@ dependencies {
 
     modCompileOnly "me.shedaniel:RoughlyEnoughItems-neoforge:$rei_version"
     modRuntimeOnly "me.shedaniel:RoughlyEnoughItems-neoforge:$rei_version"
-    modCompileOnly "me.shedaniel:RoughlyEnoughItems-api:$rei_version"
-    modCompileOnly "me.shedaniel:RoughlyEnoughItems-default-plugin-neoforge:$rei_version"
-    api "me.shedaniel.cloth:cloth-config-neoforge:$cloth_config_version"
+    modImplementation "me.shedaniel:RoughlyEnoughItems-neoforge:$rei_version"
+    modImplementation "me.shedaniel.cloth:cloth-config-neoforge:$cloth_config_version"
+
     implementation "software.bernie.geckolib:geckolib-neoforge-${minecraft_version}:${geckolib_version}"
 
     common(project(path: ':common', configuration: 'namedElements')) { transitive false }
     shadowBundle project(path: ':common', configuration: 'transformProductionNeoForge')
+
+    modImplementation "com.karasu256.karasulab:karasucore-neoforge:$karasucore_version"
 }
 
 processResources {
