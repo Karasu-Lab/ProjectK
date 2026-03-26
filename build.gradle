@@ -49,8 +49,6 @@ subprojects {
 
         compileOnly "org.appliedenergistics:guideme:$guideme_version:api"
         runtimeOnly "org.appliedenergistics:guideme:$guideme_version"
-
-        modImplementation "com.karasu256.karasulab:karasucore-common:$karasucore_version"
     }
 
     java {
