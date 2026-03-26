@@ -1,6 +1,6 @@
 package com.karasu256.projectk.fabric.client;
 
-import com.karasu256.projectk.client.GeckoLibBridge;
+import com.karasu256.karasulab.karasucore.bridge.geckolib.GeckoLibBridge;
 import com.karasu256.projectk.client.ProjectKClient;
 import com.karasu256.projectk.client.ProjectKCoreShaders;
 import com.karasu256.projectk.registry.BlockEntitiesRegistry;

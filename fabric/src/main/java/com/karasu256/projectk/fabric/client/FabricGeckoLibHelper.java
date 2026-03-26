@@ -1,6 +1,6 @@
 package com.karasu256.projectk.fabric.client;
 
-import com.karasu256.projectk.client.GeckoLibHelper;
+import com.karasu256.karasulab.karasucore.bridge.geckolib.GeckoLibHelper;
 import com.karasu256.projectk.fabric.bridge.geckolib.GenericGeoBlockRenderer;
 import com.karasu256.projectk.registry.BlockEntitiesRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.BlockEntityRendererRegistry;

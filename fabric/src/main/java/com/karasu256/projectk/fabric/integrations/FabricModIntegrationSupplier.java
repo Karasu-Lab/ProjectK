@@ -1,7 +1,7 @@
 package com.karasu256.projectk.fabric.integrations;
 
-import com.karasu256.projectk.api.integration.IModIntegration;
-import com.karasu256.projectk.api.integration.ModIntegrationSupplier;
+import com.karasu256.karasulab.karasucore.api.IModIntegration;
+import com.karasu256.karasulab.karasucore.api.ModIntegrationSupplier;
 import net.fabricmc.api.Environment;
 import net.fabricmc.loader.api.FabricLoader;
 import org.jetbrains.annotations.NotNull;

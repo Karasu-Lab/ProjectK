@@ -8,6 +8,7 @@ import java.lang.reflect.Field;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 
+@Deprecated
 public class ModIntegrationSupplier<T extends IModIntegration> implements Supplier<T> {
     private static final String MOD_ID_FIELD = "MOD_ID";
 
