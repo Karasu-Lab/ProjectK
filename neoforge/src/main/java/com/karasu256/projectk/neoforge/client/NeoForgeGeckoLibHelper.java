@@ -1,6 +1,6 @@
 package com.karasu256.projectk.neoforge.client;
 
-import com.karasu256.projectk.client.GeckoLibHelper;
+import com.karasu256.karasulab.karasucore.bridge.geckolib.GeckoLibHelper;
 import com.karasu256.projectk.neoforge.bridge.geckolib.GenericGeoBlockRenderer;
 import com.karasu256.projectk.registry.BlockEntitiesRegistry;
 import net.minecraft.world.level.block.entity.BlockEntity;
