@@ -70,7 +70,7 @@ ordering="NONE"
 side="BOTH"
 
 [[dependencies.projectk]]
-modId="karasucore"
+modId="karasunikilib"
 type="required"
 versionRange="[0.0.1-SNAPSHOT,)"
 ordering="NONE"
