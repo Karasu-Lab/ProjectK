@@ -13,3 +13,5 @@ rootProject.name = 'ProjectK'
 include 'common'
 include 'fabric'
 include 'neoforge'
+
+includeBuild 'core'

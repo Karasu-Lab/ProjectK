@@ -10,6 +10,7 @@ import com.karasu256.projectk.registry.CreativeTabsRegistry;
 import com.karasu256.projectk.registry.DataComponentTypesRegistry;
 import com.karasu256.projectk.registry.EntitiesRegistry;
 import com.karasu256.projectk.registry.ParticlesRegistry;
+import com.karasu256.projectk.registry.EnergiesRegistry;
 import com.karasu256.projectk.registry.ItemsRegistry;
 
 public final class ProjectK {
@@ -21,6 +22,7 @@ public final class ProjectK {
         ProjectKDataComponets.init();
         ModEvents.init();
 
+        EnergiesRegistry.register();
         DataComponentTypesRegistry.register();
         EntitiesRegistry.register();
         ParticlesRegistry.register();

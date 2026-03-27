@@ -6,7 +6,13 @@ import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 
-public record AbyssEnergy(long value) implements IEnergy {
+public class AbyssEnergy implements IEnergy {
+    private long value;
+
+    public AbyssEnergy(long value) {
+        this.value = value;
+    }
+
     @Override
     public ResourceLocation getId() {
         return Id.id("abyss_energy");

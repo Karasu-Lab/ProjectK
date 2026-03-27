@@ -72,8 +72,8 @@ side="BOTH"
 [[dependencies.projectk]]
 modId="karasunikilib"
 type="required"
-versionRange="[0.0.1-SNAPSHOT,)"
-ordering="NONE"
+versionRange="[0,)"
+ordering="AFTER"
 side="BOTH"
 
 [[mixins]]
