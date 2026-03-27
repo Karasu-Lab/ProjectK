@@ -1,7 +1,7 @@
 package com.karasu256.projectk.client.render.block;
 
-import com.karasu256.karasulab.karasucore.api.IHeldItem;
 import com.mojang.blaze3d.vertex.PoseStack;
+import net.karasuniki.karasunikilib.api.IHeldItem;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.ItemRenderer;

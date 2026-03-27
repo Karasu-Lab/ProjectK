@@ -30,7 +30,7 @@ public class AbyssEnergyForgeWrapper implements IEnergyStorage {
 
     @Override
     public int getEnergyStored() {
-        return (int) ProjectKEnergy.fromAbyssEnergy(FORGE_ID, internal.getAmount());
+        return (int) ProjectKEnergy.fromAbyssEnergy(FORGE_ID, internal.getValue());
     }
 
     @Override

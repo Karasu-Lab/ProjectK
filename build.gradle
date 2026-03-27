@@ -1,3 +1,5 @@
+import java.util.concurrent.TimeUnit
+
 plugins {
     id 'dev.architectury.loom' version '1.13-SNAPSHOT' apply false
     id 'architectury-plugin' version '3.4-SNAPSHOT'
@@ -37,6 +39,10 @@ subprojects {
 
     base {
         archivesName = "$archives_name-$project.name"
+    }
+
+    configurations.configureEach {
+        resolutionStrategy.cacheChangingModulesFor(0, TimeUnit.SECONDS)
     }
 
     repositories {

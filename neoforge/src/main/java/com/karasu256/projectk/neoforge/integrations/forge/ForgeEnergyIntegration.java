@@ -1,7 +1,7 @@
 package com.karasu256.projectk.neoforge.integrations.forge;
 
-import com.karasu256.karasulab.karasucore.api.IEnergyIntegration;
 import com.karasu256.projectk.neoforge.integrations.AbstractNeoForgeModIntegration;
+import net.karasuniki.karasunikilib.api.IEnergyIntegration;
 
 public class ForgeEnergyIntegration extends AbstractNeoForgeModIntegration implements IEnergyIntegration {
     public static final String MOD_ID = "forge";

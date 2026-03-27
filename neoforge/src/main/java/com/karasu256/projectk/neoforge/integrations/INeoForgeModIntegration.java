@@ -1,6 +1,6 @@
 package com.karasu256.projectk.neoforge.integrations;
 
-import com.karasu256.karasulab.karasucore.api.IModIntegration;
+import net.karasuniki.karasunikilib.api.IModIntegration;
 import net.neoforged.fml.ModList;
 
 public interface INeoForgeModIntegration extends IModIntegration {

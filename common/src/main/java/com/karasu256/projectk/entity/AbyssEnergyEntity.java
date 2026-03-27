@@ -1,10 +1,9 @@
 package com.karasu256.projectk.entity;
 
-import com.karasu256.karasulab.karasucore.api.data.ICapacity;
-import com.karasu256.projectk.energy.AbyssEnergyColor;
-import com.karasu256.karasulab.karasucore.api.block.IEnergyBlock;
 import com.karasu256.projectk.energy.IProjectKEnergy;
 import com.karasu256.projectk.registry.ParticlesRegistry;
+import net.karasuniki.karasunikilib.api.block.IEnergyBlock;
+import net.karasuniki.karasunikilib.api.data.ICapacity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;

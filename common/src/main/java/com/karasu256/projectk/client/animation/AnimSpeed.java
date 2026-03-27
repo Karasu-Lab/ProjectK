@@ -1,8 +1,8 @@
 package com.karasu256.projectk.client.animation;
 
-import com.karasu256.karasulab.karasucore.api.client.model.animation.IAnimSpeed;
-import com.karasu256.karasulab.karasucore.api.data.impl.AbstractNbtReadAndWrite;
 import com.karasu256.projectk.utils.Id;
+import net.karasuniki.karasunikilib.api.client.model.animation.IAnimSpeed;
+import net.karasuniki.karasunikilib.api.data.impl.AbstractNbtReadAndWrite;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;

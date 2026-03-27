@@ -1,6 +1,6 @@
 package com.karasu256.projectk.energy;
 
-import com.karasu256.karasulab.karasucore.api.ModIntegrationRegistry;
+import net.karasuniki.karasunikilib.api.ModIntegrationRegistry;
 
 public class ProjectKEnergy {
     public static long toAbyssEnergy(String modId, long modEnergy) {

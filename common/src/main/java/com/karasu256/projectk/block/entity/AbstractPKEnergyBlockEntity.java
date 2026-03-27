@@ -1,10 +1,10 @@
 package com.karasu256.projectk.block.entity;
 
-import com.karasu256.karasulab.karasucore.api.block.entity.impl.AbstractEnergyBlockEntity;
-import com.karasu256.karasulab.karasucore.api.client.model.animation.IRotationAnimSpeed;
-import com.karasu256.karasulab.karasucore.api.data.IEnergy;
 import com.karasu256.projectk.client.animation.RotationAnimSpeed;
 import com.karasu256.projectk.utils.Id;
+import net.karasuniki.karasunikilib.api.block.entity.impl.AbstractEnergyBlockEntity;
+import net.karasuniki.karasunikilib.api.client.model.animation.IRotationAnimSpeed;
+import net.karasuniki.karasunikilib.api.data.IEnergy;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
@@ -72,5 +72,9 @@ public abstract class AbstractPKEnergyBlockEntity<T extends IEnergy> extends Abs
     public void writeNbt(CompoundTag nbt, HolderLookup.Provider registries) {
         super.loadAdditional(nbt, registries);
         rotationSpeed.readNbt(nbt, registries);
+    }
+
+    public long getValue() {
+        return energy.getValue();
     }
 }

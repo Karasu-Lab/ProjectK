@@ -1,14 +1,8 @@
 package com.karasu256.projectk.block.entity;
 
-import com.karasu256.karasulab.karasucore.api.client.model.animation.IRotationAnimSpeed;
 import com.karasu256.projectk.client.animation.RotationAnimSpeed;
-import net.minecraft.core.BlockPos;
-import net.minecraft.core.HolderLookup;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.protocol.Packet;
-import net.minecraft.network.protocol.game.ClientGamePacketListener;
-import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
-import com.karasu256.karasulab.karasucore.api.block.entity.impl.KarasuCoreBlockEntity;
+import net.karasuniki.karasunikilib.api.block.entity.impl.KarasuCoreBlockEntity;
+import net.karasuniki.karasunikilib.api.client.model.animation.IRotationAnimSpeed;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;

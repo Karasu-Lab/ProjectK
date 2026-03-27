@@ -1,6 +1,6 @@
 package com.karasu256.projectk.block.custom;
 
-import com.karasu256.projectk.block.entity.AbstractContainerBlockEntity;
+import com.karasu256.projectk.block.entity.AbstractPKContainerBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.Containers;
 import net.minecraft.world.InteractionResult;
@@ -23,7 +23,7 @@ public abstract class AbstractContainerBlock extends AbstractAnimatableBlock {
         if (level.isClientSide) return InteractionResult.SUCCESS;
 
         BlockEntity be = level.getBlockEntity(pos);
-        if (be instanceof AbstractContainerBlockEntity containerBe) {
+        if (be instanceof AbstractPKContainerBlockEntity containerBe) {
             ItemStack heldItem = containerBe.getHeldItem();
             ItemStack playerItem = player.getMainHandItem();
 
@@ -49,7 +49,7 @@ public abstract class AbstractContainerBlock extends AbstractAnimatableBlock {
     public void onRemove(@NotNull BlockState state, Level level, BlockPos pos, @NotNull BlockState newState, boolean movedByPiston) {
         if (!state.is(newState.getBlock())) {
             BlockEntity be = level.getBlockEntity(pos);
-            if (be instanceof AbstractContainerBlockEntity containerBe) {
+            if (be instanceof AbstractPKContainerBlockEntity containerBe) {
                 Containers.dropItemStack(level, pos.getX(), pos.getY(), pos.getZ(), containerBe.getHeldItem());
             }
             super.onRemove(state, level, pos, newState, movedByPiston);

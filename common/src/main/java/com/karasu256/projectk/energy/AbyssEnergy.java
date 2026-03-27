@@ -1,7 +1,7 @@
 package com.karasu256.projectk.energy;
 
-import com.karasu256.karasulab.karasucore.api.data.IEnergy;
 import com.karasu256.projectk.utils.Id;
+import net.karasuniki.karasunikilib.api.data.IEnergy;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;

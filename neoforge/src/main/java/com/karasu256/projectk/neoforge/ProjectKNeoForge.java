@@ -1,14 +1,14 @@
 package com.karasu256.projectk.neoforge;
 
 import com.karasu256.projectk.ProjectK;
-import com.karasu256.karasulab.karasucore.api.ModIntegrationBootstrapper;
-import com.karasu256.karasulab.karasucore.bridge.geckolib.GeckoLibBridge;
 import com.karasu256.projectk.client.ProjectKClient;
 import com.karasu256.projectk.client.ProjectKCoreShaders;
 import com.karasu256.projectk.neoforge.client.NeoForgeGeckoLibHelper;
 import com.karasu256.projectk.neoforge.config.ProjectKNeoForgeConfig;
 import com.karasu256.projectk.neoforge.integrations.NeoForgeModIntegrationSupplier;
 import com.karasu256.projectk.registry.BlockEntitiesRegistry;
+import net.karasuniki.karasunikilib.api.ModIntegrationBootstrapper;
+import net.karasuniki.karasunikilib.bridge.geckolib.GeckoLibBridge;
 import net.minecraft.client.renderer.ShaderInstance;
 import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.common.Mod;

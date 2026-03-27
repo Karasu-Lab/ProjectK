@@ -1,7 +1,7 @@
 package com.karasu256.karasulab.karasucore.bridge.geckolib.neoforge;
 
-import com.karasu256.karasulab.karasucore.bridge.geckolib.GeckoLibHelper;
 import com.karasu256.projectk.neoforge.client.NeoForgeGeckoLibHelper;
+import net.karasuniki.karasunikilib.bridge.geckolib.GeckoLibHelper;
 import org.jetbrains.annotations.NotNull;
 
 public class GeckoLibBridgeImpl {

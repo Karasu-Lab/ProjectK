@@ -1,7 +1,7 @@
 package com.karasu256.projectk.neoforge.integrations.mekanism;
 
-import com.karasu256.karasulab.karasucore.api.IEnergyIntegration;
 import com.karasu256.projectk.neoforge.integrations.AbstractNeoForgeModIntegration;
+import net.karasuniki.karasunikilib.api.IEnergyIntegration;
 
 @SuppressWarnings("unused")
 public class MekanismIntegration extends AbstractNeoForgeModIntegration implements IEnergyIntegration {
