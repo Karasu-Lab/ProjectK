@@ -28,12 +28,6 @@ sourceSets {
 }
 
 loom {
-    mods {
-        projectk {
-            sourceSet sourceSets.main
-            sourceSet project(":common").sourceSets.main
-        }
-    }
     runs {
         data {
             data()
@@ -46,7 +40,6 @@ loom {
 }
 
 repositories {
-    mavenLocal()
     mavenCentral()
     maven {
         name = 'NeoForged'
@@ -84,7 +77,8 @@ dependencies {
 
     implementation "software.bernie.geckolib:geckolib-neoforge-${minecraft_version}:${geckolib_version}"
 
-    compileOnly project(":common")
+    common(project(path: ':common', configuration: 'namedElements')) { transitive false }
+    shadowBundle project(path: ':common', configuration: 'transformProductionNeoForge')
 
     modImplementation "net.karasuniki.karasunikilib:karasunikilib-neoforge:$karasunikilib_version"
 }
