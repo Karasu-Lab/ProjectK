@@ -1,6 +1,6 @@
 package com.karasu256.projectk.fabric.integrations;
 
-import com.karasu256.karasulab.karasucore.api.IModIntegration;
+import net.karasuniki.karasunikilib.api.IModIntegration;
 import net.fabricmc.loader.api.FabricLoader;
 
 public interface IFabricModIntegration extends IModIntegration {

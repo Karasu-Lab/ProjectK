@@ -1,6 +1,6 @@
 package com.karasu256.projectk.fabric;
 
-import com.karasu256.karasulab.karasucore.api.ModIntegrationBootstrapper;
+import net.karasuniki.karasunikilib.api.ModIntegrationBootstrapper;
 import com.karasu256.projectk.ProjectK;
 import com.karasu256.projectk.fabric.config.ProjectKFabricConfig;
 import com.karasu256.projectk.fabric.integrations.FabricModIntegrationSupplier;

@@ -1,4 +1,4 @@
-package com.karasu256.karasulab.karasucore.bridge.geckolib.neoforge;
+package net.karasuniki.karasunikilib.bridge.geckolib.neoforge;
 
 import com.karasu256.projectk.neoforge.client.NeoForgeGeckoLibHelper;
 import net.karasuniki.karasunikilib.bridge.geckolib.GeckoLibHelper;
