@@ -14,4 +14,10 @@ include 'common'
 include 'fabric'
 include 'neoforge'
 
-includeBuild 'core'
+includeBuild('core') {
+    dependencySubstitution {
+        substitute module("net.karasuniki.karasunikilib:karasunikilib-common") using project(":karasunikilib-common")
+        substitute module("net.karasuniki.karasunikilib:karasunikilib-fabric") using project(":karasunikilib-fabric")
+        substitute module("net.karasuniki.karasunikilib:karasunikilib-neoforge") using project(":karasunikilib-neoforge")
+    }
+}

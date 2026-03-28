@@ -10,7 +10,7 @@ import net.karasuniki.karasunikilib.api.registry.KarasunikiRegistries;
 import static com.karasu256.projectk.ProjectK.MOD_ID;
 
 public class EnergiesRegistry {
-    private static final DeferredRegister<IEnergy> ENERGIES = DeferredRegister.create(MOD_ID, KarasunikiRegistries.ENERGY);
+    private static final DeferredRegister<IEnergy> ENERGIES = DeferredRegister.create(MOD_ID, KarasunikiRegistries.ENERGY_REGISTRY_KEY);
 
     public static final RegistrySupplier<IEnergy> ABYSS_ENERGY = ENERGIES.register(Id.id("abyss_energy"), () -> new AbyssEnergy(0L));
 

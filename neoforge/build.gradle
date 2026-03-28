@@ -77,10 +77,10 @@ dependencies {
 
     implementation "software.bernie.geckolib:geckolib-neoforge-${minecraft_version}:${geckolib_version}"
 
-    common(project(path: ':common', configuration: 'namedElements')) { transitive false }
+    common(project(path: ':common', configuration: 'namedElements')) { transitive = true }
     shadowBundle project(path: ':common', configuration: 'transformProductionNeoForge')
 
-    modImplementation "net.karasuniki.karasunikilib:karasunikilib-neoforge:$karasunikilib_version"
+    modImplementation("net.karasuniki.karasunikilib:karasunikilib-neoforge")
 }
 
 processResources {

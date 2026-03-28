@@ -31,7 +31,7 @@ side = "BOTH"
 modId = "architectury"
 type = "required"
 versionRange = "[13.0.8,)"
-ordering = "AFTER"
+ordering = "NONE"
 side = "BOTH"
 
 [[dependencies.projectk]]
@@ -66,6 +66,27 @@ side="BOTH"
 modId="rei"
 type="optional"
 versionRange="[16.0,)"
+ordering="NONE"
+side="BOTH"
+
+[[dependencies.projectk]]
+modId="ae2"
+type="optional"
+versionRange="[19,)"
+ordering="NONE"
+side="BOTH"
+
+[[dependencies.projectk]]
+modId="ponder"
+type="optional"
+versionRange="[1.0.8,)"
+ordering="NONE"
+side="BOTH"
+
+[[dependencies.projectk]]
+modId="wthit"
+type="optional"
+versionRange="[12,)"
 ordering="NONE"
 side="BOTH"
 

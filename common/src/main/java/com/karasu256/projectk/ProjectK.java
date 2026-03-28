@@ -22,7 +22,6 @@ public final class ProjectK {
         ProjectKDataComponets.init();
         ModEvents.init();
 
-        EnergiesRegistry.register();
         DataComponentTypesRegistry.register();
         EntitiesRegistry.register();
         ParticlesRegistry.register();
@@ -30,5 +29,6 @@ public final class ProjectK {
         BlockEntitiesRegistry.register();
         ItemsRegistry.register();
         CreativeTabsRegistry.register();
+        EnergiesRegistry.register();
     }
 }

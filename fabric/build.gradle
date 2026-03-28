@@ -66,10 +66,12 @@ dependencies {
 
     modImplementation "software.bernie.geckolib:geckolib-fabric-${minecraft_version}:${geckolib_version}"
 
-    common(project(path: ':common', configuration: 'namedElements')) { transitive false }
+    common(project(path: ':common', configuration: 'namedElements'))
     shadowBundle project(path: ':common', configuration: 'transformProductionFabric')
 
-    modImplementation "net.karasuniki.karasunikilib:karasunikilib-fabric:$karasunikilib_version"
+    modImplementation("net.karasuniki.karasunikilib:karasunikilib-fabric") {
+        exclude(group: "net.karasuniki.karasunikilib:karasunikilib-common")
+    }
 }
 
 processResources {

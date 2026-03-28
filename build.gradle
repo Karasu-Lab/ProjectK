@@ -25,12 +25,6 @@ subprojects {
     apply plugin: 'architectury-plugin'
     apply plugin: 'maven-publish'
 
-    tasks.configureEach { task ->
-        if (task.name in ['processResources', 'compileJava', 'runClient', 'runServer', 'runData', 'prepareLoom', 'setupLoom', 'genSources']) {
-            task.dependsOn(gradle.includedBuild('core').task(':publishAllToMavenLocal'))
-        }
-    }
-
     loom {
         runs.all {
             ideConfigGenerated = false
@@ -42,6 +36,7 @@ subprojects {
     }
 
     repositories {
+        mavenLocal()
         maven { url = rootProject.file("core/build/repo") }
         maven { url = "https://maven.createmod.net" }
         maven { url = "https://maven.ithundxr.dev/snapshots" }
@@ -53,13 +48,6 @@ subprojects {
                 }
             }
             filter { includeGroupAndSubgroups('software.bernie.geckolib') }
-        }
-        maven {
-            url = uri("${System.getProperty('user.home')}/.m2/repository")
-            metadataSources {
-                mavenPom()
-                artifact()
-            }
         }
     }
 
