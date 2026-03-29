@@ -4,6 +4,7 @@ import com.karasu256.projectk.ProjectK;
 import com.karasu256.projectk.datagen.providers.CommonBlockStateProvider;
 import com.karasu256.projectk.datagen.providers.CommonItemModelProvider;
 import dev.architectury.registry.registries.RegistrySupplier;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
@@ -31,12 +32,17 @@ public class NeoForgeBlockStateProvider extends BlockStateProvider implements Co
 
     @Override
     public void cubeBottomTop(Block block, String base, String side, String bottom, String top) {
-        simpleBlock(block, models().cubeBottomTop(net.minecraft.core.registries.BuiltInRegistries.BLOCK.getKey(block).getPath(), ResourceLocation.fromNamespaceAndPath(ProjectK.MOD_ID, "block/" + base + "/" + side), ResourceLocation.fromNamespaceAndPath(ProjectK.MOD_ID, "block/" + base + "/" + bottom), ResourceLocation.fromNamespaceAndPath(ProjectK.MOD_ID, "block/" + base + "/" + top)));
+        simpleBlock(block, models().cubeBottomTop(BuiltInRegistries.BLOCK.getKey(block).getPath(), ResourceLocation.fromNamespaceAndPath(ProjectK.MOD_ID, "block/" + base + "/" + side), ResourceLocation.fromNamespaceAndPath(ProjectK.MOD_ID, "block/" + base + "/" + bottom), ResourceLocation.fromNamespaceAndPath(ProjectK.MOD_ID, "block/" + base + "/" + top)));
+    }
+
+    @Override
+    public void cubeBottomTop(String name, String side, String bottom, String top) {
+        models().cubeBottomTop(name, ResourceLocation.fromNamespaceAndPath(ProjectK.MOD_ID, "block/" + side), ResourceLocation.fromNamespaceAndPath(ProjectK.MOD_ID, "block/" + bottom), ResourceLocation.fromNamespaceAndPath(ProjectK.MOD_ID, "block/" + top));
     }
 
     @Override
     public void simpleBlockItem(Block block) {
-        String name = net.minecraft.core.registries.BuiltInRegistries.BLOCK.getKey(block).getPath();
+        String name = BuiltInRegistries.BLOCK.getKey(block).getPath();
         itemModels().withExistingParent(name, ResourceLocation.fromNamespaceAndPath(ProjectK.MOD_ID, "block/" + name));
     }
 

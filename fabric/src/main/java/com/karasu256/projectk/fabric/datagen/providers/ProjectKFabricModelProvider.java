@@ -60,6 +60,15 @@ public class ProjectKFabricModelProvider extends FabricModelProvider implements 
     }
 
     @Override
+    public void cubeBottomTop(String name, String side, String bottom, String top) {
+        TextureMapping textures = new TextureMapping()
+                .put(TextureSlot.SIDE, ResourceLocation.fromNamespaceAndPath(ProjectK.MOD_ID, "block/" + side))
+                .put(TextureSlot.BOTTOM, ResourceLocation.fromNamespaceAndPath(ProjectK.MOD_ID, "block/" + bottom))
+                .put(TextureSlot.TOP, ResourceLocation.fromNamespaceAndPath(ProjectK.MOD_ID, "block/" + top));
+        ModelTemplates.CUBE_BOTTOM_TOP.create(ResourceLocation.fromNamespaceAndPath(ProjectK.MOD_ID, "block/" + name), textures, this.blockModelGenerators.modelOutput);
+    }
+
+    @Override
     public void simpleBlockItem(Block block) {
         this.blockModelGenerators.delegateItemModel(block, ModelLocationUtils.getModelLocation(block));
     }

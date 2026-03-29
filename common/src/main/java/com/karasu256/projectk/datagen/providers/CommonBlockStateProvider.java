@@ -1,6 +1,7 @@
 package com.karasu256.projectk.datagen.providers;
 
 import com.karasu256.projectk.block.ProjectKBlocks;
+import com.karasu256.projectk.registry.EnergiesRegistry;
 import net.minecraft.world.level.block.Block;
 import org.jetbrains.annotations.NotNull;
 
@@ -12,6 +13,8 @@ public class CommonBlockStateProvider {
         void simpleBlockItem(Block block);
 
         void cubeBottomTop(Block block, String base, String side, String bottom, String top);
+
+        void cubeBottomTop(String name, String side, String bottom, String top);
     }
 
     public static void generate(@NotNull Generator generator) {
@@ -21,8 +24,18 @@ public class CommonBlockStateProvider {
         generator.simpleBlock(ProjectKBlocks.DEEPSLATE_KARASIUM_ORE.get());
         generator.simpleBlockItem(ProjectKBlocks.DEEPSLATE_KARASIUM_ORE.get());
 
-        generator.cubeBottomTop(ProjectKBlocks.ABYSS_GENERATOR.get(), "abyss_generator", "abyss_generator_side", "abyss_generator_bottom", "abyss_generator_top");
+        generator.cubeBottomTop(ProjectKBlocks.ABYSS_GENERATOR.get(), "abyss_generator", "abyss_energy/side", "abyss_energy/bottom", "abyss_energy/top");
         generator.simpleBlockItem(ProjectKBlocks.ABYSS_GENERATOR.get());
+
+        for (var energy : EnergiesRegistry.getEntries()) {
+            String energyId = energy.getId().getPath();
+            generator.cubeBottomTop(
+                    "abyss_generator/" + energyId,
+                    "abyss_generator/" + energyId + "/side",
+                    "abyss_generator/" + energyId + "/bottom",
+                    "abyss_generator/" + energyId + "/top"
+            );
+        }
 
         generator.simpleBlock(ProjectKBlocks.ABYSS_CORE.get());
         generator.simpleBlockItem(ProjectKBlocks.ABYSS_CORE.get());
