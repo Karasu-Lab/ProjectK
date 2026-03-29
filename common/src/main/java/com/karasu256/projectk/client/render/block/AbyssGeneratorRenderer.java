@@ -1,6 +1,5 @@
 package com.karasu256.projectk.client.render.block;
 
-import com.karasu256.projectk.ProjectK;
 import com.karasu256.projectk.block.entity.AbyssGeneratorBlockEntity;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
@@ -28,14 +27,11 @@ public class AbyssGeneratorRenderer implements BlockEntityRenderer<AbyssGenerato
 
         BakedModel bakedModel = this.blockRenderDispatcher.getBlockModelShaper().getModelManager().getModel(modelId);
         if (bakedModel != this.blockRenderDispatcher.getBlockModelShaper().getModelManager().getMissingModel()) {
-            this.blockRenderDispatcher.getModelRenderer().renderModel(
-                    poseStack.last(),
-                    bufferSource.getBuffer(RenderType.cutout()),
-                    blockEntity.getBlockState(),
-                    bakedModel,
-                    1.0f, 1.0f, 1.0f,
-                    packedLight, packedOverlay
-            );
+            if (blockEntity.getLevel() != null) {
+                this.blockRenderDispatcher.getModelRenderer().tesselateBlock(blockEntity.getLevel(), bakedModel, blockEntity.getBlockState(), blockEntity.getBlockPos(), poseStack, bufferSource.getBuffer(RenderType.cutout()), false, blockEntity.getLevel().random, blockEntity.getBlockState().getSeed(blockEntity.getBlockPos()), packedOverlay);
+            } else {
+                this.blockRenderDispatcher.getModelRenderer().renderModel(poseStack.last(), bufferSource.getBuffer(RenderType.cutout()), blockEntity.getBlockState(), bakedModel, 1.0f, 1.0f, 1.0f, packedLight, packedOverlay);
+            }
         }
         poseStack.popPose();
 
