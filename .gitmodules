@@ -27,7 +27,7 @@
 	url = https://github.com/bernie-g/geckolib.git
 [submodule "core"]
 	path = core
-	url = https://github.com/Karasu-Lab/KarasuCore.git
+	url = https://github.com/Karasu-Lab/KarasunikiLib.git
 [submodule "modules/KarasunikiLib"]
 	path = modules/KarasunikiLib
-	url = https://github.com/Karasu-Lab/KarasunikiLib.git
+	url = https://github.com/Karasu-Lab/KarasunikiLib-Deprecated.git
