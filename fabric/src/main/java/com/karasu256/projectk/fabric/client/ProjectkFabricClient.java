@@ -3,7 +3,7 @@ package com.karasu256.projectk.fabric.client;
 import net.karasuniki.karasunikilib.bridge.geckolib.GeckoLibBridge;
 import com.karasu256.projectk.client.ProjectKClient;
 import com.karasu256.projectk.client.ProjectKCoreShaders;
-import com.karasu256.projectk.registry.BlockEntitiesRegistry;
+import com.karasu256.projectk.block.entity.ProjectKBlockEntities;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.rendering.v1.CoreShaderRegistrationCallback;
 
@@ -15,7 +15,7 @@ public final class ProjectkFabricClient implements ClientModInitializer {
         ProjectKClient.init();
         ProjectKClient.registerRenderers();
         ProjectKClient.initLate();
-        GeckoLibBridge.get().registerBlockRenderer(BlockEntitiesRegistry.ABYSS_CORE.get());
+        GeckoLibBridge.get().registerBlockRenderer(ProjectKBlockEntities.ABYSS_CORE.get());
 
         CoreShaderRegistrationCallback.EVENT.register(ctx -> {
             ProjectKCoreShaders.init((id, format, onLoaded) -> {

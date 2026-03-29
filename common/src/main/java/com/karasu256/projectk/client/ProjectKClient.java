@@ -3,7 +3,7 @@ package com.karasu256.projectk.client;
 import com.karasu256.projectk.client.render.block.AbyssGeneratorRenderer;
 import com.karasu256.projectk.client.render.entity.AbyssEnergyEntityRenderer;
 import com.karasu256.projectk.particle.AbyssParticle;
-import com.karasu256.projectk.registry.BlockEntitiesRegistry;
+import com.karasu256.projectk.block.entity.ProjectKBlockEntities;
 import com.karasu256.projectk.registry.EntitiesRegistry;
 import com.karasu256.projectk.registry.ParticlesRegistry;
 import dev.architectury.registry.client.level.entity.EntityRendererRegistry;
@@ -16,10 +16,10 @@ public class ProjectKClient {
     }
 
     public static void registerRenderers() {
-        BlockEntityRendererRegistry.register(BlockEntitiesRegistry.ABYSS_GENERATOR.get(), AbyssGeneratorRenderer::new);
+        BlockEntityRendererRegistry.register(ProjectKBlockEntities.ABYSS_GENERATOR.get(), AbyssGeneratorRenderer::new);
     }
 
     public static void initLate() {
-        ParticleProviderRegistry.register(ParticlesRegistry.ABYSS_PARTICLE.get(), AbyssParticle.Provider::new);
+        ParticleProviderRegistry.register(ParticlesRegistry.ABYSS_PARTICLE.get(), (sprites) -> new AbyssParticle.Provider(sprites));
     }
 }

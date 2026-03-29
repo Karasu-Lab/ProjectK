@@ -1,8 +1,12 @@
 {
   "category.projectk": "ProjectK",
   "item.projectk.wither_bone": "Wither Bone",
-   "rei.category.projectk.wither_rose_transformation": "Wither Rose World-Crafting",
-   "rei.category.projectk.wither_rose_transformation.requirement": "Soul Sand Valley required",
-   "rei.category.projectk.wither_rose_transformation.instruction": "Drop items together, then ignite!",
-  "gui.configscreen.title": "ProjectK Config"
-}
+  "rei.category.projectk.wither_rose_transformation": "Wither Rose World-Crafting",
+  "rei.category.projectk.wither_rose_transformation.requirement": "Soul Sand Valley required",
+  "rei.category.projectk.wither_rose_transformation.instruction": "Drop items together, then ignite!",
+  "gui.configscreen.title": "ProjectK Config",
+  "energy.projectk.abyss_energy": "Abyss",
+  "energy.projectk.yin_abyss_energy": "Yin",
+  "energy.projectk.yang_abyss_energy": "Yang",
+  "energy.projectk.abyss_energy_format": "%s Abyss Energy"
+}

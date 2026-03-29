@@ -1,6 +1,7 @@
 package com.karasu256.projectk;
 
 import com.karasu256.projectk.block.ProjectKBlocks;
+import com.karasu256.projectk.block.entity.ProjectKBlockEntities;
 import com.karasu256.projectk.data.ProjectKDataComponets;
 import com.karasu256.projectk.event.ModEvents;
 import com.karasu256.projectk.item.ProjectKItems;
@@ -18,6 +19,7 @@ public final class ProjectK {
 
     public static void init() {
         ProjectKBlocks.init();
+        ProjectKBlockEntities.init();
         ProjectKItems.init();
         ProjectKDataComponets.init();
         ModEvents.init();

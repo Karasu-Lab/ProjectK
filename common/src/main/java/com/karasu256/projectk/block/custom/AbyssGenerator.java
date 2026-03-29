@@ -12,8 +12,8 @@ import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.Nullable;
 
 public class AbyssGenerator extends AbstractEnergyBlock {
-    public AbyssGenerator() {
-        super(BlockBehaviour.Properties.ofFullCopy(Blocks.STONE));
+    public AbyssGenerator(long capacity) {
+        super(BlockBehaviour.Properties.ofFullCopy(Blocks.STONE), new AbstractEnergyBlock.Properties(capacity));
     }
 
     @Override

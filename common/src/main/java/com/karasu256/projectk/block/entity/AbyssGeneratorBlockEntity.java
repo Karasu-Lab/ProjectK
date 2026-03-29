@@ -1,25 +1,26 @@
 package com.karasu256.projectk.block.entity;
 
+import com.karasu256.projectk.block.custom.AbstractEnergyBlock;
 import com.karasu256.projectk.energy.AbyssEnergy;
-import com.karasu256.projectk.energy.IAbyssEnergy;
-import com.karasu256.projectk.registry.BlockEntitiesRegistry;
-import com.karasu256.projectk.utils.Id;
 import net.minecraft.core.BlockPos;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 
-public class AbyssGeneratorBlockEntity extends AbstractPKEnergyBlockEntity<AbyssEnergy> implements IAbyssEnergy {
+public class AbyssGeneratorBlockEntity extends AbstractPKEnergyBlockEntity<AbyssEnergy> {
     public AbyssGeneratorBlockEntity(BlockPos pos, BlockState state) {
-        super(BlockEntitiesRegistry.ABYSS_GENERATOR.get(), pos, state, 10000);
+        super(ProjectKBlockEntities.ABYSS_GENERATOR.get(), pos, state, resolveCapacity(state));
+    }
+
+    private static long resolveCapacity(BlockState state) {
+        Block block = state.getBlock();
+        if (block instanceof AbstractEnergyBlock energyBlock) {
+            return energyBlock.getEnergyProperties().getEnergyCapacity();
+        }
+        throw new IllegalStateException("Block " + state.getBlock() + " does not define energy properties.");
     }
 
     @Override
-    public AbyssEnergy getEnergyType() {
-        return new AbyssEnergy(energy.getValue());
-    }
-
-    @Override
-    public ResourceLocation getId() {
-        return Id.id("abyss_energy");
+    protected AbyssEnergy createEnergy() {
+        return new AbyssEnergy(0L);
     }
 }

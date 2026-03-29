@@ -1,7 +1,7 @@
 package com.karasu256.projectk.neoforge.client;
 
 import com.karasu256.projectk.neoforge.bridge.geckolib.GenericGeoBlockRenderer;
-import com.karasu256.projectk.registry.BlockEntitiesRegistry;
+import com.karasu256.projectk.block.entity.ProjectKBlockEntities;
 import net.karasuniki.karasunikilib.bridge.geckolib.GeckoLibHelper;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -21,7 +21,7 @@ public class NeoForgeGeckoLibHelper implements GeckoLibHelper {
     @Override
     @SuppressWarnings({"unchecked", "rawtypes"})
     public <T extends BlockEntity> void registerBlockRenderer(BlockEntityType<T> type) {
-        if (type == BlockEntitiesRegistry.ABYSS_CORE.get()) {
+        if (type == ProjectKBlockEntities.ABYSS_CORE.get()) {
             if (event != null) {
                 event.registerBlockEntityRenderer(type, context -> new GenericGeoBlockRenderer());
             }

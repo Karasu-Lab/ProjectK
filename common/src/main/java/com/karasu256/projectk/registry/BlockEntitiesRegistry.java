@@ -1,23 +1,25 @@
 package com.karasu256.projectk.registry;
 
-import com.karasu256.projectk.block.ProjectKBlocks;
-import com.karasu256.projectk.block.entity.AbyssCoreBlockEntity;
-import com.karasu256.projectk.block.entity.AbyssGeneratorBlockEntity;
 import com.karasu256.projectk.utils.Id;
 import dev.architectury.registry.registries.DeferredRegister;
 import dev.architectury.registry.registries.RegistrySupplier;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntityType;
+
+import java.util.function.Supplier;
 
 import static com.karasu256.projectk.ProjectK.MOD_ID;
 
 public class BlockEntitiesRegistry {
     private static final DeferredRegister<BlockEntityType<?>> BLOCK_ENTITIES = DeferredRegister.create(MOD_ID, Registries.BLOCK_ENTITY_TYPE);
 
-    public static final RegistrySupplier<BlockEntityType<AbyssGeneratorBlockEntity>> ABYSS_GENERATOR = BLOCK_ENTITIES.register(Id.id("abyss_generator"), () -> BlockEntityType.Builder.of(AbyssGeneratorBlockEntity::new, ProjectKBlocks.ABYSS_GENERATOR.get()).build(null));
-    public static final RegistrySupplier<BlockEntityType<AbyssCoreBlockEntity>> ABYSS_CORE = BLOCK_ENTITIES.register(Id.id("abyss_core"), () -> BlockEntityType.Builder.of(AbyssCoreBlockEntity::new, ProjectKBlocks.ABYSS_CORE.get()).build(null));
-
     public static void register() {
         BLOCK_ENTITIES.register();
+    }
+
+    public static <T extends net.minecraft.world.level.block.entity.BlockEntity> RegistrySupplier<BlockEntityType<T>> blockEntity(String id, Supplier<BlockEntityType<T>> supplier) {
+        return BLOCK_ENTITIES.register(Id.id(id), supplier);
     }
 }

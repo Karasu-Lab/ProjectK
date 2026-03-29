@@ -1,15 +1,23 @@
 package com.karasu256.projectk.entity;
 
+import com.karasu256.projectk.energy.EnergyKeys;
 import com.karasu256.projectk.energy.IProjectKEnergy;
-import com.karasu256.projectk.registry.ParticlesRegistry;
+import com.karasu256.projectk.particle.AbyssParticleOptions;
+import com.karasu256.projectk.utils.Id;
+import dev.architectury.registry.registries.RegistrarManager;
+import net.karasuniki.karasunikilib.api.KarasunikiLib;
+import net.karasuniki.karasunikilib.api.block.ICableInputable;
 import net.karasuniki.karasunikilib.api.block.IEnergyBlock;
 import net.karasuniki.karasunikilib.api.data.ICapacity;
+import net.karasuniki.karasunikilib.api.data.IEnergy;
+import net.karasuniki.karasunikilib.api.registry.KarasunikiRegistries;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MoverType;
@@ -20,6 +28,7 @@ import org.jetbrains.annotations.NotNull;
 
 public class AbyssEnergyEntity extends Entity {
     private static final EntityDataAccessor<Long> ENERGY = SynchedEntityData.defineId(AbyssEnergyEntity.class, EntityDataSerializers.LONG);
+    private static final EntityDataAccessor<String> ENERGY_ID = SynchedEntityData.defineId(AbyssEnergyEntity.class, EntityDataSerializers.STRING);
     private BlockPos targetGenerator = null;
 
     public AbyssEnergyEntity(EntityType<?> type, Level level) {
@@ -35,13 +44,18 @@ public class AbyssEnergyEntity extends Entity {
     @Override
     @NotNull
     public Component getDisplayName() {
-        return Component.empty();
+        return getName();
     }
 
     @Override
     @NotNull
     public Component getName() {
-        return Component.empty();
+        var registrar = RegistrarManager.get(KarasunikiLib.MOD_ID).get(KarasunikiRegistries.ENERGY_REGISTRY_KEY);
+        IEnergy energy = registrar.get(getEnergyId());
+        if (energy instanceof IProjectKEnergy pkEnergy) {
+            return pkEnergy.getFormatted();
+        }
+        return super.getName();
     }
 
     @Override
@@ -62,6 +76,7 @@ public class AbyssEnergyEntity extends Entity {
     @Override
     protected void defineSynchedData(SynchedEntityData.Builder builder) {
         builder.define(ENERGY, 0L);
+        builder.define(ENERGY_ID, Id.id("abyss_energy").toString());
     }
 
     public void setEnergy(long amount) {
@@ -70,6 +85,14 @@ public class AbyssEnergyEntity extends Entity {
 
     public long getEnergy() {
         return entityData.get(ENERGY);
+    }
+
+    public void setEnergyId(ResourceLocation id) {
+        entityData.set(ENERGY_ID, id.toString());
+    }
+
+    public ResourceLocation getEnergyId() {
+        return ResourceLocation.parse(entityData.get(ENERGY_ID));
     }
 
     @Override
@@ -120,7 +143,11 @@ public class AbyssEnergyEntity extends Entity {
 
     private boolean isValidTarget(BlockPos pos) {
         BlockEntity be = level().getBlockEntity(pos);
-        return be instanceof IEnergyBlock<?> energyAcceptor && be instanceof ICapacity capacityProvider && energyAcceptor.getAmount() < capacityProvider.getCapacity();
+        if (be instanceof IEnergyBlock<?> energyAcceptor && be instanceof ICapacity capacityProvider) {
+            if (energyAcceptor.getAmount() == 0) return capacityProvider.getCapacity() > 0;
+            return energyAcceptor.getEnergyType().getId().equals(getEnergyId()) && energyAcceptor.getAmount() < capacityProvider.getCapacity();
+        }
+        return false;
     }
 
     private void findTargetGenerator() {
@@ -129,24 +156,28 @@ public class AbyssEnergyEntity extends Entity {
 
     private void insertEnergy() {
         BlockEntity be = level().getBlockEntity(targetGenerator);
-        if (be instanceof IProjectKEnergy energyAcceptor) {
-            energyAcceptor.insert(getEnergy(), false);
+        if (be instanceof ICableInputable energyAcceptor) {
+            energyAcceptor.insert(getEnergyId(), getEnergy(), false);
         }
     }
 
     private void spawnParticles() {
         for (int i = 0; i < 3; i++) {
-            level().addParticle(ParticlesRegistry.ABYSS_PARTICLE.get(), getX() + (random.nextDouble() - 0.5) * 0.3, getY() + (random.nextDouble() - 0.5) * 0.3, getZ() + (random.nextDouble() - 0.5) * 0.3, 0, 0, 0);
+            level().addParticle(new AbyssParticleOptions(getEnergyId()), getX() + (random.nextDouble() - 0.5) * 0.3, getY() + (random.nextDouble() - 0.5) * 0.3, getZ() + (random.nextDouble() - 0.5) * 0.3, 0, 0, 0);
         }
     }
 
     @Override
     protected void readAdditionalSaveData(CompoundTag tag) {
-        setEnergy(tag.getLong("Energy"));
+        setEnergy(tag.getLong(EnergyKeys.ENERGY_VALUE.toString()));
+        if (tag.contains(EnergyKeys.ENERGY_ID.toString())) {
+            setEnergyId(ResourceLocation.parse(tag.getString(EnergyKeys.ENERGY_ID.toString())));
+        }
     }
 
     @Override
     protected void addAdditionalSaveData(CompoundTag tag) {
-        tag.putLong("Energy", getEnergy());
+        tag.putLong(EnergyKeys.ENERGY_VALUE.toString(), getEnergy());
+        tag.putString(EnergyKeys.ENERGY_ID.toString(), getEnergyId().toString());
     }
 }

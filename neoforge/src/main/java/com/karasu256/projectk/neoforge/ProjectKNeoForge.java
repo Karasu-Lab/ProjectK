@@ -6,7 +6,7 @@ import com.karasu256.projectk.client.ProjectKCoreShaders;
 import com.karasu256.projectk.neoforge.client.NeoForgeGeckoLibHelper;
 import com.karasu256.projectk.neoforge.config.ProjectKNeoForgeConfig;
 import com.karasu256.projectk.neoforge.integrations.NeoForgeModIntegrationSupplier;
-import com.karasu256.projectk.registry.BlockEntitiesRegistry;
+import com.karasu256.projectk.block.entity.ProjectKBlockEntities;
 import net.karasuniki.karasunikilib.api.ModIntegrationBootstrapper;
 import net.karasuniki.karasunikilib.bridge.geckolib.GeckoLibBridge;
 import net.minecraft.client.renderer.ShaderInstance;
@@ -56,7 +56,7 @@ public final class ProjectKNeoForge {
 
     private void onRegisterRenderers(EntityRenderersEvent.RegisterRenderers event) {
         NeoForgeGeckoLibHelper.setEvent(event);
-        GeckoLibBridge.get().registerBlockRenderer(BlockEntitiesRegistry.ABYSS_CORE.get());
+        GeckoLibBridge.get().registerBlockRenderer(ProjectKBlockEntities.ABYSS_CORE.get());
         ProjectKClient.registerRenderers();
         NeoForgeGeckoLibHelper.setEvent(null);
     }

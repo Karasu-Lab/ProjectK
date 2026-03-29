@@ -1,7 +1,7 @@
 package com.karasu256.projectk.neoforge.energy;
 
 import com.karasu256.projectk.ProjectK;
-import com.karasu256.projectk.registry.BlockEntitiesRegistry;
+import com.karasu256.projectk.block.entity.ProjectKBlockEntities;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.capabilities.Capabilities;
@@ -12,10 +12,6 @@ import org.jetbrains.annotations.NotNull;
 public class NeoForgeEnergyHandler {
     @SubscribeEvent
     public static void registerCapabilities(@NotNull RegisterCapabilitiesEvent event) {
-        event.registerBlockEntity(
-                Capabilities.EnergyStorage.BLOCK,
-                BlockEntitiesRegistry.ABYSS_GENERATOR.get(),
-                (be, side) -> new AbyssEnergyForgeWrapper(be)
-        );
+        event.registerBlockEntity(Capabilities.EnergyStorage.BLOCK, ProjectKBlockEntities.ABYSS_GENERATOR.get(), (be, side) -> new AbyssEnergyForgeWrapper(be));
     }
 }
