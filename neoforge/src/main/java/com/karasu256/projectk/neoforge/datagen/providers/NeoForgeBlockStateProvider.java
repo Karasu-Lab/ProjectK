@@ -37,7 +37,7 @@ public class NeoForgeBlockStateProvider extends BlockStateProvider implements Co
 
     @Override
     public void cubeBottomTop(String name, String side, String bottom, String top) {
-        models().cubeBottomTop(name, ResourceLocation.fromNamespaceAndPath(ProjectK.MOD_ID, "block/" + side), ResourceLocation.fromNamespaceAndPath(ProjectK.MOD_ID, "block/" + bottom), ResourceLocation.fromNamespaceAndPath(ProjectK.MOD_ID, "block/" + top));
+        models().withExistingParent("block/" + name, "minecraft:block/cube_bottom_top").texture("side", ResourceLocation.fromNamespaceAndPath(ProjectK.MOD_ID, "block/" + side)).texture("bottom", ResourceLocation.fromNamespaceAndPath(ProjectK.MOD_ID, "block/" + bottom)).texture("top", ResourceLocation.fromNamespaceAndPath(ProjectK.MOD_ID, "block/" + top));
     }
 
     @Override
