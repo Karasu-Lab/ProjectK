@@ -3,9 +3,12 @@ package com.karasu256.projectk.neoforge.block.entity;
 import com.karasu256.projectk.block.entity.AbyssGeneratorBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.block.state.BlockState;
+import software.bernie.geckolib.animatable.GeoAnimatable;
 import software.bernie.geckolib.animatable.GeoBlockEntity;
 import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
 import software.bernie.geckolib.animation.AnimatableManager;
+import software.bernie.geckolib.animation.AnimationController;
+import software.bernie.geckolib.animation.RawAnimation;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
 public class NeoForgeAbyssGeneratorBlockEntity extends AbyssGeneratorBlockEntity implements GeoBlockEntity {
@@ -17,8 +20,8 @@ public class NeoForgeAbyssGeneratorBlockEntity extends AbyssGeneratorBlockEntity
 
     @Override
     public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
-        controllers.add(new software.bernie.geckolib.animation.AnimationController<>(this, "controller", 0, state -> {
-            return state.setAndContinue(software.bernie.geckolib.animation.RawAnimation.begin().thenLoop("idle"));
+        controllers.add(new AnimationController<GeoAnimatable>(this, "controller", 0, state -> {
+            return state.setAndContinue(RawAnimation.begin().thenLoop("idle"));
         }));
     }
 
