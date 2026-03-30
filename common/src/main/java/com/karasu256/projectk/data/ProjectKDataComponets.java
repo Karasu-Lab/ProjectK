@@ -1,12 +1,15 @@
 package com.karasu256.projectk.data;
 
+import com.karasu256.projectk.ProjectK;
 import dev.architectury.registry.registries.RegistrySupplier;
+import net.karasuniki.karasunikilib.api.registry.IKRegistryInitializerTarget;
+import net.karasuniki.karasunikilib.api.registry.KRegistryInitializer;
 import net.minecraft.core.component.DataComponentType;
 
 import static com.karasu256.projectk.registry.DataComponentTypesRegistry.dataComponent;
 
-
-public class ProjectKDataComponets {
+@KRegistryInitializer(modId = ProjectK.MOD_ID, order = 4)
+public class ProjectKDataComponets implements IKRegistryInitializerTarget {
     public static RegistrySupplier<DataComponentType<EMCData>> EMC_DATACOMPONENT_TYPE = dataComponent("emc",
             () -> DataComponentType.<EMCData>builder()
                     .persistent(EMCData.CODEC)

@@ -1,8 +1,11 @@
 package com.karasu256.projectk.registry;
 
+import com.karasu256.projectk.ProjectK;
 import com.karasu256.projectk.block.ProjectKBlocks;
 import dev.architectury.registry.registries.DeferredRegister;
 import dev.architectury.registry.registries.RegistrySupplier;
+import net.karasuniki.karasunikilib.api.registry.IKRegistryTarget;
+import net.karasuniki.karasunikilib.api.registry.KRegistry;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.CreativeModeTab;
@@ -13,16 +16,15 @@ import net.minecraft.world.level.ItemLike;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.karasu256.projectk.ProjectK.MOD_ID;
-
-public class CreativeTabsRegistry {
-    private static final DeferredRegister<CreativeModeTab> TABS = DeferredRegister.create(MOD_ID, Registries.CREATIVE_MODE_TAB);
+@KRegistry(modId = ProjectK.MOD_ID, order = 7)
+public class CreativeTabsRegistry implements IKRegistryTarget {
+    private static final DeferredRegister<CreativeModeTab> TABS = DeferredRegister.create(ProjectK.MOD_ID, Registries.CREATIVE_MODE_TAB);
     private static final List<RegistrySupplier<? extends ItemLike>> ITEMS = new ArrayList<>();
 
     public static final RegistrySupplier<CreativeModeTab> TAB = TABS.register(id(), () -> CreativeModeTab.builder(CreativeModeTab.Row.BOTTOM, ITEMS.size()).title(title()).icon(CreativeTabsRegistry::icon).displayItems(CreativeTabsRegistry::displayItems).build());
 
     private static String id() {
-        return MOD_ID;
+        return ProjectK.MOD_ID;
     }
 
     private static Component title() {

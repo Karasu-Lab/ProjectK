@@ -1,9 +1,9 @@
 package com.karasu256.projectk.event;
 
 import com.karasu256.projectk.energy.IAbyssEnergy;
+import com.karasu256.projectk.energy.ProjectKEnergies;
 import com.karasu256.projectk.entity.AbyssEnergyEntity;
-import com.karasu256.projectk.registry.EnergiesRegistry;
-import com.karasu256.projectk.registry.EntitiesRegistry;
+import com.karasu256.projectk.entity.ProjectKEntities;
 import dev.architectury.event.EventResult;
 import dev.architectury.event.events.common.EntityEvent;
 import net.minecraft.core.BlockPos;
@@ -26,15 +26,15 @@ public class ModEvents {
             ResourceLocation energyId;
 
             if (category == MobCategory.MONSTER) {
-                energyId = EnergiesRegistry.YIN_ABYSS_ENERGY.get().getId();
+                energyId = ProjectKEnergies.YIN_ABYSS_ENERGY.get().getId();
             } else if (category == MobCategory.CREATURE || category == MobCategory.WATER_CREATURE ||
                     category == MobCategory.AXOLOTLS || category == MobCategory.UNDERGROUND_WATER_CREATURE) {
-                energyId = EnergiesRegistry.YANG_ABYSS_ENERGY.get().getId();
+                energyId = ProjectKEnergies.YANG_ABYSS_ENERGY.get().getId();
             } else {
-                energyId = EnergiesRegistry.ABYSS_ENERGY.get().getId();
+                energyId = ProjectKEnergies.ABYSS_ENERGY.get().getId();
             }
 
-            AbyssEnergyEntity aeEntity = new AbyssEnergyEntity(EntitiesRegistry.ABYSS_ENERGY_ENTITY.get(), entity.level());
+            AbyssEnergyEntity aeEntity = new AbyssEnergyEntity(ProjectKEntities.ABYSS_ENERGY_ENTITY.get(), entity.level());
             aeEntity.setPos(entity.getX(), entity.getY(), entity.getZ());
             aeEntity.setEnergy(IAbyssEnergy.calculateEnergy(entity));
             aeEntity.setEnergyId(energyId);

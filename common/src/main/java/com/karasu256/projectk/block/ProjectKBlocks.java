@@ -1,9 +1,12 @@
 package com.karasu256.projectk.block;
 
+import com.karasu256.projectk.ProjectK;
 import com.karasu256.projectk.block.custom.AbyssCore;
 import com.karasu256.projectk.block.custom.AbyssGenerator;
 import com.karasu256.projectk.block.custom.ProjectKBlock;
 import dev.architectury.registry.registries.RegistrySupplier;
+import net.karasuniki.karasunikilib.api.registry.IKRegistryInitializerTarget;
+import net.karasuniki.karasunikilib.api.registry.KRegistryInitializer;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
@@ -12,7 +15,8 @@ import net.minecraft.world.level.block.state.BlockBehaviour;
 
 import static com.karasu256.projectk.registry.BlocksRegistry.block;
 
-public class ProjectKBlocks {
+@KRegistryInitializer(modId = ProjectK.MOD_ID, order = 1)
+public class ProjectKBlocks implements IKRegistryInitializerTarget {
     public static RegistrySupplier<Block> ABYSS_GENERATOR = block("abyss_generator", () -> new AbyssGenerator(10000L), new Item.Properties());
     public static RegistrySupplier<Block> ABYSS_CORE = block("abyss_core", () -> new AbyssCore(BlockBehaviour.Properties.ofFullCopy(Blocks.STONE).noOcclusion().sound(SoundType.STONE)), new Item.Properties());
     public static RegistrySupplier<Block> KARASIUM_ORE = block("karasium_ore", ProjectKBlock::new, new Item.Properties());

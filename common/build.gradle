@@ -17,4 +17,5 @@ dependencies {
     modCompileOnly "me.shedaniel:RoughlyEnoughItems-default-plugin:$rei_version"
 
     modImplementation("net.karasuniki.karasunikilib:karasunikilib-common")
+    annotationProcessor("net.karasuniki.karasunikilib:karasunikilib-common")
 }

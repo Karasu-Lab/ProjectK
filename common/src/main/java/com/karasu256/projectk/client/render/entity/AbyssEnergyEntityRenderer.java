@@ -25,10 +25,10 @@ public class AbyssEnergyEntityRenderer extends EntityRenderer<AbyssEnergyEntity>
     @Override
     public void render(AbyssEnergyEntity entity, float entityYaw, float partialTicks, PoseStack poseStack, MultiBufferSource buffer, int packedLight) {
         poseStack.pushPose();
-        
+
         poseStack.translate(0.0, 0.2, 0.0);
         poseStack.scale(0.5f, 0.5f, 0.5f);
-        
+
         poseStack.mulPose(this.entityRenderDispatcher.cameraOrientation());
 
         VertexConsumer vertexConsumer = buffer.getBuffer(ProjectKRenderTypes.ABYSS_ENERGY.apply(TEXTURE));
@@ -49,12 +49,7 @@ public class AbyssEnergyEntityRenderer extends EntityRenderer<AbyssEnergyEntity>
     }
 
     private void renderVertex(VertexConsumer consumer, Matrix4f mat, PoseStack pose, float x, float y, float z, float u, float v, Color color, int light) {
-        consumer.addVertex(mat, x, y, z)
-                .setColor(color.getRed(), color.getGreen(), color.getBlue(), 255)
-                .setUv(u, v)
-                .setOverlay(OverlayTexture.NO_OVERLAY)
-                .setLight(light)
-                .setNormal(pose.last(), 0, 1, 0);
+        consumer.addVertex(mat, x, y, z).setColor(color.getRed(), color.getGreen(), color.getBlue(), 255).setUv(u, v).setOverlay(OverlayTexture.NO_OVERLAY).setLight(light).setNormal(pose.last(), 0, 1, 0);
     }
 
     @Override

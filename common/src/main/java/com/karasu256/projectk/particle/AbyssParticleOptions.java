@@ -1,7 +1,6 @@
 package com.karasu256.projectk.particle;
 
 import com.karasu256.projectk.energy.EnergyKeys;
-import com.karasu256.projectk.registry.ParticlesRegistry;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.particles.ParticleOptions;
@@ -12,20 +11,13 @@ import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.NotNull;
 
 public record AbyssParticleOptions(ResourceLocation energyId) implements ParticleOptions {
-    public static final MapCodec<AbyssParticleOptions> CODEC = RecordCodecBuilder.mapCodec(instance ->
-            instance.group(
-                    ResourceLocation.CODEC.fieldOf(EnergyKeys.ENERGY_ID.toString()).forGetter(AbyssParticleOptions::energyId)
-            ).apply(instance, AbyssParticleOptions::new)
-    );
+    public static final MapCodec<AbyssParticleOptions> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(ResourceLocation.CODEC.fieldOf(EnergyKeys.ENERGY_ID.toString()).forGetter(AbyssParticleOptions::energyId)).apply(instance, AbyssParticleOptions::new));
 
-    public static final StreamCodec<RegistryFriendlyByteBuf, AbyssParticleOptions> STREAM_CODEC = StreamCodec.composite(
-            ResourceLocation.STREAM_CODEC, AbyssParticleOptions::energyId,
-            AbyssParticleOptions::new
-    );
+    public static final StreamCodec<RegistryFriendlyByteBuf, AbyssParticleOptions> STREAM_CODEC = StreamCodec.composite(ResourceLocation.STREAM_CODEC, AbyssParticleOptions::energyId, AbyssParticleOptions::new);
 
     @Override
     @NotNull
     public ParticleType<?> getType() {
-        return ParticlesRegistry.ABYSS_PARTICLE.get();
+        return ProjectKParticles.ABYSS_PARTICLE.get();
     }
 }
