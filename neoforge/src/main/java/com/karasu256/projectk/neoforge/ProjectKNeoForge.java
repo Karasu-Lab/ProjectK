@@ -37,7 +37,6 @@ public final class ProjectKNeoForge {
             ProjectKClient.init();
             container.getEventBus().addListener(this::onClientSetup);
             container.getEventBus().addListener(this::onRegisterShaders);
-            container.getEventBus().addListener(this::onRegisterRenderers);
             container.getEventBus().addListener(this::onModelRegisterAdditional);
         }
     }
@@ -61,12 +60,5 @@ public final class ProjectKNeoForge {
                 throw new UncheckedIOException(e);
             }
         });
-    }
-
-    private void onRegisterRenderers(EntityRenderersEvent.RegisterRenderers event) {
-        NeoForgeGeckoLibHelper.setEvent(event);
-        GeckoLibBridge.get().registerBlockRenderer(ProjectKBlockEntities.ABYSS_CORE.get());
-        ProjectKClient.registerRenderers();
-        NeoForgeGeckoLibHelper.setEvent(null);
     }
 }

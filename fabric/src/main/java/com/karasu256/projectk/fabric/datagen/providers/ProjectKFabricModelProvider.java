@@ -40,13 +40,9 @@ public class ProjectKFabricModelProvider extends FabricModelProvider implements 
 
     @Override
     public void simpleBlock(Block block) {
-        if (block == ProjectKBlocks.ABYSS_CORE.get()) {
-            TextureMapping textures = TextureMapping.cube(block);
-            ResourceLocation modelLocation = ModelTemplates.CUBE_ALL.create(block, textures, this.blockModelGenerators.modelOutput);
-            this.blockModelGenerators.blockStateOutput.accept(BlockModelGenerators.createSimpleBlock(block, modelLocation));
-        } else {
-            this.blockModelGenerators.createTrivialCube(block);
-        }
+        TextureMapping textures = TextureMapping.cube(block);
+        ResourceLocation modelLocation = ModelTemplates.CUBE_ALL.create(block, textures, this.blockModelGenerators.modelOutput);
+        this.blockModelGenerators.blockStateOutput.accept(BlockModelGenerators.createSimpleBlock(block, modelLocation));
     }
 
     @Override

@@ -12,8 +12,6 @@ public class FabricGeckoLibHelper implements GeckoLibHelper {
     @SuppressWarnings("unchecked")
     @Override
     public <T extends BlockEntity> void registerBlockRenderer(BlockEntityType<T> type) {
-        if (type == ProjectKBlockEntities.ABYSS_CORE.get()) {
-            BlockEntityRendererRegistry.register(type, context -> new GenericGeoBlockRenderer());
-        }
+        BlockEntityRendererRegistry.register(type, context -> new GenericGeoBlockRenderer());
     }
 }

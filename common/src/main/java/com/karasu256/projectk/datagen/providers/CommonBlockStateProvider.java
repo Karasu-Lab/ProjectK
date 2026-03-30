@@ -1,6 +1,7 @@
 package com.karasu256.projectk.datagen.providers;
 
 import com.karasu256.projectk.block.ProjectKBlocks;
+import com.karasu256.projectk.energy.ProjectKEnergies;
 import com.karasu256.projectk.registry.EnergiesRegistry;
 import net.minecraft.world.level.block.Block;
 import org.jetbrains.annotations.NotNull;

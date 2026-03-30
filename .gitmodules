@@ -31,3 +31,6 @@
 [submodule "modules/KarasunikiLib"]
 	path = modules/KarasunikiLib
 	url = https://github.com/Karasu-Lab/KarasunikiLib-Deprecated.git
+[submodule "modules/FabricDocs"]
+	path = modules/FabricDocs
+	url = https://github.com/FabricMC/fabric-docs.git

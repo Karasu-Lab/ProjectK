@@ -12,7 +12,7 @@ import static com.karasu256.projectk.registry.BlockEntitiesRegistry.blockEntity;
 @KRegistryInitializer(modId = ProjectK.MOD_ID, order = 3)
 public class ProjectKBlockEntities implements IKRegistryInitializerTarget {
     public static final RegistrySupplier<BlockEntityType<AbyssGeneratorBlockEntity>> ABYSS_GENERATOR =
-            blockEntity("abyss_generator", () -> BlockEntityType.Builder.of(AbyssGeneratorBlockEntity::new, ProjectKBlocks.ABYSS_GENERATOR.get()).build(null));
+            blockEntity("abyss_generator", () -> BlockEntityType.Builder.of(AbyssGeneratorBlockEntityProvider::create, ProjectKBlocks.ABYSS_GENERATOR.get()).build(null));
 
     public static final RegistrySupplier<BlockEntityType<AbyssCoreBlockEntity>> ABYSS_CORE =
             blockEntity("abyss_core", () -> BlockEntityType.Builder.of(AbyssCoreBlockEntity::new, ProjectKBlocks.ABYSS_CORE.get()).build(null));

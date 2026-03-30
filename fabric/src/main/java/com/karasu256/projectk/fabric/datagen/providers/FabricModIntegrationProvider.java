@@ -5,6 +5,7 @@ import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricRecipeProvider;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.recipes.RecipeOutput;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.concurrent.CompletableFuture;
 
@@ -19,10 +20,10 @@ public class FabricModIntegrationProvider extends FabricRecipeProvider {
     @Override
     public void buildRecipes(RecipeOutput exporter) {
         CommonRecipeProvider.generate(exporter);
-        // Implement Fabric-specific recipes here
     }
 
     @Override
+    @NotNull
     public String getName() {
         return "ProjectK Fabric Integration Recipes";
     }

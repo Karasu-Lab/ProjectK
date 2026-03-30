@@ -1,0 +1,29 @@
+package com.karasu256.projectk.neoforge.block.entity;
+
+import com.karasu256.projectk.block.entity.AbyssGeneratorBlockEntity;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.block.state.BlockState;
+import software.bernie.geckolib.animatable.GeoBlockEntity;
+import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.animation.AnimatableManager;
+import software.bernie.geckolib.util.GeckoLibUtil;
+
+public class NeoForgeAbyssGeneratorBlockEntity extends AbyssGeneratorBlockEntity implements GeoBlockEntity {
+    private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
+
+    public NeoForgeAbyssGeneratorBlockEntity(BlockPos pos, BlockState state) {
+        super(pos, state);
+    }
+
+    @Override
+    public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
+        controllers.add(new software.bernie.geckolib.animation.AnimationController<>(this, "controller", 0, state -> {
+            return state.setAndContinue(software.bernie.geckolib.animation.RawAnimation.begin().thenLoop("idle"));
+        }));
+    }
+
+    @Override
+    public AnimatableInstanceCache getAnimatableInstanceCache() {
+        return cache;
+    }
+}
