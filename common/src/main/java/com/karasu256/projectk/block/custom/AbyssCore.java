@@ -1,6 +1,6 @@
 package com.karasu256.projectk.block.custom;
 
-import com.karasu256.projectk.block.entity.AbyssCoreBlockEntityProvider;
+import com.karasu256.projectk.block.entity.AbyssCoreBlockEntity;
 import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.block.BaseEntityBlock;
@@ -30,7 +30,7 @@ public class AbyssCore extends BaseEntityBlock {
     @Nullable
     @Override
     public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-        return AbyssCoreBlockEntityProvider.create(pos, state);
+        return new AbyssCoreBlockEntity(pos, state);
     }
 
     @Override

@@ -1,4 +1,4 @@
-package com.karasu256.projectk.neoforge.bridge.geckolib;
+package com.karasu256.projectk.client.render.block.geckolib;
 
 import com.karasu256.projectk.block.entity.GeoAnimatableBlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntity;

@@ -21,7 +21,7 @@ public class CommonRecipeProvider extends RecipeProvider {
     }
 
     @Override
-    protected void buildRecipes(RecipeOutput output) {
+    public void buildRecipes(RecipeOutput output) {
         generate(output);
     }
 }

@@ -40,14 +40,13 @@ subprojects {
         maven { url = rootProject.file("core/build/repo") }
         maven { url = "https://maven.createmod.net" }
         maven { url = "https://maven.ithundxr.dev/snapshots" }
-        exclusiveContent {
-            forRepository {
-                maven {
-                    name = 'GeckoLib'
-                    url = 'https://dl.cloudsmith.io/public/geckolib3/geckolib/maven/'
-                }
+        maven {
+            name = 'GeckoLib'
+            url 'https://dl.cloudsmith.io/public/geckolib3/geckolib/maven/'
+            content {
+                includeGroupByRegex("software\\.bernie.*")
+                includeGroup("com.eliotlash.mclib")
             }
-            filter { includeGroupAndSubgroups('software.bernie.geckolib') }
         }
     }
 
@@ -57,6 +56,8 @@ subprojects {
 
         compileOnly "org.appliedenergistics:guideme:$guideme_version:api"
         runtimeOnly "org.appliedenergistics:guideme:$guideme_version"
+
+        implementation("com.eliotlash.mclib:mclib:20")
     }
 
     java {

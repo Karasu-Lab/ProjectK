@@ -1,7 +1,6 @@
 package com.karasu256.projectk.block.custom;
 
 import com.karasu256.projectk.block.entity.AbyssGeneratorBlockEntity;
-import com.karasu256.projectk.block.entity.AbyssGeneratorBlockEntityProvider;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
@@ -21,7 +20,7 @@ public class AbyssGenerator extends AbstractEnergyBlock {
 
     @Override
     public @Nullable BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-        return AbyssGeneratorBlockEntityProvider.create(pos, state);
+        return new AbyssGeneratorBlockEntity(pos, state);
     }
 
     @Override

@@ -1,6 +1,12 @@
 package com.karasu256.projectk.block.entity;
 
-import net.karasuniki.karasunikilib.bridge.geckolib.IGeoModelProvider;
+import net.minecraft.resources.ResourceLocation;
+import software.bernie.geckolib.animatable.GeoBlockEntity;
 
-public interface GeoAnimatableBlockEntity extends IGeoModelProvider {
+public interface GeoAnimatableBlockEntity extends GeoBlockEntity {
+    ResourceLocation getModelResource();
+
+    ResourceLocation getTextureResource();
+
+    ResourceLocation getAnimationResource();
 }

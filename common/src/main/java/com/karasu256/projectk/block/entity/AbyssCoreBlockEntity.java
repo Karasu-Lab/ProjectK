@@ -5,8 +5,13 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.animation.AnimatableManager;
+import software.bernie.geckolib.util.GeckoLibUtil;
 
 public class AbyssCoreBlockEntity extends BlockEntity implements GeoAnimatableBlockEntity {
+    private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
+
     public AbyssCoreBlockEntity(BlockPos pos, BlockState state) {
         super(ProjectKBlockEntities.ABYSS_CORE.get(), pos, state);
     }
@@ -24,5 +29,15 @@ public class AbyssCoreBlockEntity extends BlockEntity implements GeoAnimatableBl
     @Override
     public ResourceLocation getAnimationResource() {
         return Id.id("animations/abyss_core.animation.json");
+    }
+
+    @Override
+    public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
+
+    }
+
+    @Override
+    public AnimatableInstanceCache getAnimatableInstanceCache() {
+        return cache;
     }
 }
