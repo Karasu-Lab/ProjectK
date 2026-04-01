@@ -2,5 +2,8 @@
   "energy.projectk.abyss_energy": "アビス",
   "energy.projectk.yin_abyss_energy": "陰",
   "energy.projectk.yang_abyss_energy": "陽",
-  "energy.projectk.abyss_energy_format": "%sのアビスエネルギー"
+  "energy.projectk.abyss_energy_format": "%sのアビスエネルギー",
+  "rei.category.projectk.in_biome_in_block_crafting": "バイオーム内ブロッククラフト",
+  "rei.category.projectk.in_biome_in_block_crafting.requirement": "必要バイオーム: %s",
+  "rei.category.projectk.in_biome_in_block_crafting.requirement_tag": "必要バイオームタグ: %s"
 }
