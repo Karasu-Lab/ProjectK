@@ -72,6 +72,9 @@ dependencies {
     modImplementation("net.karasuniki.karasunikilib:karasunikilib-fabric") {
         exclude(group: "net.karasuniki.karasunikilib:karasunikilib-common")
     }
+
+    modRuntimeOnly "mcp.mobius.waila:wthit:fabric-${wthit_version}"
+    modRuntimeOnly "lol.bai:badpackets:fabric-${badpackets_version}"
 }
 
 processResources {

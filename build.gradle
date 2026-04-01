@@ -48,6 +48,13 @@ subprojects {
                 includeGroup("com.eliotlash.mclib")
             }
         }
+        maven {
+            url "https://maven2.bai.lol"
+            content {
+                includeGroup "lol.bai"
+                includeGroup "mcp.mobius.waila"
+            }
+        }
     }
 
     dependencies {

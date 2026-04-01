@@ -77,6 +77,9 @@ dependencies {
 
     implementation "software.bernie.geckolib:geckolib-neoforge-${minecraft_version}:${geckolib_version}"
 
+    runtimeOnly "mcp.mobius.waila:wthit:neo-${wthit_version}"
+    runtimeOnly "lol.bai:badpackets:neo-${badpackets_version}"
+
     common(project(path: ':common', configuration: 'namedElements')) { transitive = true }
     shadowBundle project(path: ':common', configuration: 'transformProductionNeoForge')
 
