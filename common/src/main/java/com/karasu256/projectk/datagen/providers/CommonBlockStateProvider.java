@@ -1,8 +1,10 @@
 package com.karasu256.projectk.datagen.providers;
 
 import com.karasu256.projectk.block.ProjectKBlocks;
-import com.karasu256.projectk.energy.ProjectKEnergies;
-import com.karasu256.projectk.registry.EnergiesRegistry;
+import dev.architectury.registry.registries.RegistrarManager;
+import net.karasuniki.karasunikilib.api.KarasunikiLib;
+import net.karasuniki.karasunikilib.api.data.IEnergy;
+import net.karasuniki.karasunikilib.api.registry.KarasunikiRegistries;
 import net.minecraft.world.level.block.Block;
 import org.jetbrains.annotations.NotNull;
 
@@ -28,13 +30,13 @@ public class CommonBlockStateProvider {
         generator.cubeBottomTop(ProjectKBlocks.ABYSS_GENERATOR.get(), "abyss_generator", "abyss_energy/side", "abyss_energy/bottom", "abyss_energy/top");
         generator.simpleBlockItem(ProjectKBlocks.ABYSS_GENERATOR.get());
 
-        for (var energy : EnergiesRegistry.getEntries()) {
+        for (IEnergy energy : RegistrarManager.get(KarasunikiLib.MOD_ID).get(KarasunikiRegistries.ENERGY_REGISTRY_KEY)) {
             String energyId = energy.getId().getPath();
             generator.cubeBottomTop(
-                    "abyss_generator/" + energyId,
-                    "abyss_generator/" + energyId + "/side",
-                    "abyss_generator/" + energyId + "/bottom",
-                    "abyss_generator/" + energyId + "/top"
+                "abyss_generator/" + energyId,
+                "abyss_generator/" + energyId + "/side",
+                "abyss_generator/" + energyId + "/bottom",
+                "abyss_generator/" + energyId + "/top"
             );
         }
 

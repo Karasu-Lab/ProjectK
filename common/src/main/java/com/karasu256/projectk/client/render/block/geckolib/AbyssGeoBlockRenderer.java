@@ -5,12 +5,11 @@ import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.animatable.GeoBlockEntity;
 import software.bernie.geckolib.renderer.GeoBlockRenderer;
 
-public class GenericGeoBlockRenderer<T extends BlockEntity & GeoAnimatableBlockEntity & GeoBlockEntity> extends GeoBlockRenderer<T> {
-    public GenericGeoBlockRenderer() {
+public class AbyssGeoBlockRenderer<T extends BlockEntity & GeoAnimatableBlockEntity & GeoBlockEntity> extends GeoBlockRenderer<T> {
+    public AbyssGeoBlockRenderer() {
         super(new GenericGeoModel<>());
     }
 }

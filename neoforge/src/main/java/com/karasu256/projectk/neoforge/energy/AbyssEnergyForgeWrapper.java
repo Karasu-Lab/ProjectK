@@ -1,6 +1,6 @@
 package com.karasu256.projectk.neoforge.energy;
 
-import com.karasu256.projectk.block.entity.AbstractPKEnergyBlockEntity;
+import com.karasu256.projectk.block.entity.impl.AbstractPKEnergyBlockEntity;
 import com.karasu256.projectk.energy.ProjectKEnergy;
 import net.neoforged.neoforge.energy.IEnergyStorage;
  

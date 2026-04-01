@@ -1,4 +1,4 @@
-package com.karasu256.projectk.block.entity;
+package com.karasu256.projectk.block.entity.impl;
 
 import com.karasu256.projectk.client.animation.RotationAnimSpeed;
 import com.karasu256.projectk.energy.AbyssEnergy;
@@ -6,7 +6,6 @@ import com.karasu256.projectk.energy.IProjectKEnergy;
 import com.karasu256.projectk.utils.Id;
 import net.karasuniki.karasunikilib.api.block.entity.impl.AbstractEnergyBlockEntity;
 import net.karasuniki.karasunikilib.api.client.model.animation.IRotationAnimSpeed;
-import net.karasuniki.karasunikilib.api.data.IEnergy;
 import net.karasuniki.karasunikilib.api.data.impl.EnergyValue;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;

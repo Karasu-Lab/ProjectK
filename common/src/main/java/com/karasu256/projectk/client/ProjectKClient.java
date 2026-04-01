@@ -1,9 +1,7 @@
 package com.karasu256.projectk.client;
 
-import com.karasu256.projectk.ProjectK;
-import com.karasu256.projectk.block.entity.AbyssCoreBlockEntity;
 import com.karasu256.projectk.block.entity.ProjectKBlockEntities;
-import com.karasu256.projectk.client.render.block.geckolib.GenericGeoBlockRenderer;
+import com.karasu256.projectk.client.render.block.geckolib.AbyssGeoBlockRenderer;
 import com.karasu256.projectk.client.render.entity.AbyssEnergyEntityRenderer;
 import com.karasu256.projectk.entity.ProjectKEntities;
 import com.karasu256.projectk.particle.AbyssParticle;
@@ -19,7 +17,6 @@ public class ProjectKClient {
 
     public static void initLate() {
         ParticleProviderRegistry.register(ProjectKParticles.ABYSS_PARTICLE.get(), AbyssParticle.Provider::new);
-        BlockEntityRendererRegistry.register(ProjectKBlockEntities.ABYSS_CORE.get(), context -> new GenericGeoBlockRenderer<>());
-        BlockEntityRendererRegistry.register(ProjectKBlockEntities.ABYSS_GENERATOR.get(), context -> new GenericGeoBlockRenderer<>());
+        BlockEntityRendererRegistry.register(ProjectKBlockEntities.ABYSS_CORE.get(), context -> new AbyssGeoBlockRenderer<>());
     }
 }

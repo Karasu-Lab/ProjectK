@@ -9,8 +9,13 @@ import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
 import software.bernie.geckolib.animation.AnimatableManager;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
+import software.bernie.geckolib.animation.AnimationController;
+import software.bernie.geckolib.animation.RawAnimation;
+
 public class AbyssCoreBlockEntity extends BlockEntity implements GeoAnimatableBlockEntity {
     private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
+
+    private static final RawAnimation IDLE = RawAnimation.begin().thenLoop("idle");
 
     public AbyssCoreBlockEntity(BlockPos pos, BlockState state) {
         super(ProjectKBlockEntities.ABYSS_CORE.get(), pos, state);
@@ -33,7 +38,7 @@ public class AbyssCoreBlockEntity extends BlockEntity implements GeoAnimatableBl
 
     @Override
     public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
-
+        controllers.add(new AnimationController<>(this, "controller", 0, state -> state.setAndContinue(IDLE)));
     }
 
     @Override

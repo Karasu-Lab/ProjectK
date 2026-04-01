@@ -7,6 +7,7 @@ import com.karasu256.projectk.client.ProjectKCoreShaders;
 import com.karasu256.projectk.neoforge.config.ProjectKNeoForgeConfig;
 import com.karasu256.projectk.neoforge.integrations.NeoForgeModIntegrationSupplier;
 import dev.architectury.registry.registries.RegistrarManager;
+import net.karasuniki.karasunikilib.api.KarasunikiLib;
 import net.karasuniki.karasunikilib.api.ModIntegrationBootstrapper;
 import net.karasuniki.karasunikilib.api.registry.KarasunikiRegistries;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
@@ -41,7 +42,7 @@ public final class ProjectKNeoForge {
     }
 
     private void onModelRegisterAdditional(ModelEvent.RegisterAdditional event) {
-        for (var energy : RegistrarManager.get(ProjectK.MOD_ID).get(KarasunikiRegistries.ENERGY_REGISTRY_KEY)) {
+        for (var energy : RegistrarManager.get(KarasunikiLib.MOD_ID).get(KarasunikiRegistries.ENERGY_REGISTRY_KEY)) {
             var energyId = energy.getId();
             event.register(new ModelResourceLocation(ResourceLocation.fromNamespaceAndPath(energyId.getNamespace(), "block/abyss_generator/" + energyId.getPath()), "standalone"));
         }

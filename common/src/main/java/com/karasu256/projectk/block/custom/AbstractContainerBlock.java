@@ -1,6 +1,6 @@
 package com.karasu256.projectk.block.custom;
 
-import com.karasu256.projectk.block.entity.AbstractPKContainerBlockEntity;
+import com.karasu256.projectk.block.entity.impl.AbstractPKContainerBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.Containers;
 import net.minecraft.world.InteractionResult;

@@ -1,4 +1,4 @@
-package com.karasu256.projectk.block.entity;
+package com.karasu256.projectk.block.entity.impl;
 
 import net.karasuniki.karasunikilib.api.block.entity.impl.AbstractContainerBlockEntity;
 import net.minecraft.core.BlockPos;
