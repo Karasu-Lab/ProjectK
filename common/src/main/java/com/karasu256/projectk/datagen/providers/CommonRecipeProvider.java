@@ -23,5 +23,6 @@ public class CommonRecipeProvider extends RecipeProvider {
     @Override
     public void buildRecipes(RecipeOutput output) {
         generate(output);
+        InBiomeInBlockCraftingProvider.addWitherRoseRecipe(output);
     }
 }

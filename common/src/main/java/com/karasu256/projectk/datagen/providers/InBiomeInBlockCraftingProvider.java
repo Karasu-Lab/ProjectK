@@ -1,0 +1,51 @@
+package com.karasu256.projectk.datagen.providers;
+
+import com.karasu256.projectk.item.ProjectKItems;
+import com.karasu256.projectk.recipe.BiomeCondition;
+import com.karasu256.projectk.recipe.InBiomeInBlockCraftingRecipe;
+import com.karasu256.projectk.recipe.IngredientStack;
+import com.karasu256.projectk.registry.ProjectKTags;
+import com.karasu256.projectk.utils.Id;
+import net.minecraft.core.HolderLookup;
+import net.minecraft.core.component.DataComponents;
+import net.minecraft.data.PackOutput;
+import net.minecraft.data.recipes.RecipeOutput;
+import net.minecraft.data.recipes.RecipeProvider;
+import net.minecraft.util.Unit;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.level.biome.Biomes;
+import org.jetbrains.annotations.NotNull;
+
+import java.util.List;
+import java.util.concurrent.CompletableFuture;
+
+public class InBiomeInBlockCraftingProvider extends RecipeProvider {
+    public InBiomeInBlockCraftingProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> registries) {
+        super(output, registries);
+    }
+
+    @Override
+    public void buildRecipes(RecipeOutput output) {
+        addWitherRoseRecipe(output);
+    }
+
+    public static void addWitherRoseRecipe(@NotNull RecipeOutput output) {
+        ItemStack result = new ItemStack(Items.WITHER_ROSE);
+        result.set(DataComponents.FIRE_RESISTANT, Unit.INSTANCE);
+
+        InBiomeInBlockCraftingRecipe recipe = new InBiomeInBlockCraftingRecipe(
+                new BiomeCondition(Biomes.SOUL_SAND_VALLEY.location(), false),
+                ProjectKTags.Blocks.IN_BIOME_IN_BLOCK_CRAFTING.location(),
+                List.of(
+                        new IngredientStack(Ingredient.of(Items.POPPY), 1),
+                        new IngredientStack(Ingredient.of(ProjectKItems.WITHER_BONE.get()), 1)
+                ),
+                1.0f,
+                result
+        );
+
+        output.accept(Id.id("wither_rose_transformation"), recipe, null);
+    }
+}

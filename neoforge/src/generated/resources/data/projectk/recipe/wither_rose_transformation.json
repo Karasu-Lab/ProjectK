@@ -1,0 +1,29 @@
+{
+  "type": "projectk:in_biome_in_block_crafting",
+  "biome": {
+    "id": "minecraft:soul_sand_valley",
+    "tag": false
+  },
+  "block_tag": "projectk:in_biome_in_block_crafting",
+  "inputs": [
+    {
+      "count": 1,
+      "ingredient": {
+        "item": "minecraft:poppy"
+      }
+    },
+    {
+      "count": 1,
+      "ingredient": {
+        "item": "projectk:wither_bone"
+      }
+    }
+  ],
+  "result": {
+    "components": {
+      "minecraft:fire_resistant": {}
+    },
+    "count": 1,
+    "id": "minecraft:wither_rose"
+  }
+}

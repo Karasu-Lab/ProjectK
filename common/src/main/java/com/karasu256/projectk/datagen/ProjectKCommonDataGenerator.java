@@ -3,6 +3,7 @@ package com.karasu256.projectk.datagen;
 import com.karasu256.projectk.datagen.providers.CommonBlockTagsProvider;
 import com.karasu256.projectk.datagen.providers.CommonItemTagsProvider;
 import com.karasu256.projectk.datagen.providers.CommonRecipeProvider;
+import com.karasu256.projectk.datagen.providers.InBiomeInBlockCraftingProvider;
 import com.karasu256.projectk.datagen.providers.ProjectKLootTableProvider;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.DataProvider;
@@ -16,6 +17,7 @@ public class ProjectKCommonDataGenerator {
         registry.register(output -> new CommonItemTagsProvider(output, registries, blockTagsProvider.contentsGetter()));
         if (includeRecipes) {
             registry.register(output -> new CommonRecipeProvider(output, registries));
+            registry.register(output -> new InBiomeInBlockCraftingProvider(output, registries));
         }
         registry.register(output -> new ProjectKLootTableProvider(output, registries));
     }
