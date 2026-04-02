@@ -4,6 +4,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.karasu256.projectk.ProjectK;
 import com.karasu256.projectk.energy.ProjectKEnergies;
+import com.karasu256.projectk.registry.ItemsRegistry;
 import net.minecraft.data.CachedOutput;
 import net.minecraft.data.DataProvider;
 import net.minecraft.data.PackOutput;
@@ -40,6 +41,15 @@ public class ProjectKBlockModelProvider implements DataProvider {
 
             String coreId = definition.idPath().replace("_energy", "_core");
             futures.add(writeModel(output, "block/" + coreId, coreModel()));
+        }
+
+        for (ResourceLocation itemId : ItemsRegistry.getEnergySuffixItems()) {
+            for (ProjectKEnergies.EnergyDefinition definition : ProjectKEnergies.getDefinitions()) {
+                String suffix = energySuffix(definition.id());
+                String modelPath = "item/" + itemId.getPath() + "_" + suffix;
+                String texturePath = ProjectK.MOD_ID + ":item/" + itemId.getPath() + "_" + suffix;
+                futures.add(writeModel(output, modelPath, itemModel(texturePath)));
+            }
         }
 
         return CompletableFuture.allOf(futures.toArray(CompletableFuture[]::new));
@@ -117,6 +127,19 @@ public class ProjectKBlockModelProvider implements DataProvider {
         textures.addProperty("all", ProjectK.MOD_ID + ":block/abyss_core");
         json.add("textures", textures);
         return json;
+    }
+
+    private JsonObject itemModel(String texturePath) {
+        JsonObject json = new JsonObject();
+        json.addProperty("parent", "item/generated");
+        JsonObject textures = new JsonObject();
+        textures.addProperty("layer0", texturePath);
+        json.add("textures", textures);
+        return json;
+    }
+
+    private String energySuffix(ResourceLocation energyId) {
+        return energyId.getNamespace() + "_" + energyId.getPath();
     }
 
     private JsonObject cubeElement(double[] from, double[] to, double[] uv) {

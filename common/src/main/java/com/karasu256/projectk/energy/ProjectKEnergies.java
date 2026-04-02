@@ -74,7 +74,7 @@ public class ProjectKEnergies implements IKRegistryInitializerTarget {
     public enum EnergyKind {
         NEUTRAL,
         YIN,
-        YANG
+        YANG,
     }
 
     public record EnergyDefinition(ResourceLocation id, String enName, String jaName, EnergyKind kind, long defaultAmount) {
