@@ -4,6 +4,7 @@ import mcp.mobius.waila.api.ITooltipComponent;
 import mcp.mobius.waila.api.__internal__.IClientApiService;
 import mcp.mobius.waila.api.component.ItemComponent;
 import mcp.mobius.waila.api.component.ProgressArrowComponent;
+import mcp.mobius.waila.api.component.SpacingComponent;
 import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.world.item.ItemStack;
@@ -21,7 +22,7 @@ public class AbyssMagicTableRecipeComponent implements ITooltipComponent {
     }
 
     public AbyssMagicTableRecipeComponent(ItemStack inputStack, float progressRatio, ItemStack outputStack, int spacing) {
-        this.input = new ItemComponent(inputStack);
+        this.input = inputStack.isEmpty() ? new SpacingComponent(18, 18) : new ItemComponent(inputStack);
         this.progress = new ProgressArrowComponent(progressRatio);
         this.output = new ItemComponent(outputStack);
         this.spacing = Math.max(0, spacing);

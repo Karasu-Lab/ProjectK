@@ -23,16 +23,17 @@ import org.jetbrains.annotations.Nullable;
 import java.util.*;
 
 public class AbyssEnergyCableBlockEntity extends BlockEntity implements ICableInputable, ICableOutputable {
-    private static final long TRANSFER_RATE = 1000L;
     private static final WeakHashMap<Level, Long> LAST_TICK = new WeakHashMap<>();
     private static final WeakHashMap<Level, Set<BlockPos>> PROCESSED = new WeakHashMap<>();
     private final EnergyValue energy = new EnergyValue();
     private long capacity;
+    private long transferRate;
     private final EnumMap<Direction, AbyssWrenchBehavior> behaviors = new EnumMap<>(Direction.class);
 
     public AbyssEnergyCableBlockEntity(BlockPos pos, BlockState state) {
         super(ProjectKBlockEntities.ABYSS_ENERGY_CABLE.get(), pos, state);
         this.capacity = resolveCapacity(state);
+        this.transferRate = resolveTransferRate(state);
         energy.setCapacity(capacity);
         for (Direction direction : Direction.values()) {
             behaviors.put(direction, AbyssWrenchBehavior.NORMAL);
@@ -164,7 +165,10 @@ public class AbyssEnergyCableBlockEntity extends BlockEntity implements ICableIn
         if (network.capacity <= 0) {
             return;
         }
-        long available = Math.min(network.capacity - network.energy, TRANSFER_RATE);
+        if (transferRate <= 0) {
+            return;
+        }
+        long available = Math.min(network.capacity - network.energy, transferRate);
         if (available <= 0) {
             return;
         }
@@ -207,7 +211,10 @@ public class AbyssEnergyCableBlockEntity extends BlockEntity implements ICableIn
         if (network.energy <= 0 || network.energyId == null) {
             return;
         }
-        long available = Math.min(network.energy, TRANSFER_RATE);
+        if (transferRate <= 0) {
+            return;
+        }
+        long available = Math.min(network.energy, transferRate);
         if (available <= 0) {
             return;
         }
@@ -421,6 +428,7 @@ public class AbyssEnergyCableBlockEntity extends BlockEntity implements ICableIn
         }
         energy.readNbt(nbt, registries);
         this.capacity = resolveCapacity(getBlockState());
+        this.transferRate = resolveTransferRate(getBlockState());
         energy.setCapacity(capacity);
     }
 
@@ -445,6 +453,13 @@ public class AbyssEnergyCableBlockEntity extends BlockEntity implements ICableIn
     private long resolveCapacity(BlockState state) {
         if (state.getBlock() instanceof AbyssEnergyCable cable) {
             return cable.getCapacity();
+        }
+        return 0L;
+    }
+
+    private long resolveTransferRate(BlockState state) {
+        if (state.getBlock() instanceof AbyssEnergyCable cable) {
+            return cable.getTransferRate();
         }
         return 0L;
     }

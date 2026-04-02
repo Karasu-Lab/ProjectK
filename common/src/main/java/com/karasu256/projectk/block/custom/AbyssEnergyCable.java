@@ -201,6 +201,10 @@ public class AbyssEnergyCable extends BaseEntityBlock {
         return customProperties.capacity();
     }
 
+    public long getTransferRate() {
+        return customProperties.transferRate();
+    }
+
     private ProjectKBlock.CustomProperties getCustomProperties() {
         return customProperties;
     }
