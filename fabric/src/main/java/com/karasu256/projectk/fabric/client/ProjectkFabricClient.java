@@ -5,6 +5,7 @@ import com.karasu256.projectk.client.ProjectKClient;
 import com.karasu256.projectk.client.ProjectKCoreShaders;
 import com.karasu256.projectk.client.screen.AbyssMagicTableScreen;
 import com.karasu256.projectk.fluid.ProjectKFluids;
+import com.karasu256.projectk.item.ProjectKItems;
 import com.karasu256.projectk.menu.ProjectKMenus;
 import com.karasu256.projectk.registry.ItemsRegistry;
 import com.karasu256.projectk.utils.Id;
@@ -60,6 +61,7 @@ public class ProjectkFabricClient implements ClientModInitializer {
     }
 
     private static void registerItemModelProperties() {
+        ProjectKItems.init();
         ResourceLocation propertyId = Id.id("abyss_energy");
         for (ResourceLocation itemId : ItemsRegistry.getEnergySuffixItems()) {
             ItemProperties.register(BuiltInRegistries.ITEM.get(itemId), propertyId, (stack, level, entity, seed) -> ProjectKClient.getAbyssEnergyModelIndex(stack));

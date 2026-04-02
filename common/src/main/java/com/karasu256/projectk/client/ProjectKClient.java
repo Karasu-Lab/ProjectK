@@ -31,6 +31,6 @@ public class ProjectKClient {
         if (data == null) {
             return 0.0f;
         }
-        return (float) ProjectKEnergies.getModelIndex(data.energyId());
+        return ProjectKEnergies.getModelPredicateValue(data.energyId());
     }
 }

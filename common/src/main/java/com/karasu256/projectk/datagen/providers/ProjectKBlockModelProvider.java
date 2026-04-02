@@ -50,7 +50,7 @@ public class ProjectKBlockModelProvider implements DataProvider {
                 String modelPath = "item/" + itemId.getPath() + "_" + suffix;
                 String texturePath = ProjectK.MOD_ID + ":item/" + itemId.getPath() + "_" + suffix;
                 futures.add(writeModel(output, modelPath, itemModel(texturePath)));
-                overrides.add(itemOverride(ABYSS_ENERGY_PROPERTY, ProjectKEnergies.getModelIndex(definition.id()), ProjectK.MOD_ID + ":" + modelPath));
+                overrides.add(itemOverride(ABYSS_ENERGY_PROPERTY, ProjectKEnergies.getModelPredicateValue(definition.id()), ProjectK.MOD_ID + ":" + modelPath));
             }
             String baseTexture = ProjectK.MOD_ID + ":item/" + itemId.getPath();
             futures.add(writeModel(output, "item/" + itemId.getPath(), itemModelWithOverrides(baseTexture, overrides)));
@@ -152,7 +152,7 @@ public class ProjectKBlockModelProvider implements DataProvider {
         return json;
     }
 
-    private JsonObject itemOverride(String predicateId, int predicateValue, String modelPath) {
+    private JsonObject itemOverride(String predicateId, float predicateValue, String modelPath) {
         JsonObject json = new JsonObject();
         JsonObject predicate = new JsonObject();
         predicate.addProperty(predicateId, predicateValue);

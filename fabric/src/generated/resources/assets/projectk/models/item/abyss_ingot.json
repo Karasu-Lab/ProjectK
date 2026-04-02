@@ -4,19 +4,19 @@
     {
       "model": "projectk:item/abyss_ingot_projectk_abyss_energy",
       "predicate": {
-        "projectk:abyss_energy": 1
+        "projectk:abyss_energy": 0.001
       }
     },
     {
       "model": "projectk:item/abyss_ingot_projectk_yin_abyss_energy",
       "predicate": {
-        "projectk:abyss_energy": 2
+        "projectk:abyss_energy": 0.002
       }
     },
     {
       "model": "projectk:item/abyss_ingot_projectk_yang_abyss_energy",
       "predicate": {
-        "projectk:abyss_energy": 3
+        "projectk:abyss_energy": 0.003
       }
     }
   ],
