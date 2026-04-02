@@ -1,7 +1,6 @@
 {
   "category.projectk": "ProjectK",
   "item.projectk.wither_bone": "Wither Bone",
-  "item.projectk.bucket_of_abyss_enrgy": "Bucket of Abyss Energy",
   "rei.category.projectk.in_biome_in_block_crafting": "In-Biome Block Crafting",
   "rei.category.projectk.in_biome_in_block_crafting.requirement": "Biome required: %s",
   "rei.category.projectk.in_biome_in_block_crafting.requirement_tag": "Biome tag required: %s",
@@ -30,5 +29,8 @@
   "item.projectk.karasium": "Karasium",
   "item.projectk.raw_karasium": "Raw Karasium",
   "item.projectk.karasium_dust": "Karasium Dust",
-  "item.projectk.abyss_ingot": "Abyss Ingot"
+  "item.projectk.abyss_ingot": "Abyss Ingot",
+  "item.projectk.bucket_of_abyss_energy": "Bucket of Abyss Energy",
+  "item.projectk.bucket_of_yin_abyss_energy": "Bucket of Yin Abyss Energy",
+  "item.projectk.bucket_of_yang_abyss_energy": "Bucket of Yang Abyss Energy"
 }
