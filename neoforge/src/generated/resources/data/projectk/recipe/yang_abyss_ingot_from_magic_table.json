@@ -1,7 +1,7 @@
 {
   "type": "projectk:abyss_magic_table",
   "energy_amount": 500,
-  "energy_id": "projectk:yin_abyss_energy",
+  "energy_id": "projectk:yang_abyss_energy",
   "input": {
     "count": 1,
     "ingredient": {
@@ -10,6 +10,6 @@
   },
   "result": {
     "count": 1,
-    "id": "projectk:yin_abyss_ingot"
+    "id": "projectk:yang_abyss_ingot"
   }
 }

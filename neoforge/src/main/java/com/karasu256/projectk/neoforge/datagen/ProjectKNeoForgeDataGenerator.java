@@ -1,6 +1,7 @@
 package com.karasu256.projectk.neoforge.datagen;
 
 import com.karasu256.projectk.datagen.ProjectKCommonDataGenerator;
+import com.karasu256.projectk.datagen.providers.AbyssMagicTableRecipeProvider;
 import com.karasu256.projectk.datagen.providers.InBiomeInBlockCraftingProvider;
 import com.karasu256.projectk.datagen.providers.ProjectKBlockModelProvider;
 import com.karasu256.projectk.neoforge.datagen.providers.NeoForgeBlockStateProvider;
@@ -35,10 +36,11 @@ public class ProjectKNeoForgeDataGenerator {
 
         generator.addProvider(event.includeServer(), (DataProvider.Factory<NamedProvider>) output -> new NamedProvider(new NeoForgeModIntegrationProvider(output, event.getLookupProvider()), "ProjectK NeoForge Integration Recipes"));
         generator.addProvider(event.includeServer(), (DataProvider.Factory<NamedProvider>) output -> new NamedProvider(new NeoForgeRecipeProvider(output, event.getLookupProvider()), "ProjectK NeoForge Recipes"));
+        generator.addProvider(event.includeServer(), (DataProvider.Factory<NamedProvider>) output -> new NamedProvider(new AbyssMagicTableRecipeProvider(output, event.getLookupProvider()), "ProjectK Abyss Magic Table Recipes"));
         generator.addProvider(event.includeClient(), new NeoForgeBlockStateProvider(generator.getPackOutput(), event.getExistingFileHelper()));
         generator.addProvider(event.includeClient(), new ProjectKBlockModelProvider(generator.getPackOutput()));
         generator.addProvider(event.includeClient(), new ProjectEConversionProvider(generator.getPackOutput(), event.getLookupProvider()));
-        generator.addProvider(event.includeClient(), new InBiomeInBlockCraftingProvider(generator.getPackOutput(), event.getLookupProvider()));
+        generator.addProvider(event.includeServer(), new InBiomeInBlockCraftingProvider(generator.getPackOutput(), event.getLookupProvider()));
     }
 
     private record NamedProvider(DataProvider delegate, String name) implements DataProvider {

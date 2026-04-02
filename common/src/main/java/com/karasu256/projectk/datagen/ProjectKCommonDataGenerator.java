@@ -1,5 +1,6 @@
 package com.karasu256.projectk.datagen;
 
+import com.karasu256.projectk.datagen.providers.AbyssMagicTableRecipeProvider;
 import com.karasu256.projectk.datagen.providers.CommonBlockTagsProvider;
 import com.karasu256.projectk.datagen.providers.CommonItemTagsProvider;
 import com.karasu256.projectk.datagen.providers.CommonRecipeProvider;
@@ -17,6 +18,7 @@ public class ProjectKCommonDataGenerator {
         registry.register(output -> new CommonItemTagsProvider(output, registries, blockTagsProvider.contentsGetter()));
         if (includeRecipes) {
             registry.register(output -> new CommonRecipeProvider(output, registries));
+            registry.register(output -> new AbyssMagicTableRecipeProvider(output, registries));
             registry.register(output -> new InBiomeInBlockCraftingProvider(output, registries));
         }
         registry.register(output -> new ProjectKLootTableProvider(output, registries));

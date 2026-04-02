@@ -16,7 +16,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.biome.Biomes;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
@@ -31,7 +30,7 @@ public class InBiomeInBlockCraftingProvider extends RecipeProvider {
         addWitherRoseRecipe(output);
     }
 
-    public static void addWitherRoseRecipe(@NotNull RecipeOutput output) {
+    private void addWitherRoseRecipe(RecipeOutput output) {
         ItemStack result = new ItemStack(Items.WITHER_ROSE);
         result.set(DataComponents.FIRE_RESISTANT, Unit.INSTANCE);
 
