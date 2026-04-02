@@ -4,6 +4,8 @@ import com.karasu256.projectk.ProjectK;
 import com.karasu256.projectk.block.ProjectKBlocks;
 import com.karasu256.projectk.client.ProjectKClient;
 import com.karasu256.projectk.client.ProjectKCoreShaders;
+import com.karasu256.projectk.client.screen.AbyssMagicTableScreen;
+import com.karasu256.projectk.menu.ProjectKMenus;
 import com.karasu256.projectk.neoforge.config.ProjectKNeoForgeConfig;
 import com.karasu256.projectk.neoforge.integrations.NeoForgeModIntegrationSupplier;
 import dev.architectury.registry.registries.RegistrarManager;
@@ -20,6 +22,7 @@ import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import net.neoforged.fml.loading.FMLEnvironment;
 import net.neoforged.neoforge.client.event.ModelEvent;
+import net.neoforged.neoforge.client.event.RegisterMenuScreensEvent;
 import net.neoforged.neoforge.client.event.RegisterShadersEvent;
 
 import java.io.IOException;
@@ -36,9 +39,14 @@ public final class ProjectKNeoForge {
         if (FMLEnvironment.dist.isClient()) {
             ProjectKClient.init();
             container.getEventBus().addListener(this::onClientSetup);
+            container.getEventBus().addListener(this::onRegisterScreens);
             container.getEventBus().addListener(this::onRegisterShaders);
             container.getEventBus().addListener(this::onModelRegisterAdditional);
         }
+    }
+
+    private void onRegisterScreens(RegisterMenuScreensEvent event) {
+        event.register(ProjectKMenus.ABYSS_MAGIC_TABLE.get(), AbyssMagicTableScreen::new);
     }
 
     private void onModelRegisterAdditional(ModelEvent.RegisterAdditional event) {
