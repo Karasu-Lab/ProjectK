@@ -17,10 +17,10 @@ import dev.architectury.registry.client.rendering.BlockEntityRendererRegistry;
 public class ProjectKClient {
     public static void init() {
         EntityRendererRegistry.register(ProjectKEntities.ABYSS_ENERGY_ENTITY, AbyssEnergyEntityRenderer::new);
-        MenuScreens.register(ProjectKMenus.ABYSS_MAGIC_TABLE.get(), AbyssMagicTableScreen::new);
     }
 
     public static void initLate() {
+        MenuScreens.register(ProjectKMenus.ABYSS_MAGIC_TABLE.get(), AbyssMagicTableScreen::new);
         ParticleProviderRegistry.register(ProjectKParticles.ABYSS_PARTICLE.get(), AbyssParticle.Provider::new);
         BlockEntityRendererRegistry.register(ProjectKBlockEntities.ABYSS_CORE.get(), context -> new AbyssGeoBlockRenderer<>());
         BlockEntityRendererRegistry.register(ProjectKBlockEntities.ABYSS_ENERGY_CABLE.get(), AbyssEnergyCableBlockEntityRenderer::new);
