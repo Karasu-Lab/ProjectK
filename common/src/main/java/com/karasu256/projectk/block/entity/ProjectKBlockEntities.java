@@ -15,6 +15,10 @@ public class ProjectKBlockEntities implements IKRegistryInitializerTarget {
 
     public static final RegistrySupplier<BlockEntityType<AbyssCoreBlockEntity>> ABYSS_CORE = blockEntity("abyss_core", () -> BlockEntityType.Builder.of(AbyssCoreBlockEntity::new, ProjectKBlocks.ABYSS_CORE.get()).build(null));
 
+    public static final RegistrySupplier<BlockEntityType<AbyssMagicTableBlockEntity>> ABYSS_MAGIC_TABLE = blockEntity("abyss_magic_table", () -> BlockEntityType.Builder.of(AbyssMagicTableBlockEntity::new, ProjectKBlocks.ABYSS_MAGIC_TABLE.get()).build(null));
+
+    public static final RegistrySupplier<BlockEntityType<AbyssEnergyCableBlockEntity>> ABYSS_ENERGY_CABLE = blockEntity("abyss_energy_cable", () -> BlockEntityType.Builder.of(AbyssEnergyCableBlockEntity::new, ProjectKBlocks.ABYSS_ENERGY_CABLE.get()).build(null));
+
     public static void init() {
     }
 }

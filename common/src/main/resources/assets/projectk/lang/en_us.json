@@ -8,5 +8,12 @@
   "energy.projectk.abyss_energy": "Abyss",
   "energy.projectk.yin_abyss_energy": "Yin",
   "energy.projectk.yang_abyss_energy": "Yang",
-  "energy.projectk.abyss_energy_format": "%s Abyss Energy"
+  "energy.projectk.abyss_energy_format": "%s Abyss Energy",
+  "tooltip.projectk.abyss_wrench_behavior": "Mode: %s",
+  "tooltip.projectk.wthit.energy_type": "Energy Type: %s",
+  "tooltip.projectk.wthit.energy": "Energy: %s/%s",
+  "tooltip.projectk.wthit.held_item": "Item: %s",
+  "tooltip.projectk.wthit.input_item": "Input: %s",
+  "tooltip.projectk.wthit.output_item": "Output: %s",
+  "tooltip.projectk.wthit.progress": "Progress: %s%%"
 }

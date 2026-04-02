@@ -16,5 +16,9 @@ public class CommonItemModelProvider {
         generator.simpleItem(ProjectKItems.RAW_KARASIUM);
         generator.simpleItem(ProjectKItems.KARASIUM_DUST);
         generator.simpleItem(ProjectKItems.WITHER_BONE);
+        generator.simpleItem(ProjectKItems.ABYSS_INGOT);
+        generator.simpleItem(ProjectKItems.YIN_ABYSS_INGOT);
+        generator.simpleItem(ProjectKItems.YANG_ABYSS_INGOT);
+        generator.simpleItem(ProjectKItems.ABYSS_WRENCH);
     }
 }

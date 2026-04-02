@@ -52,6 +52,7 @@ public final class ProjectKNeoForge {
     private void onClientSetup(FMLClientSetupEvent event) {
         ProjectKClient.initLate();
         ItemBlockRenderTypes.setRenderLayer(ProjectKBlocks.ABYSS_GENERATOR.get(), RenderType.CUTOUT);
+        ItemBlockRenderTypes.setRenderLayer(ProjectKBlocks.ABYSS_ENERGY_CABLE.get(), RenderType.translucent());
     }
 
     private void onRegisterShaders(RegisterShadersEvent event) {

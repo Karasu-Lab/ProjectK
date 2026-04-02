@@ -18,6 +18,10 @@ public class CommonBlockStateProvider {
         void cubeBottomTop(Block block, String base, String side, String bottom, String top);
 
         void cubeBottomTop(String name, String side, String bottom, String top);
+
+        void existingModelBlock(Block block, String modelPath);
+
+        void existingModelBlockAllStates(Block block, String modelPath);
     }
 
     public static void generate(@NotNull Generator generator) {
@@ -42,5 +46,11 @@ public class CommonBlockStateProvider {
 
         generator.simpleBlock(ProjectKBlocks.ABYSS_CORE.get());
         generator.simpleBlockItem(ProjectKBlocks.ABYSS_CORE.get());
+
+        generator.existingModelBlock(ProjectKBlocks.ABYSS_MAGIC_TABLE.get(), "projectk:block/abyss_magic_table");
+        generator.simpleBlockItem(ProjectKBlocks.ABYSS_MAGIC_TABLE.get());
+
+        generator.existingModelBlockAllStates(ProjectKBlocks.ABYSS_ENERGY_CABLE.get(), "projectk:block/abyss_energy_cable");
+        generator.simpleBlockItem(ProjectKBlocks.ABYSS_ENERGY_CABLE.get());
     }
 }

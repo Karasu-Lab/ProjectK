@@ -24,6 +24,20 @@ public class ProjectKDataComponets implements IKRegistryInitializerTarget {
                     .cacheEncoding()
                     .build());
 
+    public static RegistrySupplier<DataComponentType<AbyssEnergyData>> ABYSS_ENERGY_DATA_COMPONENT_TYPE = dataComponent("abyss_energy",
+            () -> DataComponentType.<AbyssEnergyData>builder()
+                    .persistent(AbyssEnergyData.CODEC)
+                    .networkSynchronized(AbyssEnergyData.STREAM_CODEC)
+                    .cacheEncoding()
+                    .build());
+
+    public static RegistrySupplier<DataComponentType<AbyssWrenchBehaviorData>> ABYSS_WRENCH_BEHAVIOR_DATA_COMPONENT_TYPE = dataComponent("abyss_wrench_behavior",
+            () -> DataComponentType.<AbyssWrenchBehaviorData>builder()
+                    .persistent(AbyssWrenchBehaviorData.CODEC)
+                    .networkSynchronized(AbyssWrenchBehaviorData.STREAM_CODEC)
+                    .cacheEncoding()
+                    .build());
+
     public static void init() {
     }
 }

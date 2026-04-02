@@ -12,6 +12,7 @@ import net.karasuniki.karasunikilib.api.data.ICapacity;
 import net.karasuniki.karasunikilib.api.data.IEnergy;
 import net.karasuniki.karasunikilib.api.registry.KarasunikiRegistries;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -157,7 +158,10 @@ public class AbyssEnergyEntity extends Entity {
     private void insertEnergy() {
         BlockEntity be = level().getBlockEntity(targetGenerator);
         if (be instanceof ICableInputable energyAcceptor) {
-            energyAcceptor.insert(getEnergyId(), getEnergy(), false);
+            Vec3 center = Vec3.atCenterOf(targetGenerator);
+            Vec3 diff = position().subtract(center);
+            Direction side = Direction.getNearest(diff.x, diff.y, diff.z);
+            energyAcceptor.insert(getEnergyId(), getEnergy(), false, side);
         }
     }
 

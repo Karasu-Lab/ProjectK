@@ -16,6 +16,7 @@ public class ProjectkFabricClient implements ClientModInitializer {
     public void onInitializeClient() {
         ProjectKClient.init();
         BlockRenderLayerMap.INSTANCE.putBlock(ProjectKBlocks.ABYSS_GENERATOR.get(), RenderType.cutout());
+        BlockRenderLayerMap.INSTANCE.putBlock(ProjectKBlocks.ABYSS_ENERGY_CABLE.get(), RenderType.translucent());
 
         CoreShaderRegistrationCallback.EVENT.register(ctx -> {
             ProjectKCoreShaders.init((id, format, onLoaded) -> {

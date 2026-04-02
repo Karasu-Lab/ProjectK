@@ -70,6 +70,18 @@ public class ProjectKFabricModelProvider extends FabricModelProvider implements 
     }
 
     @Override
+    public void existingModelBlock(Block block, String modelPath) {
+        ResourceLocation modelLocation = ResourceLocation.parse(modelPath);
+        this.blockModelGenerators.blockStateOutput.accept(BlockModelGenerators.createSimpleBlock(block, modelLocation));
+    }
+
+    @Override
+    public void existingModelBlockAllStates(Block block, String modelPath) {
+        ResourceLocation modelLocation = ResourceLocation.parse(modelPath);
+        this.blockModelGenerators.blockStateOutput.accept(BlockModelGenerators.createSimpleBlock(block, modelLocation));
+    }
+
+    @Override
     public void simpleItem(RegistrySupplier<Item> item) {
         this.itemModelGenerators.generateFlatItem(item.get(), ModelTemplates.FLAT_ITEM);
     }

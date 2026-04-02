@@ -9,6 +9,8 @@ import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
+import net.neoforged.neoforge.client.model.generators.ConfiguredModel;
+import net.neoforged.neoforge.client.model.generators.ModelFile;
 import net.neoforged.neoforge.client.model.generators.BlockStateProvider;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import org.jetbrains.annotations.NotNull;
@@ -43,7 +45,21 @@ public class NeoForgeBlockStateProvider extends BlockStateProvider implements Co
     @Override
     public void simpleBlockItem(Block block) {
         String name = BuiltInRegistries.BLOCK.getKey(block).getPath();
-        itemModels().withExistingParent(name, ResourceLocation.fromNamespaceAndPath(ProjectK.MOD_ID, "block/" + name));
+        itemModels().getBuilder(name).parent(new ModelFile.UncheckedModelFile(ResourceLocation.fromNamespaceAndPath(ProjectK.MOD_ID, "block/" + name)));
+    }
+
+    @Override
+    public void existingModelBlock(Block block, String modelPath) {
+        ResourceLocation modelLocation = ResourceLocation.parse(modelPath);
+        simpleBlock(block, new ModelFile.UncheckedModelFile(modelLocation));
+    }
+
+    @Override
+    public void existingModelBlockAllStates(Block block, String modelPath) {
+        ResourceLocation modelLocation = ResourceLocation.parse(modelPath);
+        getVariantBuilder(block).forAllStates(state -> ConfiguredModel.builder()
+                .modelFile(new ModelFile.UncheckedModelFile(modelLocation))
+                .build());
     }
 
     @Override

@@ -1,7 +1,9 @@
 package com.karasu256.projectk.block.entity.impl;
 
 import com.karasu256.projectk.client.animation.RotationAnimSpeed;
+import com.karasu256.projectk.data.AbyssEnergyData;
 import com.karasu256.projectk.energy.AbyssEnergy;
+import com.karasu256.projectk.energy.IAbyssEnergy;
 import com.karasu256.projectk.energy.IProjectKEnergy;
 import com.karasu256.projectk.utils.Id;
 import net.karasuniki.karasunikilib.api.block.entity.impl.AbstractEnergyBlockEntity;
@@ -14,6 +16,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.Nullable;
@@ -72,6 +75,7 @@ public abstract class AbstractPKEnergyBlockEntity<T extends IProjectKEnergy> ext
 
     @Override
     public long insert(ResourceLocation id, long maxAmount, boolean simulate) {
+        if (!canAcceptEnergy(id)) return 0;
         long capped = Math.min(maxAmount, capacity - pkEnergy.getValue());
         if (capped <= 0) return 0;
         long inserted = pkEnergy instanceof AbyssEnergy ae
@@ -106,6 +110,30 @@ public abstract class AbstractPKEnergyBlockEntity<T extends IProjectKEnergy> ext
 
     @Override
     public void setEnergy(long newValue) {
+    }
+
+    protected boolean canAcceptEnergy(@Nullable ResourceLocation id) {
+        if (id == null) return false;
+        if (pkEnergy instanceof IAbyssEnergy) {
+            return IAbyssEnergy.isAbyssEnergyId(id);
+        }
+        return true;
+    }
+
+    @Nullable
+    protected ResourceLocation getAbyssEnergyId() {
+        if (pkEnergy instanceof IAbyssEnergy) {
+            return pkEnergy.getId();
+        }
+        return null;
+    }
+
+    protected void applyAbyssEnergyData(ItemStack stack, long amount) {
+        ResourceLocation energyId = getAbyssEnergyId();
+        if (energyId == null) {
+            return;
+        }
+        AbyssEnergyData.applyToStack(stack, energyId, amount);
     }
 
     @Override

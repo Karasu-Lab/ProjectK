@@ -8,7 +8,7 @@ import net.minecraft.nbt.NbtOps;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 
-public class AbyssEnergy extends EnergyValue implements IProjectKEnergy {
+public class AbyssEnergy extends EnergyValue implements IAbyssEnergy {
 
     public AbyssEnergy(ResourceLocation id, long value) {
         super(id);
