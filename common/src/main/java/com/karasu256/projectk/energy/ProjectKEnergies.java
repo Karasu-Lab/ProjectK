@@ -21,6 +21,7 @@ import java.util.Optional;
 public class ProjectKEnergies implements IKRegistryInitializerTarget {
     private static final Map<ResourceLocation, RegistrySupplier<IEnergy>> ENERGIES = new LinkedHashMap<>();
     private static final Map<ResourceLocation, EnergyDefinition> DEFINITIONS = new LinkedHashMap<>();
+    private static final Map<ResourceLocation, Integer> MODEL_INDICES = new LinkedHashMap<>();
 
     public static final EnergyDefinition ABYSS = registerDefinition("abyss_energy", "Abyss", "深淵", EnergyKind.NEUTRAL, 500L);
     public static final EnergyDefinition YIN = registerDefinition("yin_abyss_energy", "§5Yin", "§5陰", EnergyKind.YIN, 500L);
@@ -43,6 +44,11 @@ public class ProjectKEnergies implements IKRegistryInitializerTarget {
 
     public static Optional<EnergyDefinition> getDefinition(ResourceLocation id) {
         return Optional.ofNullable(DEFINITIONS.get(id));
+    }
+
+    public static int getModelIndex(ResourceLocation id) {
+        Integer index = MODEL_INDICES.get(id);
+        return index == null ? 0 : index;
     }
 
     public static ResourceLocation getEnergyIdByKind(EnergyKind kind) {
@@ -68,6 +74,7 @@ public class ProjectKEnergies implements IKRegistryInitializerTarget {
         EnergyDefinition definition = new EnergyDefinition(id, enName, jaName, kind, defaultAmount);
         ENERGIES.put(id, energy);
         DEFINITIONS.put(id, definition);
+        MODEL_INDICES.put(id, MODEL_INDICES.size() + 1);
         return definition;
     }
 

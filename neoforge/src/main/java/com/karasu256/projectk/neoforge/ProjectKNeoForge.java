@@ -11,6 +11,8 @@ import com.karasu256.projectk.neoforge.config.ProjectKNeoForgeConfig;
 import com.karasu256.projectk.neoforge.integrations.NeoForgeModIntegrationSupplier;
 import com.karasu256.projectk.neoforge.platform.NeoForgeProjectKPlatform;
 import com.karasu256.projectk.platform.PlatformServices;
+import com.karasu256.projectk.registry.ItemsRegistry;
+import com.karasu256.projectk.utils.Id;
 import dev.architectury.registry.registries.RegistrarManager;
 import net.karasuniki.karasunikilib.api.KarasunikiLib;
 import net.karasuniki.karasunikilib.api.ModIntegrationBootstrapper;
@@ -18,6 +20,8 @@ import net.karasuniki.karasunikilib.api.registry.KarasunikiRegistries;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.ShaderInstance;
+import net.minecraft.client.renderer.item.ItemProperties;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.resources.ResourceLocation;
 import net.neoforged.fml.ModContainer;
@@ -67,6 +71,7 @@ public final class ProjectKNeoForge {
     @SuppressWarnings("deprecation")
     private void onClientSetup(FMLClientSetupEvent event) {
         ProjectKClient.initLate();
+        registerItemModelProperties();
         ItemBlockRenderTypes.setRenderLayer(ProjectKBlocks.ABYSS_GENERATOR.get(), RenderType.CUTOUT);
         ItemBlockRenderTypes.setRenderLayer(ProjectKBlocks.ABYSS_ENERGY_CABLE.get(), RenderType.translucent());
         ItemBlockRenderTypes.setRenderLayer(ProjectKBlocks.FLUID_ABYSS_ENERGY.get(), RenderType.translucent());
@@ -78,6 +83,13 @@ public final class ProjectKNeoForge {
         ItemBlockRenderTypes.setRenderLayer(ProjectKFluids.FLOWING_YIN_ABYSS_ENERGY.get(), RenderType.translucent());
         ItemBlockRenderTypes.setRenderLayer(ProjectKFluids.YANG_ABYSS_ENERGY.get(), RenderType.translucent());
         ItemBlockRenderTypes.setRenderLayer(ProjectKFluids.FLOWING_YANG_ABYSS_ENERGY.get(), RenderType.translucent());
+    }
+
+    private static void registerItemModelProperties() {
+        ResourceLocation propertyId = Id.id("abyss_energy");
+        for (ResourceLocation itemId : ItemsRegistry.getEnergySuffixItems()) {
+            ItemProperties.register(BuiltInRegistries.ITEM.get(itemId), propertyId, (stack, level, entity, seed) -> ProjectKClient.getAbyssEnergyModelIndex(stack));
+        }
     }
 
     private void onRegisterShaders(RegisterShadersEvent event) {

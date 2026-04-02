@@ -1,5 +1,25 @@
 {
-  "parent": "minecraft:item/generated",
+  "parent": "item/generated",
+  "overrides": [
+    {
+      "model": "projectk:item/abyss_ingot_projectk_abyss_energy",
+      "predicate": {
+        "projectk:abyss_energy": 1
+      }
+    },
+    {
+      "model": "projectk:item/abyss_ingot_projectk_yin_abyss_energy",
+      "predicate": {
+        "projectk:abyss_energy": 2
+      }
+    },
+    {
+      "model": "projectk:item/abyss_ingot_projectk_yang_abyss_energy",
+      "predicate": {
+        "projectk:abyss_energy": 3
+      }
+    }
+  ],
   "textures": {
     "layer0": "projectk:item/abyss_ingot"
   }

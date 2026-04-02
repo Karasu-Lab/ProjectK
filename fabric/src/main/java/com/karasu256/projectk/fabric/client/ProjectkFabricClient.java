@@ -6,11 +6,15 @@ import com.karasu256.projectk.client.ProjectKCoreShaders;
 import com.karasu256.projectk.client.screen.AbyssMagicTableScreen;
 import com.karasu256.projectk.fluid.ProjectKFluids;
 import com.karasu256.projectk.menu.ProjectKMenus;
+import com.karasu256.projectk.registry.ItemsRegistry;
+import com.karasu256.projectk.utils.Id;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
 import net.fabricmc.fabric.api.client.render.fluid.v1.FluidRenderHandlerRegistry;
 import net.fabricmc.fabric.api.client.render.fluid.v1.SimpleFluidRenderHandler;
 import net.fabricmc.fabric.api.client.rendering.v1.CoreShaderRegistrationCallback;
+import net.minecraft.client.renderer.item.ItemProperties;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.resources.ResourceLocation;
@@ -24,6 +28,7 @@ public class ProjectkFabricClient implements ClientModInitializer {
     public void onInitializeClient() {
         ProjectKClient.init();
         MenuScreens.register(ProjectKMenus.ABYSS_MAGIC_TABLE.get(), AbyssMagicTableScreen::new);
+        registerItemModelProperties();
         BlockRenderLayerMap.INSTANCE.putBlock(ProjectKBlocks.ABYSS_GENERATOR.get(), RenderType.cutout());
         BlockRenderLayerMap.INSTANCE.putBlock(ProjectKBlocks.ABYSS_ENERGY_CABLE.get(), RenderType.translucent());
         BlockRenderLayerMap.INSTANCE.putBlock(ProjectKBlocks.FLUID_ABYSS_ENERGY.get(), RenderType.translucent());
@@ -52,6 +57,13 @@ public class ProjectkFabricClient implements ClientModInitializer {
         });
 
         ProjectKClient.initLate();
+    }
+
+    private static void registerItemModelProperties() {
+        ResourceLocation propertyId = Id.id("abyss_energy");
+        for (ResourceLocation itemId : ItemsRegistry.getEnergySuffixItems()) {
+            ItemProperties.register(BuiltInRegistries.ITEM.get(itemId), propertyId, (stack, level, entity, seed) -> ProjectKClient.getAbyssEnergyModelIndex(stack));
+        }
     }
 
     private static void registerFluidRender(Fluid source, Fluid flowing, String textureBase) {

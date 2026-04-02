@@ -44,12 +44,16 @@ public class ProjectKBlockModelProvider implements DataProvider {
         }
 
         for (ResourceLocation itemId : ItemsRegistry.getEnergySuffixItems()) {
+            List<JsonObject> overrides = new ArrayList<>();
             for (ProjectKEnergies.EnergyDefinition definition : ProjectKEnergies.getDefinitions()) {
                 String suffix = energySuffix(definition.id());
                 String modelPath = "item/" + itemId.getPath() + "_" + suffix;
                 String texturePath = ProjectK.MOD_ID + ":item/" + itemId.getPath() + "_" + suffix;
                 futures.add(writeModel(output, modelPath, itemModel(texturePath)));
+                overrides.add(itemOverride(ABYSS_ENERGY_PROPERTY, ProjectKEnergies.getModelIndex(definition.id()), ProjectK.MOD_ID + ":" + modelPath));
             }
+            String baseTexture = ProjectK.MOD_ID + ":item/" + itemId.getPath();
+            futures.add(writeModel(output, "item/" + itemId.getPath(), itemModelWithOverrides(baseTexture, overrides)));
         }
 
         return CompletableFuture.allOf(futures.toArray(CompletableFuture[]::new));
@@ -138,9 +142,30 @@ public class ProjectKBlockModelProvider implements DataProvider {
         return json;
     }
 
+    private JsonObject itemModelWithOverrides(String texturePath, List<JsonObject> overrides) {
+        JsonObject json = itemModel(texturePath);
+        JsonArray array = new JsonArray();
+        for (JsonObject override : overrides) {
+            array.add(override);
+        }
+        json.add("overrides", array);
+        return json;
+    }
+
+    private JsonObject itemOverride(String predicateId, int predicateValue, String modelPath) {
+        JsonObject json = new JsonObject();
+        JsonObject predicate = new JsonObject();
+        predicate.addProperty(predicateId, predicateValue);
+        json.add("predicate", predicate);
+        json.addProperty("model", modelPath);
+        return json;
+    }
+
     private String energySuffix(ResourceLocation energyId) {
         return energyId.getNamespace() + "_" + energyId.getPath();
     }
+
+    private static final String ABYSS_ENERGY_PROPERTY = ProjectK.MOD_ID + ":abyss_energy";
 
     private JsonObject cubeElement(double[] from, double[] to, double[] uv) {
         JsonObject element = new JsonObject();
