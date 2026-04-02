@@ -9,6 +9,7 @@ import dev.architectury.core.fluid.SimpleArchitecturyFluidAttributes;
 import dev.architectury.registry.registries.RegistrySupplier;
 import net.karasuniki.karasunikilib.api.registry.IKRegistryInitializerTarget;
 import net.karasuniki.karasunikilib.api.registry.KRegistryInitializer;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.LiquidBlock;
 import net.minecraft.world.level.material.FlowingFluid;
@@ -44,7 +45,13 @@ public class ProjectKFluids implements IKRegistryInitializerTarget {
         Supplier<Fluid> sourceFluid = () -> sourceRef.get().get();
         Supplier<Fluid> flowingFluid = () -> flowingRef.get().get();
 
-        SimpleArchitecturyFluidAttributes attributes = new ProjectKFluidAttributes(sourceFluid, flowingFluid).blockSupplier(blockSupplier);
+        ResourceLocation stillTexture = fluidTexture(sourceId, "still");
+        ResourceLocation flowTexture = fluidTexture(sourceId, "flow");
+        SimpleArchitecturyFluidAttributes attributes = new ProjectKFluidAttributes(sourceFluid, flowingFluid)
+            .sourceTexture(stillTexture)
+            .flowingTexture(flowTexture)
+            .blockSupplier(blockSupplier);
+
         if (bucketSupplier != null) {
             attributes.bucketItemSupplier(bucketSupplier);
         }
@@ -60,6 +67,10 @@ public class ProjectKFluids implements IKRegistryInitializerTarget {
 
     private record FluidSet(ArchitecturyFluidAttributes attributes, RegistrySupplier<FlowingFluid> source,
                             RegistrySupplier<FlowingFluid> flowing) {
+    }
+
+    private static ResourceLocation fluidTexture(String baseName, String suffix) {
+        return ResourceLocation.fromNamespaceAndPath(ProjectK.MOD_ID, "block/" + baseName + "_" + suffix);
     }
 
     private static final class ProjectKFluidAttributes extends SimpleArchitecturyFluidAttributes {
