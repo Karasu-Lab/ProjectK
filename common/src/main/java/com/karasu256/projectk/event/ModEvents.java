@@ -26,12 +26,12 @@ public class ModEvents {
             ResourceLocation energyId;
 
             if (category == MobCategory.MONSTER) {
-                energyId = ProjectKEnergies.YIN_ABYSS_ENERGY.get().getId();
+                energyId = ProjectKEnergies.getEnergyIdByKind(ProjectKEnergies.EnergyKind.YIN);
             } else if (category == MobCategory.CREATURE || category == MobCategory.WATER_CREATURE ||
                     category == MobCategory.AXOLOTLS || category == MobCategory.UNDERGROUND_WATER_CREATURE) {
-                energyId = ProjectKEnergies.YANG_ABYSS_ENERGY.get().getId();
+                energyId = ProjectKEnergies.getEnergyIdByKind(ProjectKEnergies.EnergyKind.YANG);
             } else {
-                energyId = ProjectKEnergies.ABYSS_ENERGY.get().getId();
+                energyId = ProjectKEnergies.getEnergyIdByKind(ProjectKEnergies.EnergyKind.NEUTRAL);
             }
 
             AbyssEnergyEntity aeEntity = new AbyssEnergyEntity(ProjectKEntities.ABYSS_ENERGY_ENTITY.get(), entity.level());

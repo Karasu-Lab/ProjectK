@@ -16,8 +16,6 @@ public interface IAbyssEnergy extends IProjectKEnergy {
     }
 
     static boolean isAbyssEnergyId(@NotNull ResourceLocation id) {
-        return id.equals(ProjectKEnergies.ABYSS_ENERGY.get().getId())
-                || id.equals(ProjectKEnergies.YIN_ABYSS_ENERGY.get().getId())
-                || id.equals(ProjectKEnergies.YANG_ABYSS_ENERGY.get().getId());
+        return ProjectKEnergies.isAbyssEnergyId(id);
     }
 }

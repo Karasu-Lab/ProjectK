@@ -2,8 +2,10 @@ package com.karasu256.projectk.fluid;
 
 import com.karasu256.projectk.ProjectK;
 import com.karasu256.projectk.block.ProjectKBlocks;
+import com.karasu256.projectk.energy.ProjectKEnergies;
 import com.karasu256.projectk.item.ProjectKItems;
 import com.karasu256.projectk.registry.FluidsRegistry;
+import com.karasu256.projectk.registry.EnergyAutoRegistry;
 import dev.architectury.core.fluid.ArchitecturyFluidAttributes;
 import dev.architectury.core.fluid.SimpleArchitecturyFluidAttributes;
 import dev.architectury.registry.registries.RegistrySupplier;
@@ -15,27 +17,50 @@ import net.minecraft.world.level.block.LiquidBlock;
 import net.minecraft.world.level.material.FlowingFluid;
 import net.minecraft.world.level.material.Fluid;
 
+import java.util.Map;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Supplier;
 
 @KRegistryInitializer(modId = ProjectK.MOD_ID, order = 0)
 public class ProjectKFluids implements IKRegistryInitializerTarget {
-    private static final FluidSet ABYSS = registerFluidSet("fluid_abyss_energy", "flowing_fluid_abyss_energy", () -> ProjectKBlocks.FLUID_ABYSS_ENERGY, () -> ProjectKItems.BUCKET_OF_ABYSS_ENERGY);
-    public static final ArchitecturyFluidAttributes ABYSS_ENERGY_ATTRIBUTES = ABYSS.attributes();
-    public static final RegistrySupplier<FlowingFluid> ABYSS_ENERGY = ABYSS.source();
-    public static final RegistrySupplier<FlowingFluid> FLOWING_ABYSS_ENERGY = ABYSS.flowing();
+    private static final Map<ResourceLocation, FluidSet> ABYSS_FLUIDS = EnergyAutoRegistry.mapByEnergy(
+            definition -> "fluid_" + definition.idPath(),
+            (definition, id, map) -> {
+                String flowingId = "flowing_" + id;
+                map.put(definition.id(), registerFluidSet(
+                        id,
+                        flowingId,
+                        () -> ProjectKBlocks.getFluidBlock(definition.id()),
+                        () -> ProjectKItems.getBucket(definition.id())
+                ));
+            }
+    );
 
-    private static final FluidSet YIN = registerFluidSet("fluid_yin_abyss_energy", "flowing_fluid_yin_abyss_energy", () -> ProjectKBlocks.FLUID_YIN_ABYSS_ENERGY, () -> ProjectKItems.BUCKET_OF_YIN_ABYSS_ENERGY);
-    public static final ArchitecturyFluidAttributes YIN_ABYSS_ENERGY_ATTRIBUTES = YIN.attributes();
-    public static final RegistrySupplier<FlowingFluid> YIN_ABYSS_ENERGY = YIN.source();
-    public static final RegistrySupplier<FlowingFluid> FLOWING_YIN_ABYSS_ENERGY = YIN.flowing();
+    public static final ArchitecturyFluidAttributes ABYSS_ENERGY_ATTRIBUTES = getAttributes(ProjectKEnergies.ABYSS.id());
+    public static final RegistrySupplier<FlowingFluid> ABYSS_ENERGY = getSource(ProjectKEnergies.ABYSS.id());
+    public static final RegistrySupplier<FlowingFluid> FLOWING_ABYSS_ENERGY = getFlowing(ProjectKEnergies.ABYSS.id());
 
-    private static final FluidSet YANG = registerFluidSet("fluid_yang_abyss_energy", "flowing_fluid_yang_abyss_energy", () -> ProjectKBlocks.FLUID_YANG_ABYSS_ENERGY, () -> ProjectKItems.BUCKET_OF_YANG_ABYSS_ENERGY);
-    public static final ArchitecturyFluidAttributes YANG_ABYSS_ENERGY_ATTRIBUTES = YANG.attributes();
-    public static final RegistrySupplier<FlowingFluid> YANG_ABYSS_ENERGY = YANG.source();
-    public static final RegistrySupplier<FlowingFluid> FLOWING_YANG_ABYSS_ENERGY = YANG.flowing();
+    public static final ArchitecturyFluidAttributes YIN_ABYSS_ENERGY_ATTRIBUTES = getAttributes(ProjectKEnergies.YIN.id());
+    public static final RegistrySupplier<FlowingFluid> YIN_ABYSS_ENERGY = getSource(ProjectKEnergies.YIN.id());
+    public static final RegistrySupplier<FlowingFluid> FLOWING_YIN_ABYSS_ENERGY = getFlowing(ProjectKEnergies.YIN.id());
+
+    public static final ArchitecturyFluidAttributes YANG_ABYSS_ENERGY_ATTRIBUTES = getAttributes(ProjectKEnergies.YANG.id());
+    public static final RegistrySupplier<FlowingFluid> YANG_ABYSS_ENERGY = getSource(ProjectKEnergies.YANG.id());
+    public static final RegistrySupplier<FlowingFluid> FLOWING_YANG_ABYSS_ENERGY = getFlowing(ProjectKEnergies.YANG.id());
 
     public static void init() {
+    }
+
+    public static RegistrySupplier<FlowingFluid> getSource(ResourceLocation energyId) {
+        return ABYSS_FLUIDS.get(energyId).source();
+    }
+
+    public static RegistrySupplier<FlowingFluid> getFlowing(ResourceLocation energyId) {
+        return ABYSS_FLUIDS.get(energyId).flowing();
+    }
+
+    public static ArchitecturyFluidAttributes getAttributes(ResourceLocation energyId) {
+        return ABYSS_FLUIDS.get(energyId).attributes();
     }
 
     private static FluidSet registerFluidSet(String sourceId, String flowingId, Supplier<RegistrySupplier<? extends LiquidBlock>> blockSupplier, Supplier<RegistrySupplier<Item>> bucketSupplier) {

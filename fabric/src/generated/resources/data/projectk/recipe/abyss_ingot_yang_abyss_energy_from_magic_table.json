@@ -9,7 +9,13 @@
     }
   },
   "result": {
+    "components": {
+      "projectk:abyss_energy": {
+        "amount": 500,
+        "energy_id": "projectk:yang_abyss_energy"
+      }
+    },
     "count": 1,
-    "id": "projectk:yang_abyss_ingot"
+    "id": "projectk:abyss_ingot"
   }
 }

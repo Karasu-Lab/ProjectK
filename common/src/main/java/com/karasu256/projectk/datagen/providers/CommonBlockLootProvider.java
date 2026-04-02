@@ -1,6 +1,7 @@
 package com.karasu256.projectk.datagen.providers;
 
 import com.karasu256.projectk.block.ProjectKBlocks;
+import com.karasu256.projectk.energy.ProjectKEnergies;
 import com.karasu256.projectk.item.ProjectKItems;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.loot.BlockLootSubProvider;
@@ -22,6 +23,9 @@ public class CommonBlockLootProvider extends BlockLootSubProvider {
         this.add(ProjectKBlocks.KARASIUM_ORE.get(), block -> createOreDrop(block, ProjectKItems.RAW_KARASIUM.get()));
         this.add(ProjectKBlocks.DEEPSLATE_KARASIUM_ORE.get(), block -> createOreDrop(block, ProjectKItems.RAW_KARASIUM.get()));
         this.dropSelf(ProjectKBlocks.ABYSS_GENERATOR.get());
+        for (ProjectKEnergies.EnergyDefinition definition : ProjectKEnergies.getDefinitions()) {
+            this.dropSelf(ProjectKBlocks.getCore(definition.id()).get());
+        }
     }
 
     @Override

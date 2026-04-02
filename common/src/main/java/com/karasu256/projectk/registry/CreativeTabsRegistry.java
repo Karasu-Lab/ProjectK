@@ -15,11 +15,13 @@ import net.minecraft.world.level.ItemLike;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Supplier;
 
 @KRegistry(modId = ProjectK.MOD_ID, order = 7)
 public class CreativeTabsRegistry implements IKRegistryTarget {
     private static final DeferredRegister<CreativeModeTab> TABS = DeferredRegister.create(ProjectK.MOD_ID, Registries.CREATIVE_MODE_TAB);
     private static final List<RegistrySupplier<? extends ItemLike>> ITEMS = new ArrayList<>();
+    private static final List<Supplier<ItemStack>> STACKS = new ArrayList<>();
 
     public static final RegistrySupplier<CreativeModeTab> TAB = TABS.register(id(), () -> CreativeModeTab.builder(CreativeModeTab.Row.BOTTOM, ITEMS.size()).title(title()).icon(CreativeTabsRegistry::icon).displayItems(CreativeTabsRegistry::displayItems).build());
 
@@ -39,11 +41,19 @@ public class CreativeTabsRegistry implements IKRegistryTarget {
         for (RegistrySupplier<? extends ItemLike> item : ITEMS) {
             output.accept(item.get());
         }
+        for (Supplier<ItemStack> stack : STACKS) {
+            output.accept(stack.get());
+        }
     }
 
     public static <T extends Item> RegistrySupplier<T> tab(RegistrySupplier<T> registrySupplier) {
         ITEMS.add(registrySupplier);
         return registrySupplier;
+    }
+
+    public static Supplier<ItemStack> tabStack(Supplier<ItemStack> stackSupplier) {
+        STACKS.add(stackSupplier);
+        return stackSupplier;
     }
 
     public static void register() {

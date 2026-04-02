@@ -11,6 +11,7 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.recipes.RecipeOutput;
 import net.minecraft.data.recipes.RecipeProvider;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
@@ -27,18 +28,11 @@ public class AbyssMagicTableRecipeProvider extends RecipeProvider {
     @Override
     public void buildRecipes(RecipeOutput output) {
         this.output = output;
-
-        ItemStack abyssIngot = new ItemStack(ProjectKItems.ABYSS_INGOT.get());
-        AbyssEnergyData.applyToStack(abyssIngot, ProjectKEnergies.ABYSS_ENERGY.get().getId(), 500L);
-        addAbyssMagicTableRecipe(new AbyssMagicTableRecipe(ProjectKEnergies.ABYSS_ENERGY.get().getId(), 500L, new IngredientStack(Ingredient.of(Items.IRON_INGOT), 1), abyssIngot));
-
-        ItemStack yinIngot = new ItemStack(ProjectKItems.YIN_ABYSS_INGOT.get());
-        AbyssEnergyData.applyToStack(yinIngot, ProjectKEnergies.YIN_ABYSS_ENERGY.get().getId(), 500L);
-        addAbyssMagicTableRecipe(new AbyssMagicTableRecipe(ProjectKEnergies.YIN_ABYSS_ENERGY.get().getId(), 500L, new IngredientStack(Ingredient.of(Items.IRON_INGOT), 1), yinIngot));
-
-        ItemStack yangIngot = new ItemStack(ProjectKItems.YANG_ABYSS_INGOT.get());
-        AbyssEnergyData.applyToStack(yangIngot, ProjectKEnergies.YANG_ABYSS_ENERGY.get().getId(), 500L);
-        addAbyssMagicTableRecipe(new AbyssMagicTableRecipe(ProjectKEnergies.YANG_ABYSS_ENERGY.get().getId(), 500L, new IngredientStack(Ingredient.of(Items.IRON_INGOT), 1), yangIngot));
+        for (ProjectKEnergies.EnergyDefinition definition : ProjectKEnergies.getDefinitions()) {
+            ItemStack ingot = new ItemStack(ProjectKItems.ABYSS_INGOT.get());
+            AbyssEnergyData.applyToStack(ingot, definition.id(), definition.defaultAmount());
+            addAbyssMagicTableRecipe(definition.id(), new AbyssMagicTableRecipe(definition.id(), definition.defaultAmount(), new IngredientStack(Ingredient.of(Items.IRON_INGOT), 1), ingot));
+        }
     }
 
     @Override
@@ -46,8 +40,9 @@ public class AbyssMagicTableRecipeProvider extends RecipeProvider {
         return "ProjectK Abyss Magic Table Recipes";
     }
 
-    private void addAbyssMagicTableRecipe(AbyssMagicTableRecipe recipe) {
+    private void addAbyssMagicTableRecipe(ResourceLocation energyId, AbyssMagicTableRecipe recipe) {
         String resultPath = BuiltInRegistries.ITEM.getKey(recipe.result().getItem()).getPath();
-        output.accept(Id.id(resultPath + "_from_magic_table"), recipe, null);
+        String energyPath = energyId.getPath();
+        output.accept(Id.id(resultPath + "_" + energyPath + "_from_magic_table"), recipe, null);
     }
 }

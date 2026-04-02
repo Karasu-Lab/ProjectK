@@ -8,7 +8,7 @@ import net.minecraft.core.component.DataComponentType;
 
 import static com.karasu256.projectk.registry.DataComponentTypesRegistry.dataComponent;
 
-@KRegistryInitializer(modId = ProjectK.MOD_ID, order = 4)
+@KRegistryInitializer(modId = ProjectK.MOD_ID, order = 1)
 public class ProjectKDataComponets implements IKRegistryInitializerTarget {
     public static RegistrySupplier<DataComponentType<EMCData>> EMC_DATACOMPONENT_TYPE = dataComponent("emc",
             () -> DataComponentType.<EMCData>builder()

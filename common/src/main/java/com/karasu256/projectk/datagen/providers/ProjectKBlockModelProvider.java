@@ -3,6 +3,7 @@ package com.karasu256.projectk.datagen.providers;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.karasu256.projectk.ProjectK;
+import com.karasu256.projectk.energy.ProjectKEnergies;
 import net.minecraft.data.CachedOutput;
 import net.minecraft.data.DataProvider;
 import net.minecraft.data.PackOutput;
@@ -10,6 +11,8 @@ import net.minecraft.data.PackOutput.PathProvider;
 import net.minecraft.resources.ResourceLocation;
 
 import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
 public class ProjectKBlockModelProvider implements DataProvider {
@@ -24,16 +27,22 @@ public class ProjectKBlockModelProvider implements DataProvider {
 
     @Override
     public CompletableFuture<?> run(CachedOutput output) {
-        return CompletableFuture.allOf(
-                writeModel(output, "block/abyss_magic_table", abyssMagicTableModel()),
-                writeModel(output, "item/abyss_magic_table", abyssMagicTableItemModel()),
-                writeModel(output, "block/abyss_energy_cable", cableModel("abyss_energy_cable")),
-                writeModel(output, "block/abyss_energy_cable_center", cableCenterModel("abyss_energy_cable")),
-                writeModel(output, "block/abyss_energy_cable_side", cableSideModel("abyss_energy_cable")),
-                writeModel(output, "block/fluid_abyss_energy", fluidModel("fluid_abyss_energy")),
-                writeModel(output, "block/fluid_yin_abyss_energy", fluidModel("fluid_yin_abyss_energy")),
-                writeModel(output, "block/fluid_yang_abyss_energy", fluidModel("fluid_yang_abyss_energy"))
-        );
+        List<CompletableFuture<?>> futures = new ArrayList<>();
+        futures.add(writeModel(output, "block/abyss_magic_table", abyssMagicTableModel()));
+        futures.add(writeModel(output, "item/abyss_magic_table", abyssMagicTableItemModel()));
+        futures.add(writeModel(output, "block/abyss_energy_cable", cableModel("abyss_energy_cable")));
+        futures.add(writeModel(output, "block/abyss_energy_cable_center", cableCenterModel("abyss_energy_cable")));
+        futures.add(writeModel(output, "block/abyss_energy_cable_side", cableSideModel("abyss_energy_cable")));
+
+        for (ProjectKEnergies.EnergyDefinition definition : ProjectKEnergies.getDefinitions()) {
+            String fluidId = "fluid_" + definition.idPath();
+            futures.add(writeModel(output, "block/" + fluidId, fluidModel(fluidId)));
+
+            String coreId = definition.idPath().replace("_energy", "_core");
+            futures.add(writeModel(output, "block/" + coreId, coreModel()));
+        }
+
+        return CompletableFuture.allOf(futures.toArray(CompletableFuture[]::new));
     }
 
     @Override
@@ -97,6 +106,15 @@ public class ProjectKBlockModelProvider implements DataProvider {
         textures.addProperty("particle", ProjectK.MOD_ID + ":block/" + id + "_still");
         textures.addProperty("still", ProjectK.MOD_ID + ":block/" + id + "_still");
         textures.addProperty("flow", ProjectK.MOD_ID + ":block/" + id + "_flow");
+        json.add("textures", textures);
+        return json;
+    }
+
+    private JsonObject coreModel() {
+        JsonObject json = new JsonObject();
+        json.addProperty("parent", "minecraft:block/cube_all");
+        JsonObject textures = new JsonObject();
+        textures.addProperty("all", ProjectK.MOD_ID + ":block/abyss_core");
         json.add("textures", textures);
         return json;
     }

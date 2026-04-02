@@ -1,6 +1,7 @@
 package com.karasu256.projectk.datagen.providers;
 
 import com.karasu256.projectk.block.ProjectKBlocks;
+import com.karasu256.projectk.energy.ProjectKEnergies;
 import dev.architectury.registry.registries.RegistrarManager;
 import net.karasuniki.karasunikilib.api.KarasunikiLib;
 import net.karasuniki.karasunikilib.api.data.IEnergy;
@@ -46,8 +47,12 @@ public class CommonBlockStateProvider {
             );
         }
 
-        generator.simpleBlock(ProjectKBlocks.ABYSS_CORE.get());
-        generator.simpleBlockItem(ProjectKBlocks.ABYSS_CORE.get());
+        for (ProjectKEnergies.EnergyDefinition definition : ProjectKEnergies.getDefinitions()) {
+            String coreId = definition.idPath().replace("_energy", "_core");
+            Block core = ProjectKBlocks.getCore(definition.id()).get();
+            generator.existingModelBlock(core, "projectk:block/" + coreId);
+            generator.simpleBlockItem(core);
+        }
 
         generator.existingModelBlock(ProjectKBlocks.ABYSS_MAGIC_TABLE.get(), "projectk:block/abyss_magic_table");
         generator.simpleBlockItem(ProjectKBlocks.ABYSS_MAGIC_TABLE.get());
@@ -55,8 +60,9 @@ public class CommonBlockStateProvider {
         generator.multipartCable(ProjectKBlocks.ABYSS_ENERGY_CABLE.get(), "abyss_energy_cable");
         generator.simpleBlockItem(ProjectKBlocks.ABYSS_ENERGY_CABLE.get());
 
-        generator.existingModelBlockAllStates(ProjectKBlocks.FLUID_ABYSS_ENERGY.get(), "projectk:block/fluid_abyss_energy");
-        generator.existingModelBlockAllStates(ProjectKBlocks.FLUID_YIN_ABYSS_ENERGY.get(), "projectk:block/fluid_yin_abyss_energy");
-        generator.existingModelBlockAllStates(ProjectKBlocks.FLUID_YANG_ABYSS_ENERGY.get(), "projectk:block/fluid_yang_abyss_energy");
+        for (ProjectKEnergies.EnergyDefinition definition : ProjectKEnergies.getDefinitions()) {
+            String fluidId = "fluid_" + definition.idPath();
+            generator.existingModelBlockAllStates(ProjectKBlocks.getFluidBlock(definition.id()).get(), "projectk:block/" + fluidId);
+        }
     }
 }

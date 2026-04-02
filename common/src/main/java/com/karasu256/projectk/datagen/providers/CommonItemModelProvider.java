@@ -1,6 +1,7 @@
 package com.karasu256.projectk.datagen.providers;
 
 import com.karasu256.projectk.item.ProjectKItems;
+import com.karasu256.projectk.energy.ProjectKEnergies;
 import dev.architectury.registry.registries.RegistrySupplier;
 import net.minecraft.world.item.Item;
 import org.jetbrains.annotations.NotNull;
@@ -17,11 +18,9 @@ public class CommonItemModelProvider {
         generator.simpleItem(ProjectKItems.KARASIUM_DUST);
         generator.simpleItem(ProjectKItems.WITHER_BONE);
         generator.simpleItem(ProjectKItems.ABYSS_INGOT);
-        generator.simpleItem(ProjectKItems.YIN_ABYSS_INGOT);
-        generator.simpleItem(ProjectKItems.YANG_ABYSS_INGOT);
         generator.simpleItem(ProjectKItems.ABYSS_WRENCH);
-        generator.simpleItem(ProjectKItems.BUCKET_OF_ABYSS_ENERGY);
-        generator.simpleItem(ProjectKItems.BUCKET_OF_YIN_ABYSS_ENERGY);
-        generator.simpleItem(ProjectKItems.BUCKET_OF_YANG_ABYSS_ENERGY);
+        for (ProjectKEnergies.EnergyDefinition definition : ProjectKEnergies.getDefinitions()) {
+            generator.simpleItem(ProjectKItems.getBucket(definition.id()));
+        }
     }
 }
