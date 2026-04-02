@@ -16,5 +16,19 @@
   "tooltip.projectk.wthit.held_item": "Item: %s",
   "tooltip.projectk.wthit.input_item": "Input: %s",
   "tooltip.projectk.wthit.output_item": "Output: %s",
-  "tooltip.projectk.wthit.progress": "Progress: %s%%"
+  "tooltip.projectk.wthit.progress": "Progress: %s%%",
+  "container.projectk.abyss_magic_table": "Abyss Magic Table",
+  "item.projectk.abyss_wrench": "Abyss Wrench",
+  "wrench_behavior.projectk.input": "Input",
+  "wrench_behavior.projectk.output": "Output",
+  "wrench_behavior.projectk.normal": "Normal",
+  "wrench_behavior.projectk.none": "None",
+  "block.projectk.abyss_magic_table": "Abyss Magic Table",
+  "block.projectk.abyss_energy_cable": "Abyss Energy Cable",
+  "block.projectk.karasium_ore": "Karasium Ore",
+  "block.projectk.deepslate_karasium_ore": "Deepslate Karasium Ore",
+  "item.projectk.karasium": "Karasium",
+  "item.projectk.raw_karasium": "Raw Karasium",
+  "item.projectk.karasium_dust": "Karasium Dust",
+  "item.projectk.abyss_ingot": "Abyss Ingot"
 }
