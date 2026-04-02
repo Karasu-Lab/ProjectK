@@ -1,6 +1,5 @@
 {
   "energy.projectk.abyss_energy": "深淵",
-  "item.projectk.wither_bone": "ウィザーの骨",
   "energy.projectk.yin_abyss_energy": "§5陰",
   "energy.projectk.yang_abyss_energy": "§d陽",
   "energy.projectk.abyss_energy_format": "%sの深淵エネルギー",
@@ -24,6 +23,8 @@
   "block.projectk.abyss_energy_cable": "深淵エネルギーケーブル",
   "block.projectk.karasium_ore": "カラシウム鉱石",
   "block.projectk.deepslate_karasium_ore": "深層カラシウム鉱石",
+  "block.projectk.abyss_core": "深淵コア",
+  "item.projectk.wither_bone": "ウィザーの骨",
   "item.projectk.karasium": "カラシウム",
   "item.projectk.raw_karasium": "カラシウム原石",
   "item.projectk.karasium_dust": "カラシウムダスト",

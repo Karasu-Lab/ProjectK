@@ -1,6 +1,5 @@
 {
   "category.projectk": "ProjectK",
-  "item.projectk.wither_bone": "Wither Bone",
   "rei.category.projectk.in_biome_in_block_crafting": "In-Biome Block Crafting",
   "rei.category.projectk.in_biome_in_block_crafting.requirement": "Biome required: %s",
   "rei.category.projectk.in_biome_in_block_crafting.requirement_tag": "Biome tag required: %s",
@@ -26,6 +25,8 @@
   "block.projectk.abyss_energy_cable": "Abyss Energy Cable",
   "block.projectk.karasium_ore": "Karasium Ore",
   "block.projectk.deepslate_karasium_ore": "Deepslate Karasium Ore",
+  "block.projectk.abyss_core": "Abyss Core",
+  "item.projectk.wither_bone": "Wither Bone",
   "item.projectk.karasium": "Karasium",
   "item.projectk.raw_karasium": "Raw Karasium",
   "item.projectk.karasium_dust": "Karasium Dust",
