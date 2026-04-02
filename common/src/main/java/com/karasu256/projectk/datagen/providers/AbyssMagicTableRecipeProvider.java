@@ -41,6 +41,11 @@ public class AbyssMagicTableRecipeProvider extends RecipeProvider {
         addAbyssMagicTableRecipe(new AbyssMagicTableRecipe(ProjectKEnergies.YANG_ABYSS_ENERGY.get().getId(), 500L, new IngredientStack(Ingredient.of(Items.IRON_INGOT), 1), yangIngot));
     }
 
+    @Override
+    public String getName() {
+        return "ProjectK Abyss Magic Table Recipes";
+    }
+
     private void addAbyssMagicTableRecipe(AbyssMagicTableRecipe recipe) {
         String resultPath = BuiltInRegistries.ITEM.getKey(recipe.result().getItem()).getPath();
         output.accept(Id.id(resultPath + "_from_magic_table"), recipe, null);

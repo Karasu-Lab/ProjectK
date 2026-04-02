@@ -1,0 +1,21 @@
+{
+  "type": "projectk:abyss_magic_table",
+  "energy_amount": 500,
+  "energy_id": "projectk:abyss_energy",
+  "input": {
+    "count": 1,
+    "ingredient": {
+      "item": "minecraft:iron_ingot"
+    }
+  },
+  "result": {
+    "components": {
+      "projectk:abyss_energy": {
+        "amount": 500,
+        "energy_id": "projectk:abyss_energy"
+      }
+    },
+    "count": 1,
+    "id": "projectk:abyss_ingot"
+  }
+}

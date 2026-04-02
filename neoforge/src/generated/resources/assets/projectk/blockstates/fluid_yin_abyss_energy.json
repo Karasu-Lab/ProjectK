@@ -1,0 +1,52 @@
+{
+  "variants": {
+    "level=0": {
+      "model": "projectk:block/fluid_yin_abyss_energy"
+    },
+    "level=1": {
+      "model": "projectk:block/fluid_yin_abyss_energy"
+    },
+    "level=10": {
+      "model": "projectk:block/fluid_yin_abyss_energy"
+    },
+    "level=11": {
+      "model": "projectk:block/fluid_yin_abyss_energy"
+    },
+    "level=12": {
+      "model": "projectk:block/fluid_yin_abyss_energy"
+    },
+    "level=13": {
+      "model": "projectk:block/fluid_yin_abyss_energy"
+    },
+    "level=14": {
+      "model": "projectk:block/fluid_yin_abyss_energy"
+    },
+    "level=15": {
+      "model": "projectk:block/fluid_yin_abyss_energy"
+    },
+    "level=2": {
+      "model": "projectk:block/fluid_yin_abyss_energy"
+    },
+    "level=3": {
+      "model": "projectk:block/fluid_yin_abyss_energy"
+    },
+    "level=4": {
+      "model": "projectk:block/fluid_yin_abyss_energy"
+    },
+    "level=5": {
+      "model": "projectk:block/fluid_yin_abyss_energy"
+    },
+    "level=6": {
+      "model": "projectk:block/fluid_yin_abyss_energy"
+    },
+    "level=7": {
+      "model": "projectk:block/fluid_yin_abyss_energy"
+    },
+    "level=8": {
+      "model": "projectk:block/fluid_yin_abyss_energy"
+    },
+    "level=9": {
+      "model": "projectk:block/fluid_yin_abyss_energy"
+    }
+  }
+}

@@ -20,5 +20,8 @@ public class CommonItemModelProvider {
         generator.simpleItem(ProjectKItems.YIN_ABYSS_INGOT);
         generator.simpleItem(ProjectKItems.YANG_ABYSS_INGOT);
         generator.simpleItem(ProjectKItems.ABYSS_WRENCH);
+        generator.simpleItem(ProjectKItems.BUCKET_OF_ABYSS_ENERGY);
+        generator.simpleItem(ProjectKItems.BUCKET_OF_YIN_ABYSS_ENERGY);
+        generator.simpleItem(ProjectKItems.BUCKET_OF_YANG_ABYSS_ENERGY);
     }
 }

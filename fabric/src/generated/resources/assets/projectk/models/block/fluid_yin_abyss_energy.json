@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/water",
+  "textures": {
+    "flow": "projectk:block/fluid_yin_abyss_energy_flow",
+    "particle": "projectk:block/fluid_yin_abyss_energy_still",
+    "still": "projectk:block/fluid_yin_abyss_energy_still"
+  }
+}

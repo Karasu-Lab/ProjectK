@@ -54,5 +54,9 @@ public class CommonBlockStateProvider {
 
         generator.multipartCable(ProjectKBlocks.ABYSS_ENERGY_CABLE.get(), "abyss_energy_cable");
         generator.simpleBlockItem(ProjectKBlocks.ABYSS_ENERGY_CABLE.get());
+
+        generator.existingModelBlockAllStates(ProjectKBlocks.FLUID_ABYSS_ENERGY.get(), "projectk:block/fluid_abyss_energy");
+        generator.existingModelBlockAllStates(ProjectKBlocks.FLUID_YIN_ABYSS_ENERGY.get(), "projectk:block/fluid_yin_abyss_energy");
+        generator.existingModelBlockAllStates(ProjectKBlocks.FLUID_YANG_ABYSS_ENERGY.get(), "projectk:block/fluid_yang_abyss_energy");
     }
 }

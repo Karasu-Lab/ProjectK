@@ -30,6 +30,11 @@ public class InBiomeInBlockCraftingProvider extends RecipeProvider {
         addWitherRoseRecipe(output);
     }
 
+    @Override
+    public String getName() {
+        return "ProjectK In-Biome Block Crafting Recipes";
+    }
+
     private void addWitherRoseRecipe(RecipeOutput output) {
         ItemStack result = new ItemStack(Items.WITHER_ROSE);
         result.set(DataComponents.FIRE_RESISTANT, Unit.INSTANCE);

@@ -29,7 +29,10 @@ public class ProjectKBlockModelProvider implements DataProvider {
                 writeModel(output, "item/abyss_magic_table", abyssMagicTableItemModel()),
                 writeModel(output, "block/abyss_energy_cable", cableModel("abyss_energy_cable")),
                 writeModel(output, "block/abyss_energy_cable_center", cableCenterModel("abyss_energy_cable")),
-                writeModel(output, "block/abyss_energy_cable_side", cableSideModel("abyss_energy_cable"))
+                writeModel(output, "block/abyss_energy_cable_side", cableSideModel("abyss_energy_cable")),
+                writeModel(output, "block/fluid_abyss_energy", fluidModel("fluid_abyss_energy")),
+                writeModel(output, "block/fluid_yin_abyss_energy", fluidModel("fluid_yin_abyss_energy")),
+                writeModel(output, "block/fluid_yang_abyss_energy", fluidModel("fluid_yang_abyss_energy"))
         );
     }
 
@@ -84,6 +87,17 @@ public class ProjectKBlockModelProvider implements DataProvider {
         JsonArray elements = new JsonArray();
         elements.add(cubeElement(new double[]{5.0, 5.0, 0.0}, new double[]{11.0, 11.0, 5.0}, new double[]{0.0, 0.0, 16.0, 16.0}));
         json.add("elements", elements);
+        return json;
+    }
+
+    private JsonObject fluidModel(String id) {
+        JsonObject json = new JsonObject();
+        json.addProperty("parent", "minecraft:block/water");
+        JsonObject textures = new JsonObject();
+        textures.addProperty("particle", ProjectK.MOD_ID + ":block/" + id + "_still");
+        textures.addProperty("still", ProjectK.MOD_ID + ":block/" + id + "_still");
+        textures.addProperty("flow", ProjectK.MOD_ID + ":block/" + id + "_flow");
+        json.add("textures", textures);
         return json;
     }
 

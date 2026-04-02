@@ -2,12 +2,15 @@ package com.karasu256.projectk.block;
 
 import com.karasu256.projectk.ProjectK;
 import com.karasu256.projectk.block.custom.*;
+import com.karasu256.projectk.fluid.ProjectKFluids;
+import com.karasu256.projectk.platform.PlatformServices;
 import dev.architectury.registry.registries.RegistrySupplier;
 import net.karasuniki.karasunikilib.api.registry.IKRegistryInitializerTarget;
 import net.karasuniki.karasunikilib.api.registry.KRegistryInitializer;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.LiquidBlock;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 
@@ -21,6 +24,9 @@ public class ProjectKBlocks implements IKRegistryInitializerTarget {
     public static RegistrySupplier<Block> ABYSS_ENERGY_CABLE = block("abyss_energy_cable", () -> new AbyssEnergyCable(BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_BLOCK).noOcclusion(), ProjectKBlock.CustomProperties.of().capacity(10000L).transferRate(1000L)), new Item.Properties());
     public static RegistrySupplier<Block> KARASIUM_ORE = block("karasium_ore", ProjectKBlock::new, new Item.Properties());
     public static RegistrySupplier<Block> DEEPSLATE_KARASIUM_ORE = block("deepslate_karasium_ore", () -> new ProjectKBlock(Block.Properties.ofFullCopy(Blocks.DEEPSLATE)), new Item.Properties());
+    public static RegistrySupplier<LiquidBlock> FLUID_ABYSS_ENERGY = block("fluid_abyss_energy", () -> PlatformServices.platform().createFluidBlock(ProjectKFluids.ABYSS_ENERGY, BlockBehaviour.Properties.ofFullCopy(Blocks.WATER).noLootTable()));
+    public static RegistrySupplier<LiquidBlock> FLUID_YIN_ABYSS_ENERGY = block("fluid_yin_abyss_energy", () -> PlatformServices.platform().createFluidBlock(ProjectKFluids.YIN_ABYSS_ENERGY, BlockBehaviour.Properties.ofFullCopy(Blocks.WATER).noLootTable()));
+    public static RegistrySupplier<LiquidBlock> FLUID_YANG_ABYSS_ENERGY = block("fluid_yang_abyss_energy", () -> PlatformServices.platform().createFluidBlock(ProjectKFluids.YANG_ABYSS_ENERGY, BlockBehaviour.Properties.ofFullCopy(Blocks.WATER).noLootTable()));
 
     public static void init() {
     }

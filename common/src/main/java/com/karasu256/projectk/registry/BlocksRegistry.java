@@ -1,10 +1,10 @@
 package com.karasu256.projectk.registry;
 
 import com.karasu256.projectk.ProjectK;
+import dev.architectury.registry.registries.RegistrySupplier;
 import net.karasuniki.karasunikilib.api.registry.IKRegistryTarget;
 import net.karasuniki.karasunikilib.api.registry.KBlockRegistry;
 import net.karasuniki.karasunikilib.api.registry.KRegistry;
-import dev.architectury.registry.registries.RegistrySupplier;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 
@@ -18,13 +18,15 @@ public class BlocksRegistry implements IKRegistryTarget {
         KBlockRegistry.register(ProjectK.MOD_ID);
     }
 
-    public static RegistrySupplier<Block> block(String id, Supplier<Block> block) {
-        return KBlockRegistry.block(ProjectK.MOD_ID, id, block);
+    @SuppressWarnings("unchecked")
+    public static <T extends Block> RegistrySupplier<T> block(String id, Supplier<T> block) {
+        return (RegistrySupplier<T>) KBlockRegistry.block(ProjectK.MOD_ID, id, (Supplier<Block>) block);
     }
 
-    public static RegistrySupplier<Block> block(String id, Supplier<Block> block, Item.Properties itemProperties) {
-        RegistrySupplier<Block> registeredBlock = KBlockRegistry.block(ProjectK.MOD_ID, id, block);
-        blockItem(registeredBlock, itemProperties);
+    @SuppressWarnings("unchecked")
+    public static <T extends Block> RegistrySupplier<T> block(String id, Supplier<T> block, Item.Properties itemProperties) {
+        RegistrySupplier<T> registeredBlock = (RegistrySupplier<T>) KBlockRegistry.block(ProjectK.MOD_ID, id, (Supplier<Block>) block);
+        blockItem((RegistrySupplier<Block>) registeredBlock, itemProperties);
         return registeredBlock;
     }
 }

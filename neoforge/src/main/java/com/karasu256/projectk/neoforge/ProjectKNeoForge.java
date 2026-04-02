@@ -8,6 +8,8 @@ import com.karasu256.projectk.client.screen.AbyssMagicTableScreen;
 import com.karasu256.projectk.menu.ProjectKMenus;
 import com.karasu256.projectk.neoforge.config.ProjectKNeoForgeConfig;
 import com.karasu256.projectk.neoforge.integrations.NeoForgeModIntegrationSupplier;
+import com.karasu256.projectk.neoforge.platform.NeoForgeProjectKPlatform;
+import com.karasu256.projectk.platform.PlatformServices;
 import dev.architectury.registry.registries.RegistrarManager;
 import net.karasuniki.karasunikilib.api.KarasunikiLib;
 import net.karasuniki.karasunikilib.api.ModIntegrationBootstrapper;
@@ -32,6 +34,7 @@ import java.io.UncheckedIOException;
 @Mod(ProjectK.MOD_ID)
 public final class ProjectKNeoForge {
     public ProjectKNeoForge(ModContainer container) {
+        PlatformServices.register(new NeoForgeProjectKPlatform());
         ProjectK.init();
         ProjectKNeoForgeConfig.init(container);
         ModIntegrationBootstrapper.bootstrap(new NeoForgeModIntegrationSupplier<>("com.karasu256.projectk.neoforge.integrations.projecte.ProjectEIntegration"), new NeoForgeModIntegrationSupplier<>("com.karasu256.projectk.neoforge.integrations.mekanism.MekanismIntegration"), new NeoForgeModIntegrationSupplier<>("com.karasu256.projectk.neoforge.integrations.forge.ForgeEnergyIntegration"));
