@@ -1,6 +1,7 @@
 package com.karasu256.projectk.neoforge.datagen.providers;
 
 import com.karasu256.projectk.ProjectK;
+import com.karasu256.projectk.block.custom.AbyssEnergyCable;
 import com.karasu256.projectk.datagen.providers.CommonBlockStateProvider;
 import com.karasu256.projectk.datagen.providers.CommonItemModelProvider;
 import dev.architectury.registry.registries.RegistrySupplier;
@@ -9,9 +10,11 @@ import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.properties.BooleanProperty;
+import net.neoforged.neoforge.client.model.generators.BlockStateProvider;
 import net.neoforged.neoforge.client.model.generators.ConfiguredModel;
 import net.neoforged.neoforge.client.model.generators.ModelFile;
-import net.neoforged.neoforge.client.model.generators.BlockStateProvider;
+import net.neoforged.neoforge.client.model.generators.MultiPartBlockStateBuilder;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import org.jetbrains.annotations.NotNull;
 
@@ -57,9 +60,26 @@ public class NeoForgeBlockStateProvider extends BlockStateProvider implements Co
     @Override
     public void existingModelBlockAllStates(Block block, String modelPath) {
         ResourceLocation modelLocation = ResourceLocation.parse(modelPath);
-        getVariantBuilder(block).forAllStates(state -> ConfiguredModel.builder()
-                .modelFile(new ModelFile.UncheckedModelFile(modelLocation))
-                .build());
+        getVariantBuilder(block).forAllStates(state -> ConfiguredModel.builder().modelFile(new ModelFile.UncheckedModelFile(modelLocation)).build());
+    }
+
+    @Override
+    public void multipartCable(Block block, String id) {
+        ModelFile centerModel = new ModelFile.UncheckedModelFile(ResourceLocation.fromNamespaceAndPath(ProjectK.MOD_ID, "block/" + id + "_center"));
+        ModelFile sideModel = new ModelFile.UncheckedModelFile(ResourceLocation.fromNamespaceAndPath(ProjectK.MOD_ID, "block/" + id + "_side"));
+        MultiPartBlockStateBuilder builder = getMultipartBuilder(block);
+        builder.part().modelFile(centerModel).addModel().end();
+
+        addSide(builder, AbyssEnergyCable.NORTH, sideModel, 0, 0);
+        addSide(builder, AbyssEnergyCable.EAST, sideModel, 90, 0);
+        addSide(builder, AbyssEnergyCable.SOUTH, sideModel, 180, 0);
+        addSide(builder, AbyssEnergyCable.WEST, sideModel, 270, 0);
+        addSide(builder, AbyssEnergyCable.UP, sideModel, 0, 270);
+        addSide(builder, AbyssEnergyCable.DOWN, sideModel, 0, 90);
+    }
+
+    private void addSide(MultiPartBlockStateBuilder builder, BooleanProperty prop, ModelFile model, int yRot, int xRot) {
+        builder.part().modelFile(model).rotationY(yRot).rotationX(xRot).addModel().condition(prop, true).end();
     }
 
     @Override

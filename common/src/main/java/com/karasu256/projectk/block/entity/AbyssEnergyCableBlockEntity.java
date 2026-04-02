@@ -35,6 +35,8 @@ public class AbyssEnergyCableBlockEntity extends BlockEntity implements ICableIn
         this.capacity = resolveCapacity(state);
         this.transferRate = resolveTransferRate(state);
         energy.setCapacity(capacity);
+        energy.setValue(0);
+        energy.setId(null);
         for (Direction direction : Direction.values()) {
             behaviors.put(direction, AbyssWrenchBehavior.NORMAL);
         }
@@ -84,12 +86,12 @@ public class AbyssEnergyCableBlockEntity extends BlockEntity implements ICableIn
         if (behavior == AbyssWrenchBehavior.OUTPUT || behavior == AbyssWrenchBehavior.NONE) {
             return 0;
         }
-        if (energy.getValue() > 0 && !energy.getId().equals(id)) {
+        if (energy.getValue() > 0 && energy.getId() != null && !energy.getId().equals(id)) {
             return 0;
         }
         long accepted = Math.min(maxAmount, capacity - energy.getValue());
         if (!simulate && accepted > 0) {
-            if (energy.getValue() == 0) {
+            if (energy.getValue() == 0 || energy.getId() == null) {
                 energy.setId(id);
             }
             energy.setValue(energy.getValue() + accepted);
@@ -109,12 +111,15 @@ public class AbyssEnergyCableBlockEntity extends BlockEntity implements ICableIn
         if (behavior == AbyssWrenchBehavior.INPUT || behavior == AbyssWrenchBehavior.NONE) {
             return 0;
         }
-        if (!energy.getId().equals(id)) {
+        if (energy.getId() == null || !energy.getId().equals(id)) {
             return 0;
         }
         long extracted = Math.min(energy.getValue(), maxAmount);
         if (!simulate && extracted > 0) {
             energy.setValue(energy.getValue() - extracted);
+            if (energy.getValue() == 0) {
+                energy.setId(null);
+            }
             setChanged();
         }
         return extracted;
@@ -349,6 +354,7 @@ public class AbyssEnergyCableBlockEntity extends BlockEntity implements ICableIn
     private void setEnergyInternal(ResourceLocation energyId, long value) {
         if (value <= 0) {
             energy.setValue(0);
+            energy.setId(null);
         } else {
             if (energyId != null) {
                 energy.setId(energyId);
@@ -427,6 +433,9 @@ public class AbyssEnergyCableBlockEntity extends BlockEntity implements ICableIn
             behaviors.put(direction, AbyssWrenchBehavior.fromString(behaviorTag.getString(direction.getSerializedName())));
         }
         energy.readNbt(nbt, registries);
+        if (energy.getValue() <= 0) {
+            energy.setId(null);
+        }
         this.capacity = resolveCapacity(getBlockState());
         this.transferRate = resolveTransferRate(getBlockState());
         energy.setCapacity(capacity);

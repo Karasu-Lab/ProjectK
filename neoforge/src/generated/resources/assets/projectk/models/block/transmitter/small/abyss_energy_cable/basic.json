@@ -1,9 +1,0 @@
-{
-  "parent": "projectk:block/transmitter/small/small",
-  "textures": {
-    "center_down": "projectk:block/models/multipart/abyss_energy_cable",
-    "center_opaque": "projectk:block/models/multipart/opaque/abyss_energy_cable",
-    "side": "projectk:block/models/multipart/abyss_energy_cable_vertical",
-    "side_opaque": "projectk:block/models/multipart/opaque/abyss_energy_cable_vertical"
-  }
-}

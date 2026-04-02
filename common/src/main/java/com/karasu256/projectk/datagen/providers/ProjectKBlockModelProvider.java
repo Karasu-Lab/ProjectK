@@ -13,6 +13,9 @@ import java.nio.file.Path;
 import java.util.concurrent.CompletableFuture;
 
 public class ProjectKBlockModelProvider implements DataProvider {
+    private static final double UV_SIZE = 16.0;
+    private static final double TEXTURE_SIZE = 32.0;
+    private static final double BORDER_SIZE = 6.0;
     private final PathProvider modelPathProvider;
 
     public ProjectKBlockModelProvider(PackOutput output) {
@@ -23,9 +26,10 @@ public class ProjectKBlockModelProvider implements DataProvider {
     public CompletableFuture<?> run(CachedOutput output) {
         return CompletableFuture.allOf(
                 writeModel(output, "block/abyss_magic_table", abyssMagicTableModel()),
-                writeModel(output, "block/abyss_energy_cable", abyssEnergyCableModel()),
-                writeModel(output, "block/transmitter/small/small", cableParentModel()),
-                writeModel(output, "block/transmitter/small/abyss_energy_cable/basic", cableBasicModel())
+                writeModel(output, "item/abyss_magic_table", abyssMagicTableItemModel()),
+                writeModel(output, "block/abyss_energy_cable", cableModel("abyss_energy_cable")),
+                writeModel(output, "block/abyss_energy_cable_center", cableCenterModel("abyss_energy_cable")),
+                writeModel(output, "block/abyss_energy_cable_side", cableSideModel("abyss_energy_cable"))
         );
     }
 
@@ -45,71 +49,73 @@ public class ProjectKBlockModelProvider implements DataProvider {
         return json;
     }
 
-    private JsonObject abyssEnergyCableModel() {
+    private JsonObject abyssMagicTableItemModel() {
         JsonObject json = new JsonObject();
-        json.addProperty("parent", ProjectK.MOD_ID + ":block/transmitter/small/abyss_energy_cable/basic");
+        json.addProperty("parent", ProjectK.MOD_ID + ":block/abyss_magic_table");
         return json;
     }
 
-    private JsonObject cableParentModel() {
+    private JsonObject cableModel(String id) {
+        JsonObject json = new JsonObject();
+        json.addProperty("parent", ProjectK.MOD_ID + ":block/" + id + "_center");
+        return json;
+    }
+
+    private JsonObject cableCenterModel(String id) {
         JsonObject json = new JsonObject();
         json.addProperty("parent", "block/block");
-        json.addProperty("loader", "mekanism:transmitter");
-        json.addProperty("model", ProjectK.MOD_ID + ":models/block/transmitter_small.obj.mek");
-        json.addProperty("flip_v", true);
-
         JsonObject textures = new JsonObject();
-        textures.addProperty("particle", "#center_down");
-        textures.addProperty("center_up", "#center_down");
-        textures.addProperty("center_north", "#center_down");
-        textures.addProperty("center_south", "#center_down");
-        textures.addProperty("center_east", "#center_down");
-        textures.addProperty("center_west", "#center_down");
+        textures.addProperty("particle", ProjectK.MOD_ID + ":block/multipart/" + id);
+        textures.addProperty("all", ProjectK.MOD_ID + ":block/multipart/" + id);
         json.add("textures", textures);
-
-        JsonObject display = new JsonObject();
-        display.add("gui", displayEntry(new int[]{30, 225, 0}, new double[]{0, 0, 0}, new double[]{1, 1, 1}));
-        display.add("ground", displayEntry(new int[]{0, 0, 0}, new double[]{0, 3, 0}, new double[]{0.25, 0.25, 0.25}));
-        display.add("fixed", displayEntry(new int[]{0, 0, 0}, new double[]{0, 0, 0}, new double[]{0.5, 0.5, 0.5}));
-        display.add("thirdperson_righthand", displayEntry(new int[]{75, 45, 0}, new double[]{0, 2.5, 0}, new double[]{0.375, 0.375, 0.375}));
-        display.add("firstperson_righthand", displayEntry(new int[]{0, 45, 0}, new double[]{0, 0, 0}, new double[]{0.40, 0.40, 0.40}));
-        display.add("firstperson_lefthand", displayEntry(new int[]{0, 225, 0}, new double[]{0, 0, 0}, new double[]{0.40, 0.40, 0.40}));
-        json.add("display", display);
+        JsonArray elements = new JsonArray();
+        elements.add(cubeElement(new double[]{5.0, 5.0, 5.0}, new double[]{11.0, 11.0, 11.0}, fullUv()));
+        json.add("elements", elements);
         return json;
     }
 
-    private JsonObject cableBasicModel() {
+    private JsonObject cableSideModel(String id) {
         JsonObject json = new JsonObject();
-        json.addProperty("parent", ProjectK.MOD_ID + ":block/transmitter/small/small");
-
+        json.addProperty("parent", "block/block");
         JsonObject textures = new JsonObject();
-        textures.addProperty("side", ProjectK.MOD_ID + ":block/models/multipart/abyss_energy_cable_vertical");
-        textures.addProperty("center_down", ProjectK.MOD_ID + ":block/models/multipart/abyss_energy_cable");
-        textures.addProperty("side_opaque", ProjectK.MOD_ID + ":block/models/multipart/opaque/abyss_energy_cable_vertical");
-        textures.addProperty("center_opaque", ProjectK.MOD_ID + ":block/models/multipart/opaque/abyss_energy_cable");
+        textures.addProperty("particle", ProjectK.MOD_ID + ":block/multipart/" + id + "_vertical");
+        textures.addProperty("all", ProjectK.MOD_ID + ":block/multipart/" + id + "_vertical");
         json.add("textures", textures);
+        JsonArray elements = new JsonArray();
+        elements.add(cubeElement(new double[]{5.0, 5.0, 0.0}, new double[]{11.0, 11.0, 5.0}, new double[]{0.0, 0.0, 16.0, 16.0}));
+        json.add("elements", elements);
         return json;
     }
 
-    private JsonObject displayEntry(int[] rotation, double[] translation, double[] scale) {
-        JsonObject entry = new JsonObject();
-        entry.add("rotation", array(rotation));
-        entry.add("translation", array(translation));
-        entry.add("scale", array(scale));
-        return entry;
+    private JsonObject cubeElement(double[] from, double[] to, double[] uv) {
+        JsonObject element = new JsonObject();
+        element.add("from", array(from));
+        element.add("to", array(to));
+        JsonObject faces = new JsonObject();
+        faces.add("north", texturedFace(uv));
+        faces.add("south", texturedFace(uv));
+        faces.add("east", texturedFace(uv));
+        faces.add("west", texturedFace(uv));
+        faces.add("up", texturedFace(uv));
+        faces.add("down", texturedFace(uv));
+        element.add("faces", faces);
+        return element;
+    }
+
+    private JsonObject texturedFace(double[] uv) {
+        JsonObject face = new JsonObject();
+        face.add("uv", array(uv));
+        face.addProperty("texture", "#all");
+        return face;
+    }
+
+    private double[] fullUv() {
+        return new double[]{0.0, 0.0, UV_SIZE, UV_SIZE};
     }
 
     private JsonArray array(double[] values) {
         JsonArray array = new JsonArray();
         for (double value : values) {
-            array.add(value);
-        }
-        return array;
-    }
-
-    private JsonArray array(int[] values) {
-        JsonArray array = new JsonArray();
-        for (int value : values) {
             array.add(value);
         }
         return array;

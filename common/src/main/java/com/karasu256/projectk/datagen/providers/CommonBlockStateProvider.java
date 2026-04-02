@@ -22,6 +22,8 @@ public class CommonBlockStateProvider {
         void existingModelBlock(Block block, String modelPath);
 
         void existingModelBlockAllStates(Block block, String modelPath);
+
+        void multipartCable(Block block, String id);
     }
 
     public static void generate(@NotNull Generator generator) {
@@ -50,7 +52,7 @@ public class CommonBlockStateProvider {
         generator.existingModelBlock(ProjectKBlocks.ABYSS_MAGIC_TABLE.get(), "projectk:block/abyss_magic_table");
         generator.simpleBlockItem(ProjectKBlocks.ABYSS_MAGIC_TABLE.get());
 
-        generator.existingModelBlockAllStates(ProjectKBlocks.ABYSS_ENERGY_CABLE.get(), "projectk:block/abyss_energy_cable");
+        generator.multipartCable(ProjectKBlocks.ABYSS_ENERGY_CABLE.get(), "abyss_energy_cable");
         generator.simpleBlockItem(ProjectKBlocks.ABYSS_ENERGY_CABLE.get());
     }
 }

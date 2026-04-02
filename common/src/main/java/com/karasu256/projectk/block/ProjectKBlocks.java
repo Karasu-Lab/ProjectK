@@ -1,11 +1,7 @@
 package com.karasu256.projectk.block;
 
 import com.karasu256.projectk.ProjectK;
-import com.karasu256.projectk.block.custom.AbyssCore;
-import com.karasu256.projectk.block.custom.AbyssEnergyCable;
-import com.karasu256.projectk.block.custom.AbyssGenerator;
-import com.karasu256.projectk.block.custom.AbyssMagicTable;
-import com.karasu256.projectk.block.custom.ProjectKBlock;
+import com.karasu256.projectk.block.custom.*;
 import dev.architectury.registry.registries.RegistrySupplier;
 import net.karasuniki.karasunikilib.api.registry.IKRegistryInitializerTarget;
 import net.karasuniki.karasunikilib.api.registry.KRegistryInitializer;
@@ -28,5 +24,4 @@ public class ProjectKBlocks implements IKRegistryInitializerTarget {
 
     public static void init() {
     }
-
 }
