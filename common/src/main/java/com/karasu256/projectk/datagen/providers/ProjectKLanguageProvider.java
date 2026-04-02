@@ -113,7 +113,7 @@ public class ProjectKLanguageProvider implements DataProvider {
 
     private void addEnergyTranslations(JsonObject en, JsonObject ja) {
         for (ProjectKEnergies.EnergyDefinition definition : ProjectKEnergies.getDefinitions()) {
-            String key = "energy.projectk." + definition.idPath();
+            String key = energyKey(definition);
             add(en, key, definition.enName());
             add(ja, key, definition.jaName());
         }
@@ -121,8 +121,8 @@ public class ProjectKLanguageProvider implements DataProvider {
 
     private void addEnergyItemTranslations(JsonObject en, JsonObject ja) {
         for (ProjectKEnergies.EnergyDefinition definition : ProjectKEnergies.getDefinitions()) {
-            String energyLabelEn = stripFormatting(definition.enName());
-            String energyLabelJa = stripFormatting(definition.jaName());
+            String energyLabelEn = energyNameWithReset(en, definition);
+            String energyLabelJa = energyNameWithReset(ja, definition);
 
             String bucketKey = "item.projectk.bucket_of_" + definition.idPath();
             if (definition.kind() == ProjectKEnergies.EnergyKind.NEUTRAL) {
@@ -137,8 +137,8 @@ public class ProjectKLanguageProvider implements DataProvider {
 
     private void addEnergyBlockTranslations(JsonObject en, JsonObject ja) {
         for (ProjectKEnergies.EnergyDefinition definition : ProjectKEnergies.getDefinitions()) {
-            String energyLabelEn = stripFormatting(definition.enName());
-            String energyLabelJa = stripFormatting(definition.jaName());
+            String energyLabelEn = energyNameWithReset(en, definition);
+            String energyLabelJa = energyNameWithReset(ja, definition);
             String coreKey = "block.projectk." + definition.idPath().replace("_energy", "_core");
             if (definition.kind() == ProjectKEnergies.EnergyKind.NEUTRAL) {
                 add(en, coreKey, "Abyss Core");
@@ -159,7 +159,16 @@ public class ProjectKLanguageProvider implements DataProvider {
         json.addProperty(key, value);
     }
 
-    private String stripFormatting(String value) {
-        return value == null ? "" : value.replaceAll("§.", "");
+    private String energyKey(ProjectKEnergies.EnergyDefinition definition) {
+        return "energy.projectk." + definition.idPath();
+    }
+
+    private String energyNameWithReset(JsonObject lang, ProjectKEnergies.EnergyDefinition definition) {
+        String key = energyKey(definition);
+        String value = lang.has(key) ? lang.get(key).getAsString() : definition.enName();
+        if (value == null || value.isEmpty()) {
+            return "";
+        }
+        return value.contains("§") ? value + "§r" : value;
     }
 }
