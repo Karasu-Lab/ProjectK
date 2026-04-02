@@ -21,6 +21,7 @@
   "wrench_behavior.projectk.output": "Output",
   "wrench_behavior.projectk.normal": "Normal",
   "wrench_behavior.projectk.none": "None",
+  "block.projectk.abyss_generator": "Abyss Generator",
   "block.projectk.abyss_magic_table": "Abyss Magic Table",
   "block.projectk.abyss_energy_cable": "Abyss Energy Cable",
   "block.projectk.karasium_ore": "Karasium Ore",
@@ -31,6 +32,8 @@
   "item.projectk.raw_karasium": "Raw Karasium",
   "item.projectk.karasium_dust": "Karasium Dust",
   "item.projectk.abyss_ingot": "Abyss Ingot",
+  "item.projectk.yin_abyss_ingot": "Yin Abyss Ingot",
+  "item.projectk.yang_abyss_ingot": "Yang Abyss Ingot",
   "item.projectk.bucket_of_abyss_energy": "Bucket of Abyss Energy",
   "item.projectk.bucket_of_yin_abyss_energy": "Bucket of Yin Abyss Energy",
   "item.projectk.bucket_of_yang_abyss_energy": "Bucket of Yang Abyss Energy"

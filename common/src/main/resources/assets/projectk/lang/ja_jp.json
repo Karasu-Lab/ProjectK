@@ -15,6 +15,7 @@
   "tooltip.projectk.wthit.progress": "進捗: %s%%",
   "container.projectk.abyss_magic_table": "深淵魔術テーブル",
   "item.projectk.abyss_wrench": "深淵レンチ",
+  "block.projectk.abyss_generator": "深淵発電機",
   "wrench_behavior.projectk.input": "入力",
   "wrench_behavior.projectk.output": "出力",
   "wrench_behavior.projectk.normal": "通常",
@@ -29,7 +30,9 @@
   "item.projectk.raw_karasium": "カラシウム原石",
   "item.projectk.karasium_dust": "カラシウムダスト",
   "item.projectk.abyss_ingot": "深淵インゴット",
+  "item.projectk.yin_abyss_ingot": "陰の深淵インゴット",
+  "item.projectk.yang_abyss_ingot": "陽の深淵インゴット",
   "item.projectk.bucket_of_abyss_energy": "深淵入りバケツ",
-  "item.projectk.bucket_of_yin_abyss_energy": "深淵入りバケツ(陰)",
-  "item.projectk.bucket_of_yang_abyss_energy": "深淵入りバケツ(陽)"
+  "item.projectk.bucket_of_yin_abyss_energy": "陰の深淵入りバケツ",
+  "item.projectk.bucket_of_yang_abyss_energy": "陽の深淵入りバケツ"
 }
