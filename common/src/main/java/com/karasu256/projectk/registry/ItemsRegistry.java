@@ -19,7 +19,7 @@ public class ItemsRegistry implements IKRegistryTarget {
     }
 
     public static @NotNull RegistrySupplier<BlockItem> blockItem(@NotNull RegistrySupplier<Block> block, Item.Properties properties) {
-        return KItemRegistry.blockItem(ProjectK.MOD_ID, block, properties);
+        return CreativeTabsRegistry.tab(KItemRegistry.blockItem(ProjectK.MOD_ID, block, properties));
     }
 
     public static <T extends Item> @NotNull RegistrySupplier<T> item(String id, Supplier<T> item) {
