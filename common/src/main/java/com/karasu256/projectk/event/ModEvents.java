@@ -1,15 +1,13 @@
 package com.karasu256.projectk.event;
 
-import com.karasu256.projectk.energy.IAbyssEnergy;
-import com.karasu256.projectk.energy.ProjectKEnergies;
 import com.karasu256.projectk.entity.AbyssEnergyEntity;
 import com.karasu256.projectk.entity.ProjectKEntities;
+import com.karasu256.projectk.data.AbyssEnergySpawnRuleManager;
 import dev.architectury.event.EventResult;
 import dev.architectury.event.events.common.EntityEvent;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
@@ -22,21 +20,23 @@ public class ModEvents {
         EntityEvent.LIVING_DEATH.register((entity, source) -> {
             if (entity.level().isClientSide) return EventResult.pass();
 
-            MobCategory category = entity.getType().getCategory();
+            BlockPos pos = entity.blockPosition();
             ResourceLocation energyId;
+            long amount;
 
-            if (category == MobCategory.MONSTER) {
-                energyId = ProjectKEnergies.getEnergyIdByKind(ProjectKEnergies.EnergyKind.YIN);
-            } else if (category == MobCategory.CREATURE || category == MobCategory.WATER_CREATURE ||
-                    category == MobCategory.AXOLOTLS || category == MobCategory.UNDERGROUND_WATER_CREATURE) {
-                energyId = ProjectKEnergies.getEnergyIdByKind(ProjectKEnergies.EnergyKind.YANG);
+            var match = AbyssEnergySpawnRuleManager.findMatch(entity.level(), pos, entity);
+            if (match.isPresent()) {
+                var rule = match.get();
+                energyId = rule.energyId();
+                amount = rule.amount().resolve(entity);
             } else {
-                energyId = ProjectKEnergies.getEnergyIdByKind(ProjectKEnergies.EnergyKind.NEUTRAL);
+                energyId = AbyssEnergySpawnRuleManager.fallbackEnergyId();
+                amount = AbyssEnergySpawnRuleManager.fallbackAmount(entity);
             }
 
             AbyssEnergyEntity aeEntity = new AbyssEnergyEntity(ProjectKEntities.ABYSS_ENERGY_ENTITY.get(), entity.level());
             aeEntity.setPos(entity.getX(), entity.getY(), entity.getZ());
-            aeEntity.setEnergy(IAbyssEnergy.calculateEnergy(entity));
+            aeEntity.setEnergy(amount);
             aeEntity.setEnergyId(energyId);
             entity.level().addFreshEntity(aeEntity);
 

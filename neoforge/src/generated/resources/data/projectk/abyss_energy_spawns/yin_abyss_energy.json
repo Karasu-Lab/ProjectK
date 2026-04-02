@@ -1,0 +1,12 @@
+{
+  "amount": {
+    "type": "built_in"
+  },
+  "block": {},
+  "energy_id": "projectk:yin_abyss_energy",
+  "mob": {
+    "types": [
+      "monster"
+    ]
+  }
+}

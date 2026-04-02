@@ -1,0 +1,15 @@
+{
+  "amount": {
+    "type": "built_in"
+  },
+  "block": {},
+  "energy_id": "projectk:yang_abyss_energy",
+  "mob": {
+    "types": [
+      "creature",
+      "water_creature",
+      "axolotls",
+      "underground_water_creature"
+    ]
+  }
+}
