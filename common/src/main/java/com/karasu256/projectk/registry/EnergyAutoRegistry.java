@@ -1,7 +1,6 @@
 package com.karasu256.projectk.registry;
 
 import com.karasu256.projectk.energy.ProjectKEnergies;
-import dev.architectury.registry.registries.RegistrySupplier;
 import net.karasuniki.karasunikilib.utils.TriConsumer;
 import net.minecraft.resources.ResourceLocation;
 
