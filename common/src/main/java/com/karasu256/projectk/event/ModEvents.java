@@ -1,8 +1,8 @@
 package com.karasu256.projectk.event;
 
+import com.karasu256.projectk.data.AbyssEnergySpawnRuleManager;
 import com.karasu256.projectk.entity.AbyssEnergyEntity;
 import com.karasu256.projectk.entity.ProjectKEntities;
-import com.karasu256.projectk.data.AbyssEnergySpawnRuleManager;
 import dev.architectury.event.EventResult;
 import dev.architectury.event.events.common.EntityEvent;
 import net.minecraft.core.BlockPos;
