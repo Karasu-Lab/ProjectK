@@ -14,10 +14,10 @@ import dev.architectury.core.item.ArchitecturyBucketItem;
 import dev.architectury.registry.registries.RegistrySupplier;
 import net.karasuniki.karasunikilib.api.registry.IKRegistryInitializerTarget;
 import net.karasuniki.karasunikilib.api.registry.KRegistryInitializer;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-import net.minecraft.resources.ResourceLocation;
 
 import java.util.Map;
 
@@ -25,12 +25,6 @@ import static com.karasu256.projectk.registry.ItemsRegistry.item;
 
 @KRegistryInitializer(modId = ProjectK.MOD_ID, order = 2)
 public class ProjectKItems implements IKRegistryInitializerTarget {
-    public static RegistrySupplier<Item> KARASIUM = item("karasium", () -> new ProjectKItem(new ProjectKItem.Properties().emc(128L)));
-    public static RegistrySupplier<Item> RAW_KARASIUM = item("raw_karasium", () -> new ProjectKItem(new ProjectKItem.Properties()));
-    public static RegistrySupplier<Item> KARASIUM_DUST = item("karasium_dust", () -> new ProjectKItem(new ProjectKItem.Properties().emc(128L)));
-    public static RegistrySupplier<Item> WITHER_BONE = item("wither_bone", () -> new ProjectKItem(new ProjectKItem.Properties()));
-    public static RegistrySupplier<Item> ABYSS_INGOT = item("abyss_ingot", () -> new AbyssEnergyItem(new ProjectKItem.Properties()), true);
-    public static RegistrySupplier<Item> ABYSS_WRENCH = item("abyss_wrench", () -> new AbyssWrenchItem(new ProjectKItem.Properties()));
     public static final Map<ResourceLocation, RegistrySupplier<Item>> ABYSS_ENERGY_BUCKETS = EnergyAutoRegistry.mapByEnergy(
             definition -> "bucket_of_" + definition.idPath(),
             (definition, id, map) -> {
@@ -42,18 +36,23 @@ public class ProjectKItems implements IKRegistryInitializerTarget {
                 }));
             }
     );
-
     public static final RegistrySupplier<Item> BUCKET_OF_ABYSS_ENERGY = getBucket(ProjectKEnergies.ABYSS.id());
     public static final RegistrySupplier<Item> BUCKET_OF_YIN_ABYSS_ENERGY = getBucket(ProjectKEnergies.YIN.id());
     public static final RegistrySupplier<Item> BUCKET_OF_YANG_ABYSS_ENERGY = getBucket(ProjectKEnergies.YANG.id());
-
-    public static void init() {
-    }
+    public static RegistrySupplier<Item> KARASIUM = item("karasium", () -> new ProjectKItem(new ProjectKItem.Properties().emc(128L)));
+    public static RegistrySupplier<Item> RAW_KARASIUM = item("raw_karasium", () -> new ProjectKItem(new ProjectKItem.Properties()));
+    public static RegistrySupplier<Item> KARASIUM_DUST = item("karasium_dust", () -> new ProjectKItem(new ProjectKItem.Properties().emc(128L)));
+    public static RegistrySupplier<Item> WITHER_BONE = item("wither_bone", () -> new ProjectKItem(new ProjectKItem.Properties()));
+    public static RegistrySupplier<Item> ABYSS_INGOT = item("abyss_ingot", () -> new AbyssEnergyItem(new ProjectKItem.Properties()), true);
+    public static RegistrySupplier<Item> ABYSS_WRENCH = item("abyss_wrench", () -> new AbyssWrenchItem(new ProjectKItem.Properties()));
 
     static {
         for (ProjectKEnergies.EnergyDefinition definition : ProjectKEnergies.getDefinitions()) {
             CreativeTabsRegistry.tabStack(() -> buildAbyssIngotVariant(definition));
         }
+    }
+
+    public static void init() {
     }
 
     public static RegistrySupplier<Item> getBucket(ResourceLocation energyId) {
