@@ -14,9 +14,6 @@ import static com.karasu256.projectk.registry.BlockEntitiesRegistry.blockEntity;
 
 @KRegistryInitializer(modId = ProjectK.MOD_ID, order = 3)
 public class ProjectKBlockEntities implements IKRegistryInitializerTarget {
-    public static void init() {
-    }    public static final RegistrySupplier<BlockEntityType<AbyssGeneratorBlockEntity>> ABYSS_GENERATOR = blockEntity("abyss_generator", () -> BlockEntityType.Builder.of(AbyssGeneratorBlockEntity::new, ProjectKBlocks.ABYSS_GENERATOR.get()).build(null));
-
     private static Block[] coreBlocks() {
         Collection<RegistrySupplier<Block>> cores = ProjectKBlocks.ABYSS_CORES.values();
         Block[] blocks = new Block[cores.size()];
@@ -25,13 +22,19 @@ public class ProjectKBlockEntities implements IKRegistryInitializerTarget {
             blocks[index++] = core.get();
         }
         return blocks;
-    }    public static final RegistrySupplier<BlockEntityType<AbyssCoreBlockEntity>> ABYSS_CORE = blockEntity("abyss_core", () -> BlockEntityType.Builder.of(AbyssCoreBlockEntity::new, coreBlocks()).build(null));
+    }
+
+    public static void init() {
+    }    public static final RegistrySupplier<BlockEntityType<AbyssGeneratorBlockEntity>> ABYSS_GENERATOR = blockEntity("abyss_generator", () -> BlockEntityType.Builder.of(AbyssGeneratorBlockEntity::new, ProjectKBlocks.ABYSS_GENERATOR.get()).build(null));
+
+
+
+    public static final RegistrySupplier<BlockEntityType<AbyssCoreBlockEntity>> ABYSS_CORE = blockEntity("abyss_core", () -> BlockEntityType.Builder.of(AbyssCoreBlockEntity::new, coreBlocks()).build(null));
 
     public static final RegistrySupplier<BlockEntityType<AbyssMagicTableBlockEntity>> ABYSS_MAGIC_TABLE = blockEntity("abyss_magic_table", () -> BlockEntityType.Builder.of(AbyssMagicTableBlockEntity::new, ProjectKBlocks.ABYSS_MAGIC_TABLE.get()).build(null));
+    public static final RegistrySupplier<BlockEntityType<AbyssAlchemyBlendMachineBlockEntity>> ABYSS_ALCHEMY_BLEND_MACHINE = blockEntity("abyss_alchemy_blend_machine", () -> BlockEntityType.Builder.of(AbyssAlchemyBlendMachineBlockEntity::new, ProjectKBlocks.ABYSS_ALCHEMY_BLEND_MACHINE.get()).build(null));
 
     public static final RegistrySupplier<BlockEntityType<AbyssEnergyCableBlockEntity>> ABYSS_ENERGY_CABLE = blockEntity("abyss_energy_cable", () -> BlockEntityType.Builder.of(AbyssEnergyCableBlockEntity::new, ProjectKBlocks.ABYSS_ENERGY_CABLE.get()).build(null));
-
-
 
 
 }

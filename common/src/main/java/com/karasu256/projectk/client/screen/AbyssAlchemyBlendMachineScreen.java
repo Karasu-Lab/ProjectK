@@ -1,6 +1,6 @@
 package com.karasu256.projectk.client.screen;
 
-import com.karasu256.projectk.menu.AbyssMagicTableMenu;
+import com.karasu256.projectk.menu.AbyssAlchemyBlendMachineMenu;
 import com.karasu256.projectk.utils.AbyssMagicTableInfo;
 import com.karasu256.projectk.utils.Id;
 import net.minecraft.client.gui.GuiGraphics;
@@ -9,10 +9,10 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 
-public class AbyssMagicTableScreen extends AbstractContainerScreen<AbyssMagicTableMenu> {
-    private static final ResourceLocation TEXTURE = Id.id("textures/gui/abyss_magic_table.png");
+public class AbyssAlchemyBlendMachineScreen extends AbstractContainerScreen<AbyssAlchemyBlendMachineMenu> {
+    private static final ResourceLocation TEXTURE = Id.id("textures/gui/abyss_alchemy_blend_machine.png");
 
-    public AbyssMagicTableScreen(AbyssMagicTableMenu menu, Inventory inventory, Component title) {
+    public AbyssAlchemyBlendMachineScreen(AbyssAlchemyBlendMachineMenu menu, Inventory inventory, Component title) {
         super(menu, inventory, title);
         this.imageWidth = 176;
         this.imageHeight = 166;
@@ -29,7 +29,7 @@ public class AbyssMagicTableScreen extends AbstractContainerScreen<AbyssMagicTab
     protected void renderBg(GuiGraphics graphics, float partialTick, int mouseX, int mouseY) {
         graphics.blit(TEXTURE, leftPos, topPos, 0, 0, imageWidth, imageHeight);
         renderProgress(graphics);
-        renderEnergy(graphics);
+        renderEnergies(graphics);
     }
 
     private void renderProgress(GuiGraphics graphics) {
@@ -37,7 +37,8 @@ public class AbyssMagicTableScreen extends AbstractContainerScreen<AbyssMagicTab
         graphics.blit(TEXTURE, leftPos + 79, topPos + 34, 176, 0, width, 17);
     }
 
-    private void renderEnergy(GuiGraphics graphics) {
-        EnergyBarRenderer.renderFluidBar(graphics, menu.getEnergyId(), menu.getEnergy(), menu.getEnergyCapacity(), leftPos + 10, topPos + 20, 8, 50);
+    private void renderEnergies(GuiGraphics graphics) {
+        EnergyBarRenderer.renderFluidBar(graphics, menu.getEnergyId1(), menu.getEnergyAmount1(), menu.getEnergyCapacity1(), leftPos + 10, topPos + 20, 8, 50);
+        EnergyBarRenderer.renderFluidBar(graphics, menu.getEnergyId2(), menu.getEnergyAmount2(), menu.getEnergyCapacity2(), leftPos + 158, topPos + 20, 8, 50);
     }
 }

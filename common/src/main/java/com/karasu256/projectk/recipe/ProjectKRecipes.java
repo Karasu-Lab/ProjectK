@@ -13,6 +13,7 @@ import net.minecraft.world.item.crafting.RecipeType;
 public class ProjectKRecipes implements IKRegistryInitializerTarget {
     public static final RegistrySupplier<RecipeSerializer<InBiomeInBlockCraftingRecipe>> IN_BIOME_IN_BLOCK_CRAFTING_SERIALIZER = RecipesRegistry.serializer("in_biome_in_block_crafting", InBiomeInBlockCraftingRecipe.Serializer::new);
     public static final RegistrySupplier<RecipeSerializer<AbyssMagicTableRecipe>> ABYSS_MAGIC_TABLE_SERIALIZER = RecipesRegistry.serializer("abyss_magic_table", AbyssMagicTableRecipe.Serializer::new);
+    public static final RegistrySupplier<RecipeSerializer<AbyssAlchemyBlendRecipe>> ABYSS_ALCHEMY_BLEND_SERIALIZER = RecipesRegistry.serializer("abyss_alchemy_blend_machine", AbyssAlchemyBlendRecipe.Serializer::new);
 
     public static final RegistrySupplier<RecipeType<InBiomeInBlockCraftingRecipe>> IN_BIOME_IN_BLOCK_CRAFTING = RecipesRegistry.type("in_biome_in_block_crafting", () -> new RecipeType<>() {
         @Override
@@ -25,6 +26,13 @@ public class ProjectKRecipes implements IKRegistryInitializerTarget {
         @Override
         public String toString() {
             return Id.id("abyss_magic_table").toString();
+        }
+    });
+
+    public static final RegistrySupplier<RecipeType<AbyssAlchemyBlendRecipe>> ABYSS_ALCHEMY_BLEND = RecipesRegistry.type("abyss_alchemy_blend_machine", () -> new RecipeType<>() {
+        @Override
+        public String toString() {
+            return Id.id("abyss_alchemy_blend_machine").toString();
         }
     });
 

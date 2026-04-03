@@ -7,7 +7,6 @@ import com.karasu256.projectk.utils.Id;
 import dev.architectury.registry.registries.RegistrarManager;
 import net.karasuniki.karasunikilib.api.KarasunikiLib;
 import net.karasuniki.karasunikilib.api.block.ICableInputable;
-import net.karasuniki.karasunikilib.api.block.IEnergyBlock;
 import net.karasuniki.karasunikilib.api.data.ICapacity;
 import net.karasuniki.karasunikilib.api.data.IEnergy;
 import net.karasuniki.karasunikilib.api.registry.KarasunikiRegistries;
@@ -144,9 +143,11 @@ public class AbyssEnergyEntity extends Entity {
 
     private boolean isValidTarget(BlockPos pos) {
         BlockEntity be = level().getBlockEntity(pos);
-        if (be instanceof IEnergyBlock<?> energyAcceptor && be instanceof ICapacity capacityProvider) {
-            if (energyAcceptor.getAmount() == 0) return capacityProvider.getCapacity() > 0;
-            return energyAcceptor.getEnergyType().getId().equals(getEnergyId()) && energyAcceptor.getAmount() < capacityProvider.getCapacity();
+        if (be instanceof ICableInputable energyAcceptor && be instanceof ICapacity capacityProvider) {
+            if (capacityProvider.getCapacity() <= 0) {
+                return false;
+            }
+            return energyAcceptor.insert(getEnergyId(), 1, true) > 0;
         }
         return false;
     }

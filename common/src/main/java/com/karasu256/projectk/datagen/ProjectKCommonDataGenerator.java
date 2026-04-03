@@ -11,10 +11,11 @@ public class ProjectKCommonDataGenerator {
     public static void gatherData(ProviderRegistry registry, CompletableFuture<HolderLookup.Provider> registries, boolean includeRecipes) {
         CommonBlockTagsProvider blockTagsProvider = registry.register(output -> new CommonBlockTagsProvider(output, registries));
         registry.register(output -> new CommonItemTagsProvider(output, registries, blockTagsProvider.contentsGetter()));
-        registry.register(output -> new AbyssEnergySpawnRuleProvider(output));
+        registry.register(AbyssEnergySpawnRuleProvider::new);
         if (includeRecipes) {
             registry.register(output -> new CommonRecipeProvider(output, registries));
             registry.register(output -> new AbyssMagicTableRecipeProvider(output, registries));
+            registry.register(output -> new AbyssAlchemyBlendRecipeProvider(output, registries));
             registry.register(output -> new InBiomeInBlockCraftingProvider(output, registries));
         }
         registry.register(output -> new ProjectKLootTableProvider(output, registries));

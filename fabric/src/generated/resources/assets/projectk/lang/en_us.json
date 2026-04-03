@@ -1,4 +1,5 @@
 {
+  "block.projectk.abyss_alchemy_blend_machine": "Abyss Alchemy Blend Machine",
   "block.projectk.abyss_core": "Abyss Core",
   "block.projectk.abyss_energy_cable": "Abyss Energy Cable",
   "block.projectk.abyss_generator": "Abyss Generator",
@@ -8,6 +9,7 @@
   "block.projectk.yang_abyss_core": "§dYang§r Abyss Core",
   "block.projectk.yin_abyss_core": "§5Yin§r Abyss Core",
   "category.projectk": "ProjectK",
+  "container.projectk.abyss_alchemy_blend_machine": "Abyss Alchemy Blend Machine",
   "container.projectk.abyss_magic_table": "Abyss Magic Table",
   "energy.projectk.abyss_energy": "Abyss",
   "energy.projectk.abyss_energy_format": "%s Abyss Energy",
@@ -22,6 +24,7 @@
   "item.projectk.karasium": "Karasium",
   "item.projectk.karasium_dust": "Karasium Dust",
   "item.projectk.raw_karasium": "Raw Karasium",
+  "item.projectk.tier_upgrade": "Tier Upgrade",
   "item.projectk.wither_bone": "Wither Bone",
   "rei.category.projectk.in_biome_in_block_crafting": "In-Biome Block Crafting",
   "rei.category.projectk.in_biome_in_block_crafting.requirement": "Biome required: %s",

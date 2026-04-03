@@ -32,6 +32,8 @@ public class ProjectKBlockModelProvider implements DataProvider {
         List<CompletableFuture<?>> futures = new ArrayList<>();
         futures.add(writeModel(output, "block/abyss_magic_table", abyssMagicTableModel()));
         futures.add(writeModel(output, "item/abyss_magic_table", abyssMagicTableItemModel()));
+        futures.add(writeModel(output, "block/abyss_alchemy_blend_machine", abyssAlchemyBlendMachineModel()));
+        futures.add(writeModel(output, "item/abyss_alchemy_blend_machine", abyssAlchemyBlendMachineItemModel()));
         futures.add(writeModel(output, "block/abyss_energy_cable", cableModel("abyss_energy_cable")));
         futures.add(writeModel(output, "block/abyss_energy_cable_center", cableCenterModel("abyss_energy_cable")));
         futures.add(writeModel(output, "block/abyss_energy_cable_side", cableSideModel("abyss_energy_cable")));
@@ -79,6 +81,18 @@ public class ProjectKBlockModelProvider implements DataProvider {
     private JsonObject abyssMagicTableItemModel() {
         JsonObject json = new JsonObject();
         json.addProperty("parent", ProjectK.MOD_ID + ":block/abyss_magic_table");
+        return json;
+    }
+
+    private JsonObject abyssAlchemyBlendMachineModel() {
+        JsonObject json = new JsonObject();
+        json.addProperty("parent", "minecraft:block/enchanting_table");
+        return json;
+    }
+
+    private JsonObject abyssAlchemyBlendMachineItemModel() {
+        JsonObject json = new JsonObject();
+        json.addProperty("parent", ProjectK.MOD_ID + ":block/abyss_alchemy_blend_machine");
         return json;
     }
 

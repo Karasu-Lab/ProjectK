@@ -43,6 +43,7 @@ public class ProjectKBlocks implements IKRegistryInitializerTarget {
     public static final RegistrySupplier<LiquidBlock> FLUID_YANG_ABYSS_ENERGY = getFluidBlock(ProjectKEnergies.YANG.id());
     public static RegistrySupplier<Block> ABYSS_GENERATOR = block("abyss_generator", () -> new AbyssGenerator(10000L), new Item.Properties());
     public static RegistrySupplier<Block> ABYSS_MAGIC_TABLE = block("abyss_magic_table", () -> new AbyssMagicTable(BlockBehaviour.Properties.ofFullCopy(Blocks.ENCHANTING_TABLE), ProjectKBlock.CustomProperties.of().capacity(10000L)), new Item.Properties());
+    public static RegistrySupplier<Block> ABYSS_ALCHEMY_BLEND_MACHINE = block("abyss_alchemy_blend_machine", () -> new AbyssAlchemyBlendMachine(BlockBehaviour.Properties.ofFullCopy(Blocks.ENCHANTING_TABLE), ProjectKBlock.CustomProperties.of().capacity(10000L)), new Item.Properties());
     public static RegistrySupplier<Block> ABYSS_ENERGY_CABLE = block("abyss_energy_cable", () -> new AbyssEnergyCable(BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_BLOCK).noOcclusion(), ProjectKBlock.CustomProperties.of().capacity(10000L).transferRate(1000L)), new Item.Properties());
     public static RegistrySupplier<Block> KARASIUM_ORE = block("karasium_ore", ProjectKBlock::new, new Item.Properties());
     public static RegistrySupplier<Block> DEEPSLATE_KARASIUM_ORE = block("deepslate_karasium_ore", () -> new ProjectKBlock(Block.Properties.ofFullCopy(Blocks.DEEPSLATE)), new Item.Properties());

@@ -4,6 +4,7 @@ import com.karasu256.projectk.ProjectK;
 import com.karasu256.projectk.block.ProjectKBlocks;
 import com.karasu256.projectk.client.ProjectKClient;
 import com.karasu256.projectk.client.ProjectKCoreShaders;
+import com.karasu256.projectk.client.screen.AbyssAlchemyBlendMachineScreen;
 import com.karasu256.projectk.client.screen.AbyssMagicTableScreen;
 import com.karasu256.projectk.fluid.ProjectKFluids;
 import com.karasu256.projectk.item.ProjectKItems;
@@ -22,18 +23,18 @@ import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.ShaderInstance;
 import net.minecraft.client.renderer.item.ItemProperties;
-import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.client.resources.model.ModelResourceLocation;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import net.neoforged.fml.loading.FMLEnvironment;
-import net.neoforged.neoforge.client.extensions.common.IClientFluidTypeExtensions;
-import net.neoforged.neoforge.client.extensions.common.RegisterClientExtensionsEvent;
 import net.neoforged.neoforge.client.event.ModelEvent;
 import net.neoforged.neoforge.client.event.RegisterMenuScreensEvent;
 import net.neoforged.neoforge.client.event.RegisterShadersEvent;
+import net.neoforged.neoforge.client.extensions.common.IClientFluidTypeExtensions;
+import net.neoforged.neoforge.client.extensions.common.RegisterClientExtensionsEvent;
 import net.neoforged.neoforge.fluids.FluidType;
 
 import java.io.IOException;
@@ -58,8 +59,33 @@ public final class ProjectKNeoForge {
         }
     }
 
+    private static void registerItemModelProperties() {
+        ProjectKItems.init();
+        ResourceLocation propertyId = Id.id("abyss_energy");
+        for (ResourceLocation itemId : ItemsRegistry.getEnergySuffixItems()) {
+            ItemProperties.register(BuiltInRegistries.ITEM.get(itemId), propertyId, (stack, level, entity, seed) -> ProjectKClient.getAbyssEnergyModelIndex(stack));
+        }
+    }
+
+    private static void registerFluidExtensions(RegisterClientExtensionsEvent event, String baseName, FluidType fluidType) {
+        ResourceLocation still = ResourceLocation.fromNamespaceAndPath(ProjectK.MOD_ID, "block/" + baseName + "_still");
+        ResourceLocation flow = ResourceLocation.fromNamespaceAndPath(ProjectK.MOD_ID, "block/" + baseName + "_flow");
+        event.registerFluidType(new IClientFluidTypeExtensions() {
+            @Override
+            public ResourceLocation getStillTexture() {
+                return still;
+            }
+
+            @Override
+            public ResourceLocation getFlowingTexture() {
+                return flow;
+            }
+        }, fluidType);
+    }
+
     private void onRegisterScreens(RegisterMenuScreensEvent event) {
         event.register(ProjectKMenus.ABYSS_MAGIC_TABLE.get(), AbyssMagicTableScreen::new);
+        event.register(ProjectKMenus.ABYSS_ALCHEMY_BLEND_MACHINE.get(), AbyssAlchemyBlendMachineScreen::new);
     }
 
     private void onModelRegisterAdditional(ModelEvent.RegisterAdditional event) {
@@ -86,14 +112,6 @@ public final class ProjectKNeoForge {
         ItemBlockRenderTypes.setRenderLayer(ProjectKFluids.FLOWING_YANG_ABYSS_ENERGY.get(), RenderType.translucent());
     }
 
-    private static void registerItemModelProperties() {
-        ProjectKItems.init();
-        ResourceLocation propertyId = Id.id("abyss_energy");
-        for (ResourceLocation itemId : ItemsRegistry.getEnergySuffixItems()) {
-            ItemProperties.register(BuiltInRegistries.ITEM.get(itemId), propertyId, (stack, level, entity, seed) -> ProjectKClient.getAbyssEnergyModelIndex(stack));
-        }
-    }
-
     private void onRegisterShaders(RegisterShadersEvent event) {
         ProjectKCoreShaders.init((id, format, onLoaded) -> {
             try {
@@ -108,21 +126,5 @@ public final class ProjectKNeoForge {
         registerFluidExtensions(event, "fluid_abyss_energy", ProjectKFluids.ABYSS_ENERGY.get().getFluidType());
         registerFluidExtensions(event, "fluid_yin_abyss_energy", ProjectKFluids.YIN_ABYSS_ENERGY.get().getFluidType());
         registerFluidExtensions(event, "fluid_yang_abyss_energy", ProjectKFluids.YANG_ABYSS_ENERGY.get().getFluidType());
-    }
-
-    private static void registerFluidExtensions(RegisterClientExtensionsEvent event, String baseName, FluidType fluidType) {
-        ResourceLocation still = ResourceLocation.fromNamespaceAndPath(ProjectK.MOD_ID, "block/" + baseName + "_still");
-        ResourceLocation flow = ResourceLocation.fromNamespaceAndPath(ProjectK.MOD_ID, "block/" + baseName + "_flow");
-        event.registerFluidType(new IClientFluidTypeExtensions() {
-            @Override
-            public ResourceLocation getStillTexture() {
-                return still;
-            }
-
-            @Override
-            public ResourceLocation getFlowingTexture() {
-                return flow;
-            }
-        }, fluidType);
     }
 }

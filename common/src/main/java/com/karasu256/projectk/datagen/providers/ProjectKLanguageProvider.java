@@ -71,7 +71,9 @@ public class ProjectKLanguageProvider implements DataProvider {
         add(ja, "tooltip.projectk.wthit.progress", "進捗: %s%%");
 
         add(en, "container.projectk.abyss_magic_table", "Abyss Magic Table");
+        add(en, "container.projectk.abyss_alchemy_blend_machine", "Abyss Alchemy Blend Machine");
         add(ja, "container.projectk.abyss_magic_table", "深淵魔術テーブル");
+        add(ja, "container.projectk.abyss_alchemy_blend_machine", "深淵錬金合成機");
 
         add(en, "item.projectk.abyss_wrench", "Abyss Wrench");
         add(ja, "item.projectk.abyss_wrench", "深淵レンチ");
@@ -88,12 +90,14 @@ public class ProjectKLanguageProvider implements DataProvider {
 
         add(en, "block.projectk.abyss_generator", "Abyss Generator");
         add(en, "block.projectk.abyss_magic_table", "Abyss Magic Table");
+        add(en, "block.projectk.abyss_alchemy_blend_machine", "Abyss Alchemy Blend Machine");
         add(en, "block.projectk.abyss_energy_cable", "Abyss Energy Cable");
         add(en, "block.projectk.karasium_ore", "Karasium Ore");
         add(en, "block.projectk.deepslate_karasium_ore", "Deepslate Karasium Ore");
 
         add(ja, "block.projectk.abyss_generator", "深淵発電機");
         add(ja, "block.projectk.abyss_magic_table", "深淵魔術テーブル");
+        add(ja, "block.projectk.abyss_alchemy_blend_machine", "深淵錬金合成機");
         add(ja, "block.projectk.abyss_energy_cable", "深淵エネルギーケーブル");
         add(ja, "block.projectk.karasium_ore", "カラシウム鉱石");
         add(ja, "block.projectk.deepslate_karasium_ore", "深層カラシウム鉱石");
@@ -103,12 +107,14 @@ public class ProjectKLanguageProvider implements DataProvider {
         add(en, "item.projectk.raw_karasium", "Raw Karasium");
         add(en, "item.projectk.karasium_dust", "Karasium Dust");
         add(en, "item.projectk.abyss_ingot", "Abyss Ingot");
+        add(en, "item.projectk.tier_upgrade", "Tier Upgrade");
 
         add(ja, "item.projectk.wither_bone", "ウィザーの骨");
         add(ja, "item.projectk.karasium", "カラシウム");
         add(ja, "item.projectk.raw_karasium", "カラシウム原石");
         add(ja, "item.projectk.karasium_dust", "カラシウムダスト");
         add(ja, "item.projectk.abyss_ingot", "深淵インゴット");
+        add(ja, "item.projectk.tier_upgrade", "ティアアップグレード");
     }
 
     private void addEnergyTranslations(JsonObject en, JsonObject ja) {

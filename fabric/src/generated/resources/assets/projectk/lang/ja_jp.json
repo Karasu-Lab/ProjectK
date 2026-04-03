@@ -1,4 +1,5 @@
 {
+  "block.projectk.abyss_alchemy_blend_machine": "深淵錬金合成機",
   "block.projectk.abyss_core": "深淵コア",
   "block.projectk.abyss_energy_cable": "深淵エネルギーケーブル",
   "block.projectk.abyss_generator": "深淵発電機",
@@ -7,6 +8,7 @@
   "block.projectk.karasium_ore": "カラシウム鉱石",
   "block.projectk.yang_abyss_core": "§d陽§rの深淵コア",
   "block.projectk.yin_abyss_core": "§5陰§rの深淵コア",
+  "container.projectk.abyss_alchemy_blend_machine": "深淵錬金合成機",
   "container.projectk.abyss_magic_table": "深淵魔術テーブル",
   "energy.projectk.abyss_energy": "深淵",
   "energy.projectk.abyss_energy_format": "%sの深淵エネルギー",
@@ -20,6 +22,7 @@
   "item.projectk.karasium": "カラシウム",
   "item.projectk.karasium_dust": "カラシウムダスト",
   "item.projectk.raw_karasium": "カラシウム原石",
+  "item.projectk.tier_upgrade": "ティアアップグレード",
   "item.projectk.wither_bone": "ウィザーの骨",
   "rei.category.projectk.in_biome_in_block_crafting": "バイオーム内ブロッククラフト",
   "rei.category.projectk.in_biome_in_block_crafting.requirement": "必要バイオーム: %s",

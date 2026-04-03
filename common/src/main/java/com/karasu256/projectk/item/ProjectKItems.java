@@ -45,6 +45,7 @@ public class ProjectKItems implements IKRegistryInitializerTarget {
     public static RegistrySupplier<Item> WITHER_BONE = item("wither_bone", () -> new ProjectKItem(new ProjectKItem.Properties()));
     public static RegistrySupplier<Item> ABYSS_INGOT = item("abyss_ingot", () -> new AbyssEnergyItem(new ProjectKItem.Properties()), true);
     public static RegistrySupplier<Item> ABYSS_WRENCH = item("abyss_wrench", () -> new AbyssWrenchItem(new ProjectKItem.Properties()));
+    public static RegistrySupplier<Item> TIER_UPGRADE = item("tier_upgrade", () -> new ProjectKItem(new ProjectKItem.Properties()));
 
     static {
         for (ProjectKEnergies.EnergyDefinition definition : ProjectKEnergies.getDefinitions()) {

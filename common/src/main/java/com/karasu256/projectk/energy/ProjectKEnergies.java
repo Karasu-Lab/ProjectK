@@ -48,6 +48,18 @@ public class ProjectKEnergies implements IKRegistryInitializerTarget {
         return getModelIndex(id) / MODEL_PREDICATE_SCALE;
     }
 
+    public static ResourceLocation getEnergyIdByModelIndex(int index) {
+        if (index <= 0) {
+            return null;
+        }
+        for (Map.Entry<ResourceLocation, Integer> entry : MODEL_INDICES.entrySet()) {
+            if (entry.getValue() == index) {
+                return entry.getKey();
+            }
+        }
+        return null;
+    }
+
     public static ResourceLocation getEnergyIdByKind(EnergyKind kind) {
         for (EnergyDefinition definition : DEFINITIONS.values()) {
             if (definition.kind() == kind) {

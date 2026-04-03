@@ -1,6 +1,7 @@
 package com.karasu256.projectk.fabric.datagen;
 
 import com.karasu256.projectk.datagen.ProjectKCommonDataGenerator;
+import com.karasu256.projectk.datagen.providers.AbyssAlchemyBlendRecipeProvider;
 import com.karasu256.projectk.datagen.providers.AbyssMagicTableRecipeProvider;
 import com.karasu256.projectk.datagen.providers.InBiomeInBlockCraftingProvider;
 import com.karasu256.projectk.datagen.providers.ProjectKBlockModelProvider;
@@ -23,6 +24,7 @@ public class ProjectKFabricDataGenerator implements DataGeneratorEntrypoint {
         pack.addProvider(FabricModIntegrationProvider::new);
         pack.addProvider(ProjectKFabricRecipeProvider::new);
         pack.addProvider(AbyssMagicTableRecipeProvider::new);
+        pack.addProvider(AbyssAlchemyBlendRecipeProvider::new);
         pack.addProvider(ProjectKFabricModelProvider::new);
         pack.addProvider((DataProvider.Factory<ProjectKBlockModelProvider>) ProjectKBlockModelProvider::new);
         pack.addProvider((DataProvider.Factory<ProjectKLanguageProvider>) ProjectKLanguageProvider::new);
