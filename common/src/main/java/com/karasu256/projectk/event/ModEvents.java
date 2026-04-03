@@ -18,16 +18,11 @@ import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
-import org.jetbrains.annotations.NotNull;
 
 public class ModEvents {
     private static final ResourceLocation ABYSS_BOOSTER_ID = Id.id("abyss_booster_bonus");
 
     public static void init() {
-        ProjectKEntityEvents.LIVING_DEATH_AROUND_ANY_BLOCK.register(new LivingEntityDeathAroundWitherLose());
-
         EntityEvent.LIVING_DEATH.register((entity, source) -> {
             if (entity.level().isClientSide) return EventResult.pass();
 
@@ -84,30 +79,4 @@ public class ModEvents {
         attribute.addTransientModifier(new AttributeModifier(ABYSS_BOOSTER_ID, (double) bonusLevels, AttributeModifier.Operation.ADD_VALUE));
     }
 
-    private static class LivingEntityDeathAroundWitherLose implements LivingEntityDeathAroundBlock {
-        @Override
-        public int getRadius() {
-            return 5;
-        }
-
-        @Override
-        public boolean shouldTrigger(LivingEntityDeathAroundBlock event, int radius, LivingEntity entity, @NotNull BlockPos entityPos, Level level) {
-            for (BlockPos pos : BlockPos.betweenClosed(entityPos.offset(-radius, -radius, -radius), entityPos.offset(radius, radius, radius))) {
-                if (level.getBlockState(pos).is(event.getBlock())) {
-                    return true;
-                }
-            }
-            return false;
-        }
-
-        @Override
-        public EventResult die(LivingEntity entity, BlockPos pos, Level level) {
-            return EventResult.pass();
-        }
-
-        @Override
-        public Block getBlock() {
-            return Blocks.WITHER_ROSE;
-        }
-    }
 }

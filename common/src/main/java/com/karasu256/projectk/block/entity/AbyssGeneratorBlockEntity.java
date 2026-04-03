@@ -25,4 +25,9 @@ public class AbyssGeneratorBlockEntity extends AbstractPKEnergyBlockEntity<Abyss
     protected AbyssEnergy createEnergy() {
         return new AbyssEnergy(0L);
     }
+
+    @Override
+    protected boolean canOutputEnergy() {
+        return true;
+    }
 }

@@ -6,6 +6,7 @@ import net.karasuniki.karasunikilib.api.block.entity.impl.KarasuCoreBlockEntity;
 import net.karasuniki.karasunikilib.api.data.ICapacity;
 import net.karasuniki.karasunikilib.api.data.impl.EnergyValue;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
@@ -25,6 +26,10 @@ public abstract class AbstractAbyssEnergyMachineBlockEntity extends KarasuCoreBl
 
     protected int maxEnergyTypes() {
         return 1;
+    }
+
+    protected boolean canOutputEnergy() {
+        return false;
     }
 
     @Override
@@ -70,6 +75,14 @@ public abstract class AbstractAbyssEnergyMachineBlockEntity extends KarasuCoreBl
             sync();
         }
         return extracted;
+    }
+
+    @Override
+    public long extract(ResourceLocation id, long maxAmount, boolean simulate, @Nullable Direction side) {
+        if (side != null && !canOutputEnergy()) {
+            return 0;
+        }
+        return extract(id, maxAmount, simulate);
     }
 
     @Override

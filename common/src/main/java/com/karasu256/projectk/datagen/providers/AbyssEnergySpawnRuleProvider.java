@@ -12,6 +12,7 @@ import net.minecraft.data.CachedOutput;
 import net.minecraft.data.DataProvider;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.PackOutput.PathProvider;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.MobCategory;
 
 import java.nio.file.Path;
@@ -27,6 +28,12 @@ public class AbyssEnergySpawnRuleProvider implements DataProvider {
 
     @Override
     public CompletableFuture<?> run(CachedOutput output) {
+        AbyssEnergySpawnRule witherRoseRule = new AbyssEnergySpawnRule(
+            ProjectKEnergies.ABYSS.id(),
+            new MobCondition(List.of(), List.of(), List.of()),
+            new BlockCondition(5, List.of(), List.of(ResourceLocation.withDefaultNamespace("wither_rose"))),
+            new EnergyAmountRule(EnergyAmountRule.AmountType.BUILT_IN, 0L)
+        );
         AbyssEnergySpawnRule yinRule = new AbyssEnergySpawnRule(
                 ProjectKEnergies.YIN.id(),
                 new MobCondition(List.of(MobCategory.MONSTER), List.of(), List.of()),
@@ -41,9 +48,10 @@ public class AbyssEnergySpawnRuleProvider implements DataProvider {
                 new EnergyAmountRule(EnergyAmountRule.AmountType.BUILT_IN, 0L)
         );
 
+        CompletableFuture<?> witherRose = write(output, "abyss_wither_rose", witherRoseRule);
         CompletableFuture<?> yin = write(output, "yin_abyss_energy", yinRule);
         CompletableFuture<?> yang = write(output, "yang_abyss_energy", yangRule);
-        return CompletableFuture.allOf(yin, yang);
+        return CompletableFuture.allOf(witherRose, yin, yang);
     }
 
     @Override

@@ -10,6 +10,7 @@ import net.karasuniki.karasunikilib.api.block.entity.impl.AbstractEnergyBlockEnt
 import net.karasuniki.karasunikilib.api.client.model.animation.IRotationAnimSpeed;
 import net.karasuniki.karasunikilib.api.data.impl.EnergyValue;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
@@ -34,6 +35,10 @@ public abstract class AbstractPKEnergyBlockEntity<T extends IProjectKEnergy> ext
     }
 
     protected abstract T createEnergy();
+
+    protected boolean canOutputEnergy() {
+        return false;
+    }
 
     public IRotationAnimSpeed getRotationAnimSpeed() {
         return rotationSpeed;
@@ -96,6 +101,14 @@ public abstract class AbstractPKEnergyBlockEntity<T extends IProjectKEnergy> ext
             sync();
         }
         return extracted;
+    }
+
+    @Override
+    public long extract(ResourceLocation id, long maxAmount, boolean simulate, @Nullable Direction side) {
+        if (side != null && !canOutputEnergy()) {
+            return 0;
+        }
+        return extract(id, maxAmount, simulate);
     }
 
     @Override
