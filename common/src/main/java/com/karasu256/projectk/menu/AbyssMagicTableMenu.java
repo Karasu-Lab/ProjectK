@@ -6,11 +6,7 @@ import net.minecraft.world.Container;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.inventory.AbstractContainerMenu;
-import net.minecraft.world.inventory.ContainerData;
-import net.minecraft.world.inventory.ContainerLevelAccess;
-import net.minecraft.world.inventory.SimpleContainerData;
-import net.minecraft.world.inventory.Slot;
+import net.minecraft.world.inventory.*;
 import net.minecraft.world.item.ItemStack;
 
 public class AbyssMagicTableMenu extends AbstractContainerMenu {
@@ -158,26 +154,21 @@ public class AbyssMagicTableMenu extends AbstractContainerMenu {
         }
     }
 
-    private static class MagicTableData implements ContainerData {
-        private final AbyssMagicTableBlockEntity blockEntity;
-
-        public MagicTableData(AbyssMagicTableBlockEntity blockEntity) {
-            this.blockEntity = blockEntity;
-        }
+    private record MagicTableData(AbyssMagicTableBlockEntity blockEntity) implements ContainerData {
 
         @Override
-        public int get(int index) {
-            return blockEntity.getDataValue(index);
-        }
+            public int get(int index) {
+                return blockEntity.getDataValue(index);
+            }
 
-        @Override
-        public void set(int index, int value) {
-            blockEntity.setDataValue(index, value);
-        }
+            @Override
+            public void set(int index, int value) {
+                blockEntity.setDataValue(index, value);
+            }
 
-        @Override
-        public int getCount() {
-            return DATA_SIZE;
+            @Override
+            public int getCount() {
+                return DATA_SIZE;
+            }
         }
-    }
 }

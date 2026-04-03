@@ -10,8 +10,8 @@ import net.minecraft.world.inventory.MenuType;
 
 @KRegistryInitializer(modId = ProjectK.MOD_ID, order = 5)
 public class ProjectKMenus implements IKRegistryInitializerTarget {
-    public static final RegistrySupplier<MenuType<AbyssMagicTableMenu>> ABYSS_MAGIC_TABLE = MenusRegistry.menu("abyss_magic_table", () -> new MenuType<>(AbyssMagicTableMenu::new, FeatureFlags.VANILLA_SET));
-
     public static void init() {
-    }
+    }    public static final RegistrySupplier<MenuType<AbyssMagicTableMenu>> ABYSS_MAGIC_TABLE = MenusRegistry.menu("abyss_magic_table", () -> new MenuType<>(AbyssMagicTableMenu::new, FeatureFlags.VANILLA_SET));
+
+
 }
