@@ -5,39 +5,43 @@ import com.karasu256.projectk.block.entity.AbyssEnchanterBlockEntity;
 import com.karasu256.projectk.energy.ProjectKEnergies;
 import com.karasu256.projectk.registry.ProjectKTags;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.ItemTags;
 import net.minecraft.world.Container;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.*;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 
 public class AbyssEnchanterMenu extends AbstractContainerMenu {
     private static final int SLOT_INPUT = 0;
     private static final int SLOT_OUTPUT = 1;
     private static final int CONTAINER_SIZE = 2;
-    private static final int DATA_SIZE = 7;
+    private static final int DATA_SIZE = 17;
 
     private final Container container;
     private final ContainerData data;
     private final ContainerLevelAccess access;
+    private final AbyssEnchanterBlockEntity blockEntity;
 
     public AbyssEnchanterMenu(int syncId, Inventory inventory) {
-        this(syncId, inventory, new SimpleContainer(CONTAINER_SIZE), new SimpleContainerData(DATA_SIZE), ContainerLevelAccess.NULL);
+        this(syncId, inventory, new SimpleContainer(CONTAINER_SIZE), new SimpleContainerData(DATA_SIZE), ContainerLevelAccess.NULL, null);
     }
 
     public AbyssEnchanterMenu(int syncId, Inventory inventory, AbyssEnchanterBlockEntity blockEntity) {
-        this(syncId, inventory, new EnchanterContainer(blockEntity), new EnchanterData(blockEntity), ContainerLevelAccess.create(blockEntity.getLevel(), blockEntity.getBlockPos()));
+        this(syncId, inventory, new EnchanterContainer(blockEntity), new EnchanterData(blockEntity), ContainerLevelAccess.create(blockEntity.getLevel(), blockEntity.getBlockPos()), blockEntity);
     }
 
-    private AbyssEnchanterMenu(int syncId, Inventory inventory, Container container, ContainerData data, ContainerLevelAccess access) {
+    private AbyssEnchanterMenu(int syncId, Inventory inventory, Container container, ContainerData data, ContainerLevelAccess access, AbyssEnchanterBlockEntity blockEntity) {
         super(ProjectKMenus.ABYSS_ENCHANTER.get(), syncId);
         this.container = container;
         this.data = data;
         this.access = access;
+        this.blockEntity = blockEntity;
 
         addSlot(new EnchanterInputSlot(container, SLOT_INPUT, 15, 47));
-        addSlot(new ResultSlot(container, SLOT_OUTPUT, 125, 47));
+        addSlot(new ResultSlot(container, SLOT_OUTPUT, 35, 47));
 
         addPlayerInventory(inventory);
         addPlayerHotbar(inventory);
@@ -50,28 +54,44 @@ public class AbyssEnchanterMenu extends AbstractContainerMenu {
         return stillValid(access, player, ProjectKBlocks.ABYSS_ENCHANTER.get());
     }
 
-    public int getProgress() {
-        return data.get(0);
+    public int getTierLevel(int index) {
+        return data.get(index);
     }
 
-    public int getMaxProgress() {
-        return data.get(1);
+    public int getTierCost(int index) {
+        return data.get(3 + index);
     }
 
     public long getEnergy() {
-        int low = data.get(2);
-        int high = data.get(3);
+        int low = data.get(6);
+        int high = data.get(7);
         return (long) high << 32 | (low & 0xffffffffL);
     }
 
     public long getEnergyCapacity() {
-        int low = data.get(4);
-        int high = data.get(5);
+        int low = data.get(8);
+        int high = data.get(9);
         return (long) high << 32 | (low & 0xffffffffL);
     }
 
     public ResourceLocation getEnergyId() {
-        return ProjectKEnergies.getEnergyIdByModelIndex(data.get(6));
+        return ProjectKEnergies.getEnergyIdByModelIndex(data.get(10));
+    }
+
+    public int getOptionEnchantmentId(int index) {
+        return data.get(11 + index);
+    }
+
+    public int getOptionEnchantmentLevel(int index) {
+        return data.get(14 + index);
+    }
+
+    @Override
+    public boolean clickMenuButton(Player player, int id) {
+        if (blockEntity == null) {
+            return false;
+        }
+        return blockEntity.applyEnchantment(id, player);
     }
 
     @Override
@@ -133,14 +153,14 @@ public class AbyssEnchanterMenu extends AbstractContainerMenu {
         @Override
         public boolean mayPlace(ItemStack stack) {
             return stack.is(ProjectKTags.Items.BOOKS)
-                    || stack.is(net.minecraft.tags.ItemTags.AXES)
-                    || stack.is(net.minecraft.tags.ItemTags.HOES)
-                    || stack.is(net.minecraft.tags.ItemTags.PICKAXES)
-                    || stack.is(net.minecraft.tags.ItemTags.SHOVELS)
-                    || stack.is(net.minecraft.tags.ItemTags.SWORDS)
-                    || stack.is(net.minecraft.tags.ItemTags.TRIMMABLE_ARMOR)
-                    || stack.is(net.minecraft.world.item.Items.MACE)
-                    || stack.is(net.minecraft.world.item.Items.TRIDENT);
+                    || stack.is(ItemTags.AXES)
+                    || stack.is(ItemTags.HOES)
+                    || stack.is(ItemTags.PICKAXES)
+                    || stack.is(ItemTags.SHOVELS)
+                    || stack.is(ItemTags.SWORDS)
+                    || stack.is(ItemTags.TRIMMABLE_ARMOR)
+                    || stack.is(Items.MACE)
+                    || stack.is(Items.TRIDENT);
         }
     }
 

@@ -17,6 +17,7 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.ItemTags;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -24,17 +25,18 @@ import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.enchantment.ItemEnchantments;
-import net.minecraft.world.item.enchantment.EnchantmentHelper;
+import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 public class AbyssEnchanterBlockEntity extends AbstractPKEnergyBlockEntity<AbyssEnergy> implements MenuProvider {
-    private static final int CRAFT_TIME = 100;
-    private int progress = 0;
+    private static final int OPTION_COUNT = 3;
     private ItemStack outputItem = ItemStack.EMPTY;
 
     public AbyssEnchanterBlockEntity(BlockPos pos, BlockState state) {
@@ -42,8 +44,6 @@ public class AbyssEnchanterBlockEntity extends AbstractPKEnergyBlockEntity<Abyss
     }
 
     public static void tick(Level level, BlockPos pos, BlockState state, AbyssEnchanterBlockEntity be) {
-        if (level.isClientSide) return;
-        be.serverTick();
     }
 
     private static long resolveCapacity(BlockState state) {
@@ -58,53 +58,51 @@ public class AbyssEnchanterBlockEntity extends AbstractPKEnergyBlockEntity<Abyss
         return new AbyssEnergy(0L);
     }
 
-    private void serverTick() {
+    public boolean applyEnchantment(int option, Player player) {
+        if (level == null || level.isClientSide) {
+            return false;
+        }
+        if (option < 0 || option >= OPTION_COUNT) {
+            return false;
+        }
         ItemStack input = getInputItem();
         if (input.isEmpty() || !isValidInput(input)) {
-            resetProgress();
-            return;
+            return false;
         }
-
-        AbyssEnchanterTier tier = selectTier();
-        if (tier == null) {
-            resetProgress();
-            return;
+        if (isInputEnchanted(input)) {
+            return false;
         }
-
         if (!canAcceptOutput()) {
-            resetProgress();
-            return;
+            return false;
         }
 
-        int previous = progress;
-        progress++;
-        if (progress != previous) {
-            setChanged();
-            sync();
+        AbyssEnchanterTier tier = getTier(option);
+        if (tier == null) {
+            return false;
+        }
+        if (getAmount() < tier.cost()) {
+            return false;
         }
 
-        if (progress >= CRAFT_TIME) {
-            enchant(input, tier);
-            resetProgress();
-        }
-    }
-
-    private void resetProgress() {
-        progress = 0;
-        setChanged();
-        sync();
-    }
-
-    private AbyssEnchanterTier selectTier() {
-        List<AbyssEnchanterTier> tiers = AbyssEnchanterTierManager.getTiers();
-        if (tiers.isEmpty()) {
-            return null;
-        }
-        return AbyssEnchanterTierManager.getBestTier(getAmount());
+        enchant(input, tier);
+        return true;
     }
 
     private boolean canAcceptOutput() {
         return outputItem.isEmpty();
+    }
+
+    @Nullable
+    private AbyssEnchanterTier getTier(int index) {
+        List<AbyssEnchanterTier> tiers = new ArrayList<>(AbyssEnchanterTierManager.getTiers());
+        if (tiers.isEmpty()) {
+            return null;
+        }
+        tiers.sort(Comparator.comparingInt(AbyssEnchanterTier::level));
+        if (index < 0 || index >= tiers.size()) {
+            return null;
+        }
+        return tiers.get(index);
     }
 
     private void enchant(ItemStack input, AbyssEnchanterTier tier) {
@@ -178,22 +176,94 @@ public class AbyssEnchanterBlockEntity extends AbstractPKEnergyBlockEntity<Abyss
     }
 
     public int getDataValue(int index) {
+        if (!shouldExposeOptions()) {
+            return switch (index) {
+                case 6 -> (int) getAmount();
+                case 7 -> (int) (getAmount() >>> 32);
+                case 8 -> (int) getCapacity();
+                case 9 -> (int) (getCapacity() >>> 32);
+                case 10 -> getAbyssEnergyId() == null ? 0 : ProjectKEnergies.getModelIndex(getAbyssEnergyId());
+                case 11 -> -1;
+                case 12 -> -1;
+                case 13 -> -1;
+                case 14 -> 0;
+                case 15 -> 0;
+                case 16 -> 0;
+                default -> 0;
+            };
+        }
         return switch (index) {
-            case 0 -> progress;
-            case 1 -> CRAFT_TIME;
-            case 2 -> (int) getAmount();
-            case 3 -> (int) (getAmount() >>> 32);
-            case 4 -> (int) getCapacity();
-            case 5 -> (int) (getCapacity() >>> 32);
-            case 6 -> getAbyssEnergyId() == null ? 0 : ProjectKEnergies.getModelIndex(getAbyssEnergyId());
+            case 0 -> getTierLevel(0);
+            case 1 -> getTierLevel(1);
+            case 2 -> getTierLevel(2);
+            case 3 -> getTierCost(0);
+            case 4 -> getTierCost(1);
+            case 5 -> getTierCost(2);
+            case 6 -> (int) getAmount();
+            case 7 -> (int) (getAmount() >>> 32);
+            case 8 -> (int) getCapacity();
+            case 9 -> (int) (getCapacity() >>> 32);
+            case 10 -> getAbyssEnergyId() == null ? 0 : ProjectKEnergies.getModelIndex(getAbyssEnergyId());
+            case 11 -> getOptionEnchantmentId(0);
+            case 12 -> getOptionEnchantmentId(1);
+            case 13 -> getOptionEnchantmentId(2);
+            case 14 -> getOptionEnchantmentLevel(0);
+            case 15 -> getOptionEnchantmentLevel(1);
+            case 16 -> getOptionEnchantmentLevel(2);
             default -> 0;
         };
     }
 
     public void setDataValue(int index, int value) {
-        if (index == 0) {
-            progress = value;
+    }
+
+    private int getTierLevel(int index) {
+        AbyssEnchanterTier tier = getTier(index);
+        return tier == null ? 0 : tier.level();
+    }
+
+    private int getTierCost(int index) {
+        AbyssEnchanterTier tier = getTier(index);
+        return tier == null ? 0 : (int) Math.min(Integer.MAX_VALUE, tier.cost());
+    }
+
+    private boolean shouldExposeOptions() {
+        ItemStack input = getInputItem();
+        if (input.isEmpty() || !isValidInput(input)) {
+            return false;
         }
+        return !isInputEnchanted(input);
+    }
+
+    private boolean isInputEnchanted(ItemStack stack) {
+        ItemEnchantments enchants = stack.getOrDefault(DataComponents.ENCHANTMENTS, ItemEnchantments.EMPTY);
+        ItemEnchantments stored = stack.getOrDefault(DataComponents.STORED_ENCHANTMENTS, ItemEnchantments.EMPTY);
+        return !enchants.isEmpty() || !stored.isEmpty();
+    }
+
+    private int getOptionEnchantmentId(int index) {
+        Enchantment enchantment = getOptionEnchantment(index);
+        if (enchantment == null) {
+            return -1;
+        }
+        if (level == null) {
+            return -1;
+        }
+        return level.registryAccess().registryOrThrow(Registries.ENCHANTMENT).getId(enchantment);
+    }
+
+    private int getOptionEnchantmentLevel(int index) {
+        AbyssEnchanterTier tier = getTier(index);
+        return tier == null ? 0 : tier.level();
+    }
+
+    @Nullable
+    private Enchantment getOptionEnchantment(int index) {
+        if (level == null) {
+            return null;
+        }
+        var registry = level.registryAccess().lookupOrThrow(Registries.ENCHANTMENT);
+        return registry.getOrThrow(ProjectKEnchantments.ABYSS_BOOSTER_KEY).value();
     }
 
     @Override
@@ -210,12 +280,12 @@ public class AbyssEnchanterBlockEntity extends AbstractPKEnergyBlockEntity<Abyss
         if (stack.is(ProjectKTags.Items.BOOKS) || stack.is(Items.BOOK)) {
             return true;
         }
-        return stack.is(net.minecraft.tags.ItemTags.AXES)
-                || stack.is(net.minecraft.tags.ItemTags.HOES)
-                || stack.is(net.minecraft.tags.ItemTags.PICKAXES)
-                || stack.is(net.minecraft.tags.ItemTags.SHOVELS)
-                || stack.is(net.minecraft.tags.ItemTags.SWORDS)
-                || stack.is(net.minecraft.tags.ItemTags.TRIMMABLE_ARMOR)
+        return stack.is(ItemTags.AXES)
+                || stack.is(ItemTags.HOES)
+                || stack.is(ItemTags.PICKAXES)
+                || stack.is(ItemTags.SHOVELS)
+                || stack.is(ItemTags.SWORDS)
+                || stack.is(ItemTags.TRIMMABLE_ARMOR)
                 || stack.is(Items.MACE)
                 || stack.is(Items.TRIDENT);
     }
@@ -223,7 +293,6 @@ public class AbyssEnchanterBlockEntity extends AbstractPKEnergyBlockEntity<Abyss
     @Override
     protected void saveAdditional(CompoundTag nbt, HolderLookup.Provider registries) {
         super.saveAdditional(nbt, registries);
-        nbt.putInt(EnergyKeys.MAGIC_TABLE_PROGRESS.toString(), progress);
         if (!outputItem.isEmpty()) {
             nbt.put(EnergyKeys.MAGIC_TABLE_OUTPUT_ITEM.toString(), outputItem.save(registries));
         }
@@ -232,7 +301,6 @@ public class AbyssEnchanterBlockEntity extends AbstractPKEnergyBlockEntity<Abyss
     @Override
     protected void loadAdditional(CompoundTag nbt, HolderLookup.Provider registries) {
         super.loadAdditional(nbt, registries);
-        progress = nbt.getInt(EnergyKeys.MAGIC_TABLE_PROGRESS.toString());
         if (nbt.contains(EnergyKeys.MAGIC_TABLE_OUTPUT_ITEM.toString())) {
             outputItem = ItemStack.parse(registries, nbt.getCompound(EnergyKeys.MAGIC_TABLE_OUTPUT_ITEM.toString())).orElse(ItemStack.EMPTY);
         } else {

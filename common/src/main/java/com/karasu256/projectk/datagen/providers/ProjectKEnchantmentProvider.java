@@ -1,5 +1,6 @@
 package com.karasu256.projectk.datagen.providers;
 
+import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.karasu256.projectk.utils.Id;
 import net.minecraft.data.CachedOutput;
@@ -14,6 +15,7 @@ import java.util.concurrent.CompletableFuture;
 
 public class ProjectKEnchantmentProvider implements DataProvider {
     private final PathProvider pathProvider;
+    private final Map<String, JsonObject> definitions = new LinkedHashMap<>();
 
     public ProjectKEnchantmentProvider(PackOutput output) {
         this.pathProvider = output.createPathProvider(PackOutput.Target.DATA_PACK, "enchantment");
@@ -21,8 +23,8 @@ public class ProjectKEnchantmentProvider implements DataProvider {
 
     @Override
     public CompletableFuture<?> run(CachedOutput output) {
-        Map<String, JsonObject> definitions = new LinkedHashMap<>();
-        register(definitions);
+        definitions.clear();
+        register();
         CompletableFuture<?>[] writes = definitions.entrySet().stream().map(entry -> write(output, entry.getKey(), entry.getValue())).toArray(CompletableFuture[]::new);
         return CompletableFuture.allOf(writes);
     }
@@ -37,8 +39,12 @@ public class ProjectKEnchantmentProvider implements DataProvider {
         return DataProvider.saveStable(output, json, path);
     }
 
-    private void register(Map<String, JsonObject> definitions) {
-        definitions.put("abyss_booster", simpleEnchantment("enchantment.projectk.abyss_booster", "#minecraft:swords", 30, 1, 10, 1, 15, 5, 10, "mainhand"));
+    private void register() {
+        enchant("abyss_booster", simpleEnchantment("enchantment.projectk.abyss_booster", "#minecraft:swords", 30, 1, 10, 1, 15, 5, 10, "mainhand"));
+    }
+
+    private void enchant(String id, JsonObject json) {
+        definitions.put(id, json);
     }
 
     private JsonObject simpleEnchantment(String translationKey, String supportedItems, int maxLevel, int minCostBase, int minCostPerLevel, int maxCostBase, int maxCostPerLevel, int anvilCost, int weight, String... slots) {
@@ -68,8 +74,8 @@ public class ProjectKEnchantmentProvider implements DataProvider {
     }
 
     private static final class JsonUtil {
-        private static com.google.gson.JsonArray stringArray(String... values) {
-            com.google.gson.JsonArray array = new com.google.gson.JsonArray();
+        private static JsonArray stringArray(String... values) {
+            JsonArray array = new JsonArray();
             for (String value : values) {
                 array.add(value);
             }

@@ -85,7 +85,7 @@ public class AbyssEnchanter extends BaseEntityBlock {
 
     @Override
     public @Nullable <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
-        return level.isClientSide ? null : createTickerHelper(type, ProjectKBlockEntities.ABYSS_ENCHANTER.get(), AbyssEnchanterBlockEntity::tick);
+        return null;
     }
 
     public long getCapacity() {
