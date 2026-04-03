@@ -15,7 +15,8 @@ import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
 
-public record AbyssMagicTableRecipe(ResourceLocation energyId, long energyAmount, IngredientStack input, ItemStack result) implements Recipe<RecipeInput> {
+public record AbyssMagicTableRecipe(ResourceLocation energyId, long energyAmount, IngredientStack input,
+                                    ItemStack result) implements Recipe<RecipeInput> {
     public static final MapCodec<AbyssMagicTableRecipe> CODEC = RecordCodecBuilder.mapCodec(builder -> builder.group(
             ResourceLocation.CODEC.fieldOf("energy_id").forGetter(AbyssMagicTableRecipe::energyId),
             Codec.LONG.fieldOf("energy_amount").forGetter(AbyssMagicTableRecipe::energyAmount),

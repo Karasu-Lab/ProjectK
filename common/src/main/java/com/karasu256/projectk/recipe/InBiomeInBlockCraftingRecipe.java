@@ -21,7 +21,9 @@ import net.minecraft.world.level.block.state.BlockState;
 
 import java.util.List;
 
-public record InBiomeInBlockCraftingRecipe(BiomeCondition biome, ResourceLocation blockTag, List<IngredientStack> inputs, float radius, ItemStack result) implements Recipe<RecipeInput> {
+public record InBiomeInBlockCraftingRecipe(BiomeCondition biome, ResourceLocation blockTag,
+                                           List<IngredientStack> inputs, float radius,
+                                           ItemStack result) implements Recipe<RecipeInput> {
     public static final MapCodec<InBiomeInBlockCraftingRecipe> CODEC = RecordCodecBuilder.mapCodec(builder -> builder.group(
             BiomeCondition.CODEC.fieldOf("biome").forGetter(InBiomeInBlockCraftingRecipe::biome),
             ResourceLocation.CODEC.fieldOf("block_tag").forGetter(InBiomeInBlockCraftingRecipe::blockTag),
