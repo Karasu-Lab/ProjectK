@@ -11,16 +11,6 @@ public final class AbyssBoosterEnchantment {
     }
 
     public static Enchantment create() {
-        return Enchantment.enchantment(
-                Enchantment.definition(
-                        BuiltInRegistries.ITEM.getTag(ItemTags.SWORDS).orElseThrow(),
-                        10,
-                        30,
-                        Enchantment.dynamicCost(1, 10),
-                        Enchantment.dynamicCost(1, 15),
-                        5,
-                        EquipmentSlotGroup.MAINHAND
-                )
-        ).build(Id.id("abyss_booster"));
+        return Enchantment.enchantment(Enchantment.definition(BuiltInRegistries.ITEM.getOrCreateTag(ItemTags.SWORDS), 10, 30, Enchantment.dynamicCost(1, 10), Enchantment.dynamicCost(1, 15), 5, EquipmentSlotGroup.MAINHAND)).build(Id.id("abyss_booster"));
     }
 }
