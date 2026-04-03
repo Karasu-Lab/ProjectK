@@ -80,20 +80,20 @@ public class AbyssEnergyEntity extends Entity {
         builder.define(ENERGY_ID, Id.id("abyss_energy").toString());
     }
 
-    public void setEnergy(long amount) {
-        entityData.set(ENERGY, amount);
-    }
-
     public long getEnergy() {
         return entityData.get(ENERGY);
     }
 
-    public void setEnergyId(ResourceLocation id) {
-        entityData.set(ENERGY_ID, id.toString());
+    public void setEnergy(long amount) {
+        entityData.set(ENERGY, amount);
     }
 
     public ResourceLocation getEnergyId() {
         return ResourceLocation.parse(entityData.get(ENERGY_ID));
+    }
+
+    public void setEnergyId(ResourceLocation id) {
+        entityData.set(ENERGY_ID, id.toString());
     }
 
     @Override
