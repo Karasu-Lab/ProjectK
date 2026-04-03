@@ -1,6 +1,5 @@
 package com.karasu256.projectk.block.custom;
 
-import com.karasu256.projectk.block.custom.ProjectKBlock;
 import com.karasu256.projectk.block.entity.AbyssEnergyCableBlockEntity;
 import com.karasu256.projectk.block.entity.ProjectKBlockEntities;
 import com.karasu256.projectk.data.AbyssWrenchBehaviorData.AbyssWrenchBehavior;
@@ -14,15 +13,15 @@ import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
-import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.BaseEntityBlock;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.phys.shapes.CollisionContext;
@@ -32,9 +31,9 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public class AbyssEnergyCable extends BaseEntityBlock {
-        public static final MapCodec<AbyssEnergyCable> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
+    public static final MapCodec<AbyssEnergyCable> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
             ProjectKBlock.CustomProperties.CODEC.fieldOf("properties").forGetter(AbyssEnergyCable::getCustomProperties)
-        ).apply(instance, properties -> new AbyssEnergyCable(BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_BLOCK).noOcclusion(), properties)));
+    ).apply(instance, properties -> new AbyssEnergyCable(BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_BLOCK).noOcclusion(), properties)));
 
     public static final BooleanProperty NORTH = BooleanProperty.create("north");
     public static final BooleanProperty SOUTH = BooleanProperty.create("south");
@@ -48,6 +47,22 @@ public class AbyssEnergyCable extends BaseEntityBlock {
     private static final VoxelShape[] SIDES_PULL = new VoxelShape[Direction.values().length];
     private static final VoxelShape[] SIDES_PUSH = new VoxelShape[Direction.values().length];
 
+    static {
+        for (Direction dir : Direction.values()) {
+            SIDES[dir.ordinal()] = makeSide(dir, 5, 11, 0, 5);
+            SIDES_PULL[dir.ordinal()] = Shapes.or(
+                    makeSide(dir, 5, 11, 4, 5),
+                    makeSide(dir, 6, 10, 2, 4),
+                    makeSide(dir, 4, 12, 0, 2)
+            );
+            SIDES_PUSH[dir.ordinal()] = Shapes.or(
+                    makeSide(dir, 5, 11, 3, 5),
+                    makeSide(dir, 6, 10, 1, 3),
+                    makeSide(dir, 7, 9, 0, 1)
+            );
+        }
+    }
+
     private final ProjectKBlock.CustomProperties customProperties;
 
     public AbyssEnergyCable(BlockBehaviour.Properties properties, ProjectKBlock.CustomProperties customProperties) {
@@ -60,6 +75,71 @@ public class AbyssEnergyCable extends BaseEntityBlock {
                 .setValue(WEST, false)
                 .setValue(UP, false)
                 .setValue(DOWN, false));
+    }
+
+    private static AbyssWrenchBehavior resolveBehavior(BlockState state, @Nullable AbyssEnergyCableBlockEntity be, Direction dir) {
+        if (be != null) {
+            return be.getBehavior(dir);
+        }
+        return AbyssWrenchBehavior.NORMAL;
+    }
+
+    private static VoxelShape appendIfConnected(VoxelShape base, BlockState state, BooleanProperty prop, Direction dir, AbyssWrenchBehavior behavior) {
+        if (!state.getValue(prop)) {
+            return base;
+        }
+        return Shapes.or(base, getSideShape(behavior, dir));
+    }
+
+    private static VoxelShape getSideShape(AbyssWrenchBehavior behavior, Direction dir) {
+        return switch (behavior) {
+            case INPUT -> SIDES_PULL[dir.ordinal()];
+            case OUTPUT -> SIDES_PUSH[dir.ordinal()];
+            case NONE -> CENTER;
+            default -> SIDES[dir.ordinal()];
+        };
+    }
+
+    private static BooleanProperty getPropertyFor(Direction dir) {
+        return switch (dir) {
+            case NORTH -> NORTH;
+            case SOUTH -> SOUTH;
+            case EAST -> EAST;
+            case WEST -> WEST;
+            case UP -> UP;
+            case DOWN -> DOWN;
+        };
+    }
+
+    public static BooleanProperty getConnectionPropertyFor(Direction dir) {
+        return getPropertyFor(dir);
+    }
+
+    private static BlockState updateConnections(LevelAccessor level, BlockPos pos, BlockState state) {
+        for (Direction dir : Direction.values()) {
+            state = state.setValue(getPropertyFor(dir), canConnect(level, pos.relative(dir)));
+        }
+        return state;
+    }
+
+    private static boolean canConnect(LevelAccessor level, BlockPos pos) {
+        BlockState neighbor = level.getBlockState(pos);
+        if (neighbor.getBlock() instanceof AbyssEnergyCable) {
+            return true;
+        }
+        BlockEntity be = level.getBlockEntity(pos);
+        return be instanceof ICableInputable || be instanceof ICableOutputable;
+    }
+
+    private static VoxelShape makeSide(Direction dir, double innerMin, double innerMax, double extMin, double extMax) {
+        return switch (dir) {
+            case DOWN -> box(innerMin, extMin, innerMin, innerMax, extMax, innerMax);
+            case UP -> box(innerMin, 16 - extMax, innerMin, innerMax, 16 - extMin, innerMax);
+            case NORTH -> box(innerMin, innerMin, extMin, innerMax, innerMax, extMax);
+            case SOUTH -> box(innerMin, innerMin, 16 - extMax, innerMax, innerMax, 16 - extMin);
+            case WEST -> box(extMin, innerMin, innerMin, extMax, innerMax, innerMax);
+            case EAST -> box(16 - extMax, innerMin, innerMin, 16 - extMin, innerMax, innerMax);
+        };
     }
 
     @Override
@@ -119,88 +199,6 @@ public class AbyssEnergyCable extends BaseEntityBlock {
         shape = appendIfConnected(shape, state, UP, Direction.UP, resolveBehavior(state, be, Direction.UP));
         shape = appendIfConnected(shape, state, DOWN, Direction.DOWN, resolveBehavior(state, be, Direction.DOWN));
         return shape;
-    }
-
-    private static AbyssWrenchBehavior resolveBehavior(BlockState state, @Nullable AbyssEnergyCableBlockEntity be, Direction dir) {
-        if (be != null) {
-            return be.getBehavior(dir);
-        }
-        return AbyssWrenchBehavior.NORMAL;
-    }
-
-    private static VoxelShape appendIfConnected(VoxelShape base, BlockState state, BooleanProperty prop, Direction dir, AbyssWrenchBehavior behavior) {
-        if (!state.getValue(prop)) {
-            return base;
-        }
-        return Shapes.or(base, getSideShape(behavior, dir));
-    }
-
-    private static VoxelShape getSideShape(AbyssWrenchBehavior behavior, Direction dir) {
-        return switch (behavior) {
-            case INPUT -> SIDES_PULL[dir.ordinal()];
-            case OUTPUT -> SIDES_PUSH[dir.ordinal()];
-            case NONE -> CENTER;
-            default -> SIDES[dir.ordinal()];
-        };
-    }
-
-    private static BooleanProperty getPropertyFor(Direction dir) {
-        return switch (dir) {
-            case NORTH -> NORTH;
-            case SOUTH -> SOUTH;
-            case EAST -> EAST;
-            case WEST -> WEST;
-            case UP -> UP;
-            case DOWN -> DOWN;
-        };
-    }
-
-    public static BooleanProperty getConnectionPropertyFor(Direction dir) {
-        return getPropertyFor(dir);
-    }
-
-
-    private static BlockState updateConnections(LevelAccessor level, BlockPos pos, BlockState state) {
-        for (Direction dir : Direction.values()) {
-            state = state.setValue(getPropertyFor(dir), canConnect(level, pos.relative(dir)));
-        }
-        return state;
-    }
-
-    private static boolean canConnect(LevelAccessor level, BlockPos pos) {
-        BlockState neighbor = level.getBlockState(pos);
-        if (neighbor.getBlock() instanceof AbyssEnergyCable) {
-            return true;
-        }
-        BlockEntity be = level.getBlockEntity(pos);
-        return be instanceof ICableInputable || be instanceof ICableOutputable;
-    }
-
-    static {
-        for (Direction dir : Direction.values()) {
-            SIDES[dir.ordinal()] = makeSide(dir, 5, 11, 0, 5);
-            SIDES_PULL[dir.ordinal()] = Shapes.or(
-                    makeSide(dir, 5, 11, 4, 5),
-                    makeSide(dir, 6, 10, 2, 4),
-                    makeSide(dir, 4, 12, 0, 2)
-            );
-            SIDES_PUSH[dir.ordinal()] = Shapes.or(
-                    makeSide(dir, 5, 11, 3, 5),
-                    makeSide(dir, 6, 10, 1, 3),
-                    makeSide(dir, 7, 9, 0, 1)
-            );
-        }
-    }
-
-    private static VoxelShape makeSide(Direction dir, double innerMin, double innerMax, double extMin, double extMax) {
-        return switch (dir) {
-            case DOWN -> box(innerMin, extMin, innerMin, innerMax, extMax, innerMax);
-            case UP -> box(innerMin, 16 - extMax, innerMin, innerMax, 16 - extMin, innerMax);
-            case NORTH -> box(innerMin, innerMin, extMin, innerMax, innerMax, extMax);
-            case SOUTH -> box(innerMin, innerMin, 16 - extMax, innerMax, innerMax, 16 - extMin);
-            case WEST -> box(extMin, innerMin, innerMin, extMax, innerMax, innerMax);
-            case EAST -> box(16 - extMax, innerMin, innerMin, 16 - extMin, innerMax, innerMax);
-        };
     }
 
     public long getCapacity() {

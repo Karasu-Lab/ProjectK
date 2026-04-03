@@ -16,8 +16,8 @@ public class ProjectKBlock extends AbstractProjectKBlock {
 
     public static class CustomProperties {
         public static final Codec<CustomProperties> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-            Codec.LONG.fieldOf("capacity").forGetter(CustomProperties::capacity),
-            Codec.LONG.fieldOf("transferRate").forGetter(CustomProperties::transferRate)
+                Codec.LONG.fieldOf("capacity").forGetter(CustomProperties::capacity),
+                Codec.LONG.fieldOf("transferRate").forGetter(CustomProperties::transferRate)
         ).apply(instance, CustomProperties::new));
 
         private final long capacity;

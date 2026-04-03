@@ -7,8 +7,6 @@ import net.minecraft.world.level.block.Block;
 
 import java.util.concurrent.CompletableFuture;
 
-import static com.karasu256.projectk.ProjectK.MOD_ID;
-
 public class CommonItemTagsProvider extends ItemTagsProvider {
 
     public CommonItemTagsProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> lookupProvider, CompletableFuture<TagLookup<Block>> blockTagsProvider) {

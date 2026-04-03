@@ -27,6 +27,38 @@ public class InBiomeInBlockCraftingDisplay implements Display {
         this.biome = recipe.biome();
     }
 
+    public static CategoryIdentifier<InBiomeInBlockCraftingDisplay> categoryIdFor(BiomeCondition biome) {
+        ResourceLocation id = biome.id();
+        String basePath = "in_biome_in_block_crafting/";
+        String suffix = biome.tag()
+                ? "tag/" + id.getNamespace() + "/" + id.getPath()
+                : id.getNamespace() + "/" + id.getPath();
+        return CategoryIdentifier.of("projectk", basePath + suffix);
+    }
+
+    public static Component biomeName(BiomeCondition biome) {
+        ResourceLocation id = biome.id();
+        String key;
+        if (biome.tag()) {
+            key = "tag.worldgen.biome." + id.getNamespace() + "." + id.getPath();
+        } else {
+            key = "biome." + id.getNamespace() + "." + id.getPath();
+        }
+        return Component.translatable(key);
+    }
+
+    private static EntryIngredient toEntry(IngredientStack requirement) {
+        ItemStack[] items = requirement.ingredient().getItems();
+        if (items.length == 0) return EntryIngredient.empty();
+        List<ItemStack> stacks = Arrays.stream(items).map(stack -> {
+            ItemStack copy = stack.copy();
+            copy.setCount(requirement.count());
+            return copy;
+        }).toList();
+        if (stacks.isEmpty()) return EntryIngredient.empty();
+        return EntryIngredients.ofItemStacks(stacks);
+    }
+
     @Override
     public List<EntryIngredient> getInputEntries() {
         return inputs;
@@ -63,37 +95,5 @@ public class InBiomeInBlockCraftingDisplay implements Display {
         String biomePath = biomeId.getPath();
         String iconPath = "textures/recipes/in_biome_in_block_crafting/" + biomePath + ".png";
         return ResourceLocation.fromNamespaceAndPath(biomeId.getNamespace(), iconPath);
-    }
-
-    public static CategoryIdentifier<InBiomeInBlockCraftingDisplay> categoryIdFor(BiomeCondition biome) {
-        ResourceLocation id = biome.id();
-        String basePath = "in_biome_in_block_crafting/";
-        String suffix = biome.tag()
-                ? "tag/" + id.getNamespace() + "/" + id.getPath()
-                : id.getNamespace() + "/" + id.getPath();
-        return CategoryIdentifier.of("projectk", basePath + suffix);
-    }
-
-    public static Component biomeName(BiomeCondition biome) {
-        ResourceLocation id = biome.id();
-        String key;
-        if (biome.tag()) {
-            key = "tag.worldgen.biome." + id.getNamespace() + "." + id.getPath();
-        } else {
-            key = "biome." + id.getNamespace() + "." + id.getPath();
-        }
-        return Component.translatable(key);
-    }
-
-    private static EntryIngredient toEntry(IngredientStack requirement) {
-        ItemStack[] items = requirement.ingredient().getItems();
-        if (items.length == 0) return EntryIngredient.empty();
-        List<ItemStack> stacks = Arrays.stream(items).map(stack -> {
-            ItemStack copy = stack.copy();
-            copy.setCount(requirement.count());
-            return copy;
-        }).toList();
-        if (stacks.isEmpty()) return EntryIngredient.empty();
-        return EntryIngredients.ofItemStacks(stacks);
     }
 }

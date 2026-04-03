@@ -1,12 +1,6 @@
 package com.karasu256.projectk.datagen;
 
-import com.karasu256.projectk.datagen.providers.AbyssMagicTableRecipeProvider;
-import com.karasu256.projectk.datagen.providers.AbyssEnergySpawnRuleProvider;
-import com.karasu256.projectk.datagen.providers.CommonBlockTagsProvider;
-import com.karasu256.projectk.datagen.providers.CommonItemTagsProvider;
-import com.karasu256.projectk.datagen.providers.CommonRecipeProvider;
-import com.karasu256.projectk.datagen.providers.InBiomeInBlockCraftingProvider;
-import com.karasu256.projectk.datagen.providers.ProjectKLootTableProvider;
+import com.karasu256.projectk.datagen.providers.*;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.DataProvider;
 

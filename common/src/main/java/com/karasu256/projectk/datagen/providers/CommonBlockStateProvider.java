@@ -11,22 +11,6 @@ import org.jetbrains.annotations.NotNull;
 
 public class CommonBlockStateProvider {
 
-    public interface Generator {
-        void simpleBlock(Block block);
-
-        void simpleBlockItem(Block block);
-
-        void cubeBottomTop(Block block, String base, String side, String bottom, String top);
-
-        void cubeBottomTop(String name, String side, String bottom, String top);
-
-        void existingModelBlock(Block block, String modelPath);
-
-        void existingModelBlockAllStates(Block block, String modelPath);
-
-        void multipartCable(Block block, String id);
-    }
-
     public static void generate(@NotNull Generator generator) {
         generator.simpleBlock(ProjectKBlocks.KARASIUM_ORE.get());
         generator.simpleBlockItem(ProjectKBlocks.KARASIUM_ORE.get());
@@ -40,10 +24,10 @@ public class CommonBlockStateProvider {
         for (IEnergy energy : RegistrarManager.get(KarasunikiLib.MOD_ID).get(KarasunikiRegistries.ENERGY_REGISTRY_KEY)) {
             String energyId = energy.getId().getPath();
             generator.cubeBottomTop(
-                "abyss_generator/" + energyId,
-                "abyss_generator/" + energyId + "/side",
-                "abyss_generator/" + energyId + "/bottom",
-                "abyss_generator/" + energyId + "/top"
+                    "abyss_generator/" + energyId,
+                    "abyss_generator/" + energyId + "/side",
+                    "abyss_generator/" + energyId + "/bottom",
+                    "abyss_generator/" + energyId + "/top"
             );
         }
 
@@ -64,5 +48,21 @@ public class CommonBlockStateProvider {
             String fluidId = "fluid_" + definition.idPath();
             generator.existingModelBlockAllStates(ProjectKBlocks.getFluidBlock(definition.id()).get(), "projectk:block/" + fluidId);
         }
+    }
+
+    public interface Generator {
+        void simpleBlock(Block block);
+
+        void simpleBlockItem(Block block);
+
+        void cubeBottomTop(Block block, String base, String side, String bottom, String top);
+
+        void cubeBottomTop(String name, String side, String bottom, String top);
+
+        void existingModelBlock(Block block, String modelPath);
+
+        void existingModelBlockAllStates(Block block, String modelPath);
+
+        void multipartCable(Block block, String id);
     }
 }

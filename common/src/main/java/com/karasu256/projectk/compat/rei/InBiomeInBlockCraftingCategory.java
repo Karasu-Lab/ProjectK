@@ -54,57 +54,6 @@ public class InBiomeInBlockCraftingCategory implements DisplayCategory<InBiomeIn
         this.title = title;
     }
 
-    @Override
-    public CategoryIdentifier<? extends InBiomeInBlockCraftingDisplay> getCategoryIdentifier() {
-        return id;
-    }
-
-    @Override
-    public int getDisplayWidth(InBiomeInBlockCraftingDisplay display) {
-        return 170;
-    }
-
-    @Override
-    public int getDisplayHeight() {
-        return 60;
-    }
-
-    @Override
-    public Component getTitle() {
-        return title;
-    }
-
-    @Override
-    public Renderer getIcon() {
-        return new BiomeIconRenderer(iconId);
-    }
-
-    @Override
-    public List<Widget> setupDisplay(InBiomeInBlockCraftingDisplay display, Rectangle bounds) {
-        Point startPoint = new Point(bounds.getCenterX() - 75, bounds.getCenterY() - 8);
-        List<Widget> widgets = new ArrayList<>();
-
-        widgets.add(Widgets.createRecipeBase(bounds));
-
-        widgets.add(Widgets.createSlot(new Point(startPoint.x, startPoint.y)).entries(display.getInputEntries().get(0)).markInput());
-        widgets.add(Widgets.createSlot(new Point(startPoint.x + 20, startPoint.y)).entries(display.getInputEntries().get(1)).markInput());
-        widgets.add(Widgets.createArrow(new Point(startPoint.x + 45, startPoint.y)));
-
-        widgets.add(Widgets.createDrawableWidget((graphics, mouseX, mouseY, delta) -> {
-            List<BlockState> states = resolveBlockStates(display);
-            BlockState state = states.isEmpty() ? Blocks.AIR.defaultBlockState() : states.get((int) (System.currentTimeMillis() / 1500 % states.size()));
-            renderBlock(graphics, state, startPoint.x + 75, startPoint.y, 16, 16);
-        }));
-
-        widgets.add(Widgets.createArrow(new Point(startPoint.x + 100, startPoint.y)));
-
-        widgets.add(Widgets.createSlot(new Point(startPoint.x + 130, startPoint.y)).entries(display.getOutputEntries().get(0)).markOutput());
-
-        widgets.add(Widgets.createLabel(new Point(bounds.getCenterX(), bounds.y + 5), display.getRequirementText()).noShadow().color(0xFF555555).centered());
-
-        return widgets;
-    }
-
     private static List<BlockState> resolveBlockStates(InBiomeInBlockCraftingDisplay display) {
         var level = Minecraft.getInstance().level;
         if (level == null) return List.of();
@@ -114,25 +63,6 @@ public class InBiomeInBlockCraftingCategory implements DisplayCategory<InBiomeIn
         var tag = registry.getTag(tagKey).orElse(null);
         if (tag == null) return List.of();
         return tag.stream().map(holder -> holder.value().defaultBlockState()).toList();
-    }
-
-    private static class BiomeIconRenderer implements Renderer {
-        private final ResourceLocation iconId;
-
-        private BiomeIconRenderer(ResourceLocation iconId) {
-            this.iconId = iconId;
-        }
-
-        @Override
-        public void render(GuiGraphics graphics, Rectangle bounds, int mouseX, int mouseY, float delta) {
-            var manager = Minecraft.getInstance().getResourceManager();
-            if (manager.getResource(iconId).isPresent()) {
-                RenderSystem.setShaderTexture(0, iconId);
-                graphics.blit(iconId, bounds.x, bounds.y, 0, 0, bounds.width, bounds.height, bounds.width, bounds.height);
-            } else {
-                EntryStacks.of(Items.WITHER_ROSE).render(graphics, bounds, mouseX, mouseY, delta);
-            }
-        }
     }
 
     @SuppressWarnings("deprecation")
@@ -216,6 +146,71 @@ public class InBiomeInBlockCraftingCategory implements DisplayCategory<InBiomeIn
         worldMatStack.translate(-0.5f, -0.5f, -0.5f);
         RenderSystem.applyModelViewMatrix();
     }
+
+    @Override
+    public CategoryIdentifier<? extends InBiomeInBlockCraftingDisplay> getCategoryIdentifier() {
+        return id;
+    }
+
+    @Override
+    public int getDisplayWidth(InBiomeInBlockCraftingDisplay display) {
+        return 170;
+    }
+
+    @Override
+    public int getDisplayHeight() {
+        return 60;
+    }
+
+    @Override
+    public Component getTitle() {
+        return title;
+    }
+
+    @Override
+    public Renderer getIcon() {
+        return new BiomeIconRenderer(iconId);
+    }
+
+    @Override
+    public List<Widget> setupDisplay(InBiomeInBlockCraftingDisplay display, Rectangle bounds) {
+        Point startPoint = new Point(bounds.getCenterX() - 75, bounds.getCenterY() - 8);
+        List<Widget> widgets = new ArrayList<>();
+
+        widgets.add(Widgets.createRecipeBase(bounds));
+
+        widgets.add(Widgets.createSlot(new Point(startPoint.x, startPoint.y)).entries(display.getInputEntries().get(0)).markInput());
+        widgets.add(Widgets.createSlot(new Point(startPoint.x + 20, startPoint.y)).entries(display.getInputEntries().get(1)).markInput());
+        widgets.add(Widgets.createArrow(new Point(startPoint.x + 45, startPoint.y)));
+
+        widgets.add(Widgets.createDrawableWidget((graphics, mouseX, mouseY, delta) -> {
+            List<BlockState> states = resolveBlockStates(display);
+            BlockState state = states.isEmpty() ? Blocks.AIR.defaultBlockState() : states.get((int) (System.currentTimeMillis() / 1500 % states.size()));
+            renderBlock(graphics, state, startPoint.x + 75, startPoint.y, 16, 16);
+        }));
+
+        widgets.add(Widgets.createArrow(new Point(startPoint.x + 100, startPoint.y)));
+
+        widgets.add(Widgets.createSlot(new Point(startPoint.x + 130, startPoint.y)).entries(display.getOutputEntries().get(0)).markOutput());
+
+        widgets.add(Widgets.createLabel(new Point(bounds.getCenterX(), bounds.y + 5), display.getRequirementText()).noShadow().color(0xFF555555).centered());
+
+        return widgets;
+    }
+
+    private record BiomeIconRenderer(ResourceLocation iconId) implements Renderer {
+
+        @Override
+            public void render(GuiGraphics graphics, Rectangle bounds, int mouseX, int mouseY, float delta) {
+                var manager = Minecraft.getInstance().getResourceManager();
+                if (manager.getResource(iconId).isPresent()) {
+                    RenderSystem.setShaderTexture(0, iconId);
+                    graphics.blit(iconId, bounds.x, bounds.y, 0, 0, bounds.width, bounds.height, bounds.width, bounds.height);
+                } else {
+                    EntryStacks.of(Items.WITHER_ROSE).render(graphics, bounds, mouseX, mouseY, delta);
+                }
+            }
+        }
 
     private record FakeWorld(BlockState state) implements BlockAndTintGetter {
         @Override

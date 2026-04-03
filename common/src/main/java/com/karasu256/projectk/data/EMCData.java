@@ -6,7 +6,6 @@ import io.netty.buffer.ByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import java.math.BigInteger;
 import java.util.Optional;
@@ -25,7 +24,7 @@ public record EMCData(BigInteger emc) {
             .map(EMCData::new, EMCData::emc);
 
     @NotNull
-    public static Optional<EMCData> of(int value){
+    public static Optional<EMCData> of(int value) {
         return value == 0 ? Optional.empty() : Optional.of(new EMCData(BigInteger.valueOf(value)));
     }
 }

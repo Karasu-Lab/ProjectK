@@ -16,7 +16,7 @@ public class AbyssGeneratorBlockEntity extends AbstractPKEnergyBlockEntity<Abyss
     private static long resolveCapacity(BlockState state) {
         Block block = state.getBlock();
         if (block instanceof AbstractEnergyBlock energyBlock) {
-            return energyBlock.getEnergyProperties().getEnergyCapacity();
+            return energyBlock.getEnergyProperties().energyCapacity();
         }
         throw new EnergyNotFound(state.getBlock());
     }

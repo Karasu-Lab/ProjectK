@@ -1,7 +1,6 @@
 package com.karasu256.projectk.datagen.providers;
 
 import com.google.gson.JsonElement;
-import com.karasu256.projectk.ProjectK;
 import com.karasu256.projectk.data.AbyssEnergySpawnRule;
 import com.karasu256.projectk.data.spawn.BlockCondition;
 import com.karasu256.projectk.data.spawn.EnergyAmountRule;
@@ -13,7 +12,6 @@ import net.minecraft.data.CachedOutput;
 import net.minecraft.data.DataProvider;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.PackOutput.PathProvider;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.MobCategory;
 
 import java.nio.file.Path;

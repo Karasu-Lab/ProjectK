@@ -29,7 +29,6 @@ public class ProjectKEnergyBlockWthitProvider implements IBlockComponentProvider
         }
         if (be instanceof AbyssEnergyCableBlockEntity cable) {
             addEnergyInfo(tooltip, cable.getEnergyType(), cable.getEnergyAmount(), cable.getEnergyCapacity());
-            return;
         }
     }
 

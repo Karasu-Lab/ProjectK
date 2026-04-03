@@ -20,6 +20,7 @@ public class ProjectKBlockModelProvider implements DataProvider {
     private static final double UV_SIZE = 16.0;
     private static final double TEXTURE_SIZE = 32.0;
     private static final double BORDER_SIZE = 6.0;
+    private static final String ABYSS_ENERGY_PROPERTY = ProjectK.MOD_ID + ":abyss_energy";
     private final PathProvider modelPathProvider;
 
     public ProjectKBlockModelProvider(PackOutput output) {
@@ -164,8 +165,6 @@ public class ProjectKBlockModelProvider implements DataProvider {
     private String energySuffix(ResourceLocation energyId) {
         return energyId.getNamespace() + "_" + energyId.getPath();
     }
-
-    private static final String ABYSS_ENERGY_PROPERTY = ProjectK.MOD_ID + ":abyss_energy";
 
     private JsonObject cubeElement(double[] from, double[] to, double[] uv) {
         JsonObject element = new JsonObject();

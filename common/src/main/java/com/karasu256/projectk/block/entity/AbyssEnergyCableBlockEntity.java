@@ -26,9 +26,9 @@ public class AbyssEnergyCableBlockEntity extends BlockEntity implements ICableIn
     private static final WeakHashMap<Level, Long> LAST_TICK = new WeakHashMap<>();
     private static final WeakHashMap<Level, Set<BlockPos>> PROCESSED = new WeakHashMap<>();
     private final EnergyValue energy = new EnergyValue();
+    private final EnumMap<Direction, AbyssWrenchBehavior> behaviors = new EnumMap<>(Direction.class);
     private long capacity;
     private long transferRate;
-    private final EnumMap<Direction, AbyssWrenchBehavior> behaviors = new EnumMap<>(Direction.class);
 
     public AbyssEnergyCableBlockEntity(BlockPos pos, BlockState state) {
         super(ProjectKBlockEntities.ABYSS_ENERGY_CABLE.get(), pos, state);
@@ -377,43 +377,6 @@ public class AbyssEnergyCableBlockEntity extends BlockEntity implements ICableIn
         return energy instanceof com.karasu256.projectk.energy.IProjectKEnergy pkEnergy ? pkEnergy : null;
     }
 
-    private static final class NetworkState {
-        private final Set<BlockPos> cables = new HashSet<>();
-        private final List<AcceptorRef> acceptors = new ArrayList<>();
-        private ResourceLocation energyId;
-        private long energy;
-        private long capacity;
-        private boolean mixedEnergy;
-    }
-
-    private static final class AcceptorRef {
-        private final BlockPos cablePos;
-        private final Direction direction;
-        private final BlockEntity neighbor;
-
-        private AcceptorRef(BlockPos cablePos, Direction direction, BlockEntity neighbor) {
-            this.cablePos = cablePos;
-            this.direction = direction;
-            this.neighbor = neighbor;
-        }
-    }
-
-    private static final class TransferTarget {
-        private final BlockPos cablePos;
-        private final Direction direction;
-        private final Direction neighborSide;
-        private final ICableInputable inputable;
-        private final long accept;
-
-        private TransferTarget(BlockPos cablePos, Direction direction, Direction neighborSide, ICableInputable inputable, long accept) {
-            this.cablePos = cablePos;
-            this.direction = direction;
-            this.neighborSide = neighborSide;
-            this.inputable = inputable;
-            this.accept = accept;
-        }
-    }
-
     @Override
     protected void saveAdditional(CompoundTag nbt, HolderLookup.Provider registries) {
         super.saveAdditional(nbt, registries);
@@ -479,5 +442,21 @@ public class AbyssEnergyCableBlockEntity extends BlockEntity implements ICableIn
         }
         BlockState state = getBlockState();
         level.sendBlockUpdated(worldPosition, state, state, 3);
+    }
+
+    private static final class NetworkState {
+        private final Set<BlockPos> cables = new HashSet<>();
+        private final List<AcceptorRef> acceptors = new ArrayList<>();
+        private ResourceLocation energyId;
+        private long energy;
+        private long capacity;
+        private boolean mixedEnergy;
+    }
+
+    private record AcceptorRef(BlockPos cablePos, Direction direction, BlockEntity neighbor) {
+    }
+
+    private record TransferTarget(BlockPos cablePos, Direction direction, Direction neighborSide,
+                                  ICableInputable inputable, long accept) {
     }
 }

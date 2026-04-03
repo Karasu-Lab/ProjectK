@@ -25,6 +25,16 @@ public record MobCondition(List<MobCategory> types, List<TagKey<EntityType<?>>> 
             Codec.list(ResourceLocation.CODEC).optionalFieldOf("ids", List.of()).forGetter(MobCondition::ids)
     ).apply(instance, MobCondition::new));
 
+    private static DataResult<MobCategory> parseMobCategory(String name) {
+        String normalized = name.toLowerCase();
+        for (MobCategory category : MobCategory.values()) {
+            if (category.getName().equals(normalized)) {
+                return DataResult.success(category);
+            }
+        }
+        return DataResult.error(() -> "Unknown mob category: " + name);
+    }
+
     public boolean matches(LivingEntity entity) {
         if (!types.isEmpty()) {
             return types.contains(entity.getType().getCategory());
@@ -42,15 +52,5 @@ public record MobCondition(List<MobCategory> types, List<TagKey<EntityType<?>>> 
             return ids.contains(id);
         }
         return true;
-    }
-
-    private static DataResult<MobCategory> parseMobCategory(String name) {
-        String normalized = name.toLowerCase();
-        for (MobCategory category : MobCategory.values()) {
-            if (category.getName().equals(normalized)) {
-                return DataResult.success(category);
-            }
-        }
-        return DataResult.error(() -> "Unknown mob category: " + name);
     }
 }

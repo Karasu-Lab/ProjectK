@@ -1,6 +1,5 @@
 package com.karasu256.projectk.block.custom;
 
-import com.karasu256.projectk.block.custom.ProjectKBlock;
 import com.karasu256.projectk.block.entity.AbyssMagicTableBlockEntity;
 import com.karasu256.projectk.block.entity.ProjectKBlockEntities;
 import com.mojang.serialization.MapCodec;
@@ -11,8 +10,8 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.BaseEntityBlock;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -25,15 +24,15 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public class AbyssMagicTable extends BaseEntityBlock {
-        public static final MapCodec<AbyssMagicTable> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
+    public static final MapCodec<AbyssMagicTable> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
             ProjectKBlock.CustomProperties.CODEC.fieldOf("properties").forGetter(AbyssMagicTable::getCustomProperties)
-        ).apply(instance, properties -> new AbyssMagicTable(BlockBehaviour.Properties.ofFullCopy(Blocks.ENCHANTING_TABLE), properties)));
+    ).apply(instance, properties -> new AbyssMagicTable(BlockBehaviour.Properties.ofFullCopy(Blocks.ENCHANTING_TABLE), properties)));
 
     private static final VoxelShape SHAPE = box(0.0, 0.0, 0.0, 16.0, 12.0, 16.0);
 
-        private final ProjectKBlock.CustomProperties customProperties;
+    private final ProjectKBlock.CustomProperties customProperties;
 
-        public AbyssMagicTable(BlockBehaviour.Properties properties, ProjectKBlock.CustomProperties customProperties) {
+    public AbyssMagicTable(BlockBehaviour.Properties properties, ProjectKBlock.CustomProperties customProperties) {
         super(properties);
         this.customProperties = customProperties;
     }

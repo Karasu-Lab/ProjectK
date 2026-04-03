@@ -1,36 +1,28 @@
 package com.karasu256.projectk.energy;
 
 import com.karasu256.projectk.ProjectK;
+import com.karasu256.projectk.registry.EnergiesRegistry;
 import com.karasu256.projectk.utils.Id;
 import dev.architectury.registry.registries.RegistrySupplier;
 import net.karasuniki.karasunikilib.api.data.IEnergy;
 import net.karasuniki.karasunikilib.api.registry.IKRegistryInitializerTarget;
 import net.karasuniki.karasunikilib.api.registry.KRegistryInitializer;
-
-import com.karasu256.projectk.registry.EnergiesRegistry;
-
 import net.minecraft.resources.ResourceLocation;
 
-import java.util.Collections;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 @KRegistryInitializer(modId = ProjectK.MOD_ID, order = 2)
 public class ProjectKEnergies implements IKRegistryInitializerTarget {
     private static final Map<ResourceLocation, RegistrySupplier<IEnergy>> ENERGIES = new LinkedHashMap<>();
     private static final Map<ResourceLocation, EnergyDefinition> DEFINITIONS = new LinkedHashMap<>();
     private static final Map<ResourceLocation, Integer> MODEL_INDICES = new LinkedHashMap<>();
-    private static final float MODEL_PREDICATE_SCALE = 1000.0f;
-
     public static final EnergyDefinition ABYSS = registerDefinition("abyss_energy", "Abyss", "深淵", EnergyKind.NEUTRAL, 500L);
-    public static final EnergyDefinition YIN = registerDefinition("yin_abyss_energy", "§5Yin", "§5陰", EnergyKind.YIN, 500L);
-    public static final EnergyDefinition YANG = registerDefinition("yang_abyss_energy", "§dYang", "§d陽", EnergyKind.YANG, 500L);
-
     public static final RegistrySupplier<IEnergy> ABYSS_ENERGY = energy(ABYSS);
+    public static final EnergyDefinition YIN = registerDefinition("yin_abyss_energy", "§5Yin", "§5陰", EnergyKind.YIN, 500L);
     public static final RegistrySupplier<IEnergy> YIN_ABYSS_ENERGY = energy(YIN);
+    public static final EnergyDefinition YANG = registerDefinition("yang_abyss_energy", "§dYang", "§d陽", EnergyKind.YANG, 500L);
     public static final RegistrySupplier<IEnergy> YANG_ABYSS_ENERGY = energy(YANG);
+    private static final float MODEL_PREDICATE_SCALE = 1000.0f;
 
     public static void init() {
     }
@@ -89,7 +81,8 @@ public class ProjectKEnergies implements IKRegistryInitializerTarget {
         YANG,
     }
 
-    public record EnergyDefinition(ResourceLocation id, String enName, String jaName, EnergyKind kind, long defaultAmount) {
+    public record EnergyDefinition(ResourceLocation id, String enName, String jaName, EnergyKind kind,
+                                   long defaultAmount) {
         public String idPath() {
             return id.getPath();
         }

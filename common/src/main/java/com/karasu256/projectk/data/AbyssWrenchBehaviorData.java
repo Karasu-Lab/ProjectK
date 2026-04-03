@@ -54,6 +54,23 @@ public record AbyssWrenchBehaviorData(AbyssWrenchBehavior behavior) {
             this.id = id;
         }
 
+        public static AbyssWrenchBehavior fromOrdinal(int ordinal) {
+            AbyssWrenchBehavior[] values = values();
+            if (ordinal < 0 || ordinal >= values.length) {
+                return NORMAL;
+            }
+            return values[ordinal];
+        }
+
+        public static AbyssWrenchBehavior fromString(String value) {
+            for (AbyssWrenchBehavior behavior : values()) {
+                if (behavior.id.equals(value)) {
+                    return behavior;
+                }
+            }
+            return NORMAL;
+        }
+
         public String id() {
             return id;
         }
@@ -74,23 +91,6 @@ public record AbyssWrenchBehaviorData(AbyssWrenchBehavior behavior) {
                 case OUTPUT -> NONE;
                 case NONE -> NORMAL;
             };
-        }
-
-        public static AbyssWrenchBehavior fromOrdinal(int ordinal) {
-            AbyssWrenchBehavior[] values = values();
-            if (ordinal < 0 || ordinal >= values.length) {
-                return NORMAL;
-            }
-            return values[ordinal];
-        }
-
-        public static AbyssWrenchBehavior fromString(String value) {
-            for (AbyssWrenchBehavior behavior : values()) {
-                if (behavior.id.equals(value)) {
-                    return behavior;
-                }
-            }
-            return NORMAL;
         }
     }
 }

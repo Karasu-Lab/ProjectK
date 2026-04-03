@@ -23,20 +23,15 @@ public record EnergyAmountRule(AmountType type, long fixedAmount) {
         BUILT_IN("built_in"),
         FIXED("fixed");
 
+        public static final Codec<AmountType> CODEC = Codec.STRING.comapFlatMap(
+                AmountType::fromName,
+                AmountType::id
+        );
         private final String id;
 
         AmountType(String id) {
             this.id = id;
         }
-
-        public String id() {
-            return id;
-        }
-
-        public static final Codec<AmountType> CODEC = Codec.STRING.comapFlatMap(
-                AmountType::fromName,
-                AmountType::id
-        );
 
         private static DataResult<AmountType> fromName(String name) {
             String normalized = name.toLowerCase();
@@ -46,6 +41,10 @@ public record EnergyAmountRule(AmountType type, long fixedAmount) {
                 }
             }
             return DataResult.error(() -> "Unknown amount type: " + name);
+        }
+
+        public String id() {
+            return id;
         }
     }
 }

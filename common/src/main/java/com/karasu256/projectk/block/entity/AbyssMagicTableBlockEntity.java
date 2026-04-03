@@ -11,14 +11,14 @@ import com.karasu256.projectk.recipe.ProjectKRecipes;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.item.crafting.RecipeHolder;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
-import net.minecraft.network.chat.Component;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.Nullable;
@@ -36,14 +36,21 @@ public class AbyssMagicTableBlockEntity extends AbstractPKEnergyBlockEntity<Abys
         super(ProjectKBlockEntities.ABYSS_MAGIC_TABLE.get(), pos, state, resolveCapacity(state));
     }
 
-    @Override
-    protected AbyssEnergy createEnergy() {
-        return new AbyssEnergy(0L);
-    }
-
     public static void tick(Level level, BlockPos pos, BlockState state, AbyssMagicTableBlockEntity be) {
         if (level.isClientSide) return;
         be.serverTick();
+    }
+
+    private static long resolveCapacity(BlockState state) {
+        if (state.getBlock() instanceof AbyssMagicTable magicTable) {
+            return magicTable.getCapacity();
+        }
+        return 0L;
+    }
+
+    @Override
+    protected AbyssEnergy createEnergy() {
+        return new AbyssEnergy(0L);
     }
 
     private void serverTick() {
@@ -266,12 +273,5 @@ public class AbyssMagicTableBlockEntity extends AbstractPKEnergyBlockEntity<Abys
         CompoundTag nbt = super.getUpdateTag(registries);
         saveAdditional(nbt, registries);
         return nbt;
-    }
-
-    private static long resolveCapacity(BlockState state) {
-        if (state.getBlock() instanceof AbyssMagicTable magicTable) {
-            return magicTable.getCapacity();
-        }
-        return 0L;
     }
 }

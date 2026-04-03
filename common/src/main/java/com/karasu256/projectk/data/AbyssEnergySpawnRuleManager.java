@@ -20,11 +20,7 @@ import net.minecraft.world.level.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 public class AbyssEnergySpawnRuleManager extends SimpleJsonResourceReloadListener {
     private static final Logger LOGGER = LogManager.getLogger(ProjectK.MOD_ID);
@@ -71,8 +67,8 @@ public class AbyssEnergySpawnRuleManager extends SimpleJsonResourceReloadListene
         List<AbyssEnergySpawnRule> next = new ArrayList<>();
         for (Map.Entry<ResourceLocation, JsonElement> entry : objects.entrySet()) {
             AbyssEnergySpawnRule.CODEC.parse(JsonOps.INSTANCE, entry.getValue()).resultOrPartial(error ->
-                    LOGGER.error("Failed to parse abyss energy spawn rule {}: {}", entry.getKey(), error))
-                .ifPresent(next::add);
+                            LOGGER.error("Failed to parse abyss energy spawn rule {}: {}", entry.getKey(), error))
+                    .ifPresent(next::add);
         }
         next.sort(Comparator.comparing(rule -> rule.energyId().toString()));
         RULES.clear();
