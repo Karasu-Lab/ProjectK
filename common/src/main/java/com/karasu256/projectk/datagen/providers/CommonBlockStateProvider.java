@@ -44,6 +44,9 @@ public class CommonBlockStateProvider {
         generator.existingModelBlock(ProjectKBlocks.ABYSS_ALCHEMY_BLEND_MACHINE.get(), "projectk:block/abyss_alchemy_blend_machine");
         generator.simpleBlockItem(ProjectKBlocks.ABYSS_ALCHEMY_BLEND_MACHINE.get());
 
+        generator.existingModelBlock(ProjectKBlocks.ABYSS_ENCHANTER.get(), "projectk:block/abyss_enchanter");
+        generator.simpleBlockItem(ProjectKBlocks.ABYSS_ENCHANTER.get());
+
         generator.multipartCable(ProjectKBlocks.ABYSS_ENERGY_CABLE.get(), "abyss_energy_cable");
         generator.simpleBlockItem(ProjectKBlocks.ABYSS_ENERGY_CABLE.get());
 

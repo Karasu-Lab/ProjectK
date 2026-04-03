@@ -4,6 +4,7 @@ import com.karasu256.projectk.block.ProjectKBlocks;
 import com.karasu256.projectk.client.ProjectKClient;
 import com.karasu256.projectk.client.ProjectKCoreShaders;
 import com.karasu256.projectk.client.screen.AbyssAlchemyBlendMachineScreen;
+import com.karasu256.projectk.client.screen.AbyssEnchanterScreen;
 import com.karasu256.projectk.client.screen.AbyssMagicTableScreen;
 import com.karasu256.projectk.fluid.ProjectKFluids;
 import com.karasu256.projectk.item.ProjectKItems;
@@ -45,6 +46,7 @@ public class ProjectkFabricClient implements ClientModInitializer {
         ProjectKClient.init();
         MenuScreens.register(ProjectKMenus.ABYSS_MAGIC_TABLE.get(), AbyssMagicTableScreen::new);
         MenuScreens.register(ProjectKMenus.ABYSS_ALCHEMY_BLEND_MACHINE.get(), AbyssAlchemyBlendMachineScreen::new);
+        MenuScreens.register(ProjectKMenus.ABYSS_ENCHANTER.get(), AbyssEnchanterScreen::new);
         registerItemModelProperties();
         BlockRenderLayerMap.INSTANCE.putBlock(ProjectKBlocks.ABYSS_GENERATOR.get(), RenderType.cutout());
         BlockRenderLayerMap.INSTANCE.putBlock(ProjectKBlocks.ABYSS_ENERGY_CABLE.get(), RenderType.translucent());

@@ -12,6 +12,7 @@ public class ProjectKCommonDataGenerator {
         CommonBlockTagsProvider blockTagsProvider = registry.register(output -> new CommonBlockTagsProvider(output, registries));
         registry.register(output -> new CommonItemTagsProvider(output, registries, blockTagsProvider.contentsGetter()));
         registry.register(AbyssEnergySpawnRuleProvider::new);
+        registry.register(output -> new AbyssEnchanterTierProvider(output));
         if (includeRecipes) {
             registry.register(output -> new CommonRecipeProvider(output, registries));
             registry.register(output -> new AbyssMagicTableRecipeProvider(output, registries));

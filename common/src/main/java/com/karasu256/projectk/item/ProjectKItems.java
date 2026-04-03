@@ -5,6 +5,7 @@ import com.karasu256.projectk.api.fluid.AbyssEnergyFluidConversion;
 import com.karasu256.projectk.data.AbyssEnergyData;
 import com.karasu256.projectk.energy.ProjectKEnergies;
 import com.karasu256.projectk.fluid.ProjectKFluids;
+import com.karasu256.projectk.item.custom.AbyssBraceletItem;
 import com.karasu256.projectk.item.custom.AbyssEnergyItem;
 import com.karasu256.projectk.item.custom.AbyssWrenchItem;
 import com.karasu256.projectk.item.custom.ProjectKItem;
@@ -25,17 +26,14 @@ import static com.karasu256.projectk.registry.ItemsRegistry.item;
 
 @KRegistryInitializer(modId = ProjectK.MOD_ID, order = 2)
 public class ProjectKItems implements IKRegistryInitializerTarget {
-    public static final Map<ResourceLocation, RegistrySupplier<Item>> ABYSS_ENERGY_BUCKETS = EnergyAutoRegistry.mapByEnergy(
-            definition -> "bucket_of_" + definition.idPath(),
-            (definition, id, map) -> {
-                map.put(definition.id(), item(id, () -> {
-                    ProjectKItem.Properties properties = new ProjectKItem.Properties().abyssEnergy(definition.id(), AbyssEnergyFluidConversion.DEFAULT_ENERGY_PER_BUCKET);
-                    properties.craftRemainder(Items.BUCKET);
-                    properties.stacksTo(1);
-                    return new ArchitecturyBucketItem(ProjectKFluids.getSource(definition.id()), properties);
-                }));
-            }
-    );
+    public static final Map<ResourceLocation, RegistrySupplier<Item>> ABYSS_ENERGY_BUCKETS = EnergyAutoRegistry.mapByEnergy(definition -> "bucket_of_" + definition.idPath(), (definition, id, map) -> {
+        map.put(definition.id(), item(id, () -> {
+            ProjectKItem.Properties properties = new ProjectKItem.Properties().abyssEnergy(definition.id(), AbyssEnergyFluidConversion.DEFAULT_ENERGY_PER_BUCKET);
+            properties.craftRemainder(Items.BUCKET);
+            properties.stacksTo(1);
+            return new ArchitecturyBucketItem(ProjectKFluids.getSource(definition.id()), properties);
+        }));
+    });
     public static final RegistrySupplier<Item> BUCKET_OF_ABYSS_ENERGY = getBucket(ProjectKEnergies.ABYSS.id());
     public static final RegistrySupplier<Item> BUCKET_OF_YIN_ABYSS_ENERGY = getBucket(ProjectKEnergies.YIN.id());
     public static final RegistrySupplier<Item> BUCKET_OF_YANG_ABYSS_ENERGY = getBucket(ProjectKEnergies.YANG.id());
@@ -46,6 +44,10 @@ public class ProjectKItems implements IKRegistryInitializerTarget {
     public static RegistrySupplier<Item> ABYSS_INGOT = item("abyss_ingot", () -> new AbyssEnergyItem(new ProjectKItem.Properties()), true);
     public static RegistrySupplier<Item> ABYSS_WRENCH = item("abyss_wrench", () -> new AbyssWrenchItem(new ProjectKItem.Properties()));
     public static RegistrySupplier<Item> TIER_UPGRADE = item("tier_upgrade", () -> new ProjectKItem(new ProjectKItem.Properties()));
+    public static RegistrySupplier<Item> ABYSS_BRACELET = item("abyss_bracelet", () -> {
+        ProjectKItem.Properties properties = (ProjectKItem.Properties) new ProjectKItem.Properties().stacksTo(1);
+        return new AbyssBraceletItem(properties);
+    });
 
     static {
         for (ProjectKEnergies.EnergyDefinition definition : ProjectKEnergies.getDefinitions()) {

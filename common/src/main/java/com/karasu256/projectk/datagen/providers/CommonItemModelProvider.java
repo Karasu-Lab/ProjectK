@@ -19,6 +19,7 @@ public class CommonItemModelProvider {
         }
         generator.simpleItem(ProjectKItems.ABYSS_WRENCH);
         generator.simpleItem(ProjectKItems.TIER_UPGRADE);
+        generator.simpleItem(ProjectKItems.ABYSS_BRACELET);
         for (ProjectKEnergies.EnergyDefinition definition : ProjectKEnergies.getDefinitions()) {
             generator.simpleItem(ProjectKItems.getBucket(definition.id()));
         }

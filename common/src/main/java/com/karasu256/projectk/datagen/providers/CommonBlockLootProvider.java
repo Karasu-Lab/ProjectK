@@ -24,6 +24,7 @@ public class CommonBlockLootProvider extends BlockLootSubProvider {
         this.add(ProjectKBlocks.DEEPSLATE_KARASIUM_ORE.get(), block -> createOreDrop(block, ProjectKItems.RAW_KARASIUM.get()));
         this.dropSelf(ProjectKBlocks.ABYSS_GENERATOR.get());
         this.dropSelf(ProjectKBlocks.ABYSS_ALCHEMY_BLEND_MACHINE.get());
+        this.dropSelf(ProjectKBlocks.ABYSS_ENCHANTER.get());
         for (ProjectKEnergies.EnergyDefinition definition : ProjectKEnergies.getDefinitions()) {
             this.dropSelf(ProjectKBlocks.getCore(definition.id()).get());
         }
