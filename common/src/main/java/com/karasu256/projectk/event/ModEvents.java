@@ -17,7 +17,6 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.level.Level;
 
 public class ModEvents {
     private static final ResourceLocation ABYSS_BOOSTER_ID = Id.id("abyss_booster_bonus");
@@ -49,7 +48,7 @@ public class ModEvents {
             return EventResult.pass();
         });
 
-        TickEvent.PLAYER_POST.register(player -> applyAbyssBooster(player));
+        TickEvent.PLAYER_POST.register(ModEvents::applyAbyssBooster);
     }
 
     private static void applyAbyssBooster(LivingEntity entity) {

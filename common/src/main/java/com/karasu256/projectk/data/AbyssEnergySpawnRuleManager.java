@@ -41,7 +41,15 @@ public class AbyssEnergySpawnRuleManager extends SimpleJsonResourceReloadListene
     }
 
     public static Optional<AbyssEnergySpawnRule> findMatch(Level level, BlockPos pos, LivingEntity entity) {
+        return findMatch(level, pos, entity, true)
+                .or(() -> findMatch(level, pos, entity, false));
+    }
+
+    private static Optional<AbyssEnergySpawnRule> findMatch(Level level, BlockPos pos, LivingEntity entity, boolean preferNonNeutral) {
         for (AbyssEnergySpawnRule rule : RULES) {
+            if (preferNonNeutral && isNeutral(rule.energyId())) {
+                continue;
+            }
             if (!rule.mob().matches(entity)) {
                 continue;
             }
@@ -52,6 +60,12 @@ public class AbyssEnergySpawnRuleManager extends SimpleJsonResourceReloadListene
             return Optional.of(rule);
         }
         return Optional.empty();
+    }
+
+    private static boolean isNeutral(ResourceLocation energyId) {
+        return ProjectKEnergies.getDefinition(energyId)
+                .map(definition -> definition.kind() == ProjectKEnergies.EnergyKind.NEUTRAL)
+                .orElse(false);
     }
 
     public static ResourceLocation fallbackEnergyId() {

@@ -30,20 +30,20 @@ public class AbyssEnergySpawnRuleProvider implements DataProvider {
     public CompletableFuture<?> run(CachedOutput output) {
         AbyssEnergySpawnRule witherRoseRule = new AbyssEnergySpawnRule(
             ProjectKEnergies.ABYSS.id(),
-            new MobCondition(List.of(), List.of(), List.of()),
+            new MobCondition(List.of(), List.of(), List.of(), List.of()),
             new BlockCondition(5, List.of(), List.of(ResourceLocation.withDefaultNamespace("wither_rose"))),
             new EnergyAmountRule(EnergyAmountRule.AmountType.BUILT_IN, 0L)
         );
         AbyssEnergySpawnRule yinRule = new AbyssEnergySpawnRule(
                 ProjectKEnergies.YIN.id(),
-                new MobCondition(List.of(MobCategory.MONSTER), List.of(), List.of()),
+            new MobCondition(List.of(MobCategory.MONSTER), List.of(), List.of(), List.of()),
                 BlockCondition.ANY,
                 new EnergyAmountRule(EnergyAmountRule.AmountType.BUILT_IN, 0L)
         );
 
         AbyssEnergySpawnRule yangRule = new AbyssEnergySpawnRule(
                 ProjectKEnergies.YANG.id(),
-                new MobCondition(List.of(MobCategory.CREATURE, MobCategory.WATER_CREATURE, MobCategory.AXOLOTLS, MobCategory.UNDERGROUND_WATER_CREATURE), List.of(), List.of()),
+            new MobCondition(List.of(MobCategory.CREATURE, MobCategory.WATER_CREATURE, MobCategory.AXOLOTLS, MobCategory.UNDERGROUND_WATER_CREATURE), List.of(), List.of(), List.of()),
                 BlockCondition.ANY,
                 new EnergyAmountRule(EnergyAmountRule.AmountType.BUILT_IN, 0L)
         );
