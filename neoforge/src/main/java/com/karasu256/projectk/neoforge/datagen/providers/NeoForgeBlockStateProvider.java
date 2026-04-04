@@ -2,6 +2,7 @@ package com.karasu256.projectk.neoforge.datagen.providers;
 
 import com.karasu256.projectk.ProjectK;
 import com.karasu256.projectk.block.custom.AbyssEnergyCable;
+import com.karasu256.projectk.block.custom.AbyssEnergyCable.ConnectionMode;
 import com.karasu256.projectk.datagen.providers.CommonBlockStateProvider;
 import com.karasu256.projectk.datagen.providers.CommonItemModelProvider;
 import dev.architectury.registry.registries.RegistrySupplier;
@@ -10,7 +11,7 @@ import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.state.properties.BooleanProperty;
+import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.neoforged.neoforge.client.model.generators.BlockStateProvider;
 import net.neoforged.neoforge.client.model.generators.ConfiguredModel;
 import net.neoforged.neoforge.client.model.generators.ModelFile;
@@ -67,19 +68,49 @@ public class NeoForgeBlockStateProvider extends BlockStateProvider implements Co
     public void multipartCable(Block block, String id) {
         ModelFile centerModel = new ModelFile.UncheckedModelFile(ResourceLocation.fromNamespaceAndPath(ProjectK.MOD_ID, "block/" + id + "_center"));
         ModelFile sideModel = new ModelFile.UncheckedModelFile(ResourceLocation.fromNamespaceAndPath(ProjectK.MOD_ID, "block/" + id + "_side"));
+        ModelFile sideInputModel = new ModelFile.UncheckedModelFile(ResourceLocation.fromNamespaceAndPath(ProjectK.MOD_ID, "block/" + id + "_side_input"));
+        ModelFile sideOutputModel = new ModelFile.UncheckedModelFile(ResourceLocation.fromNamespaceAndPath(ProjectK.MOD_ID, "block/" + id + "_side_output"));
+        
         MultiPartBlockStateBuilder builder = getMultipartBuilder(block);
-        builder.part().modelFile(centerModel).addModel().end();
 
-        addSide(builder, AbyssEnergyCable.NORTH, sideModel, 0, 0);
-        addSide(builder, AbyssEnergyCable.EAST, sideModel, 90, 0);
-        addSide(builder, AbyssEnergyCable.SOUTH, sideModel, 180, 0);
-        addSide(builder, AbyssEnergyCable.WEST, sideModel, 270, 0);
-        addSide(builder, AbyssEnergyCable.UP, sideModel, 0, 270);
-        addSide(builder, AbyssEnergyCable.DOWN, sideModel, 0, 90);
+        addCenter(builder, AbyssEnergyCable.NORTH, centerModel);
+        addCenter(builder, AbyssEnergyCable.EAST, centerModel);
+        addCenter(builder, AbyssEnergyCable.SOUTH, centerModel);
+        addCenter(builder, AbyssEnergyCable.WEST, centerModel);
+        addCenter(builder, AbyssEnergyCable.UP, centerModel);
+        addCenter(builder, AbyssEnergyCable.DOWN, centerModel);
+
+        addSide(builder, AbyssEnergyCable.NORTH, sideModel, ConnectionMode.CONNECTED, 0, 0);
+        addSide(builder, AbyssEnergyCable.NORTH, sideInputModel, ConnectionMode.INPUT, 0, 0);
+        addSide(builder, AbyssEnergyCable.NORTH, sideOutputModel, ConnectionMode.OUTPUT, 0, 0);
+
+        addSide(builder, AbyssEnergyCable.EAST, sideModel, ConnectionMode.CONNECTED, 90, 0);
+        addSide(builder, AbyssEnergyCable.EAST, sideInputModel, ConnectionMode.INPUT, 90, 0);
+        addSide(builder, AbyssEnergyCable.EAST, sideOutputModel, ConnectionMode.OUTPUT, 90, 0);
+
+        addSide(builder, AbyssEnergyCable.SOUTH, sideModel, ConnectionMode.CONNECTED, 180, 0);
+        addSide(builder, AbyssEnergyCable.SOUTH, sideInputModel, ConnectionMode.INPUT, 180, 0);
+        addSide(builder, AbyssEnergyCable.SOUTH, sideOutputModel, ConnectionMode.OUTPUT, 180, 0);
+
+        addSide(builder, AbyssEnergyCable.WEST, sideModel, ConnectionMode.CONNECTED, 270, 0);
+        addSide(builder, AbyssEnergyCable.WEST, sideInputModel, ConnectionMode.INPUT, 270, 0);
+        addSide(builder, AbyssEnergyCable.WEST, sideOutputModel, ConnectionMode.OUTPUT, 270, 0);
+
+        addSide(builder, AbyssEnergyCable.UP, sideModel, ConnectionMode.CONNECTED, 0, 270);
+        addSide(builder, AbyssEnergyCable.UP, sideInputModel, ConnectionMode.INPUT, 0, 270);
+        addSide(builder, AbyssEnergyCable.UP, sideOutputModel, ConnectionMode.OUTPUT, 0, 270);
+
+        addSide(builder, AbyssEnergyCable.DOWN, sideModel, ConnectionMode.CONNECTED, 0, 90);
+        addSide(builder, AbyssEnergyCable.DOWN, sideInputModel, ConnectionMode.INPUT, 0, 90);
+        addSide(builder, AbyssEnergyCable.DOWN, sideOutputModel, ConnectionMode.OUTPUT, 0, 90);
     }
 
-    private void addSide(MultiPartBlockStateBuilder builder, BooleanProperty prop, ModelFile model, int yRot, int xRot) {
-        builder.part().modelFile(model).rotationY(yRot).rotationX(xRot).addModel().condition(prop, true).end();
+    private void addCenter(MultiPartBlockStateBuilder builder, EnumProperty<ConnectionMode> prop, ModelFile model) {
+        builder.part().modelFile(model).addModel().condition(prop, ConnectionMode.NONE).end();
+    }
+
+    private void addSide(MultiPartBlockStateBuilder builder, EnumProperty<ConnectionMode> prop, ModelFile model, ConnectionMode mode, int yRot, int xRot) {
+        builder.part().modelFile(model).rotationY(yRot).rotationX(xRot).addModel().condition(prop, mode).end();
     }
 
     @Override

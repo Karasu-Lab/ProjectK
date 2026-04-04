@@ -1,9 +1,8 @@
 package com.karasu256.projectk.block.entity;
 
 import com.karasu256.projectk.block.custom.AbyssEnergyCable;
-import com.karasu256.projectk.data.AbyssWrenchBehaviorData.AbyssWrenchBehavior;
-import com.karasu256.projectk.energy.EnergyKeys;
 import com.karasu256.projectk.energy.IEnergyListHolder;
+import com.karasu256.projectk.block.custom.AbyssEnergyCable.ConnectionMode;
 import net.karasuniki.karasunikilib.api.block.ICableInputable;
 import net.karasuniki.karasunikilib.api.block.ICableOutputable;
 import net.karasuniki.karasunikilib.api.block.IEnergyBlock;
@@ -27,7 +26,6 @@ public class AbyssEnergyCableBlockEntity extends BlockEntity implements ICableIn
     private static final WeakHashMap<Level, Long> LAST_TICK = new WeakHashMap<>();
     private static final WeakHashMap<Level, Set<BlockPos>> PROCESSED = new WeakHashMap<>();
     private final EnergyValue energy = new EnergyValue();
-    private final EnumMap<Direction, AbyssWrenchBehavior> behaviors = new EnumMap<>(Direction.class);
     private long capacity;
     private long transferRate;
 
@@ -38,9 +36,6 @@ public class AbyssEnergyCableBlockEntity extends BlockEntity implements ICableIn
         energy.setCapacity(capacity);
         energy.setValue(0);
         energy.setId(null);
-        for (Direction direction : Direction.values()) {
-            behaviors.put(direction, AbyssWrenchBehavior.NORMAL);
-        }
     }
 
     public static void tick(Level level, BlockPos pos, BlockState state, AbyssEnergyCableBlockEntity be) {
@@ -83,8 +78,8 @@ public class AbyssEnergyCableBlockEntity extends BlockEntity implements ICableIn
 
     @Override
     public long insert(ResourceLocation id, long maxAmount, boolean simulate, @Nullable Direction side) {
-        AbyssWrenchBehavior behavior = side == null ? AbyssWrenchBehavior.NORMAL : getBehavior(side);
-        if (behavior == AbyssWrenchBehavior.INPUT || behavior == AbyssWrenchBehavior.NONE) {
+        ConnectionMode mode = getModeForSide(side);
+        if (mode == ConnectionMode.INPUT || mode == ConnectionMode.NONE) {
             return 0;
         }
         if (energy.getValue() > 0 && energy.getId() != null && !energy.getId().equals(id)) {
@@ -108,8 +103,8 @@ public class AbyssEnergyCableBlockEntity extends BlockEntity implements ICableIn
 
     @Override
     public long extract(ResourceLocation id, long maxAmount, boolean simulate, @Nullable Direction side) {
-        AbyssWrenchBehavior behavior = side == null ? AbyssWrenchBehavior.NORMAL : getBehavior(side);
-        if (behavior == AbyssWrenchBehavior.OUTPUT || behavior == AbyssWrenchBehavior.NONE) {
+        ConnectionMode mode = getModeForSide(side);
+        if (mode == ConnectionMode.OUTPUT || mode == ConnectionMode.NONE) {
             return 0;
         }
         if (energy.getId() == null || !energy.getId().equals(id)) {
@@ -152,7 +147,8 @@ public class AbyssEnergyCableBlockEntity extends BlockEntity implements ICableIn
             }
             BlockState blockState = level.getBlockState(pos);
             for (Direction dir : Direction.values()) {
-                if (!blockState.getValue(AbyssEnergyCable.getConnectionPropertyFor(dir))) {
+                ConnectionMode mode = blockState.getValue(AbyssEnergyCable.getConnectionPropertyFor(dir));
+                if (!isCableConnected(mode)) {
                     continue;
                 }
                 BlockPos neighborPos = pos.relative(dir);
@@ -186,8 +182,8 @@ public class AbyssEnergyCableBlockEntity extends BlockEntity implements ICableIn
             if (!(cableBe instanceof AbyssEnergyCableBlockEntity cable)) {
                 continue;
             }
-            AbyssWrenchBehavior behavior = cable.getBehavior(ref.direction);
-            if (behavior != AbyssWrenchBehavior.OUTPUT && behavior != AbyssWrenchBehavior.NORMAL) {
+            ConnectionMode mode = cable.getModeForSide(ref.direction);
+            if (mode != ConnectionMode.OUTPUT && mode != ConnectionMode.CONNECTED) {
                 continue;
             }
 
@@ -235,8 +231,8 @@ public class AbyssEnergyCableBlockEntity extends BlockEntity implements ICableIn
             if (!(cableBe instanceof AbyssEnergyCableBlockEntity cable)) {
                 continue;
             }
-            AbyssWrenchBehavior behavior = cable.getBehavior(ref.direction);
-            if (behavior != AbyssWrenchBehavior.INPUT && behavior != AbyssWrenchBehavior.NORMAL) {
+            ConnectionMode mode = cable.getModeForSide(ref.direction);
+            if (mode != ConnectionMode.INPUT && mode != ConnectionMode.CONNECTED) {
                 continue;
             }
             Direction neighborSide = ref.direction.getOpposite();
@@ -329,27 +325,15 @@ public class AbyssEnergyCableBlockEntity extends BlockEntity implements ICableIn
         return null;
     }
 
-    public AbyssWrenchBehavior getBehavior(Direction side) {
-        return side == null ? AbyssWrenchBehavior.NORMAL : behaviors.getOrDefault(side, AbyssWrenchBehavior.NORMAL);
-    }
-
-    public void setBehavior(Direction side, AbyssWrenchBehavior behavior) {
+    public ConnectionMode getModeForSide(@Nullable Direction side) {
         if (side == null) {
-            return;
+            return ConnectionMode.CONNECTED;
         }
-        AbyssWrenchBehavior next = behavior == null ? AbyssWrenchBehavior.NORMAL : behavior;
-        behaviors.put(side, next);
-        setChanged();
-        syncToClient();
+        return getBlockState().getValue(AbyssEnergyCable.getConnectionPropertyFor(side));
     }
 
-    public void setBehavior(AbyssWrenchBehavior behavior) {
-        AbyssWrenchBehavior next = behavior == null ? AbyssWrenchBehavior.NORMAL : behavior;
-        for (Direction direction : Direction.values()) {
-            behaviors.put(direction, next);
-        }
-        setChanged();
-        syncToClient();
+    private boolean isCableConnected(ConnectionMode mode) {
+        return mode != ConnectionMode.NONE;
     }
 
     private void setEnergyInternal(ResourceLocation energyId, long value) {
@@ -389,21 +373,12 @@ public class AbyssEnergyCableBlockEntity extends BlockEntity implements ICableIn
     @Override
     protected void saveAdditional(CompoundTag nbt, HolderLookup.Provider registries) {
         super.saveAdditional(nbt, registries);
-        CompoundTag behaviorTag = new CompoundTag();
-        for (Map.Entry<Direction, AbyssWrenchBehavior> entry : behaviors.entrySet()) {
-            behaviorTag.putString(entry.getKey().getSerializedName(), entry.getValue().id());
-        }
-        nbt.put(EnergyKeys.CABLE_BEHAVIORS.toString(), behaviorTag);
         energy.writeNbt(nbt, registries);
     }
 
     @Override
     protected void loadAdditional(CompoundTag nbt, HolderLookup.Provider registries) {
         super.loadAdditional(nbt, registries);
-        CompoundTag behaviorTag = nbt.getCompound(EnergyKeys.CABLE_BEHAVIORS.toString());
-        for (Direction direction : Direction.values()) {
-            behaviors.put(direction, AbyssWrenchBehavior.fromString(behaviorTag.getString(direction.getSerializedName())));
-        }
         energy.readNbt(nbt, registries);
         if (energy.getValue() <= 0) {
             energy.setId(null);
@@ -416,11 +391,6 @@ public class AbyssEnergyCableBlockEntity extends BlockEntity implements ICableIn
     @Override
     public CompoundTag getUpdateTag(HolderLookup.Provider registries) {
         CompoundTag nbt = super.getUpdateTag(registries);
-        CompoundTag behaviorTag = new CompoundTag();
-        for (Map.Entry<Direction, AbyssWrenchBehavior> entry : behaviors.entrySet()) {
-            behaviorTag.putString(entry.getKey().getSerializedName(), entry.getValue().id());
-        }
-        nbt.put(EnergyKeys.CABLE_BEHAVIORS.toString(), behaviorTag);
         energy.writeNbt(nbt, registries);
         return nbt;
     }

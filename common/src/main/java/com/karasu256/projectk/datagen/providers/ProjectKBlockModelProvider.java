@@ -43,6 +43,8 @@ public class ProjectKBlockModelProvider implements DataProvider {
         futures.add(writeModel(output, "block/abyss_energy_cable", cableModel("abyss_energy_cable")));
         futures.add(writeModel(output, "block/abyss_energy_cable_center", cableCenterModel("abyss_energy_cable")));
         futures.add(writeModel(output, "block/abyss_energy_cable_side", cableSideModel("abyss_energy_cable")));
+        futures.add(writeModel(output, "block/abyss_energy_cable_side_input", cableSideModelWithTexture(ProjectK.MOD_ID + ":block/multipart/abyss_energy_cable_vertical")));
+        futures.add(writeModel(output, "block/abyss_energy_cable_side_output", cableSideModelWithTexture(ProjectK.MOD_ID + ":block/multipart/abyss_energy_cable_vertical")));
 
         for (ProjectKEnergies.EnergyDefinition definition : ProjectKEnergies.getDefinitions()) {
             String fluidId = "fluid_" + definition.idPath();
@@ -179,11 +181,15 @@ public class ProjectKBlockModelProvider implements DataProvider {
     }
 
     private JsonObject cableSideModel(String id) {
+        return cableSideModelWithTexture(ProjectK.MOD_ID + ":block/multipart/" + id + "_vertical");
+    }
+
+    private JsonObject cableSideModelWithTexture(String texturePath) {
         JsonObject json = new JsonObject();
         json.addProperty("parent", "block/block");
         JsonObject textures = new JsonObject();
-        textures.addProperty("particle", ProjectK.MOD_ID + ":block/multipart/" + id + "_vertical");
-        textures.addProperty("all", ProjectK.MOD_ID + ":block/multipart/" + id + "_vertical");
+        textures.addProperty("particle", texturePath);
+        textures.addProperty("all", texturePath);
         json.add("textures", textures);
         JsonArray elements = new JsonArray();
         elements.add(cubeElement(new double[]{5.0, 5.0, 0.0}, new double[]{11.0, 11.0, 5.0}, new double[]{0.0, 0.0, 16.0, 16.0}));

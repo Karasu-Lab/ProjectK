@@ -2,6 +2,8 @@ package com.karasu256.projectk.fabric.datagen.providers;
 
 import com.karasu256.projectk.ProjectK;
 import com.karasu256.projectk.block.ProjectKBlocks;
+import com.karasu256.projectk.block.custom.AbyssEnergyCable;
+import com.karasu256.projectk.block.custom.AbyssEnergyCable.ConnectionMode;
 import com.karasu256.projectk.datagen.providers.CommonBlockStateProvider;
 import com.karasu256.projectk.datagen.providers.CommonItemModelProvider;
 import dev.architectury.registry.registries.RegistrySupplier;
@@ -20,7 +22,7 @@ import net.minecraft.data.models.model.TextureSlot;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.state.properties.BooleanProperty;
+import net.minecraft.world.level.block.state.properties.EnumProperty;
 
 public class ProjectKFabricModelProvider extends FabricModelProvider implements CommonBlockStateProvider.Generator, CommonItemModelProvider.ItemGenerator {
 
@@ -90,20 +92,51 @@ public class ProjectKFabricModelProvider extends FabricModelProvider implements 
     public void multipartCable(Block block, String id) {
         ResourceLocation centerModel = ResourceLocation.fromNamespaceAndPath(ProjectK.MOD_ID, "block/" + id + "_center");
         ResourceLocation sideModel = ResourceLocation.fromNamespaceAndPath(ProjectK.MOD_ID, "block/" + id + "_side");
-        MultiPartGenerator generator = MultiPartGenerator.multiPart(block)
-                .with(Variant.variant().with(VariantProperties.MODEL, centerModel));
+        ResourceLocation sideInputModel = ResourceLocation.fromNamespaceAndPath(ProjectK.MOD_ID, "block/" + id + "_side_input");
+        ResourceLocation sideOutputModel = ResourceLocation.fromNamespaceAndPath(ProjectK.MOD_ID, "block/" + id + "_side_output");
+        
+        MultiPartGenerator generator = MultiPartGenerator.multiPart(block);
 
-        addSide(generator, com.karasu256.projectk.block.custom.AbyssEnergyCable.NORTH, sideModel, VariantProperties.Rotation.R0, null);
-        addSide(generator, com.karasu256.projectk.block.custom.AbyssEnergyCable.EAST, sideModel, VariantProperties.Rotation.R90, null);
-        addSide(generator, com.karasu256.projectk.block.custom.AbyssEnergyCable.SOUTH, sideModel, VariantProperties.Rotation.R180, null);
-        addSide(generator, com.karasu256.projectk.block.custom.AbyssEnergyCable.WEST, sideModel, VariantProperties.Rotation.R270, null);
-        addSide(generator, com.karasu256.projectk.block.custom.AbyssEnergyCable.UP, sideModel, null, VariantProperties.Rotation.R270);
-        addSide(generator, com.karasu256.projectk.block.custom.AbyssEnergyCable.DOWN, sideModel, null, VariantProperties.Rotation.R90);
+        addCenter(generator, AbyssEnergyCable.NORTH, centerModel);
+        addCenter(generator, AbyssEnergyCable.EAST, centerModel);
+        addCenter(generator, AbyssEnergyCable.SOUTH, centerModel);
+        addCenter(generator, AbyssEnergyCable.WEST, centerModel);
+        addCenter(generator, AbyssEnergyCable.UP, centerModel);
+        addCenter(generator, AbyssEnergyCable.DOWN, centerModel);
+
+        addSide(generator, AbyssEnergyCable.NORTH, sideModel, ConnectionMode.CONNECTED, VariantProperties.Rotation.R0, null);
+        addSide(generator, AbyssEnergyCable.NORTH, sideInputModel, ConnectionMode.INPUT, VariantProperties.Rotation.R0, null);
+        addSide(generator, AbyssEnergyCable.NORTH, sideOutputModel, ConnectionMode.OUTPUT, VariantProperties.Rotation.R0, null);
+
+        addSide(generator, AbyssEnergyCable.EAST, sideModel, ConnectionMode.CONNECTED, VariantProperties.Rotation.R90, null);
+        addSide(generator, AbyssEnergyCable.EAST, sideInputModel, ConnectionMode.INPUT, VariantProperties.Rotation.R90, null);
+        addSide(generator, AbyssEnergyCable.EAST, sideOutputModel, ConnectionMode.OUTPUT, VariantProperties.Rotation.R90, null);
+
+        addSide(generator, AbyssEnergyCable.SOUTH, sideModel, ConnectionMode.CONNECTED, VariantProperties.Rotation.R180, null);
+        addSide(generator, AbyssEnergyCable.SOUTH, sideInputModel, ConnectionMode.INPUT, VariantProperties.Rotation.R180, null);
+        addSide(generator, AbyssEnergyCable.SOUTH, sideOutputModel, ConnectionMode.OUTPUT, VariantProperties.Rotation.R180, null);
+
+        addSide(generator, AbyssEnergyCable.WEST, sideModel, ConnectionMode.CONNECTED, VariantProperties.Rotation.R270, null);
+        addSide(generator, AbyssEnergyCable.WEST, sideInputModel, ConnectionMode.INPUT, VariantProperties.Rotation.R270, null);
+        addSide(generator, AbyssEnergyCable.WEST, sideOutputModel, ConnectionMode.OUTPUT, VariantProperties.Rotation.R270, null);
+
+        addSide(generator, AbyssEnergyCable.UP, sideModel, ConnectionMode.CONNECTED, null, VariantProperties.Rotation.R270);
+        addSide(generator, AbyssEnergyCable.UP, sideInputModel, ConnectionMode.INPUT, null, VariantProperties.Rotation.R270);
+        addSide(generator, AbyssEnergyCable.UP, sideOutputModel, ConnectionMode.OUTPUT, null, VariantProperties.Rotation.R270);
+
+        addSide(generator, AbyssEnergyCable.DOWN, sideModel, ConnectionMode.CONNECTED, null, VariantProperties.Rotation.R90);
+        addSide(generator, AbyssEnergyCable.DOWN, sideInputModel, ConnectionMode.INPUT, null, VariantProperties.Rotation.R90);
+        addSide(generator, AbyssEnergyCable.DOWN, sideOutputModel, ConnectionMode.OUTPUT, null, VariantProperties.Rotation.R90);
 
         this.blockModelGenerators.blockStateOutput.accept(generator);
     }
 
-    private void addSide(MultiPartGenerator generator, BooleanProperty prop, ResourceLocation model, VariantProperties.Rotation yRot, VariantProperties.Rotation xRot) {
+    private void addCenter(MultiPartGenerator generator, EnumProperty<ConnectionMode> prop, ResourceLocation model) {
+        Variant variant = Variant.variant().with(VariantProperties.MODEL, model);
+        generator.with(Condition.condition().term(prop, ConnectionMode.NONE), variant);
+    }
+
+    private void addSide(MultiPartGenerator generator, EnumProperty<ConnectionMode> prop, ResourceLocation model, ConnectionMode mode, VariantProperties.Rotation yRot, VariantProperties.Rotation xRot) {
         Variant variant = Variant.variant().with(VariantProperties.MODEL, model);
         if (yRot != null) {
             variant = variant.with(VariantProperties.Y_ROT, yRot);
@@ -111,7 +144,7 @@ public class ProjectKFabricModelProvider extends FabricModelProvider implements 
         if (xRot != null) {
             variant = variant.with(VariantProperties.X_ROT, xRot);
         }
-        generator.with(Condition.condition().term(prop, true), variant);
+        generator.with(Condition.condition().term(prop, mode), variant);
     }
 
     @Override

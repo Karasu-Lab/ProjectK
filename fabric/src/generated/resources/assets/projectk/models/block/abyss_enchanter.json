@@ -1,6 +1,8 @@
 {
-  "parent": "minecraft:block/cube_all",
+  "parent": "minecraft:block/cube_bottom_top",
   "textures": {
-    "all": "projectk:block/abyss_enchanter"
+    "bottom": "projectk:block/abyss_enchanter_bottom",
+    "side": "projectk:block/abyss_enchanter_side",
+    "top": "projectk:block/abyss_enchanter_top"
   }
 }

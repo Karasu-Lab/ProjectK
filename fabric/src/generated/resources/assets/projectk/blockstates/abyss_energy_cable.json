@@ -3,6 +3,49 @@
     {
       "apply": {
         "model": "projectk:block/abyss_energy_cable_center"
+      },
+      "when": {
+        "north": "none"
+      }
+    },
+    {
+      "apply": {
+        "model": "projectk:block/abyss_energy_cable_center"
+      },
+      "when": {
+        "east": "none"
+      }
+    },
+    {
+      "apply": {
+        "model": "projectk:block/abyss_energy_cable_center"
+      },
+      "when": {
+        "south": "none"
+      }
+    },
+    {
+      "apply": {
+        "model": "projectk:block/abyss_energy_cable_center"
+      },
+      "when": {
+        "west": "none"
+      }
+    },
+    {
+      "apply": {
+        "model": "projectk:block/abyss_energy_cable_center"
+      },
+      "when": {
+        "up": "none"
+      }
+    },
+    {
+      "apply": {
+        "model": "projectk:block/abyss_energy_cable_center"
+      },
+      "when": {
+        "down": "none"
       }
     },
     {
@@ -11,7 +54,25 @@
         "y": 0
       },
       "when": {
-        "north": "true"
+        "north": "connected"
+      }
+    },
+    {
+      "apply": {
+        "model": "projectk:block/abyss_energy_cable_side_input",
+        "y": 0
+      },
+      "when": {
+        "north": "input"
+      }
+    },
+    {
+      "apply": {
+        "model": "projectk:block/abyss_energy_cable_side_output",
+        "y": 0
+      },
+      "when": {
+        "north": "output"
       }
     },
     {
@@ -20,7 +81,25 @@
         "y": 90
       },
       "when": {
-        "east": "true"
+        "east": "connected"
+      }
+    },
+    {
+      "apply": {
+        "model": "projectk:block/abyss_energy_cable_side_input",
+        "y": 90
+      },
+      "when": {
+        "east": "input"
+      }
+    },
+    {
+      "apply": {
+        "model": "projectk:block/abyss_energy_cable_side_output",
+        "y": 90
+      },
+      "when": {
+        "east": "output"
       }
     },
     {
@@ -29,7 +108,25 @@
         "y": 180
       },
       "when": {
-        "south": "true"
+        "south": "connected"
+      }
+    },
+    {
+      "apply": {
+        "model": "projectk:block/abyss_energy_cable_side_input",
+        "y": 180
+      },
+      "when": {
+        "south": "input"
+      }
+    },
+    {
+      "apply": {
+        "model": "projectk:block/abyss_energy_cable_side_output",
+        "y": 180
+      },
+      "when": {
+        "south": "output"
       }
     },
     {
@@ -38,7 +135,25 @@
         "y": 270
       },
       "when": {
-        "west": "true"
+        "west": "connected"
+      }
+    },
+    {
+      "apply": {
+        "model": "projectk:block/abyss_energy_cable_side_input",
+        "y": 270
+      },
+      "when": {
+        "west": "input"
+      }
+    },
+    {
+      "apply": {
+        "model": "projectk:block/abyss_energy_cable_side_output",
+        "y": 270
+      },
+      "when": {
+        "west": "output"
       }
     },
     {
@@ -47,7 +162,25 @@
         "x": 270
       },
       "when": {
-        "up": "true"
+        "up": "connected"
+      }
+    },
+    {
+      "apply": {
+        "model": "projectk:block/abyss_energy_cable_side_input",
+        "x": 270
+      },
+      "when": {
+        "up": "input"
+      }
+    },
+    {
+      "apply": {
+        "model": "projectk:block/abyss_energy_cable_side_output",
+        "x": 270
+      },
+      "when": {
+        "up": "output"
       }
     },
     {
@@ -56,7 +189,25 @@
         "x": 90
       },
       "when": {
-        "down": "true"
+        "down": "connected"
+      }
+    },
+    {
+      "apply": {
+        "model": "projectk:block/abyss_energy_cable_side_input",
+        "x": 90
+      },
+      "when": {
+        "down": "input"
+      }
+    },
+    {
+      "apply": {
+        "model": "projectk:block/abyss_energy_cable_side_output",
+        "x": 90
+      },
+      "when": {
+        "down": "output"
       }
     }
   ]
