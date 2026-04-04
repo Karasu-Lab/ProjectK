@@ -80,7 +80,10 @@ public class ProjectKBlockModelProvider implements DataProvider {
 
     private JsonObject abyssMagicTableModel() {
         JsonObject json = new JsonObject();
-        json.addProperty("parent", "minecraft:block/enchanting_table");
+        json.addProperty("parent", "minecraft:block/cube_all");
+        JsonObject textures = new JsonObject();
+        textures.addProperty("all", ProjectK.MOD_ID + ":block/abyss_magic_table");
+        json.add("textures", textures);
         return json;
     }
 
@@ -92,7 +95,10 @@ public class ProjectKBlockModelProvider implements DataProvider {
 
     private JsonObject abyssAlchemyBlendMachineModel() {
         JsonObject json = new JsonObject();
-        json.addProperty("parent", "minecraft:block/enchanting_table");
+        json.addProperty("parent", "minecraft:block/cube_all");
+        JsonObject textures = new JsonObject();
+        textures.addProperty("all", ProjectK.MOD_ID + ":block/abyss_alchemy_blend_machine");
+        json.add("textures", textures);
         return json;
     }
 
@@ -104,7 +110,10 @@ public class ProjectKBlockModelProvider implements DataProvider {
 
     private JsonObject abyssEnchanterModel() {
         JsonObject json = new JsonObject();
-        json.addProperty("parent", "minecraft:block/enchanting_table");
+        json.addProperty("parent", "minecraft:block/cube_all");
+        JsonObject textures = new JsonObject();
+        textures.addProperty("all", ProjectK.MOD_ID + ":block/abyss_enchanter");
+        json.add("textures", textures);
         return json;
     }
 
