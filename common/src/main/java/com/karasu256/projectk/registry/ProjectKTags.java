@@ -4,6 +4,7 @@ import com.karasu256.projectk.utils.Id;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.level.block.Block;
 
 public class ProjectKTags {
@@ -13,5 +14,9 @@ public class ProjectKTags {
 
     public static class Items {
         public static final TagKey<Item> BOOKS = TagKey.create(Registries.ITEM, Id.id("books"));
+    }
+
+    public static class Enchantments {
+        public static final TagKey<Enchantment> ABYSS_ENCHANT = TagKey.create(Registries.ENCHANTMENT, Id.id("abyss_enchant"));
     }
 }

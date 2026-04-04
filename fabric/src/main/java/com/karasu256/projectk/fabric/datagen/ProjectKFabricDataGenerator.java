@@ -1,18 +1,17 @@
 package com.karasu256.projectk.fabric.datagen;
 
 import com.karasu256.projectk.datagen.ProjectKCommonDataGenerator;
-import com.karasu256.projectk.datagen.providers.AbyssAlchemyBlendRecipeProvider;
-import com.karasu256.projectk.datagen.providers.AbyssMagicTableRecipeProvider;
-import com.karasu256.projectk.datagen.providers.InBiomeInBlockCraftingProvider;
-import com.karasu256.projectk.datagen.providers.ProjectKBlockModelProvider;
-import com.karasu256.projectk.datagen.providers.ProjectKLanguageProvider;
+import com.karasu256.projectk.datagen.providers.*;
+import com.karasu256.projectk.enchant.ProjectKEnchantmentBootstrap;
 import com.karasu256.projectk.energy.ProjectKEnergies;
 import com.karasu256.projectk.fabric.datagen.providers.FabricModIntegrationProvider;
 import com.karasu256.projectk.fabric.datagen.providers.ProjectKFabricModelProvider;
 import com.karasu256.projectk.fabric.datagen.providers.ProjectKFabricRecipeProvider;
-import net.minecraft.data.DataProvider;
 import net.fabricmc.fabric.api.datagen.v1.DataGeneratorEntrypoint;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
+import net.minecraft.core.RegistrySetBuilder;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.data.DataProvider;
 
 public class ProjectKFabricDataGenerator implements DataGeneratorEntrypoint {
     @Override
@@ -29,5 +28,10 @@ public class ProjectKFabricDataGenerator implements DataGeneratorEntrypoint {
         pack.addProvider((DataProvider.Factory<ProjectKBlockModelProvider>) ProjectKBlockModelProvider::new);
         pack.addProvider((DataProvider.Factory<ProjectKLanguageProvider>) ProjectKLanguageProvider::new);
         pack.addProvider(InBiomeInBlockCraftingProvider::new);
+    }
+
+    @Override
+    public void buildRegistry(RegistrySetBuilder builder) {
+        builder.add(Registries.ENCHANTMENT, ProjectKEnchantmentBootstrap::bootstrap);
     }
 }

@@ -13,6 +13,7 @@ import com.karasu256.projectk.energy.ProjectKEnergies;
 import com.karasu256.projectk.menu.AbyssEnchanterMenu;
 import com.karasu256.projectk.registry.ProjectKTags;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Holder;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.Registries;
@@ -248,7 +249,19 @@ public class AbyssEnchanterBlockEntity extends AbstractPKEnergyBlockEntity<Abyss
     private boolean isInputEnchanted(ItemStack stack) {
         ItemEnchantments enchants = stack.getOrDefault(DataComponents.ENCHANTMENTS, ItemEnchantments.EMPTY);
         ItemEnchantments stored = stack.getOrDefault(DataComponents.STORED_ENCHANTMENTS, ItemEnchantments.EMPTY);
-        return !enchants.isEmpty() || !stored.isEmpty();
+        return hasAbyssEnchant(enchants) || hasAbyssEnchant(stored);
+    }
+
+    private boolean hasAbyssEnchant(ItemEnchantments enchants) {
+        if (enchants.isEmpty()) {
+            return false;
+        }
+        for (Holder<Enchantment> holder : enchants.keySet()) {
+            if (holder.is(ProjectKTags.Enchantments.ABYSS_ENCHANT) && enchants.getLevel(holder) > 0) {
+                return true;
+            }
+        }
+        return false;
     }
 
     private int getOptionEnchantmentId(int index) {
@@ -290,14 +303,7 @@ public class AbyssEnchanterBlockEntity extends AbstractPKEnergyBlockEntity<Abyss
         if (stack.is(ProjectKTags.Items.BOOKS) || stack.is(Items.BOOK)) {
             return true;
         }
-        return stack.is(ItemTags.AXES)
-                || stack.is(ItemTags.HOES)
-                || stack.is(ItemTags.PICKAXES)
-                || stack.is(ItemTags.SHOVELS)
-                || stack.is(ItemTags.SWORDS)
-                || stack.is(ItemTags.TRIMMABLE_ARMOR)
-                || stack.is(Items.MACE)
-                || stack.is(Items.TRIDENT);
+        return stack.is(ItemTags.AXES) || stack.is(ItemTags.HOES) || stack.is(ItemTags.PICKAXES) || stack.is(ItemTags.SHOVELS) || stack.is(ItemTags.SWORDS) || stack.is(ItemTags.TRIMMABLE_ARMOR) || stack.is(Items.MACE) || stack.is(Items.TRIDENT);
     }
 
     @Override

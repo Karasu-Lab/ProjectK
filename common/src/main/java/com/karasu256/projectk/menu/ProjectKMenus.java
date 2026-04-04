@@ -17,4 +17,5 @@ public class ProjectKMenus implements IKRegistryInitializerTarget {
     public static final RegistrySupplier<MenuType<AbyssAlchemyBlendMachineMenu>> ABYSS_ALCHEMY_BLEND_MACHINE = MenusRegistry.menu("abyss_alchemy_blend_machine", () -> new MenuType<>(AbyssAlchemyBlendMachineMenu::new, FeatureFlags.VANILLA_SET));
     public static final RegistrySupplier<MenuType<AbyssEnchanterMenu>> ABYSS_ENCHANTER = MenusRegistry.menu("abyss_enchanter", () -> new MenuType<>(AbyssEnchanterMenu::new, FeatureFlags.VANILLA_SET));
     public static final RegistrySupplier<MenuType<AbyssStorageMenu>> ABYSS_STORAGE = MenusRegistry.menu("abyss_storage", () -> new MenuType<>(AbyssStorageMenu::new, FeatureFlags.VANILLA_SET));
+    public static final RegistrySupplier<MenuType<AbyssEnchantRemoverMenu>> ABYSS_ENCHANT_REMOVER = MenusRegistry.menu("abyss_enchant_remover", () -> new MenuType<>(AbyssEnchantRemoverMenu::new, FeatureFlags.VANILLA_SET));
 }

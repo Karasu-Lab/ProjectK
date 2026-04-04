@@ -38,6 +38,8 @@ public class ProjectKBlockModelProvider implements DataProvider {
         futures.add(writeModel(output, "item/abyss_enchanter", abyssEnchanterItemModel()));
         futures.add(writeModel(output, "block/abyss_storage", abyssStorageModel()));
         futures.add(writeModel(output, "item/abyss_storage", abyssStorageItemModel()));
+        futures.add(writeModel(output, "block/abyss_enchant_remover", abyssEnchantRemoverModel()));
+        futures.add(writeModel(output, "item/abyss_enchant_remover", abyssEnchantRemoverItemModel()));
         futures.add(writeModel(output, "block/abyss_energy_cable", cableModel("abyss_energy_cable")));
         futures.add(writeModel(output, "block/abyss_energy_cable_center", cableCenterModel("abyss_energy_cable")));
         futures.add(writeModel(output, "block/abyss_energy_cable_side", cableSideModel("abyss_energy_cable")));
@@ -124,6 +126,21 @@ public class ProjectKBlockModelProvider implements DataProvider {
     private JsonObject abyssStorageItemModel() {
         JsonObject json = new JsonObject();
         json.addProperty("parent", ProjectK.MOD_ID + ":block/abyss_storage");
+        return json;
+    }
+
+    private JsonObject abyssEnchantRemoverModel() {
+        JsonObject json = new JsonObject();
+        json.addProperty("parent", "minecraft:block/cube_all");
+        JsonObject textures = new JsonObject();
+        textures.addProperty("all", ProjectK.MOD_ID + ":block/abyss_enchant_remover");
+        json.add("textures", textures);
+        return json;
+    }
+
+    private JsonObject abyssEnchantRemoverItemModel() {
+        JsonObject json = new JsonObject();
+        json.addProperty("parent", ProjectK.MOD_ID + ":block/abyss_enchant_remover");
         return json;
     }
 

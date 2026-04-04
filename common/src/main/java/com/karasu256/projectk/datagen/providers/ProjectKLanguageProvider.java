@@ -78,6 +78,8 @@ public class ProjectKLanguageProvider implements DataProvider {
         add(ja, "container.projectk.abyss_alchemy_blend_machine", "深淵錬金合成機");
         add(ja, "container.projectk.abyss_enchanter", "深淵エンチャンター");
         add(ja, "container.projectk.abyss_storage", "深淵貯蔵機");
+        add(en, "container.projectk.abyss_enchant_remover", "Abyss Enchant Remover");
+        add(ja, "container.projectk.abyss_enchant_remover", "深淵エンチャントリムーバー");
 
         add(en, "item.projectk.abyss_wrench", "Abyss Wrench");
         add(ja, "item.projectk.abyss_wrench", "深淵レンチ");
@@ -100,6 +102,8 @@ public class ProjectKLanguageProvider implements DataProvider {
         add(en, "block.projectk.abyss_energy_cable", "Abyss Energy Cable");
         add(en, "block.projectk.karasium_ore", "Karasium Ore");
         add(en, "block.projectk.deepslate_karasium_ore", "Deepslate Karasium Ore");
+        add(en, "block.projectk.abyss_enchant_remover", "Abyss Enchant Remover");
+        add(ja, "block.projectk.abyss_enchant_remover", "深淵エンチャントリムーバー");
 
         add(ja, "block.projectk.abyss_generator", "深淵発電機");
         add(ja, "block.projectk.abyss_magic_table", "深淵魔術テーブル");

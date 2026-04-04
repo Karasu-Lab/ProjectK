@@ -26,6 +26,7 @@ public class CommonBlockLootProvider extends BlockLootSubProvider {
         this.dropSelf(ProjectKBlocks.ABYSS_ALCHEMY_BLEND_MACHINE.get());
         this.dropSelf(ProjectKBlocks.ABYSS_ENCHANTER.get());
         this.dropSelf(ProjectKBlocks.ABYSS_STORAGE.get());
+        this.dropSelf(ProjectKBlocks.ABYSS_ENCHANT_REMOVER.get());
         for (ProjectKEnergies.EnergyDefinition definition : ProjectKEnergies.getDefinitions()) {
             this.dropSelf(ProjectKBlocks.getCore(definition.id()).get());
         }

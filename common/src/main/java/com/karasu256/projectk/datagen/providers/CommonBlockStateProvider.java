@@ -50,6 +50,9 @@ public class CommonBlockStateProvider {
         generator.existingModelBlock(ProjectKBlocks.ABYSS_STORAGE.get(), "projectk:block/abyss_storage");
         generator.simpleBlockItem(ProjectKBlocks.ABYSS_STORAGE.get());
 
+        generator.existingModelBlock(ProjectKBlocks.ABYSS_ENCHANT_REMOVER.get(), "projectk:block/abyss_enchant_remover");
+        generator.simpleBlockItem(ProjectKBlocks.ABYSS_ENCHANT_REMOVER.get());
+
         generator.multipartCable(ProjectKBlocks.ABYSS_ENERGY_CABLE.get(), "abyss_energy_cable");
         generator.simpleBlockItem(ProjectKBlocks.ABYSS_ENERGY_CABLE.get());
 
