@@ -35,6 +35,7 @@ public class ProjectKBlockEntities implements IKRegistryInitializerTarget {
     public static final RegistrySupplier<BlockEntityType<AbyssMagicTableBlockEntity>> ABYSS_MAGIC_TABLE = blockEntity("abyss_magic_table", () -> BlockEntityType.Builder.of(AbyssMagicTableBlockEntity::new, ProjectKBlocks.ABYSS_MAGIC_TABLE.get()).build(null));
     public static final RegistrySupplier<BlockEntityType<AbyssAlchemyBlendMachineBlockEntity>> ABYSS_ALCHEMY_BLEND_MACHINE = blockEntity("abyss_alchemy_blend_machine", () -> BlockEntityType.Builder.of(AbyssAlchemyBlendMachineBlockEntity::new, ProjectKBlocks.ABYSS_ALCHEMY_BLEND_MACHINE.get()).build(null));
     public static final RegistrySupplier<BlockEntityType<AbyssEnchanterBlockEntity>> ABYSS_ENCHANTER = blockEntity("abyss_enchanter", () -> BlockEntityType.Builder.of(AbyssEnchanterBlockEntity::new, ProjectKBlocks.ABYSS_ENCHANTER.get()).build(null));
+    public static final RegistrySupplier<BlockEntityType<AbyssStorageBlockEntity>> ABYSS_STORAGE = blockEntity("abyss_storage", () -> BlockEntityType.Builder.of(AbyssStorageBlockEntity::new, ProjectKBlocks.ABYSS_STORAGE.get()).build(null));
 
     public static final RegistrySupplier<BlockEntityType<AbyssEnergyCableBlockEntity>> ABYSS_ENERGY_CABLE = blockEntity("abyss_energy_cable", () -> BlockEntityType.Builder.of(AbyssEnergyCableBlockEntity::new, ProjectKBlocks.ABYSS_ENERGY_CABLE.get()).build(null));
 

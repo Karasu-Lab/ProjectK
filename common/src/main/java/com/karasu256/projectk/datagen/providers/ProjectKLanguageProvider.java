@@ -73,9 +73,11 @@ public class ProjectKLanguageProvider implements DataProvider {
         add(en, "container.projectk.abyss_magic_table", "Abyss Magic Table");
         add(en, "container.projectk.abyss_alchemy_blend_machine", "Abyss Alchemy Blend Machine");
         add(en, "container.projectk.abyss_enchanter", "Abyss Enchanter");
+        add(en, "container.projectk.abyss_storage", "Abyss Storage");
         add(ja, "container.projectk.abyss_magic_table", "深淵魔術テーブル");
         add(ja, "container.projectk.abyss_alchemy_blend_machine", "深淵錬金合成機");
         add(ja, "container.projectk.abyss_enchanter", "深淵エンチャンター");
+        add(ja, "container.projectk.abyss_storage", "深淵貯蔵機");
 
         add(en, "item.projectk.abyss_wrench", "Abyss Wrench");
         add(ja, "item.projectk.abyss_wrench", "深淵レンチ");
@@ -94,6 +96,7 @@ public class ProjectKLanguageProvider implements DataProvider {
         add(en, "block.projectk.abyss_magic_table", "Abyss Magic Table");
         add(en, "block.projectk.abyss_alchemy_blend_machine", "Abyss Alchemy Blend Machine");
         add(en, "block.projectk.abyss_enchanter", "Abyss Enchanter");
+        add(en, "block.projectk.abyss_storage", "Abyss Storage");
         add(en, "block.projectk.abyss_energy_cable", "Abyss Energy Cable");
         add(en, "block.projectk.karasium_ore", "Karasium Ore");
         add(en, "block.projectk.deepslate_karasium_ore", "Deepslate Karasium Ore");
@@ -102,6 +105,7 @@ public class ProjectKLanguageProvider implements DataProvider {
         add(ja, "block.projectk.abyss_magic_table", "深淵魔術テーブル");
         add(ja, "block.projectk.abyss_alchemy_blend_machine", "深淵錬金合成機");
         add(ja, "block.projectk.abyss_enchanter", "深淵エンチャンター");
+        add(ja, "block.projectk.abyss_storage", "深淵貯蔵機");
         add(ja, "block.projectk.abyss_energy_cable", "深淵エネルギーケーブル");
         add(ja, "block.projectk.karasium_ore", "カラシウム鉱石");
         add(ja, "block.projectk.deepslate_karasium_ore", "深層カラシウム鉱石");

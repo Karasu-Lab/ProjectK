@@ -7,6 +7,7 @@ import com.karasu256.projectk.client.ProjectKCoreShaders;
 import com.karasu256.projectk.client.screen.AbyssAlchemyBlendMachineScreen;
 import com.karasu256.projectk.client.screen.AbyssEnchanterScreen;
 import com.karasu256.projectk.client.screen.AbyssMagicTableScreen;
+import com.karasu256.projectk.client.screen.AbyssStorageScreen;
 import com.karasu256.projectk.fluid.ProjectKFluids;
 import com.karasu256.projectk.item.ProjectKItems;
 import com.karasu256.projectk.menu.ProjectKMenus;
@@ -88,6 +89,7 @@ public final class ProjectKNeoForge {
         event.register(ProjectKMenus.ABYSS_MAGIC_TABLE.get(), AbyssMagicTableScreen::new);
         event.register(ProjectKMenus.ABYSS_ALCHEMY_BLEND_MACHINE.get(), AbyssAlchemyBlendMachineScreen::new);
         event.register(ProjectKMenus.ABYSS_ENCHANTER.get(), AbyssEnchanterScreen::new);
+        event.register(ProjectKMenus.ABYSS_STORAGE.get(), AbyssStorageScreen::new);
     }
 
     private void onModelRegisterAdditional(ModelEvent.RegisterAdditional event) {
