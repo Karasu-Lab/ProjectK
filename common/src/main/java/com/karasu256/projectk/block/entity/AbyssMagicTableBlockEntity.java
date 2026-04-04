@@ -5,6 +5,7 @@ import com.karasu256.projectk.block.entity.impl.AbstractPKEnergyBlockEntity;
 import com.karasu256.projectk.data.AbyssEnergyData;
 import com.karasu256.projectk.energy.AbyssEnergy;
 import com.karasu256.projectk.energy.EnergyKeys;
+import com.karasu256.projectk.energy.IEnergyListHolder;
 import com.karasu256.projectk.energy.ProjectKEnergies;
 import com.karasu256.projectk.menu.AbyssMagicTableMenu;
 import com.karasu256.projectk.recipe.AbyssMagicTableRecipe;
@@ -26,7 +27,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-public class AbyssMagicTableBlockEntity extends AbstractPKEnergyBlockEntity<AbyssEnergy> implements MenuProvider {
+public class AbyssMagicTableBlockEntity extends AbstractPKEnergyBlockEntity<AbyssEnergy> implements MenuProvider, IEnergyListHolder {
     private static final int CRAFT_TIME = 100;
     private int progress = 0;
     @Nullable
@@ -52,6 +53,15 @@ public class AbyssMagicTableBlockEntity extends AbstractPKEnergyBlockEntity<Abys
     @Override
     protected AbyssEnergy createEnergy() {
         return new AbyssEnergy(0L);
+    }
+
+    @Override
+    public List<EnergyEntry> getEnergyEntries() {
+        ResourceLocation id = getAbyssEnergyId();
+        if (id == null || getAmount() <= 0) {
+            return List.of();
+        }
+        return List.of(new EnergyEntry(id, getAmount(), getCapacity(), false));
     }
 
     private void serverTick() {

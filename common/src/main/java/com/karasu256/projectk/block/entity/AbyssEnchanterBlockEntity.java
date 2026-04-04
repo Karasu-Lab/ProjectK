@@ -8,11 +8,13 @@ import com.karasu256.projectk.data.AbyssEnergyData;
 import com.karasu256.projectk.enchant.ProjectKEnchantments;
 import com.karasu256.projectk.energy.AbyssEnergy;
 import com.karasu256.projectk.energy.EnergyKeys;
+import com.karasu256.projectk.energy.IEnergyListHolder;
 import com.karasu256.projectk.energy.ProjectKEnergies;
 import com.karasu256.projectk.menu.AbyssEnchanterMenu;
 import com.karasu256.projectk.registry.ProjectKTags;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -24,9 +26,8 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.item.enchantment.ItemEnchantments;
 import net.minecraft.world.item.enchantment.Enchantment;
-import net.minecraft.core.component.DataComponents;
+import net.minecraft.world.item.enchantment.ItemEnchantments;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.Nullable;
@@ -35,7 +36,7 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
-public class AbyssEnchanterBlockEntity extends AbstractPKEnergyBlockEntity<AbyssEnergy> implements MenuProvider {
+public class AbyssEnchanterBlockEntity extends AbstractPKEnergyBlockEntity<AbyssEnergy> implements MenuProvider, IEnergyListHolder {
     private static final int OPTION_COUNT = 3;
     private ItemStack outputItem = ItemStack.EMPTY;
 
@@ -56,6 +57,15 @@ public class AbyssEnchanterBlockEntity extends AbstractPKEnergyBlockEntity<Abyss
     @Override
     protected AbyssEnergy createEnergy() {
         return new AbyssEnergy(0L);
+    }
+
+    @Override
+    public List<EnergyEntry> getEnergyEntries() {
+        ResourceLocation id = getAbyssEnergyId();
+        if (id == null || getAmount() <= 0) {
+            return List.of();
+        }
+        return List.of(new EnergyEntry(id, getAmount(), getCapacity(), false));
     }
 
     public boolean applyEnchantment(int option, Player player) {

@@ -1,14 +1,15 @@
 package com.karasu256.projectk.block.entity;
 
 import com.karasu256.projectk.block.custom.AbyssAlchemyBlendMachine;
+import com.karasu256.projectk.block.entity.impl.AbstractAbyssEnergyMachineBlockEntity;
 import com.karasu256.projectk.data.AbyssEnergyData;
 import com.karasu256.projectk.energy.EnergyKeys;
+import com.karasu256.projectk.energy.IEnergyListHolder;
 import com.karasu256.projectk.energy.ProjectKEnergies;
 import com.karasu256.projectk.menu.AbyssAlchemyBlendMachineMenu;
 import com.karasu256.projectk.recipe.AbyssAlchemyBlendRecipe;
 import com.karasu256.projectk.recipe.ProjectKRecipes;
 import net.karasuniki.karasunikilib.api.data.impl.HeldItem;
-import com.karasu256.projectk.block.entity.impl.AbstractAbyssEnergyMachineBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
@@ -24,9 +25,10 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.ArrayList;
 import java.util.List;
 
-public class AbyssAlchemyBlendMachineBlockEntity extends AbstractAbyssEnergyMachineBlockEntity implements MenuProvider {
+public class AbyssAlchemyBlendMachineBlockEntity extends AbstractAbyssEnergyMachineBlockEntity implements MenuProvider, IEnergyListHolder {
     private static final int CRAFT_TIME = 120;
     private final HeldItem inputItem = new HeldItem();
     private ItemStack outputItem = ItemStack.EMPTY;
@@ -95,6 +97,18 @@ public class AbyssAlchemyBlendMachineBlockEntity extends AbstractAbyssEnergyMach
             craft(activeRecipe);
             resetProgress();
         }
+    }
+
+    @Override
+    public List<EnergyEntry> getEnergyEntries() {
+        List<EnergyEntry> entries = new ArrayList<>();
+        if (getEnergyId1() != null && getEnergyAmount1() > 0) {
+            entries.add(new EnergyEntry(getEnergyId1(), getEnergyAmount1(), getCapacity(), false));
+        }
+        if (getEnergyId2() != null && getEnergyAmount2() > 0) {
+            entries.add(new EnergyEntry(getEnergyId2(), getEnergyAmount2(), getCapacity(), false));
+        }
+        return entries;
     }
 
     private boolean hasEnoughEnergy(AbyssAlchemyBlendRecipe recipe) {

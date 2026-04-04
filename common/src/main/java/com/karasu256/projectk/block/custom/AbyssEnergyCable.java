@@ -93,8 +93,8 @@ public class AbyssEnergyCable extends BaseEntityBlock {
 
     private static VoxelShape getSideShape(AbyssWrenchBehavior behavior, Direction dir) {
         return switch (behavior) {
-            case INPUT -> SIDES_PULL[dir.ordinal()];
-            case OUTPUT -> SIDES_PUSH[dir.ordinal()];
+            case INPUT -> SIDES_PUSH[dir.ordinal()];
+            case OUTPUT -> SIDES_PULL[dir.ordinal()];
             case NONE -> CENTER;
             default -> SIDES[dir.ordinal()];
         };

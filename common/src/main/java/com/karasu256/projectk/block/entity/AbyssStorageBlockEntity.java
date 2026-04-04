@@ -3,6 +3,7 @@ package com.karasu256.projectk.block.entity;
 import com.karasu256.projectk.block.custom.AbyssStorage;
 import com.karasu256.projectk.data.AbyssEnergyData;
 import com.karasu256.projectk.data.ProjectKDataComponets;
+import com.karasu256.projectk.energy.IEnergyListHolder;
 import com.karasu256.projectk.energy.ProjectKEnergies;
 import com.karasu256.projectk.menu.AbyssStorageMenu;
 import com.karasu256.projectk.utils.Id;
@@ -15,12 +16,11 @@ import net.karasuniki.karasunikilib.api.data.impl.HeldItem;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
-import net.minecraft.nbt.ListTag;
-import net.minecraft.nbt.Tag;
-import net.minecraft.nbt.NbtOps;
 import net.minecraft.core.component.DataComponents;
-import net.minecraft.world.item.component.CustomData;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.ListTag;
+import net.minecraft.nbt.NbtOps;
+import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.MenuProvider;
@@ -28,20 +28,20 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.component.CustomData;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.function.Consumer;
-import java.util.function.Predicate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Consumer;
+import java.util.function.Predicate;
 
-public class AbyssStorageBlockEntity extends KarasuCoreBlockEntity implements ICableInputable, ICableOutputable, ICapacity, MenuProvider {
+public class AbyssStorageBlockEntity extends KarasuCoreBlockEntity implements ICableInputable, ICableOutputable, ICapacity, MenuProvider, IEnergyListHolder {
     private static final int SLOT_COUNT = 3;
-    private static Predicate<ToggleContext> TOGGLE_CONDITION = context -> true;
     private static final String ENERGY_LIST_KEY = "projectk:abyss_energy_list";
-
+    private static Predicate<ToggleContext> TOGGLE_CONDITION = context -> true;
     private final EnergyValue energyOne = new EnergyValue();
     private final EnergyValue energyTwo = new EnergyValue();
     private final EnergyValue energyThree = new EnergyValue();
@@ -232,6 +232,21 @@ public class AbyssStorageBlockEntity extends KarasuCoreBlockEntity implements IC
         return activeIndex;
     }
 
+    @Override
+    public List<EnergyEntry> getEnergyEntries() {
+        List<EnergyEntry> entries = new ArrayList<>();
+        if (getEnergyId1() != null && getEnergyAmount1() > 0) {
+            entries.add(new EnergyEntry(getEnergyId1(), getEnergyAmount1(), capacity, activeIndex == 0));
+        }
+        if (getEnergyId2() != null && getEnergyAmount2() > 0) {
+            entries.add(new EnergyEntry(getEnergyId2(), getEnergyAmount2(), capacity, activeIndex == 1));
+        }
+        if (getEnergyId3() != null && getEnergyAmount3() > 0) {
+            entries.add(new EnergyEntry(getEnergyId3(), getEnergyAmount3(), capacity, activeIndex == 2));
+        }
+        return entries;
+    }
+
     public boolean toggleActive(int index, Player player) {
         if (index < 0 || index >= SLOT_COUNT) {
             return false;
@@ -308,7 +323,7 @@ public class AbyssStorageBlockEntity extends KarasuCoreBlockEntity implements IC
         stack.remove(ProjectKDataComponets.ABYSS_ENERGY_DATA_COMPONENT_TYPE.get());
         ListTag listTag = new ListTag();
         for (AbyssEnergyData data : list) {
-            AbyssEnergyData.CODEC.encodeStart(NbtOps.INSTANCE, data).result().ifPresent(element -> listTag.add((CompoundTag) element));
+            AbyssEnergyData.CODEC.encodeStart(NbtOps.INSTANCE, data).result().ifPresent(element -> listTag.add(element));
         }
         tag.put(ENERGY_LIST_KEY, listTag);
         stack.set(DataComponents.CUSTOM_DATA, CustomData.of(tag));

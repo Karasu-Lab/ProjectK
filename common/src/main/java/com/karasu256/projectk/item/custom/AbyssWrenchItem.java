@@ -31,16 +31,23 @@ public class AbyssWrenchItem extends ProjectKItem {
         if (be instanceof AbyssEnergyCableBlockEntity cable) {
             if (context.getPlayer() != null && context.getPlayer().isCrouching()) {
                 AbyssWrenchBehavior current = cable.getBehavior(context.getClickedFace());
-                cable.setBehavior(context.getClickedFace(), current.next());
+                AbyssWrenchBehavior next = current.next();
+                cable.setBehavior(context.getClickedFace(), next);
+                context.getPlayer().displayClientMessage(Component.translatable("tooltip.projectk.abyss_wrench_behavior", Component.translatable(next.translationKey())), true);
                 return InteractionResult.SUCCESS;
             }
             AbyssWrenchBehavior behavior = AbyssWrenchBehaviorData.getBehavior(stack);
             cable.setBehavior(context.getClickedFace(), behavior);
+            if (context.getPlayer() != null) {
+                context.getPlayer().displayClientMessage(Component.translatable("tooltip.projectk.abyss_wrench_behavior", Component.translatable(behavior.translationKey())), true);
+            }
             return InteractionResult.SUCCESS;
         }
 
         if (context.getPlayer() != null && context.getPlayer().isCrouching()) {
             AbyssWrenchBehaviorData.cycleBehavior(stack);
+            AbyssWrenchBehavior next = AbyssWrenchBehaviorData.getBehavior(stack);
+            context.getPlayer().displayClientMessage(Component.translatable("tooltip.projectk.abyss_wrench_behavior", Component.translatable(next.translationKey())), true);
             return InteractionResult.SUCCESS;
         }
 

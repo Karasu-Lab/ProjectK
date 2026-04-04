@@ -3,6 +3,7 @@ package com.karasu256.projectk.block.entity;
 import com.karasu256.projectk.block.custom.AbyssEnergyCable;
 import com.karasu256.projectk.data.AbyssWrenchBehaviorData.AbyssWrenchBehavior;
 import com.karasu256.projectk.energy.EnergyKeys;
+import com.karasu256.projectk.energy.IEnergyListHolder;
 import net.karasuniki.karasunikilib.api.block.ICableInputable;
 import net.karasuniki.karasunikilib.api.block.ICableOutputable;
 import net.karasuniki.karasunikilib.api.block.IEnergyBlock;
@@ -22,7 +23,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
 
-public class AbyssEnergyCableBlockEntity extends BlockEntity implements ICableInputable, ICableOutputable {
+public class AbyssEnergyCableBlockEntity extends BlockEntity implements ICableInputable, ICableOutputable, IEnergyListHolder {
     private static final WeakHashMap<Level, Long> LAST_TICK = new WeakHashMap<>();
     private static final WeakHashMap<Level, Set<BlockPos>> PROCESSED = new WeakHashMap<>();
     private final EnergyValue energy = new EnergyValue();
@@ -83,7 +84,7 @@ public class AbyssEnergyCableBlockEntity extends BlockEntity implements ICableIn
     @Override
     public long insert(ResourceLocation id, long maxAmount, boolean simulate, @Nullable Direction side) {
         AbyssWrenchBehavior behavior = side == null ? AbyssWrenchBehavior.NORMAL : getBehavior(side);
-        if (behavior == AbyssWrenchBehavior.OUTPUT || behavior == AbyssWrenchBehavior.NONE) {
+        if (behavior == AbyssWrenchBehavior.INPUT || behavior == AbyssWrenchBehavior.NONE) {
             return 0;
         }
         if (energy.getValue() > 0 && energy.getId() != null && !energy.getId().equals(id)) {
@@ -108,7 +109,7 @@ public class AbyssEnergyCableBlockEntity extends BlockEntity implements ICableIn
     @Override
     public long extract(ResourceLocation id, long maxAmount, boolean simulate, @Nullable Direction side) {
         AbyssWrenchBehavior behavior = side == null ? AbyssWrenchBehavior.NORMAL : getBehavior(side);
-        if (behavior == AbyssWrenchBehavior.INPUT || behavior == AbyssWrenchBehavior.NONE) {
+        if (behavior == AbyssWrenchBehavior.OUTPUT || behavior == AbyssWrenchBehavior.NONE) {
             return 0;
         }
         if (energy.getId() == null || !energy.getId().equals(id)) {
@@ -186,7 +187,7 @@ public class AbyssEnergyCableBlockEntity extends BlockEntity implements ICableIn
                 continue;
             }
             AbyssWrenchBehavior behavior = cable.getBehavior(ref.direction);
-            if (behavior != AbyssWrenchBehavior.INPUT && behavior != AbyssWrenchBehavior.NORMAL) {
+            if (behavior != AbyssWrenchBehavior.OUTPUT && behavior != AbyssWrenchBehavior.NORMAL) {
                 continue;
             }
 
@@ -235,7 +236,7 @@ public class AbyssEnergyCableBlockEntity extends BlockEntity implements ICableIn
                 continue;
             }
             AbyssWrenchBehavior behavior = cable.getBehavior(ref.direction);
-            if (behavior != AbyssWrenchBehavior.OUTPUT && behavior != AbyssWrenchBehavior.NORMAL) {
+            if (behavior != AbyssWrenchBehavior.INPUT && behavior != AbyssWrenchBehavior.NORMAL) {
                 continue;
             }
             Direction neighborSide = ref.direction.getOpposite();
@@ -375,6 +376,14 @@ public class AbyssEnergyCableBlockEntity extends BlockEntity implements ICableIn
 
     public com.karasu256.projectk.energy.IProjectKEnergy getEnergyType() {
         return energy instanceof com.karasu256.projectk.energy.IProjectKEnergy pkEnergy ? pkEnergy : null;
+    }
+
+    @Override
+    public List<EnergyEntry> getEnergyEntries() {
+        if (energy.getId() == null || energy.getValue() <= 0) {
+            return List.of();
+        }
+        return List.of(new EnergyEntry(energy.getId(), energy.getValue(), capacity, false));
     }
 
     @Override

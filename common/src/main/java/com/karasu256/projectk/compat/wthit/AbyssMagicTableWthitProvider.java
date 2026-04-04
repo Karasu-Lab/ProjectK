@@ -1,13 +1,12 @@
 package com.karasu256.projectk.compat.wthit;
 
 import com.karasu256.projectk.block.entity.AbyssMagicTableBlockEntity;
-import com.karasu256.projectk.energy.IProjectKEnergy;
+import com.karasu256.projectk.energy.IEnergyListHolder;
 import com.karasu256.projectk.utils.AbyssMagicTableInfo;
 import mcp.mobius.waila.api.IBlockAccessor;
 import mcp.mobius.waila.api.IBlockComponentProvider;
 import mcp.mobius.waila.api.IPluginConfig;
 import mcp.mobius.waila.api.ITooltip;
-import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntity;
 
@@ -21,11 +20,9 @@ public class AbyssMagicTableWthitProvider implements IBlockComponentProvider {
             return;
         }
 
-        IProjectKEnergy energy = table.getEnergyType();
-        if (energy != null) {
-            tooltip.addLine(Component.translatable("tooltip.projectk.wthit.energy_type", energy.getName()));
+        if (table instanceof IEnergyListHolder listHolder) {
+            ProjectKEnergyBlockWthitProvider.addEnergyEntries(tooltip, listHolder.getEnergyEntries());
         }
-        tooltip.addLine(Component.translatable("tooltip.projectk.wthit.energy", table.getAmount(), table.getCapacity()));
 
         float ratio = AbyssMagicTableInfo.progressRatio(table.getProgress(), table.getMaxProgress());
         ItemStack input = table.getInputItem();

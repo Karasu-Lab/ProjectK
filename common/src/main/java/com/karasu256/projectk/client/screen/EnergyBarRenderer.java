@@ -36,6 +36,25 @@ public final class EnergyBarRenderer {
         graphics.disableScissor();
     }
 
+    public static void renderFluidBarHorizontal(GuiGraphics graphics, ResourceLocation energyId, long amount, long capacity, int x, int y, int width, int height) {
+        if (energyId == null || capacity <= 0) {
+            return;
+        }
+        int fill = (int) Math.min((amount * (long) width) / capacity, width);
+        if (fill <= 0) {
+            return;
+        }
+        ResourceLocation spriteId = ResourceLocation.fromNamespaceAndPath(energyId.getNamespace(), "block/fluid_" + energyId.getPath() + "_still");
+        TextureAtlasSprite sprite = Minecraft.getInstance().getModelManager().getAtlas(InventoryMenu.BLOCK_ATLAS).getSprite(spriteId);
+        int clipX = x + fill;
+
+        graphics.enableScissor(x, y, clipX, y + height);
+        for (int drawX = x; drawX < x + width; drawX += SPRITE_SIZE) {
+            graphics.blit(drawX, y, 0, SPRITE_SIZE, height, sprite);
+        }
+        graphics.disableScissor();
+    }
+
     public static List<FormattedCharSequence> toolTip(ResourceLocation energyId, long amount, long capacity) {
         if (energyId == null) {
             return List.of();
