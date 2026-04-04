@@ -36,8 +36,12 @@ public record MobCondition(List<MobCategory> types, List<TagKey<EntityType<?>>> 
     }
 
     public boolean matches(LivingEntity entity) {
-        if (!types.isEmpty()) {
-            return types.contains(entity.getType().getCategory());
+        boolean hasCriteria = !types.isEmpty() || !tags.isEmpty() || !ids.isEmpty();
+        if (!hasCriteria) {
+            return true;
+        }
+        if (!types.isEmpty() && types.contains(entity.getType().getCategory())) {
+            return true;
         }
         if (!tags.isEmpty()) {
             for (TagKey<EntityType<?>> tag : tags) {
@@ -45,12 +49,11 @@ public record MobCondition(List<MobCategory> types, List<TagKey<EntityType<?>>> 
                     return true;
                 }
             }
-            return false;
         }
         if (!ids.isEmpty()) {
             ResourceLocation id = BuiltInRegistries.ENTITY_TYPE.getKey(entity.getType());
             return ids.contains(id);
         }
-        return true;
+        return false;
     }
 }
