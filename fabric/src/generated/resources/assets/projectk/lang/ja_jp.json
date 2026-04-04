@@ -1,5 +1,6 @@
 {
   "block.projectk.abyss_alchemy_blend_machine": "深淵錬金合成機",
+  "block.projectk.abyss_charger": "深淵チャージャー",
   "block.projectk.abyss_core": "深淵コア",
   "block.projectk.abyss_enchant_remover": "深淵エンチャントリムーバー",
   "block.projectk.abyss_enchanter": "深淵エンチャンター",
@@ -12,6 +13,7 @@
   "block.projectk.yang_abyss_core": "§d陽§rの深淵コア",
   "block.projectk.yin_abyss_core": "§5陰§rの深淵コア",
   "container.projectk.abyss_alchemy_blend_machine": "深淵錬金合成機",
+  "container.projectk.abyss_charger": "深淵チャージャー",
   "container.projectk.abyss_enchant_remover": "深淵エンチャントリムーバー",
   "container.projectk.abyss_enchanter": "深淵エンチャンター",
   "container.projectk.abyss_magic_table": "深淵魔術テーブル",

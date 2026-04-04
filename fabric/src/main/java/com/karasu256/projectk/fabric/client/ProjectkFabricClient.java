@@ -45,6 +45,7 @@ public class ProjectkFabricClient implements ClientModInitializer {
         MenuScreens.register(ProjectKMenus.ABYSS_MAGIC_TABLE.get(), AbyssMagicTableScreen::new);
         MenuScreens.register(ProjectKMenus.ABYSS_ALCHEMY_BLEND_MACHINE.get(), AbyssAlchemyBlendMachineScreen::new);
         MenuScreens.register(ProjectKMenus.ABYSS_ENCHANTER.get(), AbyssEnchanterScreen::new);
+        MenuScreens.register(ProjectKMenus.ABYSS_CHARGER.get(), AbyssChargerScreen::new);
         MenuScreens.register(ProjectKMenus.ABYSS_STORAGE.get(), AbyssStorageScreen::new);
         MenuScreens.register(ProjectKMenus.ABYSS_ENCHANT_REMOVER.get(), AbyssEnchantRemoverScreen::new);
         registerItemModelProperties();

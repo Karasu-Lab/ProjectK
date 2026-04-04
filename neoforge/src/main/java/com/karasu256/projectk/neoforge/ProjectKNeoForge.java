@@ -86,6 +86,7 @@ public final class ProjectKNeoForge {
         event.register(ProjectKMenus.ABYSS_MAGIC_TABLE.get(), AbyssMagicTableScreen::new);
         event.register(ProjectKMenus.ABYSS_ALCHEMY_BLEND_MACHINE.get(), AbyssAlchemyBlendMachineScreen::new);
         event.register(ProjectKMenus.ABYSS_ENCHANTER.get(), AbyssEnchanterScreen::new);
+        event.register(ProjectKMenus.ABYSS_CHARGER.get(), AbyssChargerScreen::new);
         event.register(ProjectKMenus.ABYSS_STORAGE.get(), AbyssStorageScreen::new);
         event.register(ProjectKMenus.ABYSS_ENCHANT_REMOVER.get(), AbyssEnchantRemoverScreen::new);
     }

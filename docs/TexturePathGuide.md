@@ -14,6 +14,8 @@ This guide lists expected texture locations for ProjectK assets.
   - textures/block/abyss_enchanter_side.png
   - textures/block/abyss_enchanter_bottom.png
   - textures/block/abyss_enchanter_top.png
+- Abyss Charger
+  - textures/block/abyss_charger.png
 - Abyss Storage
   - textures/block/abyss_storage.png
 - Abyss Enchant Remover
@@ -27,3 +29,8 @@ This guide lists expected texture locations for ProjectK assets.
   - textures/item/tier_upgrade.png
 - Abyss Bracelet
   - textures/item/abyss_bracelet.png
+
+## GUI
+
+- Abyss Charger
+  - textures/gui/abyss_charger.png

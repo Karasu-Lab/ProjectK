@@ -1,5 +1,6 @@
 {
   "block.projectk.abyss_alchemy_blend_machine": "Abyss Alchemy Blend Machine",
+  "block.projectk.abyss_charger": "Abyss Charger",
   "block.projectk.abyss_core": "Abyss Core",
   "block.projectk.abyss_enchant_remover": "Abyss Enchant Remover",
   "block.projectk.abyss_enchanter": "Abyss Enchanter",
@@ -13,6 +14,7 @@
   "block.projectk.yin_abyss_core": "§5Yin§r Abyss Core",
   "category.projectk": "ProjectK",
   "container.projectk.abyss_alchemy_blend_machine": "Abyss Alchemy Blend Machine",
+  "container.projectk.abyss_charger": "Abyss Charger",
   "container.projectk.abyss_enchant_remover": "Abyss Enchant Remover",
   "container.projectk.abyss_enchanter": "Abyss Enchanter",
   "container.projectk.abyss_magic_table": "Abyss Magic Table",
