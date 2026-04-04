@@ -3,10 +3,10 @@ package com.karasu256.projectk.entity;
 import com.karasu256.projectk.energy.EnergyKeys;
 import com.karasu256.projectk.energy.IProjectKEnergy;
 import com.karasu256.projectk.particle.AbyssParticleOptions;
+import com.karasu256.projectk.particle.IAbssParticleMoveable;
 import com.karasu256.projectk.utils.Id;
 import dev.architectury.registry.registries.RegistrarManager;
 import net.karasuniki.karasunikilib.api.KarasunikiLib;
-import net.karasuniki.karasunikilib.api.block.ICableInputable;
 import net.karasuniki.karasunikilib.api.data.ICapacity;
 import net.karasuniki.karasunikilib.api.data.IEnergy;
 import net.karasuniki.karasunikilib.api.registry.KarasunikiRegistries;
@@ -143,11 +143,11 @@ public class AbyssEnergyEntity extends Entity {
 
     private boolean isValidTarget(BlockPos pos) {
         BlockEntity be = level().getBlockEntity(pos);
-        if (be instanceof ICableInputable energyAcceptor && be instanceof ICapacity capacityProvider) {
-            if (capacityProvider.getCapacity() <= 0) {
+        if (be instanceof IAbssParticleMoveable moveable) {
+            if (moveable.getCapacity() <= 0) {
                 return false;
             }
-            return energyAcceptor.insert(getEnergyId(), 1, true) > 0;
+            return moveable.insert(getEnergyId(), 1, true) > 0;
         }
         return false;
     }
@@ -158,11 +158,11 @@ public class AbyssEnergyEntity extends Entity {
 
     private void insertEnergy() {
         BlockEntity be = level().getBlockEntity(targetGenerator);
-        if (be instanceof ICableInputable energyAcceptor) {
+        if (be instanceof IAbssParticleMoveable moveable) {
             Vec3 center = Vec3.atCenterOf(targetGenerator);
             Vec3 diff = position().subtract(center);
             Direction side = Direction.getNearest(diff.x, diff.y, diff.z);
-            energyAcceptor.insert(getEnergyId(), getEnergy(), false, side);
+            moveable.insert(getEnergyId(), getEnergy(), false, side);
         }
     }
 
