@@ -20,23 +20,25 @@ public class AbyssChargerMenu extends AbstractContainerMenu {
     private final Container container;
     private final ContainerData data;
     private final ContainerLevelAccess access;
+    private final AbyssChargerBlockEntity blockEntity;
 
     public AbyssChargerMenu(int syncId, Inventory inventory) {
-        this(syncId, inventory, new SimpleContainer(CONTAINER_SIZE), new SimpleContainerData(DATA_SIZE), ContainerLevelAccess.NULL);
+        this(syncId, inventory, new SimpleContainer(CONTAINER_SIZE), new SimpleContainerData(DATA_SIZE), ContainerLevelAccess.NULL, null);
     }
 
     public AbyssChargerMenu(int syncId, Inventory inventory, AbyssChargerBlockEntity blockEntity) {
-        this(syncId, inventory, new ChargerContainer(blockEntity), new ChargerData(blockEntity), ContainerLevelAccess.create(blockEntity.getLevel(), blockEntity.getBlockPos()));
+        this(syncId, inventory, new ChargerContainer(blockEntity), new ChargerData(blockEntity), ContainerLevelAccess.create(blockEntity.getLevel(), blockEntity.getBlockPos()), blockEntity);
     }
 
-    private AbyssChargerMenu(int syncId, Inventory inventory, Container container, ContainerData data, ContainerLevelAccess access) {
+    private AbyssChargerMenu(int syncId, Inventory inventory, Container container, ContainerData data, ContainerLevelAccess access, AbyssChargerBlockEntity blockEntity) {
         super(ProjectKMenus.ABYSS_CHARGER.get(), syncId);
         this.container = container;
         this.data = data;
         this.access = access;
+        this.blockEntity = blockEntity;
 
-        addSlot(new InputSlot(container, SLOT_INPUT, 80, 26));
-        addSlot(new OutputSlot(container, SLOT_OUTPUT, 80, 58));
+        addSlot(new EnergyInputSlot(container, SLOT_INPUT, 80, 26, blockEntity));
+        addSlot(new EnergyChargeSlot(container, SLOT_OUTPUT, 80, 58, blockEntity));
 
         addPlayerInventory(inventory);
         addPlayerHotbar(inventory);
@@ -108,31 +110,6 @@ public class AbyssChargerMenu extends AbstractContainerMenu {
     private void addPlayerHotbar(Inventory inventory) {
         for (int col = 0; col < 9; col++) {
             addSlot(new Slot(inventory, col, 8 + col * 18, 142));
-        }
-    }
-
-    private static class InputSlot extends Slot {
-        public InputSlot(Container container, int slot, int x, int y) {
-            super(container, slot, x, y);
-        }
-
-        @Override
-        public boolean mayPlace(ItemStack stack) {
-            if (container instanceof ChargerContainer(AbyssChargerBlockEntity blockEntity)) {
-                return blockEntity.canAcceptInput(stack);
-            }
-            return false;
-        }
-    }
-
-    private static class OutputSlot extends Slot {
-        public OutputSlot(Container container, int slot, int x, int y) {
-            super(container, slot, x, y);
-        }
-
-        @Override
-        public boolean mayPlace(ItemStack stack) {
-            return true;
         }
     }
 

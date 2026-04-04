@@ -1,11 +1,11 @@
 package com.karasu256.projectk.compat.wthit;
 
-import com.karasu256.projectk.block.entity.AbyssEnergyCableBlockEntity;
 import com.karasu256.projectk.block.entity.AbyssMagicTableBlockEntity;
 import com.karasu256.projectk.block.entity.impl.AbstractPKEnergyBlockEntity;
 import com.karasu256.projectk.energy.IEnergyListHolder;
 import com.karasu256.projectk.energy.IProjectKEnergy;
 import com.karasu256.projectk.energy.ProjectKEnergies;
+import com.karasu256.projectk.item.custom.AbyssEnergyItem;
 import mcp.mobius.waila.api.IBlockAccessor;
 import mcp.mobius.waila.api.IBlockComponentProvider;
 import mcp.mobius.waila.api.IPluginConfig;
@@ -27,11 +27,9 @@ public class ProjectKEnergyBlockWthitProvider implements IBlockComponentProvider
             if (id == null || entry.amount() <= 0) {
                 continue;
             }
-            ProjectKEnergies.getDefinition(id).ifPresent(definition -> {
-                Component name = Component.translatable("energy.projectk." + definition.idPath());
-                Component formatted = Component.translatable("energy.projectk.abyss_energy_format", name);
-                tooltip.addLine(formatted);
-            });
+            Component name = ProjectKEnergies.getDefinition(id).map(definition -> (Component) Component.translatable("energy.projectk." + definition.idPath())).orElseGet(() -> AbyssEnergyItem.resolveEnergyName(id));
+            Component formatted = Component.translatable("energy.projectk.abyss_energy_format", name);
+            tooltip.addLine(formatted);
             tooltip.addLine(Component.translatable("tooltip.projectk.wthit.energy", entry.amount(), entry.capacity()));
             tooltip.addLine(new AbyssEnergyBarComponent(id, entry.amount(), entry.capacity(), entry.active()));
         }
@@ -53,10 +51,6 @@ public class ProjectKEnergyBlockWthitProvider implements IBlockComponentProvider
         if (be instanceof AbstractPKEnergyBlockEntity<?> energyBe) {
             addEnergyInfo(tooltip, energyBe.getEnergyType(), energyBe.getAmount(), energyBe.getCapacity());
             addHeldItem(tooltip, energyBe);
-            return;
-        }
-        if (be instanceof AbyssEnergyCableBlockEntity cable) {
-            addEnergyInfo(tooltip, cable.getEnergyType(), cable.getEnergyAmount(), cable.getEnergyCapacity());
         }
     }
 

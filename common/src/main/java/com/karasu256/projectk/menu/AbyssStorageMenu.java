@@ -24,7 +24,8 @@ import java.util.List;
 
 public class AbyssStorageMenu extends AbstractContainerMenu {
     private static final int SLOT_INPUT = 0;
-    private static final int CONTAINER_SIZE = 1;
+    private static final int SLOT_CHARGE = 1;
+    private static final int CONTAINER_SIZE = 2;
     private static final int DATA_SIZE = 13;
 
     private final Container container;
@@ -47,7 +48,8 @@ public class AbyssStorageMenu extends AbstractContainerMenu {
         this.access = access;
         this.blockEntity = blockEntity;
 
-        addSlot(new StorageInputSlot(container, SLOT_INPUT, 20, 47, this));
+        addSlot(new EnergyInputSlot(container, SLOT_INPUT, 20, 47, blockEntity));
+        addSlot(new EnergyChargeSlot(container, SLOT_CHARGE, 44, 47, blockEntity));
 
         addPlayerInventory(inventory);
         addPlayerHotbar(inventory);
@@ -107,8 +109,14 @@ public class AbyssStorageMenu extends AbstractContainerMenu {
             if (!moveItemStackTo(slotStack, CONTAINER_SIZE, slots.size(), true)) {
                 return ItemStack.EMPTY;
             }
-        } else if (!moveItemStackTo(slotStack, SLOT_INPUT, SLOT_INPUT + 1, false)) {
-            return ItemStack.EMPTY;
+        } else {
+            if (slots.get(SLOT_INPUT).mayPlace(slotStack)) {
+                if (!moveItemStackTo(slotStack, SLOT_INPUT, SLOT_INPUT + 1, false)) {
+                    return ItemStack.EMPTY;
+                }
+            } else if (!moveItemStackTo(slotStack, SLOT_CHARGE, SLOT_CHARGE + 1, false)) {
+                return ItemStack.EMPTY;
+            }
         }
 
         if (slotStack.isEmpty()) {
@@ -179,20 +187,6 @@ public class AbyssStorageMenu extends AbstractContainerMenu {
         }
     }
 
-    private static class StorageInputSlot extends Slot {
-        private final AbyssStorageMenu menu;
-
-        public StorageInputSlot(Container container, int slot, int x, int y, AbyssStorageMenu menu) {
-            super(container, slot, x, y);
-            this.menu = menu;
-        }
-
-        @Override
-        public boolean mayPlace(ItemStack stack) {
-            return menu.canAcceptEnergyItem(stack);
-        }
-    }
-
     private static class StorageContainer extends SimpleContainer {
         private final AbyssStorageBlockEntity blockEntity;
 
@@ -203,12 +197,16 @@ public class AbyssStorageMenu extends AbstractContainerMenu {
 
         @Override
         public ItemStack getItem(int slot) {
-            return blockEntity.getInputItem();
+            return slot == SLOT_INPUT ? blockEntity.getInputItem() : blockEntity.getChargeItem();
         }
 
         @Override
         public void setItem(int slot, ItemStack stack) {
-            blockEntity.setInputItem(stack);
+            if (slot == SLOT_INPUT) {
+                blockEntity.setInputItem(stack);
+            } else {
+                blockEntity.setChargeItem(stack);
+            }
         }
 
         @Override
