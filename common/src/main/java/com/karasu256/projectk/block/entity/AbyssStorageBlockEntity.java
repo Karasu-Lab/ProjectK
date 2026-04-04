@@ -123,9 +123,6 @@ public class AbyssStorageBlockEntity extends KarasuCoreBlockEntity implements IC
                 slot.setId(id);
             }
             slot.setValue(slot.getValue() + received);
-            if (activeIndex < 0) {
-                activeIndex = resolveSlotIndex(slot);
-            }
             setChanged();
             sync();
         }
