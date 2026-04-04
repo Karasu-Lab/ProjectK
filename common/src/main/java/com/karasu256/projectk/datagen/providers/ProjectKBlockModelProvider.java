@@ -95,9 +95,11 @@ public class ProjectKBlockModelProvider implements DataProvider {
 
     private JsonObject abyssAlchemyBlendMachineModel() {
         JsonObject json = new JsonObject();
-        json.addProperty("parent", "minecraft:block/cube_all");
+        json.addProperty("parent", "minecraft:block/cube_bottom_top");
         JsonObject textures = new JsonObject();
-        textures.addProperty("all", ProjectK.MOD_ID + ":block/abyss_alchemy_blend_machine");
+        textures.addProperty("side", ProjectK.MOD_ID + ":block/abyss_alchemy_blend_machine_side");
+        textures.addProperty("bottom", ProjectK.MOD_ID + ":block/abyss_alchemy_blend_machine_bottom");
+        textures.addProperty("top", ProjectK.MOD_ID + ":block/abyss_alchemy_blend_machine_top");
         json.add("textures", textures);
         return json;
     }
@@ -110,9 +112,11 @@ public class ProjectKBlockModelProvider implements DataProvider {
 
     private JsonObject abyssEnchanterModel() {
         JsonObject json = new JsonObject();
-        json.addProperty("parent", "minecraft:block/cube_all");
+        json.addProperty("parent", "minecraft:block/cube_bottom_top");
         JsonObject textures = new JsonObject();
-        textures.addProperty("all", ProjectK.MOD_ID + ":block/abyss_enchanter");
+        textures.addProperty("side", ProjectK.MOD_ID + ":block/abyss_enchanter_side");
+        textures.addProperty("bottom", ProjectK.MOD_ID + ":block/abyss_enchanter_bottom");
+        textures.addProperty("top", ProjectK.MOD_ID + ":block/abyss_enchanter_top");
         json.add("textures", textures);
         return json;
     }
@@ -140,9 +144,11 @@ public class ProjectKBlockModelProvider implements DataProvider {
 
     private JsonObject abyssEnchantRemoverModel() {
         JsonObject json = new JsonObject();
-        json.addProperty("parent", "minecraft:block/cube_all");
+        json.addProperty("parent", "minecraft:block/cube_bottom_top");
         JsonObject textures = new JsonObject();
-        textures.addProperty("all", ProjectK.MOD_ID + ":block/abyss_enchant_remover");
+        textures.addProperty("side", ProjectK.MOD_ID + ":block/abyss_enchant_remover_side");
+        textures.addProperty("bottom", ProjectK.MOD_ID + ":block/abyss_enchant_remover_bottom");
+        textures.addProperty("top", ProjectK.MOD_ID + ":block/abyss_enchant_remover_top");
         json.add("textures", textures);
         return json;
     }
