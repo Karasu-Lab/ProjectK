@@ -1,6 +1,5 @@
 package com.karasu256.projectk.compat.wthit;
 
-import com.karasu256.projectk.block.entity.AbyssMagicTableBlockEntity;
 import com.karasu256.projectk.block.entity.impl.AbstractPKEnergyBlockEntity;
 import com.karasu256.projectk.energy.IEnergyListHolder;
 import mcp.mobius.waila.api.IBlockAccessor;
@@ -16,7 +15,7 @@ public class ProjectKEnergyBlockWthitProvider extends AbstractProjectKWthitProvi
     @Override
     public void appendBody(ITooltip tooltip, IBlockAccessor accessor, IPluginConfig config) {
         BlockEntity be = accessor.getBlockEntity();
-        if (be instanceof AbyssMagicTableBlockEntity) {
+        if (be instanceof IWthitCustomEnergy custom && !custom.shouldShowDefaultEnergyTooltip()) {
             return;
         }
         if (be instanceof IEnergyListHolder listHolder) {

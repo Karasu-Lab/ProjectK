@@ -48,12 +48,14 @@ public class ProjectKLanguageProvider implements DataProvider {
         add(en, "rei.category.projectk.in_biome_in_block_crafting.requirement_tag", "Biome tag required: %s");
         add(en, "rei.category.projectk.abyss_magic_table", "Abyss Magic Table");
         add(en, "rei.category.projectk.abyss_alchemy_blend_machine", "Abyss Alchemy Blend Machine");
+        add(en, "rei.category.projectk.abyss_synthesizer", "Abyss Synthesizer");
 
         add(ja, "rei.category.projectk.in_biome_in_block_crafting", "バイオーム内ブロッククラフト");
         add(ja, "rei.category.projectk.in_biome_in_block_crafting.requirement", "必要バイオーム: %s");
         add(ja, "rei.category.projectk.in_biome_in_block_crafting.requirement_tag", "必要バイオームタグ: %s");
         add(ja, "rei.category.projectk.abyss_magic_table", "深淵魔術テーブル");
         add(ja, "rei.category.projectk.abyss_alchemy_blend_machine", "深淵錬金合成機");
+        add(ja, "rei.category.projectk.abyss_synthesizer", "深淵合成機");
 
         add(en, "energy.projectk.abyss_energy_format", "%s Abyss Energy");
         add(ja, "energy.projectk.abyss_energy_format", "%sの深淵エネルギー");
@@ -87,7 +89,15 @@ public class ProjectKLanguageProvider implements DataProvider {
         add(ja, "container.projectk.abyss_charger", "深淵チャージャー");
         add(ja, "container.projectk.abyss_storage", "深淵貯蔵機");
         add(en, "container.projectk.abyss_enchant_remover", "Abyss Enchant Remover");
+        add(en, "container.projectk.abyss_synthesizer", "Abyss Synthesizer");
         add(ja, "container.projectk.abyss_enchant_remover", "深淵エンチャントリムーバー");
+        add(ja, "container.projectk.abyss_synthesizer", "深淵合成機");
+
+        add(en, "gui.projectk.dump", "Dump");
+        add(ja, "gui.projectk.dump", "破棄");
+
+        add(en, "tooltip.projectk.synthesizer.energy_total", "Total Energy: %s/%s");
+        add(ja, "tooltip.projectk.synthesizer.energy_total", "合計エネルギー: %s/%s");
 
         add(en, "item.projectk.abyss_wrench", "Abyss Wrench");
         add(ja, "item.projectk.abyss_wrench", "深淵レンチ");
@@ -114,6 +124,7 @@ public class ProjectKLanguageProvider implements DataProvider {
         add(en, "block.projectk.karasium_ore", "Karasium Ore");
         add(en, "block.projectk.deepslate_karasium_ore", "Deepslate Karasium Ore");
         add(en, "block.projectk.abyss_enchant_remover", "Abyss Enchant Remover");
+        add(en, "block.projectk.abyss_synthesizer", "Abyss Synthesizer");
         add(ja, "block.projectk.abyss_enchant_remover", "深淵エンチャントリムーバー");
 
         add(ja, "block.projectk.abyss_generator", "深淵発電機");
@@ -123,6 +134,7 @@ public class ProjectKLanguageProvider implements DataProvider {
         add(ja, "block.projectk.abyss_charger", "深淵チャージャー");
         add(ja, "block.projectk.abyss_storage", "深淵貯蔵機");
         add(ja, "block.projectk.abyss_energy_cable", "深淵エネルギーケーブル");
+        add(ja, "block.projectk.abyss_synthesizer", "深淵合成機");
         add(ja, "block.projectk.karasium_ore", "カラシウム鉱石");
         add(ja, "block.projectk.deepslate_karasium_ore", "深層カラシウム鉱石");
 
@@ -151,6 +163,16 @@ public class ProjectKLanguageProvider implements DataProvider {
             String key = energyKey(definition);
             add(en, key, definition.enName());
             add(ja, key, definition.jaName());
+
+            String typeKey = "tooltip.projectk.energy_type." +
+                    (definition.kind() == ProjectKEnergies.EnergyKind.NEUTRAL ? "abyss" : definition.kind().name()
+                            .toLowerCase());
+
+            String enName = definition.enName().replaceAll("§.", "");
+            String jaName = definition.jaName().replaceAll("§.", "");
+
+            add(en, typeKey, enName);
+            add(ja, typeKey, jaName);
         }
     }
 

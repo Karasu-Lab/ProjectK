@@ -46,7 +46,12 @@ public final class ProjectKNeoForge {
         PlatformServices.register(new NeoForgeProjectKPlatform());
         ProjectK.init();
         ProjectKNeoForgeConfig.init(container);
-        ModIntegrationBootstrapper.bootstrap(new NeoForgeModIntegrationSupplier<>("com.karasu256.projectk.neoforge.integrations.projecte.ProjectEIntegration"), new NeoForgeModIntegrationSupplier<>("com.karasu256.projectk.neoforge.integrations.mekanism.MekanismIntegration"), new NeoForgeModIntegrationSupplier<>("com.karasu256.projectk.neoforge.integrations.forge.ForgeEnergyIntegration"));
+        ModIntegrationBootstrapper.bootstrap(new NeoForgeModIntegrationSupplier<>(
+                        "com.karasu256.projectk.neoforge.integrations.projecte.ProjectEIntegration"),
+                new NeoForgeModIntegrationSupplier<>(
+                        "com.karasu256.projectk.neoforge.integrations.mekanism.MekanismIntegration"),
+                new NeoForgeModIntegrationSupplier<>(
+                        "com.karasu256.projectk.neoforge.integrations.forge.ForgeEnergyIntegration"));
 
         if (FMLEnvironment.dist.isClient()) {
             ProjectKClient.init();
@@ -62,7 +67,8 @@ public final class ProjectKNeoForge {
         ProjectKItems.init();
         ResourceLocation propertyId = Id.id("abyss_energy");
         for (ResourceLocation itemId : ItemsRegistry.getEnergySuffixItems()) {
-            ItemProperties.register(BuiltInRegistries.ITEM.get(itemId), propertyId, (stack, level, entity, seed) -> ProjectKClient.getAbyssEnergyModelIndex(stack));
+            ItemProperties.register(BuiltInRegistries.ITEM.get(itemId), propertyId,
+                    (stack, level, entity, seed) -> ProjectKClient.getAbyssEnergyModelIndex(stack));
         }
     }
 
@@ -89,12 +95,14 @@ public final class ProjectKNeoForge {
         event.register(ProjectKMenus.ABYSS_CHARGER.get(), AbyssChargerScreen::new);
         event.register(ProjectKMenus.ABYSS_STORAGE.get(), AbyssStorageScreen::new);
         event.register(ProjectKMenus.ABYSS_ENCHANT_REMOVER.get(), AbyssEnchantRemoverScreen::new);
+        event.register(ProjectKMenus.ABYSS_SYNTHESIZER.get(), AbyssSynthesizerScreen::new);
     }
 
     private void onModelRegisterAdditional(ModelEvent.RegisterAdditional event) {
         for (var energy : RegistrarManager.get(KarasunikiLib.MOD_ID).get(KarasunikiRegistries.ENERGY_REGISTRY_KEY)) {
             var energyId = energy.getId();
-            event.register(new ModelResourceLocation(ResourceLocation.fromNamespaceAndPath(energyId.getNamespace(), "block/abyss_generator/" + energyId.getPath()), "standalone"));
+            event.register(new ModelResourceLocation(ResourceLocation.fromNamespaceAndPath(energyId.getNamespace(),
+                    "block/abyss_generator/" + energyId.getPath()), "standalone"));
         }
     }
 
@@ -128,6 +136,7 @@ public final class ProjectKNeoForge {
     private void onRegisterClientExtensions(RegisterClientExtensionsEvent event) {
         registerFluidExtensions(event, "fluid_abyss_energy", ProjectKFluids.ABYSS_ENERGY.get().getFluidType());
         registerFluidExtensions(event, "fluid_yin_abyss_energy", ProjectKFluids.YIN_ABYSS_ENERGY.get().getFluidType());
-        registerFluidExtensions(event, "fluid_yang_abyss_energy", ProjectKFluids.YANG_ABYSS_ENERGY.get().getFluidType());
+        registerFluidExtensions(event, "fluid_yang_abyss_energy",
+                ProjectKFluids.YANG_ABYSS_ENERGY.get().getFluidType());
     }
 }

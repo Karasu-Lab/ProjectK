@@ -21,12 +21,14 @@ public class CommonBlockLootProvider extends BlockLootSubProvider {
     @Override
     public void generate() {
         this.add(ProjectKBlocks.KARASIUM_ORE.get(), block -> createOreDrop(block, ProjectKItems.RAW_KARASIUM.get()));
-        this.add(ProjectKBlocks.DEEPSLATE_KARASIUM_ORE.get(), block -> createOreDrop(block, ProjectKItems.RAW_KARASIUM.get()));
+        this.add(ProjectKBlocks.DEEPSLATE_KARASIUM_ORE.get(),
+                block -> createOreDrop(block, ProjectKItems.RAW_KARASIUM.get()));
         this.dropSelf(ProjectKBlocks.ABYSS_GENERATOR.get());
         this.dropSelf(ProjectKBlocks.ABYSS_ALCHEMY_BLEND_MACHINE.get());
         this.dropSelf(ProjectKBlocks.ABYSS_ENCHANTER.get());
         this.dropSelf(ProjectKBlocks.ABYSS_STORAGE.get());
         this.dropSelf(ProjectKBlocks.ABYSS_ENCHANT_REMOVER.get());
+        this.dropSelf(ProjectKBlocks.ABYSS_SYNTHESIZER.get());
         for (ProjectKEnergies.EnergyDefinition definition : ProjectKEnergies.getDefinitions()) {
             this.dropSelf(ProjectKBlocks.getCore(definition.id()).get());
         }

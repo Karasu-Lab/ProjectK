@@ -11,30 +11,46 @@ import net.minecraft.world.item.crafting.RecipeType;
 
 @KRegistryInitializer(modId = ProjectK.MOD_ID, order = 3)
 public class ProjectKRecipes implements IKRegistryInitializerTarget {
-    public static final RegistrySupplier<RecipeSerializer<InBiomeInBlockCraftingRecipe>> IN_BIOME_IN_BLOCK_CRAFTING_SERIALIZER = RecipesRegistry.serializer("in_biome_in_block_crafting", InBiomeInBlockCraftingRecipe.Serializer::new);
-    public static final RegistrySupplier<RecipeSerializer<AbyssMagicTableRecipe>> ABYSS_MAGIC_TABLE_SERIALIZER = RecipesRegistry.serializer("abyss_magic_table", AbyssMagicTableRecipe.Serializer::new);
-    public static final RegistrySupplier<RecipeSerializer<AbyssAlchemyBlendRecipe>> ABYSS_ALCHEMY_BLEND_SERIALIZER = RecipesRegistry.serializer("abyss_alchemy_blend_machine", AbyssAlchemyBlendRecipe.Serializer::new);
+    public static final RegistrySupplier<RecipeSerializer<InBiomeInBlockCraftingRecipe>> IN_BIOME_IN_BLOCK_CRAFTING_SERIALIZER = RecipesRegistry.serializer(
+            "in_biome_in_block_crafting", InBiomeInBlockCraftingRecipe.Serializer::new);
+    public static final RegistrySupplier<RecipeSerializer<AbyssMagicTableRecipe>> ABYSS_MAGIC_TABLE_SERIALIZER = RecipesRegistry.serializer(
+            "abyss_magic_table", AbyssMagicTableRecipe.Serializer::new);
+    public static final RegistrySupplier<RecipeSerializer<AbyssAlchemyBlendRecipe>> ABYSS_ALCHEMY_BLEND_SERIALIZER = RecipesRegistry.serializer(
+            "abyss_alchemy_blend_machine", AbyssAlchemyBlendRecipe.Serializer::new);
+    public static final RegistrySupplier<RecipeSerializer<AbyssSynthesizerRecipe>> ABYSS_SYNTHESIZER_SERIALIZER = RecipesRegistry.serializer(
+            "abyss_synthesizer", AbyssSynthesizerRecipe.Serializer::new);
 
-    public static final RegistrySupplier<RecipeType<InBiomeInBlockCraftingRecipe>> IN_BIOME_IN_BLOCK_CRAFTING = RecipesRegistry.type("in_biome_in_block_crafting", () -> new RecipeType<>() {
-        @Override
-        public String toString() {
-            return Id.id("in_biome_in_block_crafting").toString();
-        }
-    });
+    public static final RegistrySupplier<RecipeType<InBiomeInBlockCraftingRecipe>> IN_BIOME_IN_BLOCK_CRAFTING = RecipesRegistry.type(
+            "in_biome_in_block_crafting", () -> new RecipeType<>() {
+                @Override
+                public String toString() {
+                    return Id.id("in_biome_in_block_crafting").toString();
+                }
+            });
 
-    public static final RegistrySupplier<RecipeType<AbyssMagicTableRecipe>> ABYSS_MAGIC_TABLE = RecipesRegistry.type("abyss_magic_table", () -> new RecipeType<>() {
-        @Override
-        public String toString() {
-            return Id.id("abyss_magic_table").toString();
-        }
-    });
+    public static final RegistrySupplier<RecipeType<AbyssMagicTableRecipe>> ABYSS_MAGIC_TABLE = RecipesRegistry.type(
+            "abyss_magic_table", () -> new RecipeType<>() {
+                @Override
+                public String toString() {
+                    return Id.id("abyss_magic_table").toString();
+                }
+            });
 
-    public static final RegistrySupplier<RecipeType<AbyssAlchemyBlendRecipe>> ABYSS_ALCHEMY_BLEND = RecipesRegistry.type("abyss_alchemy_blend_machine", () -> new RecipeType<>() {
-        @Override
-        public String toString() {
-            return Id.id("abyss_alchemy_blend_machine").toString();
-        }
-    });
+    public static final RegistrySupplier<RecipeType<AbyssAlchemyBlendRecipe>> ABYSS_ALCHEMY_BLEND = RecipesRegistry.type(
+            "abyss_alchemy_blend_machine", () -> new RecipeType<>() {
+                @Override
+                public String toString() {
+                    return Id.id("abyss_alchemy_blend_machine").toString();
+                }
+            });
+
+    public static final RegistrySupplier<RecipeType<AbyssSynthesizerRecipe>> ABYSS_SYNTHESIZER = RecipesRegistry.type(
+            "abyss_synthesizer", () -> new RecipeType<>() {
+                @Override
+                public String toString() {
+                    return Id.id("abyss_synthesizer").toString();
+                }
+            });
 
     public static void init() {
     }

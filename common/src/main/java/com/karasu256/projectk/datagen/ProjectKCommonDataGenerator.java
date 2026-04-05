@@ -9,7 +9,8 @@ import java.util.concurrent.CompletableFuture;
 public class ProjectKCommonDataGenerator {
 
     public static void gatherData(ProviderRegistry registry, CompletableFuture<HolderLookup.Provider> registries, boolean includeRecipes) {
-        CommonBlockTagsProvider blockTagsProvider = registry.register(output -> new CommonBlockTagsProvider(output, registries));
+        CommonBlockTagsProvider blockTagsProvider = registry.register(
+                output -> new CommonBlockTagsProvider(output, registries));
         registry.register(output -> new CommonItemTagsProvider(output, registries, blockTagsProvider.contentsGetter()));
         registry.register(output -> new CommonEnchantmentTagsProvider(output, registries));
         registry.register(AbyssEnergySpawnRuleProvider::new);
@@ -19,6 +20,7 @@ public class ProjectKCommonDataGenerator {
             registry.register(output -> new CommonRecipeProvider(output, registries));
             registry.register(output -> new AbyssMagicTableRecipeProvider(output, registries));
             registry.register(output -> new AbyssAlchemyBlendRecipeProvider(output, registries));
+            registry.register(output -> new AbyssSynthesizerRecipeProvider(output, registries));
             registry.register(output -> new InBiomeInBlockCraftingProvider(output, registries));
         }
         registry.register(output -> new ProjectKLootTableProvider(output, registries));

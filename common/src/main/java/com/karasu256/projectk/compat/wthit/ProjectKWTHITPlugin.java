@@ -11,5 +11,6 @@ public class ProjectKWTHITPlugin implements IWailaPlugin {
     public void register(IRegistrar registrar) {
         registrar.addComponent(ProjectKEnergyBlockWthitProvider.INSTANCE, TooltipPosition.BODY, Block.class);
         registrar.addComponent(AbyssMagicTableWthitProvider.INSTANCE, TooltipPosition.BODY, Block.class);
+        registrar.addComponent(AbyssSynthesizerWthitProvider.INSTANCE, TooltipPosition.BODY, Block.class);
     }
 }

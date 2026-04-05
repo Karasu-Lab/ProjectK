@@ -42,11 +42,15 @@ public class ProjectKBlockModelProvider implements DataProvider {
         futures.add(writeModel(output, "item/abyss_storage", abyssStorageItemModel()));
         futures.add(writeModel(output, "block/abyss_enchant_remover", abyssEnchantRemoverModel()));
         futures.add(writeModel(output, "item/abyss_enchant_remover", abyssEnchantRemoverItemModel()));
+        futures.add(writeModel(output, "block/abyss_synthesizer", abyssSynthesizerModel()));
+        futures.add(writeModel(output, "item/abyss_synthesizer", abyssSynthesizerItemModel()));
         futures.add(writeModel(output, "block/abyss_energy_cable", cableModel("abyss_energy_cable")));
         futures.add(writeModel(output, "block/abyss_energy_cable_center", cableCenterModel("abyss_energy_cable")));
         futures.add(writeModel(output, "block/abyss_energy_cable_side", cableSideModel("abyss_energy_cable")));
-        futures.add(writeModel(output, "block/abyss_energy_cable_side_input", cableSideModelWithTexture(ProjectK.MOD_ID + ":block/multipart/abyss_energy_cable_vertical")));
-        futures.add(writeModel(output, "block/abyss_energy_cable_side_output", cableSideModelWithTexture(ProjectK.MOD_ID + ":block/multipart/abyss_energy_cable_vertical")));
+        futures.add(writeModel(output, "block/abyss_energy_cable_side_input",
+                cableSideModelWithTexture(ProjectK.MOD_ID + ":block/multipart/abyss_energy_cable_vertical")));
+        futures.add(writeModel(output, "block/abyss_energy_cable_side_output",
+                cableSideModelWithTexture(ProjectK.MOD_ID + ":block/multipart/abyss_energy_cable_vertical")));
 
         for (ProjectKEnergies.EnergyDefinition definition : ProjectKEnergies.getDefinitions()) {
             String fluidId = "fluid_" + definition.idPath();
@@ -63,7 +67,9 @@ public class ProjectKBlockModelProvider implements DataProvider {
                 String modelPath = "item/" + itemId.getPath() + "_" + suffix;
                 String texturePath = ProjectK.MOD_ID + ":item/" + itemId.getPath() + "_" + suffix;
                 futures.add(writeModel(output, modelPath, itemModel(texturePath)));
-                overrides.add(itemOverride(ABYSS_ENERGY_PROPERTY, ProjectKEnergies.getModelPredicateValue(definition.id()), ProjectK.MOD_ID + ":" + modelPath));
+                overrides.add(
+                        itemOverride(ABYSS_ENERGY_PROPERTY, ProjectKEnergies.getModelPredicateValue(definition.id()),
+                                ProjectK.MOD_ID + ":" + modelPath));
             }
             String baseTexture = ProjectK.MOD_ID + ":item/" + itemId.getPath();
             futures.add(writeModel(output, "item/" + itemId.getPath(), itemModelWithOverrides(baseTexture, overrides)));
@@ -140,6 +146,23 @@ public class ProjectKBlockModelProvider implements DataProvider {
         return json;
     }
 
+    private JsonObject abyssSynthesizerModel() {
+        JsonObject json = new JsonObject();
+        json.addProperty("parent", "minecraft:block/cube_bottom_top");
+        JsonObject textures = new JsonObject();
+        textures.addProperty("side", ProjectK.MOD_ID + ":block/abyss_synthesizer_side");
+        textures.addProperty("bottom", ProjectK.MOD_ID + ":block/abyss_synthesizer_bottom");
+        textures.addProperty("top", ProjectK.MOD_ID + ":block/abyss_synthesizer_top");
+        json.add("textures", textures);
+        return json;
+    }
+
+    private JsonObject abyssSynthesizerItemModel() {
+        JsonObject json = new JsonObject();
+        json.addProperty("parent", ProjectK.MOD_ID + ":block/abyss_synthesizer");
+        return json;
+    }
+
     private JsonObject abyssChargerItemModel() {
         JsonObject json = new JsonObject();
         json.addProperty("parent", ProjectK.MOD_ID + ":block/abyss_charger");
@@ -209,7 +232,8 @@ public class ProjectKBlockModelProvider implements DataProvider {
         textures.addProperty("all", texturePath);
         json.add("textures", textures);
         JsonArray elements = new JsonArray();
-        elements.add(cubeElement(new double[]{5.0, 5.0, 0.0}, new double[]{11.0, 11.0, 5.0}, new double[]{0.0, 0.0, 16.0, 16.0}));
+        elements.add(cubeElement(new double[]{5.0, 5.0, 0.0}, new double[]{11.0, 11.0, 5.0},
+                new double[]{0.0, 0.0, 16.0, 16.0}));
         json.add("elements", elements);
         return json;
     }

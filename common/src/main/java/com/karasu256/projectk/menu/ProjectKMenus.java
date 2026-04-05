@@ -13,10 +13,19 @@ public class ProjectKMenus implements IKRegistryInitializerTarget {
     public static void init() {
     }
 
-    public static final RegistrySupplier<MenuType<AbyssMagicTableMenu>> ABYSS_MAGIC_TABLE = MenusRegistry.menu("abyss_magic_table", () -> new MenuType<>(AbyssMagicTableMenu::new, FeatureFlags.VANILLA_SET));
-    public static final RegistrySupplier<MenuType<AbyssAlchemyBlendMachineMenu>> ABYSS_ALCHEMY_BLEND_MACHINE = MenusRegistry.menu("abyss_alchemy_blend_machine", () -> new MenuType<>(AbyssAlchemyBlendMachineMenu::new, FeatureFlags.VANILLA_SET));
-    public static final RegistrySupplier<MenuType<AbyssEnchanterMenu>> ABYSS_ENCHANTER = MenusRegistry.menu("abyss_enchanter", () -> new MenuType<>(AbyssEnchanterMenu::new, FeatureFlags.VANILLA_SET));
-    public static final RegistrySupplier<MenuType<AbyssChargerMenu>> ABYSS_CHARGER = MenusRegistry.menu("abyss_charger", () -> new MenuType<>(AbyssChargerMenu::new, FeatureFlags.VANILLA_SET));
-    public static final RegistrySupplier<MenuType<AbyssStorageMenu>> ABYSS_STORAGE = MenusRegistry.menu("abyss_storage", () -> new MenuType<>(AbyssStorageMenu::new, FeatureFlags.VANILLA_SET));
-    public static final RegistrySupplier<MenuType<AbyssEnchantRemoverMenu>> ABYSS_ENCHANT_REMOVER = MenusRegistry.menu("abyss_enchant_remover", () -> new MenuType<>(AbyssEnchantRemoverMenu::new, FeatureFlags.VANILLA_SET));
+    public static final RegistrySupplier<MenuType<AbyssMagicTableMenu>> ABYSS_MAGIC_TABLE = MenusRegistry.menu(
+            "abyss_magic_table", () -> new MenuType<>(AbyssMagicTableMenu::new, FeatureFlags.VANILLA_SET));
+    public static final RegistrySupplier<MenuType<AbyssAlchemyBlendMachineMenu>> ABYSS_ALCHEMY_BLEND_MACHINE = MenusRegistry.menu(
+            "abyss_alchemy_blend_machine",
+            () -> new MenuType<>(AbyssAlchemyBlendMachineMenu::new, FeatureFlags.VANILLA_SET));
+    public static final RegistrySupplier<MenuType<AbyssEnchanterMenu>> ABYSS_ENCHANTER = MenusRegistry.menu(
+            "abyss_enchanter", () -> new MenuType<>(AbyssEnchanterMenu::new, FeatureFlags.VANILLA_SET));
+    public static final RegistrySupplier<MenuType<AbyssChargerMenu>> ABYSS_CHARGER = MenusRegistry.menu("abyss_charger",
+            () -> new MenuType<>(AbyssChargerMenu::new, FeatureFlags.VANILLA_SET));
+    public static final RegistrySupplier<MenuType<AbyssStorageMenu>> ABYSS_STORAGE = MenusRegistry.menu("abyss_storage",
+            () -> new MenuType<>(AbyssStorageMenu::new, FeatureFlags.VANILLA_SET));
+    public static final RegistrySupplier<MenuType<AbyssEnchantRemoverMenu>> ABYSS_ENCHANT_REMOVER = MenusRegistry.menu(
+            "abyss_enchant_remover", () -> new MenuType<>(AbyssEnchantRemoverMenu::new, FeatureFlags.VANILLA_SET));
+    public static final RegistrySupplier<MenuType<AbyssSynthesizerMenu>> ABYSS_SYNTHESIZER = MenusRegistry.menu(
+            "abyss_synthesizer", () -> new MenuType<>(AbyssSynthesizerMenu::new, FeatureFlags.VANILLA_SET));
 }

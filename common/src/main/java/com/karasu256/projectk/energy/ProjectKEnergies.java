@@ -7,6 +7,7 @@ import dev.architectury.registry.registries.RegistrySupplier;
 import net.karasuniki.karasunikilib.api.data.IEnergy;
 import net.karasuniki.karasunikilib.api.registry.IKRegistryInitializerTarget;
 import net.karasuniki.karasunikilib.api.registry.KRegistryInitializer;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 
 import java.util.*;
@@ -97,6 +98,14 @@ public class ProjectKEnergies implements IKRegistryInitializerTarget {
                                    long defaultAmount) {
         public String idPath() {
             return id.getPath();
+        }
+
+        public String getTranslationKey() {
+            return "energy." + id.getNamespace() + "." + id.getPath();
+        }
+
+        public Component getDisplayName() {
+            return Component.translatable(getTranslationKey());
         }
     }
 }

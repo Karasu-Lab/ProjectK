@@ -2,6 +2,7 @@ package com.karasu256.projectk.block.entity;
 
 import com.karasu256.projectk.block.custom.AbyssMagicTable;
 import com.karasu256.projectk.block.entity.impl.AbstractPKEnergyBlockEntity;
+import com.karasu256.projectk.compat.wthit.IWthitCustomEnergy;
 import com.karasu256.projectk.data.AbyssEnergyData;
 import com.karasu256.projectk.energy.*;
 import com.karasu256.projectk.menu.AbyssMagicTableMenu;
@@ -24,7 +25,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-public class AbyssMagicTableBlockEntity extends AbstractPKEnergyBlockEntity<AbyssEnergy> implements MenuProvider, IEnergyListHolder, IMaxEnrgyInfo, ITierInfo {
+public class AbyssMagicTableBlockEntity extends AbstractPKEnergyBlockEntity<AbyssEnergy> implements MenuProvider, IEnergyListHolder, IMaxEnrgyInfo, ITierInfo, IWthitCustomEnergy {
     private static final int BASE_CRAFT_TIME = 100;
     private static final int MAX_TIER = 3;
     private static final int DEFAULT_TIER = 1;
@@ -341,5 +342,10 @@ public class AbyssMagicTableBlockEntity extends AbstractPKEnergyBlockEntity<Abys
         CompoundTag nbt = super.getUpdateTag(registries);
         saveAdditional(nbt, registries);
         return nbt;
+    }
+
+    @Override
+    public boolean shouldShowDefaultEnergyTooltip() {
+        return false;
     }
 }

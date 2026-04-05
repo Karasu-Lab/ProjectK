@@ -26,7 +26,8 @@ public class ProjectKBlocks implements IKRegistryInitializerTarget {
     public static final Map<ResourceLocation, RegistrySupplier<Block>> ABYSS_CORES = EnergyAutoRegistry.mapByEnergy(
             definition -> definition.idPath().replace("_energy", "_core"),
             (definition, id, map) -> map.put(definition.id(), block(id,
-                    () -> new AbyssCore(BlockBehaviour.Properties.ofFullCopy(Blocks.STONE).noOcclusion().sound(SoundType.STONE)),
+                    () -> new AbyssCore(
+                            BlockBehaviour.Properties.ofFullCopy(Blocks.STONE).noOcclusion().sound(SoundType.STONE)),
                     new Item.Properties()
             ))
     );
@@ -34,23 +35,45 @@ public class ProjectKBlocks implements IKRegistryInitializerTarget {
             definition -> "fluid_" + definition.idPath(),
             (definition, id, map) -> map.put(definition.id(), block(
                     id,
-                    () -> PlatformServices.platform().createFluidBlock(ProjectKFluids.getSource(definition.id()), BlockBehaviour.Properties.ofFullCopy(Blocks.WATER).noLootTable())
+                    () -> PlatformServices.platform().createFluidBlock(ProjectKFluids.getSource(definition.id()),
+                            BlockBehaviour.Properties.ofFullCopy(Blocks.WATER).noLootTable())
             ))
     );
     public static final RegistrySupplier<Block> ABYSS_CORE = getCore(ProjectKEnergies.ABYSS.id());
     public static final RegistrySupplier<LiquidBlock> FLUID_ABYSS_ENERGY = getFluidBlock(ProjectKEnergies.ABYSS.id());
     public static final RegistrySupplier<LiquidBlock> FLUID_YIN_ABYSS_ENERGY = getFluidBlock(ProjectKEnergies.YIN.id());
-    public static final RegistrySupplier<LiquidBlock> FLUID_YANG_ABYSS_ENERGY = getFluidBlock(ProjectKEnergies.YANG.id());
-    public static RegistrySupplier<Block> ABYSS_GENERATOR = block("abyss_generator", () -> new AbyssGenerator(10000L), new Item.Properties());
-    public static RegistrySupplier<Block> ABYSS_MAGIC_TABLE = block("abyss_magic_table", () -> new AbyssMagicTable(BlockBehaviour.Properties.ofFullCopy(Blocks.ENCHANTING_TABLE), ProjectKBlock.CustomProperties.of().capacity(10000L)), new Item.Properties());
-    public static RegistrySupplier<Block> ABYSS_ALCHEMY_BLEND_MACHINE = block("abyss_alchemy_blend_machine", () -> new AbyssAlchemyBlendMachine(BlockBehaviour.Properties.ofFullCopy(Blocks.ENCHANTING_TABLE), ProjectKBlock.CustomProperties.of().capacity(10000L)), new Item.Properties());
-    public static RegistrySupplier<Block> ABYSS_ENCHANTER = block("abyss_enchanter", () -> new AbyssEnchanter(BlockBehaviour.Properties.ofFullCopy(Blocks.ENCHANTING_TABLE), ProjectKBlock.CustomProperties.of().capacity(30000L)), new Item.Properties());
-    public static RegistrySupplier<Block> ABYSS_CHARGER = block("abyss_charger", () -> new AbyssCharger(BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_BLOCK), ProjectKBlock.CustomProperties.of().capacity(30000L).transferRate(1000L)), new Item.Properties());
-    public static RegistrySupplier<Block> ABYSS_STORAGE = block("abyss_storage", () -> new AbyssStorage(BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_BLOCK), AbyssStorage.Properties.of().capacity(30000L).maxTypes(3)), new Item.Properties());
-    public static RegistrySupplier<Block> ABYSS_ENCHANT_REMOVER = block("abyss_enchant_remover", () -> new AbyssEnchantRemover(BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_BLOCK), AbyssEnchantRemover.Properties.of().defaultBookCapacity(30000L)), new Item.Properties());
-    public static RegistrySupplier<Block> ABYSS_ENERGY_CABLE = block("abyss_energy_cable", () -> new AbyssEnergyCable(BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_BLOCK).noOcclusion(), ProjectKBlock.CustomProperties.of().capacity(10000L).transferRate(1000L)), new Item.Properties());
-    public static RegistrySupplier<Block> KARASIUM_ORE = block("karasium_ore", ProjectKBlock::new, new Item.Properties());
-    public static RegistrySupplier<Block> DEEPSLATE_KARASIUM_ORE = block("deepslate_karasium_ore", () -> new ProjectKBlock(Block.Properties.ofFullCopy(Blocks.DEEPSLATE)), new Item.Properties());
+    public static final RegistrySupplier<LiquidBlock> FLUID_YANG_ABYSS_ENERGY = getFluidBlock(
+            ProjectKEnergies.YANG.id());
+    public static RegistrySupplier<Block> ABYSS_GENERATOR = block("abyss_generator", () -> new AbyssGenerator(10000L),
+            new Item.Properties());
+    public static RegistrySupplier<Block> ABYSS_MAGIC_TABLE = block("abyss_magic_table",
+            () -> new AbyssMagicTable(BlockBehaviour.Properties.ofFullCopy(Blocks.ENCHANTING_TABLE),
+                    ProjectKBlock.CustomProperties.of().capacity(10000L)), new Item.Properties());
+    public static RegistrySupplier<Block> ABYSS_ALCHEMY_BLEND_MACHINE = block("abyss_alchemy_blend_machine",
+            () -> new AbyssAlchemyBlendMachine(BlockBehaviour.Properties.ofFullCopy(Blocks.ENCHANTING_TABLE),
+                    ProjectKBlock.CustomProperties.of().capacity(10000L)), new Item.Properties());
+    public static RegistrySupplier<Block> ABYSS_ENCHANTER = block("abyss_enchanter",
+            () -> new AbyssEnchanter(BlockBehaviour.Properties.ofFullCopy(Blocks.ENCHANTING_TABLE),
+                    ProjectKBlock.CustomProperties.of().capacity(30000L)), new Item.Properties());
+    public static RegistrySupplier<Block> ABYSS_CHARGER = block("abyss_charger",
+            () -> new AbyssCharger(BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_BLOCK),
+                    ProjectKBlock.CustomProperties.of().capacity(30000L).transferRate(1000L)), new Item.Properties());
+    public static RegistrySupplier<Block> ABYSS_STORAGE = block("abyss_storage",
+            () -> new AbyssStorage(BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_BLOCK),
+                    AbyssStorage.Properties.of().capacity(30000L).maxTypes(3)), new Item.Properties());
+    public static RegistrySupplier<Block> ABYSS_ENCHANT_REMOVER = block("abyss_enchant_remover",
+            () -> new AbyssEnchantRemover(BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_BLOCK),
+                    AbyssEnchantRemover.Properties.of().defaultBookCapacity(30000L)), new Item.Properties());
+    public static RegistrySupplier<Block> ABYSS_ENERGY_CABLE = block("abyss_energy_cable",
+            () -> new AbyssEnergyCable(BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_BLOCK).noOcclusion(),
+                    ProjectKBlock.CustomProperties.of().capacity(10000L).transferRate(1000L)), new Item.Properties());
+    public static RegistrySupplier<Block> ABYSS_SYNTHESIZER = block("abyss_synthesizer",
+            () -> new AbyssSynthesizer(BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_BLOCK),
+                    ProjectKBlock.CustomProperties.of().capacity(100000L)), new Item.Properties());
+    public static RegistrySupplier<Block> KARASIUM_ORE = block("karasium_ore", ProjectKBlock::new,
+            new Item.Properties());
+    public static RegistrySupplier<Block> DEEPSLATE_KARASIUM_ORE = block("deepslate_karasium_ore",
+            () -> new ProjectKBlock(Block.Properties.ofFullCopy(Blocks.DEEPSLATE)), new Item.Properties());
 
     public static void init() {
     }
