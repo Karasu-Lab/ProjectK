@@ -6,12 +6,7 @@ import com.karasu256.projectk.data.AbyssEnchanterTier;
 import com.karasu256.projectk.data.AbyssEnchanterTierManager;
 import com.karasu256.projectk.data.AbyssEnergyData;
 import com.karasu256.projectk.enchant.ProjectKEnchantments;
-import com.karasu256.projectk.energy.AbyssEnergy;
-import com.karasu256.projectk.energy.EnergyKeys;
-import com.karasu256.projectk.energy.IEnergyListHolder;
-import com.karasu256.projectk.energy.IMaxEnrgyInfo;
-import com.karasu256.projectk.energy.ITierInfo;
-import com.karasu256.projectk.energy.ProjectKEnergies;
+import com.karasu256.projectk.energy.*;
 import com.karasu256.projectk.menu.AbyssEnchanterMenu;
 import com.karasu256.projectk.registry.ProjectKTags;
 import net.minecraft.core.BlockPos;
@@ -43,8 +38,8 @@ public class AbyssEnchanterBlockEntity extends AbstractPKEnergyBlockEntity<Abyss
     private static final int OPTION_COUNT = 3;
     private static final int MAX_TIER = 3;
     private static final int DEFAULT_TIER = 1;
+    private final long baseMaxEnergy;
     private ItemStack outputItem = ItemStack.EMPTY;
-    private long baseMaxEnergy;
     private long maxEnergy;
     private int tier;
 
@@ -87,7 +82,7 @@ public class AbyssEnchanterBlockEntity extends AbstractPKEnergyBlockEntity<Abyss
             return false;
         }
         ItemStack input = getInputItem();
-        if (input.isEmpty() || !isValidInput(input)) {
+        if (input.isEmpty() || isValidInput(input)) {
             return false;
         }
         if (isInputEnchanted(input)) {
@@ -245,12 +240,7 @@ public class AbyssEnchanterBlockEntity extends AbstractPKEnergyBlockEntity<Abyss
                 case 8 -> (int) getCapacity();
                 case 9 -> (int) (getCapacity() >>> 32);
                 case 10 -> getAbyssEnergyId() == null ? 0 : ProjectKEnergies.getModelIndex(getAbyssEnergyId());
-                case 11 -> -1;
-                case 12 -> -1;
-                case 13 -> -1;
-                case 14 -> 0;
-                case 15 -> 0;
-                case 16 -> 0;
+                case 11, 12, 13 -> -1;
                 default -> 0;
             };
         }
@@ -291,7 +281,7 @@ public class AbyssEnchanterBlockEntity extends AbstractPKEnergyBlockEntity<Abyss
 
     private boolean shouldExposeOptions() {
         ItemStack input = getInputItem();
-        if (input.isEmpty() || !isValidInput(input)) {
+        if (input.isEmpty() || isValidInput(input)) {
             return false;
         }
         return !isInputEnchanted(input);
@@ -352,9 +342,9 @@ public class AbyssEnchanterBlockEntity extends AbstractPKEnergyBlockEntity<Abyss
 
     private boolean isValidInput(ItemStack stack) {
         if (stack.is(ProjectKTags.Items.BOOKS) || stack.is(Items.BOOK)) {
-            return true;
+            return false;
         }
-        return stack.is(ItemTags.AXES) || stack.is(ItemTags.HOES) || stack.is(ItemTags.PICKAXES) || stack.is(ItemTags.SHOVELS) || stack.is(ItemTags.SWORDS) || stack.is(ItemTags.TRIMMABLE_ARMOR) || stack.is(Items.MACE) || stack.is(Items.TRIDENT);
+        return !stack.is(ItemTags.AXES) && !stack.is(ItemTags.HOES) && !stack.is(ItemTags.PICKAXES) && !stack.is(ItemTags.SHOVELS) && !stack.is(ItemTags.SWORDS) && !stack.is(ItemTags.TRIMMABLE_ARMOR) && !stack.is(Items.MACE) && !stack.is(Items.TRIDENT);
     }
 
     @Override

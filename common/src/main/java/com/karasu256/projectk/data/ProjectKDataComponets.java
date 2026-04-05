@@ -17,6 +17,13 @@ public class ProjectKDataComponets implements IKRegistryInitializerTarget {
                     .cacheEncoding()
                     .build());
 
+    public static RegistrySupplier<DataComponentType<EnergyCapacityData>> ENERGY_CAPACITY_DATA_COMPONENT_TYPE = dataComponent("energy_capacity",
+            () -> DataComponentType.<EnergyCapacityData>builder()
+                    .persistent(EnergyCapacityData.CODEC)
+                    .networkSynchronized(EnergyCapacityData.STREAM_CODEC)
+                    .cacheEncoding()
+                    .build());
+
     public static RegistrySupplier<DataComponentType<AbyssEnergyData>> ABYSS_ENERGY_DATA_COMPONENT_TYPE = dataComponent("abyss_energy",
             () -> DataComponentType.<AbyssEnergyData>builder()
                     .persistent(AbyssEnergyData.CODEC)

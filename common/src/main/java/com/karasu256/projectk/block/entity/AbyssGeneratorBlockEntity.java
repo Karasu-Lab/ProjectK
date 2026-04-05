@@ -20,7 +20,7 @@ import java.util.List;
 public class AbyssGeneratorBlockEntity extends AbstractPKEnergyBlockEntity<AbyssEnergy> implements IEnergyListHolder, IAbssParticleMoveable, IMaxEnrgyInfo, ITierInfo {
     private static final int MAX_TIER = 3;
     private static final int DEFAULT_TIER = 1;
-    private long baseMaxEnergy;
+    private final long baseMaxEnergy;
     private long maxEnergy;
     private int tier;
 

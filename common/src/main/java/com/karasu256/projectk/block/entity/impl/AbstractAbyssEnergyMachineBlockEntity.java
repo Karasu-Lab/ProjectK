@@ -1,10 +1,11 @@
 package com.karasu256.projectk.block.entity.impl;
 
+import com.karasu256.projectk.data.AbyssEnergyData;
+import com.karasu256.projectk.energy.IMultiEnergyStorage;
 import net.karasuniki.karasunikilib.api.block.ICableInputable;
 import net.karasuniki.karasunikilib.api.block.ICableOutputable;
 import net.karasuniki.karasunikilib.api.block.entity.impl.KarasuCoreBlockEntity;
 import net.karasuniki.karasunikilib.api.data.ICapacity;
-import net.karasuniki.karasunikilib.api.data.impl.EnergyValue;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
@@ -14,9 +15,11 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.Nullable;
 
-public abstract class AbstractAbyssEnergyMachineBlockEntity extends KarasuCoreBlockEntity implements ICableInputable, ICableOutputable, ICapacity {
-    protected final EnergyValue energyOne = new EnergyValue();
-    protected final EnergyValue energyTwo = new EnergyValue();
+import java.util.ArrayList;
+import java.util.List;
+
+public abstract class AbstractAbyssEnergyMachineBlockEntity extends KarasuCoreBlockEntity implements ICableInputable, ICableOutputable, ICapacity, IMultiEnergyStorage {
+    protected final List<AbyssEnergyData> energies = new ArrayList<>();
     protected long capacity;
 
     protected AbstractAbyssEnergyMachineBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state, long capacity) {
@@ -33,23 +36,41 @@ public abstract class AbstractAbyssEnergyMachineBlockEntity extends KarasuCoreBl
     }
 
     @Override
+    public List<AbyssEnergyData> getEnergyList() {
+        return energies;
+    }
+
+    @Override
+    public long getEnergyCapacity() {
+        return capacity;
+    }
+
+    @Override
+    public int getMaxEnergyTypes() {
+        return maxEnergyTypes();
+    }
+
+    @Override
     public long insert(ResourceLocation id, long maxAmount, boolean simulate) {
         if (id == null || maxAmount <= 0) {
             return 0;
         }
-        EnergyValue slot = findInsertSlot(id);
-        if (slot == null) {
+        int index = findEnergyIndex(id);
+        if (index < 0 && getEnergyTypeCount() >= maxEnergyTypes()) {
             return 0;
         }
-        long received = Math.min(capacity - slot.getValue(), maxAmount);
+        long current = index >= 0 ? energies.get(index).amount() : 0L;
+        long received = Math.min(capacity - current, maxAmount);
         if (received <= 0) {
             return 0;
         }
         if (!simulate) {
-            if (slot.getValue() == 0) {
-                slot.setId(id);
+            long nextAmount = current + received;
+            if (index >= 0) {
+                energies.set(index, new AbyssEnergyData(id, nextAmount));
+            } else {
+                energies.add(new AbyssEnergyData(id, nextAmount));
             }
-            slot.setValue(slot.getValue() + received);
             setChanged();
             sync();
         }
@@ -61,16 +82,22 @@ public abstract class AbstractAbyssEnergyMachineBlockEntity extends KarasuCoreBl
         if (id == null || maxAmount <= 0) {
             return 0;
         }
-        EnergyValue slot = findExactSlot(id);
-        if (slot == null) {
+        int index = findEnergyIndex(id);
+        if (index < 0) {
             return 0;
         }
-        long extracted = Math.min(slot.getValue(), maxAmount);
+        long current = energies.get(index).amount();
+        long extracted = Math.min(current, maxAmount);
         if (extracted <= 0) {
             return 0;
         }
         if (!simulate) {
-            slot.setValue(slot.getValue() - extracted);
+            long remaining = current - extracted;
+            if (remaining <= 0) {
+                energies.remove(index);
+            } else {
+                energies.set(index, new AbyssEnergyData(id, remaining));
+            }
             setChanged();
             sync();
         }
@@ -91,84 +118,38 @@ public abstract class AbstractAbyssEnergyMachineBlockEntity extends KarasuCoreBl
     }
 
     public ResourceLocation getEnergyId1() {
-        return energyOne.getValue() == 0 ? null : energyOne.getId();
+        AbyssEnergyData data = getEnergyByIndex(0);
+        return data == null || data.amount() <= 0 ? null : data.energyId();
     }
 
     public ResourceLocation getEnergyId2() {
-        return energyTwo.getValue() == 0 ? null : energyTwo.getId();
+        AbyssEnergyData data = getEnergyByIndex(1);
+        return data == null || data.amount() <= 0 ? null : data.energyId();
     }
 
     public long getEnergyAmount1() {
-        return energyOne.getValue();
+        AbyssEnergyData data = getEnergyByIndex(0);
+        return data == null ? 0L : data.amount();
     }
 
     public long getEnergyAmount2() {
-        return energyTwo.getValue();
-    }
-
-    @Nullable
-    protected EnergyValue findExactSlot(ResourceLocation id) {
-        if (energyOne.getValue() > 0 && id.equals(energyOne.getId())) {
-            return energyOne;
-        }
-        if (energyTwo.getValue() > 0 && id.equals(energyTwo.getId())) {
-            return energyTwo;
-        }
-        return null;
-    }
-
-    @Nullable
-    protected EnergyValue findInsertSlot(ResourceLocation id) {
-        EnergyValue exact = findExactSlot(id);
-        if (exact != null) {
-            return exact;
-        }
-        int types = countEnergyTypes();
-        if (types >= maxEnergyTypes()) {
-            return null;
-        }
-        if (energyOne.getValue() == 0) {
-            return energyOne;
-        }
-        if (energyTwo.getValue() == 0) {
-            return energyTwo;
-        }
-        return null;
+        AbyssEnergyData data = getEnergyByIndex(1);
+        return data == null ? 0L : data.amount();
     }
 
     protected long getEnergyAmount(ResourceLocation id) {
-        EnergyValue slot = findExactSlot(id);
-        return slot == null ? 0L : slot.getValue();
+        int index = findEnergyIndex(id);
+        if (index < 0) {
+            return 0L;
+        }
+        return energies.get(index).amount();
     }
 
     protected void writeEnergyNbt(CompoundTag nbt, HolderLookup.Provider registries) {
-        energyOne.setCapacity(capacity);
-        energyTwo.setCapacity(capacity);
-        CompoundTag energyOneTag = new CompoundTag();
-        CompoundTag energyTwoTag = new CompoundTag();
-        energyOne.writeNbt(energyOneTag, registries);
-        energyTwo.writeNbt(energyTwoTag, registries);
-        nbt.put("energy_one", energyOneTag);
-        nbt.put("energy_two", energyTwoTag);
+        writeEnergyListNbt(nbt);
     }
 
     protected void readEnergyNbt(CompoundTag nbt, HolderLookup.Provider registries) {
-        if (nbt.contains("energy_one")) {
-            energyOne.readNbt(nbt.getCompound("energy_one"), registries);
-        }
-        if (nbt.contains("energy_two")) {
-            energyTwo.readNbt(nbt.getCompound("energy_two"), registries);
-        }
-    }
-
-    private int countEnergyTypes() {
-        int count = 0;
-        if (energyOne.getValue() > 0) {
-            count++;
-        }
-        if (energyTwo.getValue() > 0) {
-            count++;
-        }
-        return count;
+        readEnergyListNbt(nbt);
     }
 }

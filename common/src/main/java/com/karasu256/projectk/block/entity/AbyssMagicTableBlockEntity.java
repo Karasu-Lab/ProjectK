@@ -3,12 +3,7 @@ package com.karasu256.projectk.block.entity;
 import com.karasu256.projectk.block.custom.AbyssMagicTable;
 import com.karasu256.projectk.block.entity.impl.AbstractPKEnergyBlockEntity;
 import com.karasu256.projectk.data.AbyssEnergyData;
-import com.karasu256.projectk.energy.AbyssEnergy;
-import com.karasu256.projectk.energy.EnergyKeys;
-import com.karasu256.projectk.energy.IEnergyListHolder;
-import com.karasu256.projectk.energy.IMaxEnrgyInfo;
-import com.karasu256.projectk.energy.ITierInfo;
-import com.karasu256.projectk.energy.ProjectKEnergies;
+import com.karasu256.projectk.energy.*;
 import com.karasu256.projectk.menu.AbyssMagicTableMenu;
 import com.karasu256.projectk.recipe.AbyssMagicTableRecipe;
 import com.karasu256.projectk.recipe.ProjectKRecipes;
@@ -33,11 +28,11 @@ public class AbyssMagicTableBlockEntity extends AbstractPKEnergyBlockEntity<Abys
     private static final int BASE_CRAFT_TIME = 100;
     private static final int MAX_TIER = 3;
     private static final int DEFAULT_TIER = 1;
+    private final long baseMaxEnergy;
     private int progress = 0;
     @Nullable
     private ResourceLocation lockedRecipeId;
     private ItemStack outputItem = ItemStack.EMPTY;
-    private long baseMaxEnergy;
     private long maxEnergy;
     private int tier;
 
@@ -92,7 +87,7 @@ public class AbyssMagicTableBlockEntity extends AbstractPKEnergyBlockEntity<Abys
         AbyssMagicTableRecipe activeRecipe = activeHolder == null ? null : activeHolder.value();
         if (activeRecipe == null) {
             RecipeHolder<AbyssMagicTableRecipe> startRecipe = findMatchingRecipe(energyId, currentAmount, input);
-            if (startRecipe == null || startRecipe.value() == null) {
+            if (startRecipe == null) {
                 resetProgress();
                 return;
             }
@@ -289,7 +284,7 @@ public class AbyssMagicTableBlockEntity extends AbstractPKEnergyBlockEntity<Abys
         if (lockedRecipeId == null || level == null) {
             return null;
         }
-        return level.getRecipeManager().byKey(lockedRecipeId).filter(holder -> holder.value() instanceof AbyssMagicTableRecipe).map(holder -> (RecipeHolder<AbyssMagicTableRecipe>) holder).orElse(null);
+        return (RecipeHolder<AbyssMagicTableRecipe>) level.getRecipeManager().byKey(lockedRecipeId).filter(holder -> holder.value() instanceof AbyssMagicTableRecipe).orElse(null);
     }
 
     @Nullable

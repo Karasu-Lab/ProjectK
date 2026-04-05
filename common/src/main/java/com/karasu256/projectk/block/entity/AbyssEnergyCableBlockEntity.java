@@ -1,8 +1,8 @@
 package com.karasu256.projectk.block.entity;
 
 import com.karasu256.projectk.block.custom.AbyssEnergyCable;
-import com.karasu256.projectk.energy.IEnergyListHolder;
 import com.karasu256.projectk.block.custom.AbyssEnergyCable.ConnectionMode;
+import com.karasu256.projectk.energy.IEnergyListHolder;
 import net.karasuniki.karasunikilib.api.block.ICableInputable;
 import net.karasuniki.karasunikilib.api.block.ICableOutputable;
 import net.karasuniki.karasunikilib.api.block.IEnergyBlock;

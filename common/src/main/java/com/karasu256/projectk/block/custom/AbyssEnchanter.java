@@ -1,7 +1,6 @@
 package com.karasu256.projectk.block.custom;
 
 import com.karasu256.projectk.block.entity.AbyssEnchanterBlockEntity;
-import com.karasu256.projectk.block.entity.ProjectKBlockEntities;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
