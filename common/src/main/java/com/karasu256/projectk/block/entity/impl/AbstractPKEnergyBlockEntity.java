@@ -80,12 +80,13 @@ public abstract class AbstractPKEnergyBlockEntity<T extends IProjectKEnergy> ext
 
     @Override
     public long insert(ResourceLocation id, long maxAmount, boolean simulate) {
-        if (!canAcceptEnergy(id)) return 0;
+        if (!canAcceptEnergy(id))
+            return 0;
         long capped = Math.min(maxAmount, getMaxEnergyCapacity() - pkEnergy.getValue());
-        if (capped <= 0) return 0;
-        long inserted = pkEnergy instanceof AbyssEnergy ae
-            ? ae.insert(id, capped, getMaxEnergyCapacity(), simulate)
-                : pkEnergy.insert(id, capped, simulate);
+        if (capped <= 0)
+            return 0;
+        long inserted = pkEnergy instanceof AbyssEnergy ae ? ae.insert(id, capped, getMaxEnergyCapacity(),
+                simulate) : pkEnergy.insert(id, capped, simulate);
         if (inserted > 0 && !simulate) {
             setChanged();
             sync();
@@ -125,8 +126,8 @@ public abstract class AbstractPKEnergyBlockEntity<T extends IProjectKEnergy> ext
         if (energy != null) {
             energy.setCapacity(capacity);
         }
-        if (pkEnergy != null && pkEnergy.getValue() > capacity) {
-            pkEnergy.setValue(capacity);
+        if (pkEnergy != null && pkEnergy.getValue() > capacity && energy != null) {
+            energy.setValue(capacity);
             setChanged();
             sync();
         }
@@ -142,7 +143,8 @@ public abstract class AbstractPKEnergyBlockEntity<T extends IProjectKEnergy> ext
     }
 
     protected boolean canAcceptEnergy(@Nullable ResourceLocation id) {
-        if (id == null) return false;
+        if (id == null)
+            return false;
         if (pkEnergy instanceof IAbyssEnergy) {
             return IAbyssEnergy.isAbyssEnergyId(id);
         }
