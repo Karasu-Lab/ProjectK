@@ -38,6 +38,13 @@ public class AbyssWrenchItem extends ProjectKItem {
         BlockEntity be = context.getLevel().getBlockEntity(context.getClickedPos());
         AbyssWrenchBehavior behavior = AbyssWrenchBehaviorData.getBehavior(stack);
 
+        if (context.getPlayer() != null && context.getPlayer().isCrouching()) {
+            AbyssWrenchBehaviorData.cycleBehavior(stack);
+            AbyssWrenchBehavior next = AbyssWrenchBehaviorData.getBehavior(stack);
+            context.getPlayer().displayClientMessage(Component.translatable("tooltip.projectk.abyss_wrench_behavior", Component.translatable(next.translationKey())), true);
+            return InteractionResult.SUCCESS;
+        }
+
         if (behavior == AbyssWrenchBehavior.DOWNGRADE) {
             if (be instanceof ITierInfo tierInfo) {
                 int currentTier = tierInfo.getTier();
@@ -67,13 +74,6 @@ public class AbyssWrenchItem extends ProjectKItem {
             if (context.getPlayer() != null) {
                 context.getPlayer().displayClientMessage(Component.translatable("tooltip.projectk.abyss_wrench_behavior", Component.translatable(mapModeToBehavior(nextMode).translationKey())), true);
             }
-            return InteractionResult.SUCCESS;
-        }
-
-        if (context.getPlayer() != null && context.getPlayer().isCrouching()) {
-            AbyssWrenchBehaviorData.cycleBehavior(stack);
-            AbyssWrenchBehavior next = AbyssWrenchBehaviorData.getBehavior(stack);
-            context.getPlayer().displayClientMessage(Component.translatable("tooltip.projectk.abyss_wrench_behavior", Component.translatable(next.translationKey())), true);
             return InteractionResult.SUCCESS;
         }
 

@@ -45,7 +45,10 @@ public class ProjectKItems implements IKRegistryInitializerTarget {
     public static RegistrySupplier<Item> KARASIUM_DUST = item("karasium_dust", () -> new ProjectKItem(new ProjectKItem.Properties().emc(128L)));
     public static RegistrySupplier<Item> WITHER_BONE = item("wither_bone", () -> new ProjectKItem(new ProjectKItem.Properties()));
     public static RegistrySupplier<Item> ABYSS_INGOT = item("abyss_ingot", () -> new AbyssEnergyItem(new ProjectKItem.Properties()), true);
-    public static RegistrySupplier<Item> ABYSS_WRENCH = item("abyss_wrench", () -> new AbyssWrenchItem(new ProjectKItem.Properties()));
+    public static RegistrySupplier<Item> ABYSS_WRENCH = item("abyss_wrench", () -> {
+        ProjectKItem.Properties properties = new ProjectKItem.Properties().stacksTo(1);
+        return new AbyssWrenchItem(properties);
+    });
     public static RegistrySupplier<Item> TIER_UPGRADE = item("tier_upgrade", () -> {
         ProjectKItem.Properties properties = new ProjectKItem.Properties();
         properties.component(ProjectKDataComponets.TIER_UPGRADE_DATA_COMPONENT_TYPE.get(), new TierUpgradeData(1));
