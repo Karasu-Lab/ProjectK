@@ -84,28 +84,24 @@ public class NeoForgeBlockStateProvider extends BlockStateProvider implements Co
 
         ModelFile centerModel = models().getBuilder(id + "_center")
                 .parent(models().getExistingFile(ResourceLocation.withDefaultNamespace("block/block")))
-                .texture("particle", baseTex)
-                .texture("all", baseTex).element().from(5, 5, 5).to(11, 11, 11)
+                .texture("particle", baseTex).texture("all", baseTex).element().from(5, 5, 5).to(11, 11, 11)
                 .allFaces((d, f) -> f.uvs(0, 0, 16, 16).texture("#all")).end();
 
         ModelFile sideModel = models().getBuilder(id + "_side")
                 .parent(models().getExistingFile(ResourceLocation.withDefaultNamespace("block/block")))
-                .texture("particle", sideTex)
-                .texture("all", sideTex).element().from(5, 5, 0).to(11, 11, 5)
+                .texture("particle", sideTex).texture("all", sideTex).element().from(5, 5, 0).to(11, 11, 5)
                 .allFaces((d, f) -> f.uvs(0, 0, 16, 16).texture("#all")).end();
 
         ModelFile inputModel = models().getBuilder(id + "_input")
                 .parent(models().getExistingFile(ResourceLocation.withDefaultNamespace("block/block")))
-                .texture("particle", inputTex)
-                .texture("all", inputTex).element().from(4, 4, 0).to(12, 12, 2)
+                .texture("particle", inputTex).texture("all", inputTex).element().from(4, 4, 0).to(12, 12, 2)
                 .allFaces((d, f) -> f.uvs(4, 0, 12, 2).texture("#all")).end().element().from(6, 6, 2).to(10, 10, 4)
                 .allFaces((d, f) -> f.uvs(6, 2, 10, 4).texture("#all")).end().element().from(5, 5, 4).to(11, 11, 5)
                 .allFaces((d, f) -> f.uvs(5, 4, 11, 5).texture("#all")).end();
 
         ModelFile outputModel = models().getBuilder(id + "_output")
                 .parent(models().getExistingFile(ResourceLocation.withDefaultNamespace("block/block")))
-                .texture("particle", outputTex)
-                .texture("all", outputTex).element().from(7, 7, 0).to(9, 9, 2)
+                .texture("particle", outputTex).texture("all", outputTex).element().from(7, 7, 0).to(9, 9, 2)
                 .allFaces((d, f) -> f.uvs(7, 0, 9, 2).texture("#all")).end().element().from(6, 6, 2).to(10, 10, 3)
                 .allFaces((d, f) -> f.uvs(6, 2, 10, 3).texture("#all")).end().element().from(5, 5, 3).to(11, 11, 5)
                 .allFaces((d, f) -> f.uvs(5, 3, 11, 5).texture("#all")).end();
