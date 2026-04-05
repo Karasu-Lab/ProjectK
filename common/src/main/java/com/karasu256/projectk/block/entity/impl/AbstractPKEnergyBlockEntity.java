@@ -25,11 +25,11 @@ import org.jetbrains.annotations.Nullable;
 public abstract class AbstractPKEnergyBlockEntity<T extends IProjectKEnergy> extends AbstractEnergyBlockEntity<T> implements IRotationAnimSpeed {
     protected final IRotationAnimSpeed rotationSpeed = new RotationAnimSpeed(1.0f);
     protected final T pkEnergy;
-    private final long capacity;
+    protected long maxEnergyCapacity;
 
     public AbstractPKEnergyBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state, long capacity) {
         super(type, pos, state, capacity);
-        this.capacity = capacity;
+        this.maxEnergyCapacity = capacity;
         this.pkEnergy = createEnergy();
         this.energy = (EnergyValue) this.pkEnergy;
     }
@@ -81,10 +81,10 @@ public abstract class AbstractPKEnergyBlockEntity<T extends IProjectKEnergy> ext
     @Override
     public long insert(ResourceLocation id, long maxAmount, boolean simulate) {
         if (!canAcceptEnergy(id)) return 0;
-        long capped = Math.min(maxAmount, capacity - pkEnergy.getValue());
+        long capped = Math.min(maxAmount, getMaxEnergyCapacity() - pkEnergy.getValue());
         if (capped <= 0) return 0;
         long inserted = pkEnergy instanceof AbyssEnergy ae
-                ? ae.insert(id, capped, capacity, simulate)
+            ? ae.insert(id, capped, getMaxEnergyCapacity(), simulate)
                 : pkEnergy.insert(id, capped, simulate);
         if (inserted > 0 && !simulate) {
             setChanged();
@@ -113,7 +113,18 @@ public abstract class AbstractPKEnergyBlockEntity<T extends IProjectKEnergy> ext
 
     @Override
     public long getCapacity() {
-        return capacity;
+        return getMaxEnergyCapacity();
+    }
+
+    protected long getMaxEnergyCapacity() {
+        return maxEnergyCapacity;
+    }
+
+    protected void setMaxEnergyCapacity(long capacity) {
+        this.maxEnergyCapacity = capacity;
+        if (energy != null) {
+            energy.setCapacity(capacity);
+        }
     }
 
     @Override

@@ -5,6 +5,8 @@ import com.karasu256.projectk.block.entity.impl.AbstractAbyssEnergyMachineBlockE
 import com.karasu256.projectk.data.AbyssEnergyData;
 import com.karasu256.projectk.energy.EnergyKeys;
 import com.karasu256.projectk.energy.IEnergyListHolder;
+import com.karasu256.projectk.energy.IMaxEnrgyInfo;
+import com.karasu256.projectk.energy.ITierInfo;
 import com.karasu256.projectk.energy.ProjectKEnergies;
 import com.karasu256.projectk.menu.AbyssAlchemyBlendMachineMenu;
 import com.karasu256.projectk.recipe.AbyssAlchemyBlendRecipe;
@@ -28,17 +30,25 @@ import org.jetbrains.annotations.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AbyssAlchemyBlendMachineBlockEntity extends AbstractAbyssEnergyMachineBlockEntity implements MenuProvider, IEnergyListHolder {
-    private static final int CRAFT_TIME = 120;
+public class AbyssAlchemyBlendMachineBlockEntity extends AbstractAbyssEnergyMachineBlockEntity implements MenuProvider, IEnergyListHolder, IMaxEnrgyInfo, ITierInfo {
+    private static final int BASE_CRAFT_TIME = 120;
+    private static final int MAX_TIER = 3;
+    private static final int DEFAULT_TIER = 1;
     private final HeldItem inputItem = new HeldItem();
     private ItemStack outputItem = ItemStack.EMPTY;
 
     private int progress = 0;
     @Nullable
     private ResourceLocation lockedRecipeId;
+    private long baseMaxEnergy;
+    private long maxEnergy;
+    private int tier;
 
     public AbyssAlchemyBlendMachineBlockEntity(BlockPos pos, BlockState state) {
         super(ProjectKBlockEntities.ABYSS_ALCHEMY_BLEND_MACHINE.get(), pos, state, resolveCapacity(state));
+        this.baseMaxEnergy = resolveCapacity(state);
+        this.tier = DEFAULT_TIER;
+        refreshMaxEnergy();
     }
 
     public static void tick(Level level, BlockPos pos, BlockState state, AbyssAlchemyBlendMachineBlockEntity be) {
@@ -93,7 +103,7 @@ public class AbyssAlchemyBlendMachineBlockEntity extends AbstractAbyssEnergyMach
             setChanged();
             sync();
         }
-        if (progress >= CRAFT_TIME) {
+        if (progress >= getCraftTime()) {
             craft(activeRecipe);
             resetProgress();
         }
@@ -212,7 +222,7 @@ public class AbyssAlchemyBlendMachineBlockEntity extends AbstractAbyssEnergyMach
     public int getDataValue(int index) {
         return switch (index) {
             case 0 -> progress;
-            case 1 -> CRAFT_TIME;
+            case 1 -> getCraftTime();
             case 2 -> (int) getEnergyAmount1();
             case 3 -> (int) (getEnergyAmount1() >>> 32);
             case 4 -> (int) getEnergyCapacity1();
@@ -238,15 +248,62 @@ public class AbyssAlchemyBlendMachineBlockEntity extends AbstractAbyssEnergyMach
     }
 
     public int getMaxProgress() {
-        return CRAFT_TIME;
+        return getCraftTime();
     }
 
     public long getEnergyCapacity1() {
-        return capacity;
+        return getMaxEnergy();
     }
 
     public long getEnergyCapacity2() {
-        return capacity;
+        return getMaxEnergy();
+    }
+
+    private int getCraftTime() {
+        return getCraftTimeForTier(BASE_CRAFT_TIME);
+    }
+
+    private void refreshMaxEnergy() {
+        setMaxEnergy(getTieredMaxEnergy(getTier()));
+        capacity = getMaxEnergy();
+        energyOne.setCapacity(capacity);
+        energyTwo.setCapacity(capacity);
+    }
+
+    @Override
+    public long getBaseMaxEnergy() {
+        return baseMaxEnergy;
+    }
+
+    @Override
+    public long getMaxEnergy() {
+        return maxEnergy;
+    }
+
+    @Override
+    public void setMaxEnergy(long maxEnergy) {
+        this.maxEnergy = maxEnergy;
+    }
+
+    @Override
+    public int getTier() {
+        return tier;
+    }
+
+    @Override
+    public void setTier(int tier) {
+        this.tier = clampTier(tier);
+        refreshMaxEnergy();
+    }
+
+    @Override
+    public int getMaxTier() {
+        return MAX_TIER;
+    }
+
+    @Override
+    public int getDefaultTier() {
+        return DEFAULT_TIER;
     }
 
     @Override
@@ -267,6 +324,8 @@ public class AbyssAlchemyBlendMachineBlockEntity extends AbstractAbyssEnergyMach
     @Override
     protected void saveAdditional(CompoundTag nbt, HolderLookup.Provider registries) {
         super.saveAdditional(nbt, registries);
+        saveTier(nbt);
+        saveMaxEnergy(nbt);
         nbt.putInt(EnergyKeys.MAGIC_TABLE_PROGRESS.toString(), progress);
         if (lockedRecipeId != null) {
             nbt.putString(EnergyKeys.MAGIC_TABLE_LOCKED_RECIPE.toString(), lockedRecipeId.toString());
@@ -281,6 +340,9 @@ public class AbyssAlchemyBlendMachineBlockEntity extends AbstractAbyssEnergyMach
     @Override
     protected void loadAdditional(CompoundTag nbt, HolderLookup.Provider registries) {
         super.loadAdditional(nbt, registries);
+        loadTier(nbt);
+        loadMaxEnergy(nbt);
+        refreshMaxEnergy();
         progress = nbt.getInt(EnergyKeys.MAGIC_TABLE_PROGRESS.toString());
         if (nbt.contains(EnergyKeys.MAGIC_TABLE_LOCKED_RECIPE.toString())) {
             lockedRecipeId = ResourceLocation.parse(nbt.getString(EnergyKeys.MAGIC_TABLE_LOCKED_RECIPE.toString()));
@@ -294,7 +356,6 @@ public class AbyssAlchemyBlendMachineBlockEntity extends AbstractAbyssEnergyMach
         }
         readEnergyNbt(nbt, registries);
         inputItem.readNbt(nbt, registries);
-        capacity = resolveCapacity(getBlockState());
     }
 
     @Nullable

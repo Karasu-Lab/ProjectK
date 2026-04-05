@@ -9,6 +9,8 @@ import com.karasu256.projectk.enchant.ProjectKEnchantments;
 import com.karasu256.projectk.energy.AbyssEnergy;
 import com.karasu256.projectk.energy.EnergyKeys;
 import com.karasu256.projectk.energy.IEnergyListHolder;
+import com.karasu256.projectk.energy.IMaxEnrgyInfo;
+import com.karasu256.projectk.energy.ITierInfo;
 import com.karasu256.projectk.energy.ProjectKEnergies;
 import com.karasu256.projectk.menu.AbyssEnchanterMenu;
 import com.karasu256.projectk.registry.ProjectKTags;
@@ -37,12 +39,20 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
-public class AbyssEnchanterBlockEntity extends AbstractPKEnergyBlockEntity<AbyssEnergy> implements MenuProvider, IEnergyListHolder {
+public class AbyssEnchanterBlockEntity extends AbstractPKEnergyBlockEntity<AbyssEnergy> implements MenuProvider, IEnergyListHolder, IMaxEnrgyInfo, ITierInfo {
     private static final int OPTION_COUNT = 3;
+    private static final int MAX_TIER = 3;
+    private static final int DEFAULT_TIER = 1;
     private ItemStack outputItem = ItemStack.EMPTY;
+    private long baseMaxEnergy;
+    private long maxEnergy;
+    private int tier;
 
     public AbyssEnchanterBlockEntity(BlockPos pos, BlockState state) {
         super(ProjectKBlockEntities.ABYSS_ENCHANTER.get(), pos, state, resolveCapacity(state));
+        this.baseMaxEnergy = resolveCapacity(state);
+        this.tier = DEFAULT_TIER;
+        refreshMaxEnergy();
     }
 
     public static void tick(Level level, BlockPos pos, BlockState state, AbyssEnchanterBlockEntity be) {
@@ -186,6 +196,47 @@ public class AbyssEnchanterBlockEntity extends AbstractPKEnergyBlockEntity<Abyss
         sync();
     }
 
+    private void refreshMaxEnergy() {
+        setMaxEnergy(getTieredMaxEnergy(getTier()));
+        setMaxEnergyCapacity(getMaxEnergy());
+    }
+
+    @Override
+    public long getBaseMaxEnergy() {
+        return baseMaxEnergy;
+    }
+
+    @Override
+    public long getMaxEnergy() {
+        return maxEnergy;
+    }
+
+    @Override
+    public void setMaxEnergy(long maxEnergy) {
+        this.maxEnergy = maxEnergy;
+    }
+
+    @Override
+    public int getTier() {
+        return tier;
+    }
+
+    @Override
+    public void setTier(int tier) {
+        this.tier = clampTier(tier);
+        refreshMaxEnergy();
+    }
+
+    @Override
+    public int getMaxTier() {
+        return MAX_TIER;
+    }
+
+    @Override
+    public int getDefaultTier() {
+        return DEFAULT_TIER;
+    }
+
     public int getDataValue(int index) {
         if (!shouldExposeOptions()) {
             return switch (index) {
@@ -309,6 +360,8 @@ public class AbyssEnchanterBlockEntity extends AbstractPKEnergyBlockEntity<Abyss
     @Override
     protected void saveAdditional(CompoundTag nbt, HolderLookup.Provider registries) {
         super.saveAdditional(nbt, registries);
+        saveTier(nbt);
+        saveMaxEnergy(nbt);
         if (!outputItem.isEmpty()) {
             nbt.put(EnergyKeys.MAGIC_TABLE_OUTPUT_ITEM.toString(), outputItem.save(registries));
         }
@@ -317,6 +370,9 @@ public class AbyssEnchanterBlockEntity extends AbstractPKEnergyBlockEntity<Abyss
     @Override
     protected void loadAdditional(CompoundTag nbt, HolderLookup.Provider registries) {
         super.loadAdditional(nbt, registries);
+        loadTier(nbt);
+        loadMaxEnergy(nbt);
+        refreshMaxEnergy();
         if (nbt.contains(EnergyKeys.MAGIC_TABLE_OUTPUT_ITEM.toString())) {
             outputItem = ItemStack.parse(registries, nbt.getCompound(EnergyKeys.MAGIC_TABLE_OUTPUT_ITEM.toString())).orElse(ItemStack.EMPTY);
         } else {

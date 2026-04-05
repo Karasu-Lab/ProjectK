@@ -247,7 +247,7 @@ public class AbyssEnchantRemoverBlockEntity extends KarasuCoreBlockEntity implem
     }
 
     private long getBookCapacity(ItemStack book) {
-        EnergyCapacityData cap = book.get(ProjectKDataComponets.ENERGY_CAPACITY_DATA_COMPONENT_TYPE.get());
+        EnergyCapacityData cap = book.get(EnergyCapacityData.ENERGY_CAPACITY_DATA_COMPONENT_TYPE.get());
         return cap == null ? defaultBookCapacity : cap.capacity();
     }
 

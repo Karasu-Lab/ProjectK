@@ -6,6 +6,8 @@ import com.karasu256.projectk.data.AbyssEnergyData;
 import com.karasu256.projectk.energy.AbyssEnergy;
 import com.karasu256.projectk.energy.EnergyKeys;
 import com.karasu256.projectk.energy.IEnergyListHolder;
+import com.karasu256.projectk.energy.IMaxEnrgyInfo;
+import com.karasu256.projectk.energy.ITierInfo;
 import com.karasu256.projectk.energy.ProjectKEnergies;
 import com.karasu256.projectk.menu.AbyssMagicTableMenu;
 import com.karasu256.projectk.recipe.AbyssMagicTableRecipe;
@@ -27,15 +29,23 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-public class AbyssMagicTableBlockEntity extends AbstractPKEnergyBlockEntity<AbyssEnergy> implements MenuProvider, IEnergyListHolder {
-    private static final int CRAFT_TIME = 100;
+public class AbyssMagicTableBlockEntity extends AbstractPKEnergyBlockEntity<AbyssEnergy> implements MenuProvider, IEnergyListHolder, IMaxEnrgyInfo, ITierInfo {
+    private static final int BASE_CRAFT_TIME = 100;
+    private static final int MAX_TIER = 3;
+    private static final int DEFAULT_TIER = 1;
     private int progress = 0;
     @Nullable
     private ResourceLocation lockedRecipeId;
     private ItemStack outputItem = ItemStack.EMPTY;
+    private long baseMaxEnergy;
+    private long maxEnergy;
+    private int tier;
 
     public AbyssMagicTableBlockEntity(BlockPos pos, BlockState state) {
         super(ProjectKBlockEntities.ABYSS_MAGIC_TABLE.get(), pos, state, resolveCapacity(state));
+        this.baseMaxEnergy = resolveCapacity(state);
+        this.tier = DEFAULT_TIER;
+        refreshMaxEnergy();
     }
 
     public static void tick(Level level, BlockPos pos, BlockState state, AbyssMagicTableBlockEntity be) {
@@ -110,7 +120,7 @@ public class AbyssMagicTableBlockEntity extends AbstractPKEnergyBlockEntity<Abys
             setChanged();
             sync();
         }
-        if (progress >= CRAFT_TIME) {
+        if (progress >= getCraftTime()) {
             craft(activeRecipe);
             resetProgress();
         }
@@ -194,7 +204,7 @@ public class AbyssMagicTableBlockEntity extends AbstractPKEnergyBlockEntity<Abys
     public int getDataValue(int index) {
         return switch (index) {
             case 0 -> progress;
-            case 1 -> CRAFT_TIME;
+            case 1 -> getCraftTime();
             case 2 -> (int) getAmount();
             case 3 -> (int) (getAmount() >>> 32);
             case 4 -> (int) getCapacity();
@@ -209,7 +219,52 @@ public class AbyssMagicTableBlockEntity extends AbstractPKEnergyBlockEntity<Abys
     }
 
     public int getMaxProgress() {
-        return CRAFT_TIME;
+        return getCraftTime();
+    }
+
+    private int getCraftTime() {
+        return getCraftTimeForTier(BASE_CRAFT_TIME);
+    }
+
+    private void refreshMaxEnergy() {
+        setMaxEnergy(getTieredMaxEnergy(getTier()));
+        setMaxEnergyCapacity(getMaxEnergy());
+    }
+
+    @Override
+    public long getBaseMaxEnergy() {
+        return baseMaxEnergy;
+    }
+
+    @Override
+    public long getMaxEnergy() {
+        return maxEnergy;
+    }
+
+    @Override
+    public void setMaxEnergy(long maxEnergy) {
+        this.maxEnergy = maxEnergy;
+    }
+
+    @Override
+    public int getTier() {
+        return tier;
+    }
+
+    @Override
+    public void setTier(int tier) {
+        this.tier = clampTier(tier);
+        refreshMaxEnergy();
+    }
+
+    @Override
+    public int getMaxTier() {
+        return MAX_TIER;
+    }
+
+    @Override
+    public int getDefaultTier() {
+        return DEFAULT_TIER;
     }
 
     public void setDataValue(int index, int value) {
@@ -255,6 +310,8 @@ public class AbyssMagicTableBlockEntity extends AbstractPKEnergyBlockEntity<Abys
     protected void saveAdditional(CompoundTag nbt, HolderLookup.Provider registries) {
         super.saveAdditional(nbt, registries);
         nbt.putInt(EnergyKeys.MAGIC_TABLE_PROGRESS.toString(), progress);
+        saveTier(nbt);
+        saveMaxEnergy(nbt);
         if (lockedRecipeId != null) {
             nbt.putString(EnergyKeys.MAGIC_TABLE_LOCKED_RECIPE.toString(), lockedRecipeId.toString());
         }
@@ -267,6 +324,9 @@ public class AbyssMagicTableBlockEntity extends AbstractPKEnergyBlockEntity<Abys
     protected void loadAdditional(CompoundTag nbt, HolderLookup.Provider registries) {
         super.loadAdditional(nbt, registries);
         progress = nbt.getInt(EnergyKeys.MAGIC_TABLE_PROGRESS.toString());
+        loadTier(nbt);
+        loadMaxEnergy(nbt);
+        refreshMaxEnergy();
         lockedRecipeId = nbt.contains(EnergyKeys.MAGIC_TABLE_LOCKED_RECIPE.toString()) ? ResourceLocation.parse(nbt.getString(EnergyKeys.MAGIC_TABLE_LOCKED_RECIPE.toString())) : null;
         outputItem = nbt.contains(EnergyKeys.MAGIC_TABLE_OUTPUT_ITEM.toString()) ? ItemStack.parse(registries, nbt.getCompound(EnergyKeys.MAGIC_TABLE_OUTPUT_ITEM.toString())).orElse(ItemStack.EMPTY) : ItemStack.EMPTY;
     }

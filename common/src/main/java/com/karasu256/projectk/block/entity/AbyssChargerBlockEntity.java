@@ -135,13 +135,13 @@ public class AbyssChargerBlockEntity extends AbstractPKEnergyBlockEntity<AbyssEn
         if (output.isEmpty()) {
             return output;
         }
-        EnergyCapacityData capacityData = output.get(ProjectKDataComponets.ENERGY_CAPACITY_DATA_COMPONENT_TYPE.get());
+        EnergyCapacityData capacityData = output.get(EnergyCapacityData.ENERGY_CAPACITY_DATA_COMPONENT_TYPE.get());
         if (capacityData == null || capacityData.capacity() <= 0) {
             if (capacity <= 0) {
                 return output;
             }
             capacityData = new EnergyCapacityData(capacity);
-            output.set(ProjectKDataComponets.ENERGY_CAPACITY_DATA_COMPONENT_TYPE.get(), capacityData);
+            output.set(EnergyCapacityData.ENERGY_CAPACITY_DATA_COMPONENT_TYPE.get(), capacityData);
         }
         ResourceLocation energyId = getAbyssEnergyId();
         if (energyId == null || getAmount() <= 0) {
