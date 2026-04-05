@@ -207,6 +207,7 @@
     }
   ],
   "textures": {
-    "all": "projectk:block/multipart/abyss_energy_cable_input"
+    "all": "projectk:block/multipart/abyss_energy_cable_input",
+    "particle": "projectk:block/multipart/abyss_energy_cable_input"
   }
 }
