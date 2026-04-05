@@ -125,6 +125,11 @@ public abstract class AbstractPKEnergyBlockEntity<T extends IProjectKEnergy> ext
         if (energy != null) {
             energy.setCapacity(capacity);
         }
+        if (pkEnergy != null && pkEnergy.getValue() > capacity) {
+            pkEnergy.setValue(capacity);
+            setChanged();
+            sync();
+        }
     }
 
     @Override

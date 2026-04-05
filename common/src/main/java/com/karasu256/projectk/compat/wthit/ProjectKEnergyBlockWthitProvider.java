@@ -4,6 +4,7 @@ import com.karasu256.projectk.block.entity.AbyssMagicTableBlockEntity;
 import com.karasu256.projectk.block.entity.impl.AbstractPKEnergyBlockEntity;
 import com.karasu256.projectk.energy.IEnergyListHolder;
 import com.karasu256.projectk.energy.IProjectKEnergy;
+import com.karasu256.projectk.energy.ITierInfo;
 import com.karasu256.projectk.energy.ProjectKEnergies;
 import com.karasu256.projectk.item.custom.AbyssEnergyItem;
 import mcp.mobius.waila.api.IBlockAccessor;
@@ -43,6 +44,7 @@ public class ProjectKEnergyBlockWthitProvider implements IBlockComponentProvider
         }
         if (be instanceof IEnergyListHolder listHolder) {
             addEnergyEntries(tooltip, listHolder.getEnergyEntries());
+            addTierInfo(tooltip, be);
             if (be instanceof IHeldItem held) {
                 addHeldItem(tooltip, held);
             }
@@ -50,6 +52,7 @@ public class ProjectKEnergyBlockWthitProvider implements IBlockComponentProvider
         }
         if (be instanceof AbstractPKEnergyBlockEntity<?> energyBe) {
             addEnergyInfo(tooltip, energyBe.getEnergyType(), energyBe.getAmount(), energyBe.getCapacity());
+            addTierInfo(tooltip, be);
             addHeldItem(tooltip, energyBe);
         }
     }
@@ -65,6 +68,12 @@ public class ProjectKEnergyBlockWthitProvider implements IBlockComponentProvider
         ItemStack stack = heldItem.getHeldItem();
         if (!stack.isEmpty()) {
             tooltip.addLine(Component.translatable("tooltip.projectk.wthit.held_item", stack.getHoverName()));
+        }
+    }
+
+    private void addTierInfo(ITooltip tooltip, BlockEntity be) {
+        if (be instanceof ITierInfo tierInfo) {
+            tooltip.addLine(Component.translatable("tooltip.projectk.wthit.tier", tierInfo.getTier(), tierInfo.getMaxTier()));
         }
     }
 }

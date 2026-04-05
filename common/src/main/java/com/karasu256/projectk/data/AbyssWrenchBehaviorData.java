@@ -43,7 +43,8 @@ public record AbyssWrenchBehaviorData(AbyssWrenchBehavior behavior) {
         NORMAL("normal"),
         INPUT("input"),
         OUTPUT("output"),
-        NONE("none");
+        NONE("none"),
+        DOWNGRADE("downgrade");
 
         public static final Codec<AbyssWrenchBehavior> CODEC = Codec.STRING.xmap(AbyssWrenchBehavior::fromString, AbyssWrenchBehavior::id);
         public static final StreamCodec<ByteBuf, AbyssWrenchBehavior> STREAM_CODEC = ByteBufCodecs.VAR_INT.map(AbyssWrenchBehavior::fromOrdinal, AbyssWrenchBehavior::ordinal);
@@ -89,7 +90,8 @@ public record AbyssWrenchBehaviorData(AbyssWrenchBehavior behavior) {
                 case NORMAL -> INPUT;
                 case INPUT -> OUTPUT;
                 case OUTPUT -> NONE;
-                case NONE -> NORMAL;
+                case NONE -> DOWNGRADE;
+                case DOWNGRADE -> NORMAL;
             };
         }
     }

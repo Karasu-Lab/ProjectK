@@ -5,12 +5,15 @@ import com.karasu256.projectk.block.custom.AbyssEnergyCable.ConnectionMode;
 import com.karasu256.projectk.block.entity.AbyssEnergyCableBlockEntity;
 import com.karasu256.projectk.data.AbyssWrenchBehaviorData;
 import com.karasu256.projectk.data.AbyssWrenchBehaviorData.AbyssWrenchBehavior;
+import com.karasu256.projectk.energy.ITierInfo;
+import com.karasu256.projectk.item.ProjectKItems;
 import net.karasuniki.karasunikilib.api.block.ICableInputable;
 import net.karasuniki.karasunikilib.api.block.ICableOutputable;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.context.UseOnContext;
@@ -33,6 +36,20 @@ public class AbyssWrenchItem extends ProjectKItem {
 
         ItemStack stack = context.getItemInHand();
         BlockEntity be = context.getLevel().getBlockEntity(context.getClickedPos());
+        AbyssWrenchBehavior behavior = AbyssWrenchBehaviorData.getBehavior(stack);
+
+        if (behavior == AbyssWrenchBehavior.DOWNGRADE) {
+            if (be instanceof ITierInfo tierInfo) {
+                int currentTier = tierInfo.getTier();
+                if (currentTier > 1) {
+                    tierInfo.setTier(currentTier - 1);
+                    Block.popResource(context.getLevel(), context.getClickedPos(), new ItemStack(ProjectKItems.TIER_UPGRADE.get()));
+                    return InteractionResult.SUCCESS;
+                }
+            }
+            return InteractionResult.FAIL;
+        }
+
         if (be instanceof AbyssEnergyCableBlockEntity cable) {
             Direction target = selectTargetDirection(context);
             BlockPos pos = context.getClickedPos();
@@ -41,7 +58,6 @@ public class AbyssWrenchItem extends ProjectKItem {
                 ConnectionMode current = AbyssEnergyCable.getMode(context.getLevel().getBlockState(pos), target);
                 nextMode = current.next();
             } else {
-                AbyssWrenchBehavior behavior = AbyssWrenchBehaviorData.getBehavior(stack);
                 nextMode = mapBehavior(behavior);
             }
             if (!AbyssEnergyCable.canConnect(context.getLevel(), pos.relative(target))) {
@@ -97,7 +113,7 @@ public class AbyssWrenchItem extends ProjectKItem {
             case NORMAL -> ConnectionMode.CONNECTED;
             case INPUT -> ConnectionMode.INPUT;
             case OUTPUT -> ConnectionMode.OUTPUT;
-            case NONE -> ConnectionMode.NONE;
+            case NONE, DOWNGRADE -> ConnectionMode.NONE;
         };
     }
 

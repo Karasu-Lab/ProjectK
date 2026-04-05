@@ -46,10 +46,14 @@ public class ProjectKLanguageProvider implements DataProvider {
         add(en, "rei.category.projectk.in_biome_in_block_crafting", "In-Biome Block Crafting");
         add(en, "rei.category.projectk.in_biome_in_block_crafting.requirement", "Biome required: %s");
         add(en, "rei.category.projectk.in_biome_in_block_crafting.requirement_tag", "Biome tag required: %s");
+        add(en, "rei.category.projectk.abyss_magic_table", "Abyss Magic Table");
+        add(en, "rei.category.projectk.abyss_alchemy_blend_machine", "Abyss Alchemy Blend Machine");
 
         add(ja, "rei.category.projectk.in_biome_in_block_crafting", "バイオーム内ブロッククラフト");
         add(ja, "rei.category.projectk.in_biome_in_block_crafting.requirement", "必要バイオーム: %s");
         add(ja, "rei.category.projectk.in_biome_in_block_crafting.requirement_tag", "必要バイオームタグ: %s");
+        add(ja, "rei.category.projectk.abyss_magic_table", "深淵魔術テーブル");
+        add(ja, "rei.category.projectk.abyss_alchemy_blend_machine", "深淵錬金合成機");
 
         add(en, "energy.projectk.abyss_energy_format", "%s Abyss Energy");
         add(ja, "energy.projectk.abyss_energy_format", "%sの深淵エネルギー");
@@ -61,6 +65,7 @@ public class ProjectKLanguageProvider implements DataProvider {
         add(en, "tooltip.projectk.wthit.input_item", "Input: %s");
         add(en, "tooltip.projectk.wthit.output_item", "Output: %s");
         add(en, "tooltip.projectk.wthit.progress", "Progress: %s%%");
+        add(en, "tooltip.projectk.wthit.tier", "Tier: %s/%s");
 
         add(ja, "tooltip.projectk.abyss_wrench_behavior", "モード: %s");
         add(ja, "tooltip.projectk.wthit.energy_type", "エネルギータイプ: %s");
@@ -69,6 +74,7 @@ public class ProjectKLanguageProvider implements DataProvider {
         add(ja, "tooltip.projectk.wthit.input_item", "入力: %s");
         add(ja, "tooltip.projectk.wthit.output_item", "出力: %s");
         add(ja, "tooltip.projectk.wthit.progress", "進捗: %s%%");
+        add(ja, "tooltip.projectk.wthit.tier", "ティア: %s/%s");
 
         add(en, "container.projectk.abyss_magic_table", "Abyss Magic Table");
         add(en, "container.projectk.abyss_alchemy_blend_machine", "Abyss Alchemy Blend Machine");
@@ -90,11 +96,13 @@ public class ProjectKLanguageProvider implements DataProvider {
         add(en, "wrench_behavior.projectk.output", "Output");
         add(en, "wrench_behavior.projectk.normal", "Normal");
         add(en, "wrench_behavior.projectk.none", "None");
+        add(en, "wrench_behavior.projectk.downgrade", "Downgrade");
 
         add(ja, "wrench_behavior.projectk.input", "入力");
         add(ja, "wrench_behavior.projectk.output", "出力");
         add(ja, "wrench_behavior.projectk.normal", "通常");
         add(ja, "wrench_behavior.projectk.none", "なし");
+        add(ja, "wrench_behavior.projectk.downgrade", "ダウングレード");
 
         add(en, "block.projectk.abyss_generator", "Abyss Generator");
         add(en, "block.projectk.abyss_magic_table", "Abyss Magic Table");

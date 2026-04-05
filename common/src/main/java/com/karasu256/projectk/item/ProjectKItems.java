@@ -3,12 +3,15 @@ package com.karasu256.projectk.item;
 import com.karasu256.projectk.ProjectK;
 import com.karasu256.projectk.api.fluid.AbyssEnergyFluidConversion;
 import com.karasu256.projectk.data.AbyssEnergyData;
+import com.karasu256.projectk.data.ProjectKDataComponets;
+import com.karasu256.projectk.data.TierUpgradeData;
 import com.karasu256.projectk.energy.ProjectKEnergies;
 import com.karasu256.projectk.fluid.ProjectKFluids;
 import com.karasu256.projectk.item.custom.AbyssBraceletItem;
 import com.karasu256.projectk.item.custom.AbyssEnergyItem;
 import com.karasu256.projectk.item.custom.AbyssWrenchItem;
 import com.karasu256.projectk.item.custom.ProjectKItem;
+import com.karasu256.projectk.item.custom.TierUpgradeItem;
 import com.karasu256.projectk.registry.CreativeTabsRegistry;
 import com.karasu256.projectk.registry.EnergyAutoRegistry;
 import dev.architectury.core.item.ArchitecturyBucketItem;
@@ -43,7 +46,11 @@ public class ProjectKItems implements IKRegistryInitializerTarget {
     public static RegistrySupplier<Item> WITHER_BONE = item("wither_bone", () -> new ProjectKItem(new ProjectKItem.Properties()));
     public static RegistrySupplier<Item> ABYSS_INGOT = item("abyss_ingot", () -> new AbyssEnergyItem(new ProjectKItem.Properties()), true);
     public static RegistrySupplier<Item> ABYSS_WRENCH = item("abyss_wrench", () -> new AbyssWrenchItem(new ProjectKItem.Properties()));
-    public static RegistrySupplier<Item> TIER_UPGRADE = item("tier_upgrade", () -> new ProjectKItem(new ProjectKItem.Properties()));
+    public static RegistrySupplier<Item> TIER_UPGRADE = item("tier_upgrade", () -> {
+        ProjectKItem.Properties properties = new ProjectKItem.Properties();
+        properties.component(ProjectKDataComponets.TIER_UPGRADE_DATA_COMPONENT_TYPE.get(), new TierUpgradeData(1));
+        return new TierUpgradeItem(properties);
+    });
     public static RegistrySupplier<Item> ABYSS_BRACELET = item("abyss_bracelet", () -> {
         ProjectKItem.Properties properties = (ProjectKItem.Properties) new ProjectKItem.Properties().stacksTo(1);
         return new AbyssBraceletItem(properties);
