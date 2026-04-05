@@ -21,8 +21,7 @@ public abstract class AbstractProjectKWthitProvider {
             if (id == null || entry.amount() <= 0) {
                 continue;
             }
-            Component name = ProjectKEnergies.getDefinition(id)
-                    .map(definition -> (Component) Component.translatable("energy.projectk." + definition.idPath()))
+            Component name = ProjectKEnergies.getDefinition(id).map(ProjectKEnergies.EnergyDefinition::getDisplayName)
                     .orElseGet(() -> AbyssEnergyItem.resolveEnergyName(id));
             Component formatted = Component.translatable("energy.projectk.abyss_energy_format", name);
             tooltip.addLine(formatted);
