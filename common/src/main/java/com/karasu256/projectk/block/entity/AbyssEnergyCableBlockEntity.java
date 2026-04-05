@@ -2,7 +2,9 @@ package com.karasu256.projectk.block.entity;
 
 import com.karasu256.projectk.block.custom.AbyssEnergyCable;
 import com.karasu256.projectk.block.custom.AbyssEnergyCable.ConnectionMode;
+import com.karasu256.projectk.data.AbyssEnergyData;
 import com.karasu256.projectk.energy.IEnergyListHolder;
+import com.karasu256.projectk.energy.IMultiEnergyStorage;
 import net.karasuniki.karasunikilib.api.block.ICableInputable;
 import net.karasuniki.karasunikilib.api.block.ICableOutputable;
 import net.karasuniki.karasunikilib.api.block.IEnergyBlock;
@@ -316,6 +318,15 @@ public class AbyssEnergyCableBlockEntity extends BlockEntity implements ICableIn
                 return null;
             }
             return energyBlock.getEnergyType().getId();
+        }
+        if (neighbor instanceof IMultiEnergyStorage multiStorage) {
+            int activeIndex = multiStorage.getActiveEnergyIndex();
+            if (activeIndex >= 0) {
+                AbyssEnergyData data = multiStorage.getEnergyByIndex(activeIndex);
+                if (data != null && data.amount() > 0) {
+                    return data.energyId();
+                }
+            }
         }
         return null;
     }
