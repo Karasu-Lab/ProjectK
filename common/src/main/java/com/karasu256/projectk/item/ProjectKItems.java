@@ -7,11 +7,7 @@ import com.karasu256.projectk.data.ProjectKDataComponets;
 import com.karasu256.projectk.data.TierUpgradeData;
 import com.karasu256.projectk.energy.ProjectKEnergies;
 import com.karasu256.projectk.fluid.ProjectKFluids;
-import com.karasu256.projectk.item.custom.AbyssBraceletItem;
-import com.karasu256.projectk.item.custom.AbyssEnergyItem;
-import com.karasu256.projectk.item.custom.AbyssWrenchItem;
-import com.karasu256.projectk.item.custom.ProjectKItem;
-import com.karasu256.projectk.item.custom.TierUpgradeItem;
+import com.karasu256.projectk.item.custom.*;
 import com.karasu256.projectk.registry.CreativeTabsRegistry;
 import com.karasu256.projectk.registry.EnergyAutoRegistry;
 import dev.architectury.core.item.ArchitecturyBucketItem;
@@ -29,24 +25,31 @@ import static com.karasu256.projectk.registry.ItemsRegistry.item;
 
 @KRegistryInitializer(modId = ProjectK.MOD_ID, order = 2)
 public class ProjectKItems implements IKRegistryInitializerTarget {
-    public static final Map<ResourceLocation, RegistrySupplier<Item>> ABYSS_ENERGY_BUCKETS = EnergyAutoRegistry.mapByEnergy(definition -> "bucket_of_" + definition.idPath(), (definition, id, map) -> {
-        map.put(definition.id(), item(id, () -> {
-            ProjectKItem.Properties properties = new ProjectKItem.Properties().abyssEnergy(definition.id(), AbyssEnergyFluidConversion.DEFAULT_ENERGY_PER_BUCKET);
-            properties.craftRemainder(Items.BUCKET);
-            properties.stacksTo(1);
-            return new ArchitecturyBucketItem(ProjectKFluids.getSource(definition.id()), properties);
-        }));
-    });
+    public static final Map<ResourceLocation, RegistrySupplier<Item>> ABYSS_ENERGY_BUCKETS = EnergyAutoRegistry.mapByEnergy(
+            definition -> "bucket_of_" + definition.idPath(), (definition, id, map) -> {
+                map.put(definition.id(), item(id, () -> {
+                    ProjectKItem.Properties properties = new ProjectKItem.Properties().abyssEnergy(definition.id(),
+                            AbyssEnergyFluidConversion.DEFAULT_ENERGY_PER_BUCKET);
+                    properties.craftRemainder(Items.BUCKET);
+                    properties.stacksTo(1);
+                    return new ArchitecturyBucketItem(ProjectKFluids.getSource(definition.id()), properties);
+                }));
+            });
     public static final RegistrySupplier<Item> BUCKET_OF_ABYSS_ENERGY = getBucket(ProjectKEnergies.ABYSS.id());
     public static final RegistrySupplier<Item> BUCKET_OF_YIN_ABYSS_ENERGY = getBucket(ProjectKEnergies.YIN.id());
     public static final RegistrySupplier<Item> BUCKET_OF_YANG_ABYSS_ENERGY = getBucket(ProjectKEnergies.YANG.id());
-    public static RegistrySupplier<Item> KARASIUM = item("karasium", () -> new ProjectKItem(new ProjectKItem.Properties().emc(128L)));
-    public static RegistrySupplier<Item> RAW_KARASIUM = item("raw_karasium", () -> new ProjectKItem(new ProjectKItem.Properties()));
-    public static RegistrySupplier<Item> KARASIUM_DUST = item("karasium_dust", () -> new ProjectKItem(new ProjectKItem.Properties().emc(128L)));
-    public static RegistrySupplier<Item> WITHER_BONE = item("wither_bone", () -> new ProjectKItem(new ProjectKItem.Properties()));
-    public static RegistrySupplier<Item> ABYSS_INGOT = item("abyss_ingot", () -> new AbyssEnergyItem(new ProjectKItem.Properties()), true);
+    public static RegistrySupplier<Item> KARASIUM = item("karasium",
+            () -> new ProjectKItem(new ProjectKItem.Properties().emc(128L)));
+    public static RegistrySupplier<Item> RAW_KARASIUM = item("raw_karasium",
+            () -> new ProjectKItem(new ProjectKItem.Properties()));
+    public static RegistrySupplier<Item> KARASIUM_DUST = item("karasium_dust",
+            () -> new ProjectKItem(new ProjectKItem.Properties().emc(128L)));
+    public static RegistrySupplier<Item> WITHER_BONE = item("wither_bone",
+            () -> new ProjectKItem(new ProjectKItem.Properties()));
+    public static RegistrySupplier<Item> ABYSS_INGOT = item("abyss_ingot",
+            () -> new AbyssEnergyItem(new ProjectKItem.Properties()), true);
     public static RegistrySupplier<Item> ABYSS_WRENCH = item("abyss_wrench", () -> {
-        ProjectKItem.Properties properties = new ProjectKItem.Properties().stacksTo(1);
+        ProjectKItem.Properties properties = (ProjectKItem.Properties) new ProjectKItem.Properties().stacksTo(1);
         return new AbyssWrenchItem(properties);
     });
     public static RegistrySupplier<Item> TIER_UPGRADE = item("tier_upgrade", () -> {
