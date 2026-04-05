@@ -2,6 +2,8 @@ package com.karasu256.projectk.block.custom;
 
 import com.karasu256.projectk.block.entity.AbyssStorageBlockEntity;
 import com.karasu256.projectk.block.entity.ProjectKBlockEntities;
+import com.karasu256.projectk.energy.ITierInfo;
+import com.karasu256.projectk.item.ProjectKItems;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
@@ -25,7 +27,8 @@ import org.jetbrains.annotations.Nullable;
 public class AbyssStorage extends BaseEntityBlock {
     public static final MapCodec<AbyssStorage> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
             Properties.CODEC.fieldOf("properties").forGetter(AbyssStorage::getProperties)
-    ).apply(instance, properties -> new AbyssStorage(BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_BLOCK), properties)));
+    ).apply(instance,
+            properties -> new AbyssStorage(BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_BLOCK), properties)));
 
     private static final VoxelShape SHAPE = box(0.0, 0.0, 0.0, 16.0, 16.0, 16.0);
     private final Properties properties;
@@ -59,7 +62,8 @@ public class AbyssStorage extends BaseEntityBlock {
     @Override
     @NotNull
     protected InteractionResult useWithoutItem(BlockState state, @NotNull Level level, BlockPos pos, Player player, BlockHitResult hitResult) {
-        if (level.isClientSide) return InteractionResult.SUCCESS;
+        if (level.isClientSide)
+            return InteractionResult.SUCCESS;
 
         BlockEntity be = level.getBlockEntity(pos);
         if (be instanceof AbyssStorageBlockEntity storage) {
@@ -75,14 +79,24 @@ public class AbyssStorage extends BaseEntityBlock {
             BlockEntity be = level.getBlockEntity(pos);
             if (be instanceof AbyssStorageBlockEntity storage) {
                 Containers.dropItemStack(level, pos.getX(), pos.getY(), pos.getZ(), storage.getInputItem());
+                dropTierUpgrades(level, pos, storage);
             }
             super.onRemove(state, level, pos, newState, movedByPiston);
         }
     }
 
+    private void dropTierUpgrades(Level level, BlockPos pos, ITierInfo tierInfo) {
+        int count = Math.max(0, tierInfo.getTier() - tierInfo.getDefaultTier());
+        for (int i = 0; i < count; i++) {
+            Containers.dropItemStack(level, pos.getX(), pos.getY(), pos.getZ(),
+                    ProjectKItems.TIER_UPGRADE.get().getDefaultInstance());
+        }
+    }
+
     @Override
     public @Nullable <T extends BlockEntity> net.minecraft.world.level.block.entity.BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
-        return level.isClientSide ? null : createTickerHelper(type, ProjectKBlockEntities.ABYSS_STORAGE.get(), AbyssStorageBlockEntity::tick);
+        return level.isClientSide ? null : createTickerHelper(type, ProjectKBlockEntities.ABYSS_STORAGE.get(),
+                AbyssStorageBlockEntity::tick);
     }
 
     public long getCapacity() {
@@ -98,10 +112,11 @@ public class AbyssStorage extends BaseEntityBlock {
     }
 
     public static class Properties {
-        public static final com.mojang.serialization.Codec<Properties> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-                com.mojang.serialization.Codec.LONG.fieldOf("capacity").forGetter(Properties::capacity),
-                com.mojang.serialization.Codec.INT.fieldOf("max_types").forGetter(Properties::maxTypes)
-        ).apply(instance, Properties::new));
+        public static final com.mojang.serialization.Codec<Properties> CODEC = RecordCodecBuilder.create(
+                instance -> instance.group(
+                        com.mojang.serialization.Codec.LONG.fieldOf("capacity").forGetter(Properties::capacity),
+                        com.mojang.serialization.Codec.INT.fieldOf("max_types").forGetter(Properties::maxTypes)
+                ).apply(instance, Properties::new));
 
         private final long capacity;
         private final int maxTypes;

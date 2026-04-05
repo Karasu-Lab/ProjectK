@@ -10,7 +10,7 @@ import mcp.mobius.waila.api.ITooltip;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntity;
 
-public class AbyssMagicTableWthitProvider implements IBlockComponentProvider {
+public class AbyssMagicTableWthitProvider extends AbstractProjectKWthitProvider implements IBlockComponentProvider {
     public static final AbyssMagicTableWthitProvider INSTANCE = new AbyssMagicTableWthitProvider();
 
     @Override
@@ -21,8 +21,9 @@ public class AbyssMagicTableWthitProvider implements IBlockComponentProvider {
         }
 
         if (table instanceof IEnergyListHolder listHolder) {
-            ProjectKEnergyBlockWthitProvider.addEnergyEntries(tooltip, listHolder.getEnergyEntries());
+            addEnergyEntries(tooltip, listHolder.getEnergyEntries());
         }
+        addTierInfo(tooltip, table);
 
         float ratio = AbyssMagicTableInfo.progressRatio(table.getProgress(), table.getMaxProgress());
         ItemStack input = table.getInputItem();

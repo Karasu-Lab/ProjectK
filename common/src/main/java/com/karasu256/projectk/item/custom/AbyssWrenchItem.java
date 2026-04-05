@@ -12,11 +12,15 @@ import net.karasuniki.karasunikilib.api.block.ICableOutputable;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
-import net.minecraft.world.level.block.Block;
+import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.context.UseOnContext;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
@@ -26,68 +30,6 @@ import java.util.List;
 public class AbyssWrenchItem extends ProjectKItem {
     public AbyssWrenchItem(Properties properties) {
         super(properties);
-    }
-
-    @Override
-    public @NotNull InteractionResult useOn(UseOnContext context) {
-        if (context.getLevel().isClientSide) {
-            return InteractionResult.SUCCESS;
-        }
-
-        ItemStack stack = context.getItemInHand();
-        BlockEntity be = context.getLevel().getBlockEntity(context.getClickedPos());
-        AbyssWrenchBehavior behavior = AbyssWrenchBehaviorData.getBehavior(stack);
-
-        if (context.getPlayer() != null && context.getPlayer().isCrouching()) {
-            AbyssWrenchBehaviorData.cycleBehavior(stack);
-            AbyssWrenchBehavior next = AbyssWrenchBehaviorData.getBehavior(stack);
-            context.getPlayer().displayClientMessage(Component.translatable("tooltip.projectk.abyss_wrench_behavior", Component.translatable(next.translationKey())), true);
-            return InteractionResult.SUCCESS;
-        }
-
-        if (behavior == AbyssWrenchBehavior.DOWNGRADE) {
-            if (be instanceof ITierInfo tierInfo) {
-                int currentTier = tierInfo.getTier();
-                if (currentTier > 1) {
-                    tierInfo.setTier(currentTier - 1);
-                    Block.popResource(context.getLevel(), context.getClickedPos(), new ItemStack(ProjectKItems.TIER_UPGRADE.get()));
-                    return InteractionResult.SUCCESS;
-                }
-            }
-            return InteractionResult.FAIL;
-        }
-
-        if (be instanceof AbyssEnergyCableBlockEntity cable) {
-            Direction target = selectTargetDirection(context);
-            BlockPos pos = context.getClickedPos();
-            ConnectionMode nextMode;
-            if (context.getPlayer() != null && context.getPlayer().isCrouching()) {
-                ConnectionMode current = AbyssEnergyCable.getMode(context.getLevel().getBlockState(pos), target);
-                nextMode = current.next();
-            } else {
-                nextMode = mapBehavior(behavior);
-            }
-            if (!AbyssEnergyCable.canConnect(context.getLevel(), pos.relative(target))) {
-                nextMode = ConnectionMode.NONE;
-            }
-            context.getLevel().setBlock(pos, AbyssEnergyCable.setMode(context.getLevel().getBlockState(pos), target, nextMode), 3);
-            if (context.getPlayer() != null) {
-                context.getPlayer().displayClientMessage(Component.translatable("tooltip.projectk.abyss_wrench_behavior", Component.translatable(mapModeToBehavior(nextMode).translationKey())), true);
-            }
-            return InteractionResult.SUCCESS;
-        }
-
-        if (be instanceof ICableInputable || be instanceof ICableOutputable) {
-            return InteractionResult.SUCCESS;
-        }
-
-        return InteractionResult.FAIL;
-    }
-
-    @Override
-    public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltip, TooltipFlag flag) {
-        AbyssWrenchBehavior behavior = AbyssWrenchBehaviorData.getBehavior(stack);
-        tooltip.add(Component.translatable("tooltip.projectk.abyss_wrench_behavior", Component.translatable(behavior.translationKey())));
     }
 
     private static Direction selectTargetDirection(UseOnContext context) {
@@ -124,6 +66,91 @@ public class AbyssWrenchItem extends ProjectKItem {
             case OUTPUT -> AbyssWrenchBehavior.OUTPUT;
             case NONE -> AbyssWrenchBehavior.NONE;
         };
+    }
+
+    @Override
+    public @NotNull InteractionResult useOn(UseOnContext context) {
+        if (context.getLevel().isClientSide) {
+            return InteractionResult.SUCCESS;
+        }
+
+        ItemStack stack = context.getItemInHand();
+        BlockEntity be = context.getLevel().getBlockEntity(context.getClickedPos());
+        AbyssWrenchBehavior behavior = AbyssWrenchBehaviorData.getBehavior(stack);
+
+        if (context.getPlayer() != null && context.getPlayer().isCrouching()) {
+            if (behavior == AbyssWrenchBehavior.DOWNGRADE && be instanceof ITierInfo tierInfo) {
+                int currentTier = tierInfo.getTier();
+                if (currentTier > 1) {
+                    tierInfo.setTier(currentTier - 1);
+                    Block.popResource(context.getLevel(), context.getClickedPos(),
+                            new ItemStack(ProjectKItems.TIER_UPGRADE.get()));
+                    be.setChanged();
+                    context.getLevel().sendBlockUpdated(context.getClickedPos(),
+                            context.getLevel().getBlockState(context.getClickedPos()),
+                            context.getLevel().getBlockState(context.getClickedPos()), 3);
+                    return InteractionResult.SUCCESS;
+                }
+                return InteractionResult.FAIL;
+            }
+            AbyssWrenchBehaviorData.cycleBehavior(stack);
+            AbyssWrenchBehavior next = AbyssWrenchBehaviorData.getBehavior(stack);
+            context.getPlayer().displayClientMessage(Component.translatable("tooltip.projectk.abyss_wrench_behavior",
+                    Component.translatable(next.translationKey())), true);
+            return InteractionResult.SUCCESS;
+        }
+
+        if (be instanceof AbyssEnergyCableBlockEntity cable) {
+            Direction target = selectTargetDirection(context);
+            BlockPos pos = context.getClickedPos();
+            ConnectionMode nextMode;
+            if (context.getPlayer() != null && context.getPlayer().isCrouching()) {
+                ConnectionMode current = AbyssEnergyCable.getMode(context.getLevel().getBlockState(pos), target);
+                nextMode = current.next();
+            } else {
+                nextMode = mapBehavior(behavior);
+            }
+            if (!AbyssEnergyCable.canConnect(context.getLevel(), pos.relative(target))) {
+                nextMode = ConnectionMode.NONE;
+            }
+            context.getLevel()
+                    .setBlock(pos, AbyssEnergyCable.setMode(context.getLevel().getBlockState(pos), target, nextMode),
+                            3);
+            if (context.getPlayer() != null) {
+                context.getPlayer().displayClientMessage(
+                        Component.translatable("tooltip.projectk.abyss_wrench_behavior",
+                                Component.translatable(mapModeToBehavior(nextMode).translationKey())), true);
+            }
+            return InteractionResult.SUCCESS;
+        }
+
+        if (be instanceof ICableInputable || be instanceof ICableOutputable) {
+            return InteractionResult.SUCCESS;
+        }
+
+        return InteractionResult.FAIL;
+    }
+
+    @Override
+    public @NotNull InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
+        ItemStack stack = player.getItemInHand(hand);
+        if (!player.isCrouching()) {
+            return InteractionResultHolder.pass(stack);
+        }
+        if (!level.isClientSide) {
+            AbyssWrenchBehaviorData.cycleBehavior(stack);
+            AbyssWrenchBehavior next = AbyssWrenchBehaviorData.getBehavior(stack);
+            player.displayClientMessage(Component.translatable("tooltip.projectk.abyss_wrench_behavior",
+                    Component.translatable(next.translationKey())), true);
+        }
+        return InteractionResultHolder.sidedSuccess(stack, level.isClientSide);
+    }
+
+    @Override
+    public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltip, TooltipFlag flag) {
+        AbyssWrenchBehavior behavior = AbyssWrenchBehaviorData.getBehavior(stack);
+        tooltip.add(Component.translatable("tooltip.projectk.abyss_wrench_behavior",
+                Component.translatable(behavior.translationKey())));
     }
 
 }

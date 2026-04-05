@@ -25,7 +25,8 @@ import org.jetbrains.annotations.Nullable;
 public class AbyssEnchanter extends BaseEntityBlock {
     public static final MapCodec<AbyssEnchanter> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
             ProjectKBlock.CustomProperties.CODEC.fieldOf("properties").forGetter(AbyssEnchanter::getCustomProperties)
-    ).apply(instance, properties -> new AbyssEnchanter(BlockBehaviour.Properties.ofFullCopy(Blocks.ENCHANTING_TABLE), properties)));
+    ).apply(instance, properties -> new AbyssEnchanter(BlockBehaviour.Properties.ofFullCopy(Blocks.ENCHANTING_TABLE),
+            properties)));
 
     private static final VoxelShape SHAPE = box(0.0, 0.0, 0.0, 16.0, 12.0, 16.0);
 
@@ -60,7 +61,8 @@ public class AbyssEnchanter extends BaseEntityBlock {
     @Override
     @NotNull
     protected InteractionResult useWithoutItem(BlockState state, @NotNull Level level, BlockPos pos, Player player, BlockHitResult hitResult) {
-        if (level.isClientSide) return InteractionResult.SUCCESS;
+        if (level.isClientSide)
+            return InteractionResult.SUCCESS;
 
         BlockEntity be = level.getBlockEntity(pos);
         if (be instanceof AbyssEnchanterBlockEntity enchanter) {
@@ -77,6 +79,7 @@ public class AbyssEnchanter extends BaseEntityBlock {
             if (be instanceof AbyssEnchanterBlockEntity enchanter) {
                 Containers.dropItemStack(level, pos.getX(), pos.getY(), pos.getZ(), enchanter.getInputItem());
                 Containers.dropItemStack(level, pos.getX(), pos.getY(), pos.getZ(), enchanter.getOutputItem());
+                enchanter.dropTierUpgrades(level, pos);
             }
             super.onRemove(state, level, pos, newState, movedByPiston);
         }

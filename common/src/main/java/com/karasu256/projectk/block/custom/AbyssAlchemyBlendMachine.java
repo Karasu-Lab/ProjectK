@@ -24,9 +24,12 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public class AbyssAlchemyBlendMachine extends BaseEntityBlock {
-    public static final MapCodec<AbyssAlchemyBlendMachine> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
-            ProjectKBlock.CustomProperties.CODEC.fieldOf("properties").forGetter(AbyssAlchemyBlendMachine::getCustomProperties)
-    ).apply(instance, properties -> new AbyssAlchemyBlendMachine(BlockBehaviour.Properties.ofFullCopy(Blocks.ENCHANTING_TABLE), properties)));
+    public static final MapCodec<AbyssAlchemyBlendMachine> CODEC = RecordCodecBuilder.mapCodec(
+            instance -> instance.group(
+                    ProjectKBlock.CustomProperties.CODEC.fieldOf("properties")
+                            .forGetter(AbyssAlchemyBlendMachine::getCustomProperties)
+            ).apply(instance, properties -> new AbyssAlchemyBlendMachine(
+                    BlockBehaviour.Properties.ofFullCopy(Blocks.ENCHANTING_TABLE), properties)));
 
     private static final VoxelShape SHAPE = box(0.0, 0.0, 0.0, 16.0, 12.0, 16.0);
 
@@ -61,7 +64,8 @@ public class AbyssAlchemyBlendMachine extends BaseEntityBlock {
     @Override
     @NotNull
     protected InteractionResult useWithoutItem(BlockState state, @NotNull Level level, BlockPos pos, Player player, BlockHitResult hitResult) {
-        if (level.isClientSide) return InteractionResult.SUCCESS;
+        if (level.isClientSide)
+            return InteractionResult.SUCCESS;
 
         BlockEntity be = level.getBlockEntity(pos);
         if (be instanceof AbyssAlchemyBlendMachineBlockEntity machine) {
@@ -78,6 +82,7 @@ public class AbyssAlchemyBlendMachine extends BaseEntityBlock {
             if (be instanceof AbyssAlchemyBlendMachineBlockEntity machine) {
                 Containers.dropItemStack(level, pos.getX(), pos.getY(), pos.getZ(), machine.getInputItem());
                 Containers.dropItemStack(level, pos.getX(), pos.getY(), pos.getZ(), machine.getOutputItem());
+                machine.dropTierUpgrades(level, pos);
             }
             super.onRemove(state, level, pos, newState, movedByPiston);
         }
@@ -85,7 +90,8 @@ public class AbyssAlchemyBlendMachine extends BaseEntityBlock {
 
     @Override
     public @Nullable <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
-        return level.isClientSide ? null : createTickerHelper(type, ProjectKBlockEntities.ABYSS_ALCHEMY_BLEND_MACHINE.get(), AbyssAlchemyBlendMachineBlockEntity::tick);
+        return level.isClientSide ? null : createTickerHelper(type,
+                ProjectKBlockEntities.ABYSS_ALCHEMY_BLEND_MACHINE.get(), AbyssAlchemyBlendMachineBlockEntity::tick);
     }
 
     public long getCapacity() {

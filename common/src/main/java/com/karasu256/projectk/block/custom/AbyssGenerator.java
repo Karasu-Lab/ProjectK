@@ -1,6 +1,7 @@
 package com.karasu256.projectk.block.custom;
 
 import com.karasu256.projectk.block.entity.AbyssGeneratorBlockEntity;
+import com.karasu256.projectk.energy.ITierInfo;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
@@ -9,6 +10,7 @@ import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public class AbyssGenerator extends AbstractEnergyBlock {
@@ -19,6 +21,17 @@ public class AbyssGenerator extends AbstractEnergyBlock {
     @Override
     public @Nullable BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
         return new AbyssGeneratorBlockEntity(pos, state);
+    }
+
+    @Override
+    public void onRemove(@NotNull BlockState state, Level level, BlockPos pos, @NotNull BlockState newState, boolean movedByPiston) {
+        if (!state.is(newState.getBlock())) {
+            BlockEntity be = level.getBlockEntity(pos);
+            if (be instanceof ITierInfo tierInfo) {
+                tierInfo.dropTierUpgrades(level, pos);
+            }
+            super.onRemove(state, level, pos, newState, movedByPiston);
+        }
     }
 
     @Override

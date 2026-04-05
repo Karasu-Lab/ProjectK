@@ -44,7 +44,8 @@ public class AbyssMagicTableBlockEntity extends AbstractPKEnergyBlockEntity<Abys
     }
 
     public static void tick(Level level, BlockPos pos, BlockState state, AbyssMagicTableBlockEntity be) {
-        if (level.isClientSide) return;
+        if (level.isClientSide)
+            return;
         be.serverTick();
     }
 
@@ -284,18 +285,24 @@ public class AbyssMagicTableBlockEntity extends AbstractPKEnergyBlockEntity<Abys
         if (lockedRecipeId == null || level == null) {
             return null;
         }
-        return (RecipeHolder<AbyssMagicTableRecipe>) level.getRecipeManager().byKey(lockedRecipeId).filter(holder -> holder.value() instanceof AbyssMagicTableRecipe).orElse(null);
+        return (RecipeHolder<AbyssMagicTableRecipe>) level.getRecipeManager().byKey(lockedRecipeId)
+                .filter(holder -> holder.value() instanceof AbyssMagicTableRecipe).orElse(null);
     }
 
     @Nullable
     private RecipeHolder<AbyssMagicTableRecipe> findMatchingRecipe(ResourceLocation energyId, long currentAmount, ItemStack input) {
-        if (level == null) return null;
-        List<RecipeHolder<AbyssMagicTableRecipe>> recipes = level.getRecipeManager().getAllRecipesFor(ProjectKRecipes.ABYSS_MAGIC_TABLE.get());
+        if (level == null)
+            return null;
+        List<RecipeHolder<AbyssMagicTableRecipe>> recipes = level.getRecipeManager()
+                .getAllRecipesFor(ProjectKRecipes.ABYSS_MAGIC_TABLE.get());
         for (RecipeHolder<AbyssMagicTableRecipe> holder : recipes) {
             AbyssMagicTableRecipe recipe = holder.value();
-            if (!recipe.energyId().equals(energyId)) continue;
-            if (recipe.energyAmount() > currentAmount) continue;
-            if (!recipe.matchesInput(input)) continue;
+            if (!recipe.energyId().equals(energyId))
+                continue;
+            if (recipe.energyAmount() > currentAmount)
+                continue;
+            if (!recipe.matchesInput(input))
+                continue;
             return holder;
         }
         return null;
@@ -322,8 +329,11 @@ public class AbyssMagicTableBlockEntity extends AbstractPKEnergyBlockEntity<Abys
         loadTier(nbt);
         loadMaxEnergy(nbt);
         refreshMaxEnergy();
-        lockedRecipeId = nbt.contains(EnergyKeys.MAGIC_TABLE_LOCKED_RECIPE.toString()) ? ResourceLocation.parse(nbt.getString(EnergyKeys.MAGIC_TABLE_LOCKED_RECIPE.toString())) : null;
-        outputItem = nbt.contains(EnergyKeys.MAGIC_TABLE_OUTPUT_ITEM.toString()) ? ItemStack.parse(registries, nbt.getCompound(EnergyKeys.MAGIC_TABLE_OUTPUT_ITEM.toString())).orElse(ItemStack.EMPTY) : ItemStack.EMPTY;
+        lockedRecipeId = nbt.contains(EnergyKeys.MAGIC_TABLE_LOCKED_RECIPE.toString()) ? ResourceLocation.parse(
+                nbt.getString(EnergyKeys.MAGIC_TABLE_LOCKED_RECIPE.toString())) : null;
+        outputItem = nbt.contains(EnergyKeys.MAGIC_TABLE_OUTPUT_ITEM.toString()) ? ItemStack.parse(registries,
+                        nbt.getCompound(EnergyKeys.MAGIC_TABLE_OUTPUT_ITEM.toString()))
+                .orElse(ItemStack.EMPTY) : ItemStack.EMPTY;
     }
 
     @Override

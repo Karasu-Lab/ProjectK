@@ -2,6 +2,8 @@ package com.karasu256.projectk.block.custom;
 
 import com.karasu256.projectk.block.entity.AbyssMagicTableBlockEntity;
 import com.karasu256.projectk.block.entity.ProjectKBlockEntities;
+import com.karasu256.projectk.energy.ITierInfo;
+import com.karasu256.projectk.item.ProjectKItems;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
@@ -26,7 +28,8 @@ import org.jetbrains.annotations.Nullable;
 public class AbyssMagicTable extends BaseEntityBlock {
     public static final MapCodec<AbyssMagicTable> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
             ProjectKBlock.CustomProperties.CODEC.fieldOf("properties").forGetter(AbyssMagicTable::getCustomProperties)
-    ).apply(instance, properties -> new AbyssMagicTable(BlockBehaviour.Properties.ofFullCopy(Blocks.ENCHANTING_TABLE), properties)));
+    ).apply(instance, properties -> new AbyssMagicTable(BlockBehaviour.Properties.ofFullCopy(Blocks.ENCHANTING_TABLE),
+            properties)));
 
     private static final VoxelShape SHAPE = box(0.0, 0.0, 0.0, 16.0, 12.0, 16.0);
 
@@ -61,7 +64,8 @@ public class AbyssMagicTable extends BaseEntityBlock {
     @Override
     @NotNull
     protected InteractionResult useWithoutItem(BlockState state, @NotNull Level level, BlockPos pos, Player player, BlockHitResult hitResult) {
-        if (level.isClientSide) return InteractionResult.SUCCESS;
+        if (level.isClientSide)
+            return InteractionResult.SUCCESS;
 
         BlockEntity be = level.getBlockEntity(pos);
         if (be instanceof AbyssMagicTableBlockEntity magicTable) {
@@ -78,14 +82,24 @@ public class AbyssMagicTable extends BaseEntityBlock {
             if (be instanceof AbyssMagicTableBlockEntity magicTable) {
                 Containers.dropItemStack(level, pos.getX(), pos.getY(), pos.getZ(), magicTable.getInputItem());
                 Containers.dropItemStack(level, pos.getX(), pos.getY(), pos.getZ(), magicTable.getOutputItem());
+                dropTierUpgrades(level, pos, magicTable);
             }
             super.onRemove(state, level, pos, newState, movedByPiston);
         }
     }
 
+    private void dropTierUpgrades(Level level, BlockPos pos, ITierInfo tierInfo) {
+        int count = Math.max(0, tierInfo.getTier() - tierInfo.getDefaultTier());
+        for (int i = 0; i < count; i++) {
+            Containers.dropItemStack(level, pos.getX(), pos.getY(), pos.getZ(),
+                    ProjectKItems.TIER_UPGRADE.get().getDefaultInstance());
+        }
+    }
+
     @Override
     public @Nullable <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
-        return level.isClientSide ? null : createTickerHelper(type, ProjectKBlockEntities.ABYSS_MAGIC_TABLE.get(), AbyssMagicTableBlockEntity::tick);
+        return level.isClientSide ? null : createTickerHelper(type, ProjectKBlockEntities.ABYSS_MAGIC_TABLE.get(),
+                AbyssMagicTableBlockEntity::tick);
     }
 
     public long getCapacity() {

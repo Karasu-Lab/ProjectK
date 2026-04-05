@@ -73,6 +73,8 @@ public class AbyssGeneratorBlockEntity extends AbstractPKEnergyBlockEntity<Abyss
     public void setTier(int tier) {
         this.tier = clampTier(tier);
         refreshMaxEnergy();
+        setChanged();
+        sync();
     }
 
     @Override
@@ -112,5 +114,12 @@ public class AbyssGeneratorBlockEntity extends AbstractPKEnergyBlockEntity<Abyss
         loadTier(nbt);
         loadMaxEnergy(nbt);
         refreshMaxEnergy();
+    }
+
+    @Override
+    public CompoundTag getUpdateTag(HolderLookup.Provider registries) {
+        CompoundTag nbt = super.getUpdateTag(registries);
+        saveAdditional(nbt, registries);
+        return nbt;
     }
 }

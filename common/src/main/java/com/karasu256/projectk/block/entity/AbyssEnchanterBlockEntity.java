@@ -220,6 +220,8 @@ public class AbyssEnchanterBlockEntity extends AbstractPKEnergyBlockEntity<Abyss
     public void setTier(int tier) {
         this.tier = clampTier(tier);
         refreshMaxEnergy();
+        setChanged();
+        sync();
     }
 
     @Override
@@ -344,7 +346,9 @@ public class AbyssEnchanterBlockEntity extends AbstractPKEnergyBlockEntity<Abyss
         if (stack.is(ProjectKTags.Items.BOOKS) || stack.is(Items.BOOK)) {
             return false;
         }
-        return !stack.is(ItemTags.AXES) && !stack.is(ItemTags.HOES) && !stack.is(ItemTags.PICKAXES) && !stack.is(ItemTags.SHOVELS) && !stack.is(ItemTags.SWORDS) && !stack.is(ItemTags.TRIMMABLE_ARMOR) && !stack.is(Items.MACE) && !stack.is(Items.TRIDENT);
+        return !stack.is(ItemTags.AXES) && !stack.is(ItemTags.HOES) && !stack.is(ItemTags.PICKAXES) && !stack.is(
+                ItemTags.SHOVELS) && !stack.is(ItemTags.SWORDS) && !stack.is(ItemTags.TRIMMABLE_ARMOR) && !stack.is(
+                Items.MACE) && !stack.is(Items.TRIDENT);
     }
 
     @Override
@@ -358,13 +362,21 @@ public class AbyssEnchanterBlockEntity extends AbstractPKEnergyBlockEntity<Abyss
     }
 
     @Override
+    public CompoundTag getUpdateTag(HolderLookup.Provider registries) {
+        CompoundTag nbt = super.getUpdateTag(registries);
+        saveAdditional(nbt, registries);
+        return nbt;
+    }
+
+    @Override
     protected void loadAdditional(CompoundTag nbt, HolderLookup.Provider registries) {
         super.loadAdditional(nbt, registries);
         loadTier(nbt);
         loadMaxEnergy(nbt);
         refreshMaxEnergy();
         if (nbt.contains(EnergyKeys.MAGIC_TABLE_OUTPUT_ITEM.toString())) {
-            outputItem = ItemStack.parse(registries, nbt.getCompound(EnergyKeys.MAGIC_TABLE_OUTPUT_ITEM.toString())).orElse(ItemStack.EMPTY);
+            outputItem = ItemStack.parse(registries, nbt.getCompound(EnergyKeys.MAGIC_TABLE_OUTPUT_ITEM.toString()))
+                    .orElse(ItemStack.EMPTY);
         } else {
             outputItem = ItemStack.EMPTY;
         }

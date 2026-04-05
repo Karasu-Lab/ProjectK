@@ -22,15 +22,18 @@ public class TierUpgradeItem extends ProjectKItem {
         if (level.isClientSide) {
             return InteractionResult.SUCCESS;
         }
+        if (context.getPlayer() == null || !context.getPlayer().isCrouching()) {
+            return InteractionResult.PASS;
+        }
         ItemStack stack = context.getItemInHand();
         TierUpgradeData data = stack.get(ProjectKDataComponets.TIER_UPGRADE_DATA_COMPONENT_TYPE.get());
         if (data == null || data.amount() <= 0) {
-            return InteractionResult.PASS;
+            return InteractionResult.FAIL;
         }
         BlockPos pos = context.getClickedPos();
         BlockEntity be = level.getBlockEntity(pos);
         if (!(be instanceof ITierInfo tierInfo)) {
-            return InteractionResult.PASS;
+            return InteractionResult.FAIL;
         }
         boolean upgraded = false;
         for (int i = 0; i < data.amount(); i++) {
@@ -41,7 +44,7 @@ public class TierUpgradeItem extends ProjectKItem {
             }
         }
         if (!upgraded) {
-            return InteractionResult.PASS;
+            return InteractionResult.FAIL;
         }
         stack.shrink(1);
         be.setChanged();
