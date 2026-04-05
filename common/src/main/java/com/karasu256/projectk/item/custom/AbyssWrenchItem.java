@@ -105,7 +105,7 @@ public class AbyssWrenchItem extends ProjectKItem {
             BlockPos pos = context.getClickedPos();
             ConnectionMode nextMode;
             if (context.getPlayer() != null && context.getPlayer().isCrouching()) {
-                ConnectionMode current = AbyssEnergyCable.getMode(context.getLevel().getBlockState(pos), target);
+                ConnectionMode current = cable.getModeForSide(target);
                 nextMode = current.next();
             } else {
                 nextMode = mapBehavior(behavior);
@@ -113,9 +113,7 @@ public class AbyssWrenchItem extends ProjectKItem {
             if (!AbyssEnergyCable.canConnect(context.getLevel(), pos.relative(target))) {
                 nextMode = ConnectionMode.NONE;
             }
-            context.getLevel()
-                    .setBlock(pos, AbyssEnergyCable.setMode(context.getLevel().getBlockState(pos), target, nextMode),
-                            3);
+            cable.setModeForSide(target, nextMode);
             if (context.getPlayer() != null) {
                 context.getPlayer().displayClientMessage(
                         Component.translatable("tooltip.projectk.abyss_wrench_behavior",
@@ -152,5 +150,4 @@ public class AbyssWrenchItem extends ProjectKItem {
         tooltip.add(Component.translatable("tooltip.projectk.abyss_wrench_behavior",
                 Component.translatable(behavior.translationKey())));
     }
-
 }

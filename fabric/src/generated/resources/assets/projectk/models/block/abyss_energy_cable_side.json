@@ -1,5 +1,5 @@
 {
-  "parent": "block/block",
+  "parent": "minecraft:block/block",
   "elements": [
     {
       "faces": {
@@ -71,7 +71,6 @@
     }
   ],
   "textures": {
-    "all": "projectk:block/multipart/abyss_energy_cable_vertical",
-    "particle": "projectk:block/multipart/abyss_energy_cable_vertical"
+    "all": "projectk:block/multipart/abyss_energy_cable_vertical"
   }
 }

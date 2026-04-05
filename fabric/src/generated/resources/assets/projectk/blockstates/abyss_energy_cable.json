@@ -3,76 +3,61 @@
     {
       "apply": {
         "model": "projectk:block/abyss_energy_cable_center"
-      },
-      "when": {
-        "north": "none"
       }
     },
     {
       "apply": {
-        "model": "projectk:block/abyss_energy_cable_center"
+        "model": "projectk:block/abyss_energy_cable_side"
       },
       "when": {
-        "east": "none"
+        "facing": "down",
+        "north": "true"
       }
     },
     {
       "apply": {
-        "model": "projectk:block/abyss_energy_cable_center"
+        "model": "projectk:block/abyss_energy_cable_side"
       },
       "when": {
-        "south": "none"
+        "facing": "up",
+        "north": "true"
       }
     },
     {
       "apply": {
-        "model": "projectk:block/abyss_energy_cable_center"
+        "model": "projectk:block/abyss_energy_cable_side"
       },
       "when": {
-        "west": "none"
+        "facing": "north",
+        "mode": "connected",
+        "north": "true"
       }
     },
     {
       "apply": {
-        "model": "projectk:block/abyss_energy_cable_center"
+        "model": "projectk:block/abyss_energy_cable_side"
       },
       "when": {
-        "up": "none"
+        "facing": "south",
+        "north": "true"
       }
     },
     {
       "apply": {
-        "model": "projectk:block/abyss_energy_cable_center"
+        "model": "projectk:block/abyss_energy_cable_side"
       },
       "when": {
-        "down": "none"
+        "facing": "west",
+        "north": "true"
       }
     },
     {
       "apply": {
-        "model": "projectk:block/abyss_energy_cable_side",
-        "y": 0
+        "model": "projectk:block/abyss_energy_cable_side"
       },
       "when": {
-        "north": "connected"
-      }
-    },
-    {
-      "apply": {
-        "model": "projectk:block/abyss_energy_cable_side_input",
-        "y": 0
-      },
-      "when": {
-        "north": "input"
-      }
-    },
-    {
-      "apply": {
-        "model": "projectk:block/abyss_energy_cable_side_output",
-        "y": 0
-      },
-      "when": {
-        "north": "output"
+        "facing": "east",
+        "north": "true"
       }
     },
     {
@@ -81,25 +66,59 @@
         "y": 90
       },
       "when": {
-        "east": "connected"
+        "east": "true",
+        "facing": "down"
       }
     },
     {
       "apply": {
-        "model": "projectk:block/abyss_energy_cable_side_input",
+        "model": "projectk:block/abyss_energy_cable_side",
         "y": 90
       },
       "when": {
-        "east": "input"
+        "east": "true",
+        "facing": "up"
       }
     },
     {
       "apply": {
-        "model": "projectk:block/abyss_energy_cable_side_output",
+        "model": "projectk:block/abyss_energy_cable_side",
         "y": 90
       },
       "when": {
-        "east": "output"
+        "east": "true",
+        "facing": "north"
+      }
+    },
+    {
+      "apply": {
+        "model": "projectk:block/abyss_energy_cable_side",
+        "y": 90
+      },
+      "when": {
+        "east": "true",
+        "facing": "south"
+      }
+    },
+    {
+      "apply": {
+        "model": "projectk:block/abyss_energy_cable_side",
+        "y": 90
+      },
+      "when": {
+        "east": "true",
+        "facing": "west"
+      }
+    },
+    {
+      "apply": {
+        "model": "projectk:block/abyss_energy_cable_side",
+        "y": 90
+      },
+      "when": {
+        "east": "true",
+        "facing": "east",
+        "mode": "connected"
       }
     },
     {
@@ -108,25 +127,59 @@
         "y": 180
       },
       "when": {
-        "south": "connected"
+        "facing": "down",
+        "south": "true"
       }
     },
     {
       "apply": {
-        "model": "projectk:block/abyss_energy_cable_side_input",
+        "model": "projectk:block/abyss_energy_cable_side",
         "y": 180
       },
       "when": {
-        "south": "input"
+        "facing": "up",
+        "south": "true"
       }
     },
     {
       "apply": {
-        "model": "projectk:block/abyss_energy_cable_side_output",
+        "model": "projectk:block/abyss_energy_cable_side",
         "y": 180
       },
       "when": {
-        "south": "output"
+        "facing": "north",
+        "south": "true"
+      }
+    },
+    {
+      "apply": {
+        "model": "projectk:block/abyss_energy_cable_side",
+        "y": 180
+      },
+      "when": {
+        "facing": "south",
+        "mode": "connected",
+        "south": "true"
+      }
+    },
+    {
+      "apply": {
+        "model": "projectk:block/abyss_energy_cable_side",
+        "y": 180
+      },
+      "when": {
+        "facing": "west",
+        "south": "true"
+      }
+    },
+    {
+      "apply": {
+        "model": "projectk:block/abyss_energy_cable_side",
+        "y": 180
+      },
+      "when": {
+        "facing": "east",
+        "south": "true"
       }
     },
     {
@@ -135,25 +188,59 @@
         "y": 270
       },
       "when": {
-        "west": "connected"
+        "facing": "down",
+        "west": "true"
       }
     },
     {
       "apply": {
-        "model": "projectk:block/abyss_energy_cable_side_input",
+        "model": "projectk:block/abyss_energy_cable_side",
         "y": 270
       },
       "when": {
-        "west": "input"
+        "facing": "up",
+        "west": "true"
       }
     },
     {
       "apply": {
-        "model": "projectk:block/abyss_energy_cable_side_output",
+        "model": "projectk:block/abyss_energy_cable_side",
         "y": 270
       },
       "when": {
-        "west": "output"
+        "facing": "north",
+        "west": "true"
+      }
+    },
+    {
+      "apply": {
+        "model": "projectk:block/abyss_energy_cable_side",
+        "y": 270
+      },
+      "when": {
+        "facing": "south",
+        "west": "true"
+      }
+    },
+    {
+      "apply": {
+        "model": "projectk:block/abyss_energy_cable_side",
+        "y": 270
+      },
+      "when": {
+        "facing": "west",
+        "mode": "connected",
+        "west": "true"
+      }
+    },
+    {
+      "apply": {
+        "model": "projectk:block/abyss_energy_cable_side",
+        "y": 270
+      },
+      "when": {
+        "facing": "east",
+        "west": "true"
       }
     },
     {
@@ -162,25 +249,59 @@
         "x": 270
       },
       "when": {
-        "up": "connected"
+        "facing": "down",
+        "up": "true"
       }
     },
     {
       "apply": {
-        "model": "projectk:block/abyss_energy_cable_side_input",
+        "model": "projectk:block/abyss_energy_cable_side",
         "x": 270
       },
       "when": {
-        "up": "input"
+        "facing": "up",
+        "mode": "connected",
+        "up": "true"
       }
     },
     {
       "apply": {
-        "model": "projectk:block/abyss_energy_cable_side_output",
+        "model": "projectk:block/abyss_energy_cable_side",
         "x": 270
       },
       "when": {
-        "up": "output"
+        "facing": "north",
+        "up": "true"
+      }
+    },
+    {
+      "apply": {
+        "model": "projectk:block/abyss_energy_cable_side",
+        "x": 270
+      },
+      "when": {
+        "facing": "south",
+        "up": "true"
+      }
+    },
+    {
+      "apply": {
+        "model": "projectk:block/abyss_energy_cable_side",
+        "x": 270
+      },
+      "when": {
+        "facing": "west",
+        "up": "true"
+      }
+    },
+    {
+      "apply": {
+        "model": "projectk:block/abyss_energy_cable_side",
+        "x": 270
+      },
+      "when": {
+        "facing": "east",
+        "up": "true"
       }
     },
     {
@@ -189,25 +310,177 @@
         "x": 90
       },
       "when": {
-        "down": "connected"
+        "down": "true",
+        "facing": "down",
+        "mode": "connected"
       }
     },
     {
       "apply": {
-        "model": "projectk:block/abyss_energy_cable_side_input",
+        "model": "projectk:block/abyss_energy_cable_side",
         "x": 90
       },
       "when": {
-        "down": "input"
+        "down": "true",
+        "facing": "up"
       }
     },
     {
       "apply": {
-        "model": "projectk:block/abyss_energy_cable_side_output",
+        "model": "projectk:block/abyss_energy_cable_side",
         "x": 90
       },
       "when": {
-        "down": "output"
+        "down": "true",
+        "facing": "north"
+      }
+    },
+    {
+      "apply": {
+        "model": "projectk:block/abyss_energy_cable_side",
+        "x": 90
+      },
+      "when": {
+        "down": "true",
+        "facing": "south"
+      }
+    },
+    {
+      "apply": {
+        "model": "projectk:block/abyss_energy_cable_side",
+        "x": 90
+      },
+      "when": {
+        "down": "true",
+        "facing": "west"
+      }
+    },
+    {
+      "apply": {
+        "model": "projectk:block/abyss_energy_cable_side",
+        "x": 90
+      },
+      "when": {
+        "down": "true",
+        "facing": "east"
+      }
+    },
+    {
+      "apply": {
+        "model": "projectk:block/abyss_energy_cable_input",
+        "x": 90
+      },
+      "when": {
+        "facing": "down",
+        "mode": "input"
+      }
+    },
+    {
+      "apply": {
+        "model": "projectk:block/abyss_energy_cable_output",
+        "x": 90
+      },
+      "when": {
+        "facing": "down",
+        "mode": "output"
+      }
+    },
+    {
+      "apply": {
+        "model": "projectk:block/abyss_energy_cable_input",
+        "x": 270
+      },
+      "when": {
+        "facing": "up",
+        "mode": "input"
+      }
+    },
+    {
+      "apply": {
+        "model": "projectk:block/abyss_energy_cable_output",
+        "x": 270
+      },
+      "when": {
+        "facing": "up",
+        "mode": "output"
+      }
+    },
+    {
+      "apply": {
+        "model": "projectk:block/abyss_energy_cable_input"
+      },
+      "when": {
+        "facing": "north",
+        "mode": "input"
+      }
+    },
+    {
+      "apply": {
+        "model": "projectk:block/abyss_energy_cable_output"
+      },
+      "when": {
+        "facing": "north",
+        "mode": "output"
+      }
+    },
+    {
+      "apply": {
+        "model": "projectk:block/abyss_energy_cable_input",
+        "y": 180
+      },
+      "when": {
+        "facing": "south",
+        "mode": "input"
+      }
+    },
+    {
+      "apply": {
+        "model": "projectk:block/abyss_energy_cable_output",
+        "y": 180
+      },
+      "when": {
+        "facing": "south",
+        "mode": "output"
+      }
+    },
+    {
+      "apply": {
+        "model": "projectk:block/abyss_energy_cable_input",
+        "y": 270
+      },
+      "when": {
+        "facing": "west",
+        "mode": "input"
+      }
+    },
+    {
+      "apply": {
+        "model": "projectk:block/abyss_energy_cable_output",
+        "y": 270
+      },
+      "when": {
+        "facing": "west",
+        "mode": "output"
+      }
+    },
+    {
+      "apply": {
+        "model": "projectk:block/abyss_energy_cable_input",
+        "y": 90
+      },
+      "when": {
+        "facing": "east",
+        "mode": "input"
+      }
+    },
+    {
+      "apply": {
+        "model": "projectk:block/abyss_energy_cable_output",
+        "y": 90
+      },
+      "when": {
+        "facing": "east",
+        "mode": "output"
       }
     }
   ]

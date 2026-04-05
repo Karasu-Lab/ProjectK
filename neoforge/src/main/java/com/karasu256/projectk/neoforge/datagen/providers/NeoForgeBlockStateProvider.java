@@ -2,16 +2,16 @@ package com.karasu256.projectk.neoforge.datagen.providers;
 
 import com.karasu256.projectk.ProjectK;
 import com.karasu256.projectk.block.custom.AbyssEnergyCable;
-import com.karasu256.projectk.block.custom.AbyssEnergyCable.ConnectionMode;
 import com.karasu256.projectk.datagen.providers.CommonBlockStateProvider;
 import com.karasu256.projectk.datagen.providers.CommonItemModelProvider;
 import dev.architectury.registry.registries.RegistrySupplier;
+import net.minecraft.core.Direction;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.state.properties.EnumProperty;
+import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.neoforged.neoforge.client.model.generators.BlockStateProvider;
 import net.neoforged.neoforge.client.model.generators.ConfiguredModel;
 import net.neoforged.neoforge.client.model.generators.ModelFile;
@@ -38,18 +38,25 @@ public class NeoForgeBlockStateProvider extends BlockStateProvider implements Co
 
     @Override
     public void cubeBottomTop(Block block, String base, String side, String bottom, String top) {
-        simpleBlock(block, models().cubeBottomTop(BuiltInRegistries.BLOCK.getKey(block).getPath(), ResourceLocation.fromNamespaceAndPath(ProjectK.MOD_ID, "block/" + base + "/" + side), ResourceLocation.fromNamespaceAndPath(ProjectK.MOD_ID, "block/" + base + "/" + bottom), ResourceLocation.fromNamespaceAndPath(ProjectK.MOD_ID, "block/" + base + "/" + top)));
+        simpleBlock(block, models().cubeBottomTop(BuiltInRegistries.BLOCK.getKey(block).getPath(),
+                ResourceLocation.fromNamespaceAndPath(ProjectK.MOD_ID, "block/" + base + "/" + side),
+                ResourceLocation.fromNamespaceAndPath(ProjectK.MOD_ID, "block/" + base + "/" + bottom),
+                ResourceLocation.fromNamespaceAndPath(ProjectK.MOD_ID, "block/" + base + "/" + top)));
     }
 
     @Override
     public void cubeBottomTop(String name, String side, String bottom, String top) {
-        models().withExistingParent("block/" + name, "minecraft:block/cube_bottom_top").texture("side", ResourceLocation.fromNamespaceAndPath(ProjectK.MOD_ID, "block/" + side)).texture("bottom", ResourceLocation.fromNamespaceAndPath(ProjectK.MOD_ID, "block/" + bottom)).texture("top", ResourceLocation.fromNamespaceAndPath(ProjectK.MOD_ID, "block/" + top));
+        models().withExistingParent("block/" + name, "minecraft:block/cube_bottom_top")
+                .texture("side", ResourceLocation.fromNamespaceAndPath(ProjectK.MOD_ID, "block/" + side))
+                .texture("bottom", ResourceLocation.fromNamespaceAndPath(ProjectK.MOD_ID, "block/" + bottom))
+                .texture("top", ResourceLocation.fromNamespaceAndPath(ProjectK.MOD_ID, "block/" + top));
     }
 
     @Override
     public void simpleBlockItem(Block block) {
         String name = BuiltInRegistries.BLOCK.getKey(block).getPath();
-        itemModels().getBuilder(name).parent(new ModelFile.UncheckedModelFile(ResourceLocation.fromNamespaceAndPath(ProjectK.MOD_ID, "block/" + name)));
+        itemModels().getBuilder(name).parent(new ModelFile.UncheckedModelFile(
+                ResourceLocation.fromNamespaceAndPath(ProjectK.MOD_ID, "block/" + name)));
     }
 
     @Override
@@ -61,60 +68,112 @@ public class NeoForgeBlockStateProvider extends BlockStateProvider implements Co
     @Override
     public void existingModelBlockAllStates(Block block, String modelPath) {
         ResourceLocation modelLocation = ResourceLocation.parse(modelPath);
-        getVariantBuilder(block).forAllStates(state -> ConfiguredModel.builder().modelFile(new ModelFile.UncheckedModelFile(modelLocation)).build());
+        getVariantBuilder(block).forAllStates(
+                state -> ConfiguredModel.builder().modelFile(new ModelFile.UncheckedModelFile(modelLocation)).build());
     }
 
     @Override
     public void multipartCable(Block block, String id) {
-        ModelFile centerModel = new ModelFile.UncheckedModelFile(ResourceLocation.fromNamespaceAndPath(ProjectK.MOD_ID, "block/" + id + "_center"));
-        ModelFile sideModel = new ModelFile.UncheckedModelFile(ResourceLocation.fromNamespaceAndPath(ProjectK.MOD_ID, "block/" + id + "_side"));
-        ModelFile sideInputModel = new ModelFile.UncheckedModelFile(ResourceLocation.fromNamespaceAndPath(ProjectK.MOD_ID, "block/" + id + "_side_input"));
-        ModelFile sideOutputModel = new ModelFile.UncheckedModelFile(ResourceLocation.fromNamespaceAndPath(ProjectK.MOD_ID, "block/" + id + "_side_output"));
-        
+        ResourceLocation baseTex = ResourceLocation.fromNamespaceAndPath(ProjectK.MOD_ID, "block/multipart/" + id);
+        ResourceLocation sideTex = ResourceLocation.fromNamespaceAndPath(ProjectK.MOD_ID,
+                "block/multipart/" + id + "_vertical");
+        ResourceLocation inputTex = ResourceLocation.fromNamespaceAndPath(ProjectK.MOD_ID,
+                "block/multipart/" + id + "_input");
+        ResourceLocation outputTex = ResourceLocation.fromNamespaceAndPath(ProjectK.MOD_ID,
+                "block/multipart/" + id + "_output");
+
+        ModelFile centerModel = models().getBuilder(id + "_center")
+                .parent(models().getExistingFile(ResourceLocation.withDefaultNamespace("block/block")))
+                .texture("all", baseTex).element().from(5, 5, 5).to(11, 11, 11)
+                .allFaces((d, f) -> f.uvs(0, 0, 16, 16).texture("#all")).end();
+
+        ModelFile sideModel = models().getBuilder(id + "_side")
+                .parent(models().getExistingFile(ResourceLocation.withDefaultNamespace("block/block")))
+                .texture("all", sideTex).element().from(5, 5, 0).to(11, 11, 5)
+                .allFaces((d, f) -> f.uvs(0, 0, 16, 16).texture("#all")).end();
+
+        ModelFile inputModel = models().getBuilder(id + "_input")
+                .parent(models().getExistingFile(ResourceLocation.withDefaultNamespace("block/block")))
+                .texture("all", inputTex).element().from(4, 4, 0).to(12, 12, 2)
+                .allFaces((d, f) -> f.uvs(4, 0, 12, 2).texture("#all")).end().element().from(6, 6, 2).to(10, 10, 4)
+                .allFaces((d, f) -> f.uvs(6, 2, 10, 4).texture("#all")).end().element().from(5, 5, 4).to(11, 11, 5)
+                .allFaces((d, f) -> f.uvs(5, 4, 11, 5).texture("#all")).end();
+
+        ModelFile outputModel = models().getBuilder(id + "_output")
+                .parent(models().getExistingFile(ResourceLocation.withDefaultNamespace("block/block")))
+                .texture("all", outputTex).element().from(7, 7, 0).to(9, 9, 2)
+                .allFaces((d, f) -> f.uvs(7, 0, 9, 2).texture("#all")).end().element().from(6, 6, 2).to(10, 10, 3)
+                .allFaces((d, f) -> f.uvs(6, 2, 10, 3).texture("#all")).end().element().from(5, 5, 3).to(11, 11, 5)
+                .allFaces((d, f) -> f.uvs(5, 3, 11, 5).texture("#all")).end();
+
         MultiPartBlockStateBuilder builder = getMultipartBuilder(block);
 
-        addCenter(builder, AbyssEnergyCable.NORTH, centerModel);
-        addCenter(builder, AbyssEnergyCable.EAST, centerModel);
-        addCenter(builder, AbyssEnergyCable.SOUTH, centerModel);
-        addCenter(builder, AbyssEnergyCable.WEST, centerModel);
-        addCenter(builder, AbyssEnergyCable.UP, centerModel);
-        addCenter(builder, AbyssEnergyCable.DOWN, centerModel);
+        builder.part().modelFile(centerModel).addModel().end();
 
-        addSide(builder, AbyssEnergyCable.NORTH, sideModel, ConnectionMode.CONNECTED, 0, 0);
-        addSide(builder, AbyssEnergyCable.NORTH, sideInputModel, ConnectionMode.INPUT, 0, 0);
-        addSide(builder, AbyssEnergyCable.NORTH, sideOutputModel, ConnectionMode.OUTPUT, 0, 0);
+        addSide(builder, Direction.NORTH, sideModel, 0, 0);
+        addSide(builder, Direction.EAST, sideModel, 90, 0);
+        addSide(builder, Direction.SOUTH, sideModel, 180, 0);
+        addSide(builder, Direction.WEST, sideModel, 270, 0);
+        addSide(builder, Direction.UP, sideModel, 0, 270);
+        addSide(builder, Direction.DOWN, sideModel, 0, 90);
 
-        addSide(builder, AbyssEnergyCable.EAST, sideModel, ConnectionMode.CONNECTED, 90, 0);
-        addSide(builder, AbyssEnergyCable.EAST, sideInputModel, ConnectionMode.INPUT, 90, 0);
-        addSide(builder, AbyssEnergyCable.EAST, sideOutputModel, ConnectionMode.OUTPUT, 90, 0);
-
-        addSide(builder, AbyssEnergyCable.SOUTH, sideModel, ConnectionMode.CONNECTED, 180, 0);
-        addSide(builder, AbyssEnergyCable.SOUTH, sideInputModel, ConnectionMode.INPUT, 180, 0);
-        addSide(builder, AbyssEnergyCable.SOUTH, sideOutputModel, ConnectionMode.OUTPUT, 180, 0);
-
-        addSide(builder, AbyssEnergyCable.WEST, sideModel, ConnectionMode.CONNECTED, 270, 0);
-        addSide(builder, AbyssEnergyCable.WEST, sideInputModel, ConnectionMode.INPUT, 270, 0);
-        addSide(builder, AbyssEnergyCable.WEST, sideOutputModel, ConnectionMode.OUTPUT, 270, 0);
-
-        addSide(builder, AbyssEnergyCable.UP, sideModel, ConnectionMode.CONNECTED, 0, 270);
-        addSide(builder, AbyssEnergyCable.UP, sideInputModel, ConnectionMode.INPUT, 0, 270);
-        addSide(builder, AbyssEnergyCable.UP, sideOutputModel, ConnectionMode.OUTPUT, 0, 270);
-
-        addSide(builder, AbyssEnergyCable.DOWN, sideModel, ConnectionMode.CONNECTED, 0, 90);
-        addSide(builder, AbyssEnergyCable.DOWN, sideInputModel, ConnectionMode.INPUT, 0, 90);
-        addSide(builder, AbyssEnergyCable.DOWN, sideOutputModel, ConnectionMode.OUTPUT, 0, 90);
+        for (Direction dir : Direction.values()) {
+            int yRot = getRotationY(dir);
+            int xRot = getRotationX(dir);
+            builder.part().modelFile(inputModel).rotationY(yRot).rotationX(xRot).addModel()
+                    .condition(AbyssEnergyCable.FACING, dir)
+                    .condition(AbyssEnergyCable.MODE, AbyssEnergyCable.ConnectionMode.INPUT).end();
+            builder.part().modelFile(outputModel).rotationY(yRot).rotationX(xRot).addModel()
+                    .condition(AbyssEnergyCable.FACING, dir)
+                    .condition(AbyssEnergyCable.MODE, AbyssEnergyCable.ConnectionMode.OUTPUT).end();
+        }
     }
 
-    private void addCenter(MultiPartBlockStateBuilder builder, EnumProperty<ConnectionMode> prop, ModelFile model) {
-        builder.part().modelFile(model).addModel().condition(prop, ConnectionMode.NONE).end();
+    private int getRotationY(Direction dir) {
+        return switch (dir) {
+            case EAST -> 90;
+            case SOUTH -> 180;
+            case WEST -> 270;
+            default -> 0;
+        };
     }
 
-    private void addSide(MultiPartBlockStateBuilder builder, EnumProperty<ConnectionMode> prop, ModelFile model, ConnectionMode mode, int yRot, int xRot) {
-        builder.part().modelFile(model).rotationY(yRot).rotationX(xRot).addModel().condition(prop, mode).end();
+    private int getRotationX(Direction dir) {
+        return switch (dir) {
+            case UP -> 270;
+            case DOWN -> 90;
+            default -> 0;
+        };
+    }
+
+    private void addSide(MultiPartBlockStateBuilder builder, Direction dir, ModelFile model, int yRot, int xRot) {
+        BooleanProperty prop = getPropertyFor(dir);
+        for (Direction f : Direction.values()) {
+            if (f == dir) {
+                builder.part().modelFile(model).rotationY(yRot).rotationX(xRot).addModel().condition(prop, true)
+                        .condition(AbyssEnergyCable.FACING, f)
+                        .condition(AbyssEnergyCable.MODE, AbyssEnergyCable.ConnectionMode.CONNECTED).end();
+            } else {
+                builder.part().modelFile(model).rotationY(yRot).rotationX(xRot).addModel().condition(prop, true)
+                        .condition(AbyssEnergyCable.FACING, f).end();
+            }
+        }
+    }
+
+    private BooleanProperty getPropertyFor(Direction dir) {
+        return switch (dir) {
+            case NORTH -> AbyssEnergyCable.NORTH;
+            case SOUTH -> AbyssEnergyCable.SOUTH;
+            case EAST -> AbyssEnergyCable.EAST;
+            case WEST -> AbyssEnergyCable.WEST;
+            case UP -> AbyssEnergyCable.UP;
+            case DOWN -> AbyssEnergyCable.DOWN;
+        };
     }
 
     @Override
     public void simpleItem(@NotNull RegistrySupplier<Item> item) {
-        itemModels().withExistingParent(item.getId().getPath(), "item/generated").texture("layer0", ResourceLocation.fromNamespaceAndPath(ProjectK.MOD_ID, "item/" + item.getId().getPath()));
+        itemModels().withExistingParent(item.getId().getPath(), "item/generated").texture("layer0",
+                ResourceLocation.fromNamespaceAndPath(ProjectK.MOD_ID, "item/" + item.getId().getPath()));
     }
 }

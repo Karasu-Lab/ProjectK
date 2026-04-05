@@ -26,6 +26,7 @@ public class AbyssEnergyCableBlockEntity extends BlockEntity implements ICableIn
     private static final WeakHashMap<Level, Long> LAST_TICK = new WeakHashMap<>();
     private static final WeakHashMap<Level, Set<BlockPos>> PROCESSED = new WeakHashMap<>();
     private final EnergyValue energy = new EnergyValue();
+    private final ConnectionMode[] sideModes = new ConnectionMode[6];
     private long capacity;
     private long transferRate;
 
@@ -36,6 +37,12 @@ public class AbyssEnergyCableBlockEntity extends BlockEntity implements ICableIn
         energy.setCapacity(capacity);
         energy.setValue(0);
         energy.setId(null);
+        Arrays.fill(sideModes, ConnectionMode.NONE);
+        for (Direction dir : Direction.values()) {
+            if (AbyssEnergyCable.isConnected(state, dir)) {
+                sideModes[dir.ordinal()] = ConnectionMode.CONNECTED;
+            }
+        }
     }
 
     public static void tick(Level level, BlockPos pos, BlockState state, AbyssEnergyCableBlockEntity be) {
@@ -145,9 +152,8 @@ public class AbyssEnergyCableBlockEntity extends BlockEntity implements ICableIn
                 }
                 state.energy += value;
             }
-            BlockState blockState = level.getBlockState(pos);
             for (Direction dir : Direction.values()) {
-                ConnectionMode mode = blockState.getValue(AbyssEnergyCable.getConnectionPropertyFor(dir));
+                ConnectionMode mode = cable.getModeForSide(dir);
                 if (!isCableConnected(mode)) {
                     continue;
                 }
@@ -164,10 +170,7 @@ public class AbyssEnergyCableBlockEntity extends BlockEntity implements ICableIn
     }
 
     private void pullFromAcceptors(NetworkState network) {
-        if (network.capacity <= 0) {
-            return;
-        }
-        if (transferRate <= 0) {
+        if (network.capacity <= 0 || transferRate <= 0) {
             return;
         }
         long available = Math.min(network.capacity - network.energy, transferRate);
@@ -210,10 +213,7 @@ public class AbyssEnergyCableBlockEntity extends BlockEntity implements ICableIn
     }
 
     private void pushToAcceptors(NetworkState network) {
-        if (network.energy <= 0 || network.energyId == null) {
-            return;
-        }
-        if (transferRate <= 0) {
+        if (network.energy <= 0 || network.energyId == null || transferRate <= 0) {
             return;
         }
         long available = Math.min(network.energy, transferRate);
@@ -329,7 +329,18 @@ public class AbyssEnergyCableBlockEntity extends BlockEntity implements ICableIn
         if (side == null) {
             return ConnectionMode.CONNECTED;
         }
-        return getBlockState().getValue(AbyssEnergyCable.getConnectionPropertyFor(side));
+        return sideModes[side.ordinal()];
+    }
+
+    public void setModeForSide(Direction side, ConnectionMode mode) {
+        sideModes[side.ordinal()] = mode;
+        setChanged();
+        BlockState state = getBlockState();
+        if (mode != ConnectionMode.NONE) {
+            state = state.setValue(AbyssEnergyCable.FACING, side).setValue(AbyssEnergyCable.MODE, mode);
+        }
+        level.setBlock(worldPosition, state, 3);
+        syncToClient();
     }
 
     private boolean isCableConnected(ConnectionMode mode) {
@@ -347,7 +358,6 @@ public class AbyssEnergyCableBlockEntity extends BlockEntity implements ICableIn
             energy.setValue(value);
         }
         setChanged();
-        syncToClient();
     }
 
     public long getEnergyAmount() {
@@ -374,6 +384,11 @@ public class AbyssEnergyCableBlockEntity extends BlockEntity implements ICableIn
     protected void saveAdditional(CompoundTag nbt, HolderLookup.Provider registries) {
         super.saveAdditional(nbt, registries);
         energy.writeNbt(nbt, registries);
+        CompoundTag modesTag = new CompoundTag();
+        for (int i = 0; i < 6; i++) {
+            modesTag.putString("side" + i, sideModes[i].getSerializedName());
+        }
+        nbt.put("modes", modesTag);
     }
 
     @Override
@@ -386,12 +401,28 @@ public class AbyssEnergyCableBlockEntity extends BlockEntity implements ICableIn
         this.capacity = resolveCapacity(getBlockState());
         this.transferRate = resolveTransferRate(getBlockState());
         energy.setCapacity(capacity);
+        if (nbt.contains("modes")) {
+            CompoundTag modesTag = nbt.getCompound("modes");
+            for (int i = 0; i < 6; i++) {
+                String modeName = modesTag.getString("side" + i);
+                sideModes[i] = parseMode(modeName);
+            }
+        }
+    }
+
+    private ConnectionMode parseMode(String name) {
+        for (ConnectionMode mode : ConnectionMode.values()) {
+            if (mode.getSerializedName().equals(name)) {
+                return mode;
+            }
+        }
+        return ConnectionMode.NONE;
     }
 
     @Override
     public CompoundTag getUpdateTag(HolderLookup.Provider registries) {
         CompoundTag nbt = super.getUpdateTag(registries);
-        energy.writeNbt(nbt, registries);
+        saveAdditional(nbt, registries);
         return nbt;
     }
 
