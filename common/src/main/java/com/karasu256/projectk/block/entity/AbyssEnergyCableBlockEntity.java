@@ -37,12 +37,7 @@ public class AbyssEnergyCableBlockEntity extends BlockEntity implements ICableIn
         energy.setCapacity(capacity);
         energy.setValue(0);
         energy.setId(null);
-        Arrays.fill(sideModes, ConnectionMode.NONE);
-        for (Direction dir : Direction.values()) {
-            if (AbyssEnergyCable.isConnected(state, dir)) {
-                sideModes[dir.ordinal()] = ConnectionMode.CONNECTED;
-            }
-        }
+        Arrays.fill(sideModes, ConnectionMode.CONNECTED);
     }
 
     public static void tick(Level level, BlockPos pos, BlockState state, AbyssEnergyCableBlockEntity be) {
@@ -335,10 +330,7 @@ public class AbyssEnergyCableBlockEntity extends BlockEntity implements ICableIn
     public void setModeForSide(Direction side, ConnectionMode mode) {
         sideModes[side.ordinal()] = mode;
         setChanged();
-        BlockState state = getBlockState();
-        if (mode != ConnectionMode.NONE) {
-            state = state.setValue(AbyssEnergyCable.FACING, side).setValue(AbyssEnergyCable.MODE, mode);
-        }
+        BlockState state = AbyssEnergyCable.updateConnections(level, worldPosition, getBlockState());
         level.setBlock(worldPosition, state, 3);
         syncToClient();
     }

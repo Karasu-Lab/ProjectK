@@ -110,9 +110,6 @@ public class AbyssWrenchItem extends ProjectKItem {
             } else {
                 nextMode = mapBehavior(behavior);
             }
-            if (!AbyssEnergyCable.canConnect(context.getLevel(), pos.relative(target))) {
-                nextMode = ConnectionMode.NONE;
-            }
             cable.setModeForSide(target, nextMode);
             if (context.getPlayer() != null) {
                 context.getPlayer().displayClientMessage(

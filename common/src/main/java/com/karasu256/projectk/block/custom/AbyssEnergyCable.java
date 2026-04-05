@@ -23,9 +23,7 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
-import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
-import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
@@ -38,15 +36,12 @@ public class AbyssEnergyCable extends BaseEntityBlock {
             .apply(instance, properties -> new AbyssEnergyCable(
                     BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_BLOCK).noOcclusion(), properties)));
 
-    public static final BooleanProperty NORTH = BlockStateProperties.NORTH;
-    public static final BooleanProperty SOUTH = BlockStateProperties.SOUTH;
-    public static final BooleanProperty EAST = BlockStateProperties.EAST;
-    public static final BooleanProperty WEST = BlockStateProperties.WEST;
-    public static final BooleanProperty UP = BlockStateProperties.UP;
-    public static final BooleanProperty DOWN = BlockStateProperties.DOWN;
-    public static final EnumProperty<Direction> FACING = BlockStateProperties.FACING;
-    public static final EnumProperty<ConnectionMode> MODE = EnumProperty.create("mode", ConnectionMode.class,
-            mode -> mode != ConnectionMode.NONE);
+    public static final BooleanProperty NORTH = BooleanProperty.create("north");
+    public static final BooleanProperty SOUTH = BooleanProperty.create("south");
+    public static final BooleanProperty EAST = BooleanProperty.create("east");
+    public static final BooleanProperty WEST = BooleanProperty.create("west");
+    public static final BooleanProperty UP = BooleanProperty.create("up");
+    public static final BooleanProperty DOWN = BooleanProperty.create("down");
 
     private static final VoxelShape CENTER = box(5, 5, 5, 11, 11, 11);
     private static final VoxelShape[] SIDES = new VoxelShape[Direction.values().length];
@@ -68,20 +63,16 @@ public class AbyssEnergyCable extends BaseEntityBlock {
     public AbyssEnergyCable(BlockBehaviour.Properties properties, ProjectKBlock.CustomProperties customProperties) {
         super(properties);
         this.customProperties = customProperties;
-        registerDefaultState(defaultBlockState().setValue(NORTH, false).setValue(SOUTH, false).setValue(EAST, false)
-                .setValue(WEST, false).setValue(UP, false).setValue(DOWN, false).setValue(FACING, Direction.NORTH)
-                .setValue(MODE, ConnectionMode.CONNECTED));
+        registerDefaultState(defaultBlockState()
+                .setValue(NORTH, false)
+                .setValue(SOUTH, false)
+                .setValue(EAST, false)
+                .setValue(WEST, false)
+                .setValue(UP, false)
+                .setValue(DOWN, false));
     }
 
-    private static VoxelShape appendIfConnected(VoxelShape base, BlockState state, BooleanProperty prop, Direction dir) {
-        if (!state.getValue(prop)) {
-            return base;
-        }
-        return Shapes.or(base, SIDES[dir.ordinal()]);
-    }
-
-
-    private static BooleanProperty getPropertyFor(Direction dir) {
+    public static BooleanProperty getPropertyFor(Direction dir) {
         return switch (dir) {
             case NORTH -> NORTH;
             case SOUTH -> SOUTH;
@@ -100,14 +91,23 @@ public class AbyssEnergyCable extends BaseEntityBlock {
         return state.getValue(getPropertyFor(dir));
     }
 
-    public static BlockState setConnected(BlockState state, Direction dir, boolean connected) {
-        return state.setValue(getPropertyFor(dir), connected);
-    }
-
-    private static BlockState updateConnections(LevelAccessor level, BlockPos pos, BlockState state) {
-        for (Direction dir : Direction.values()) {
-            boolean connect = canConnect(level, pos.relative(dir));
-            state = state.setValue(getPropertyFor(dir), connect);
+    public static BlockState updateConnections(LevelAccessor level, BlockPos pos, BlockState state) {
+        BlockEntity be = level.getBlockEntity(pos);
+        if (be instanceof AbyssEnergyCableBlockEntity cable) {
+            for (Direction dir : Direction.values()) {
+                ConnectionMode mode = cable.getModeForSide(dir);
+                if (mode == ConnectionMode.NONE) {
+                    state = state.setValue(getPropertyFor(dir), false);
+                } else {
+                    boolean connect = canConnect(level, pos.relative(dir));
+                    state = state.setValue(getPropertyFor(dir), connect);
+                }
+            }
+        } else {
+            for (Direction dir : Direction.values()) {
+                boolean connect = canConnect(level, pos.relative(dir));
+                state = state.setValue(getPropertyFor(dir), connect);
+            }
         }
         return state;
     }
@@ -156,20 +156,28 @@ public class AbyssEnergyCable extends BaseEntityBlock {
 
     @Override
     public BlockState getStateForPlacement(BlockPlaceContext context) {
-        BlockState state = defaultBlockState().setValue(FACING, context.getNearestLookingDirection().getOpposite())
-                .setValue(MODE, ConnectionMode.CONNECTED);
+        BlockState state = defaultBlockState();
         return updateConnections(context.getLevel(), context.getClickedPos(), state);
     }
 
     @Override
     protected BlockState updateShape(BlockState state, Direction facing, BlockState facingState, LevelAccessor level, BlockPos pos, BlockPos facingPos) {
+        ConnectionMode mode = ConnectionMode.NONE;
+        BlockEntity be = level.getBlockEntity(pos);
+        if (be instanceof AbyssEnergyCableBlockEntity cable) {
+            mode = cable.getModeForSide(facing);
+        }
+
+        if (mode == ConnectionMode.NONE) {
+            return state.setValue(getPropertyFor(facing), false);
+        }
         boolean connect = canConnect(level, facingPos);
         return state.setValue(getPropertyFor(facing), connect);
     }
 
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
-        builder.add(NORTH, SOUTH, EAST, WEST, UP, DOWN, FACING, MODE);
+        builder.add(NORTH, SOUTH, EAST, WEST, UP, DOWN);
     }
 
     @Override
@@ -184,11 +192,11 @@ public class AbyssEnergyCable extends BaseEntityBlock {
 
     private VoxelShape buildShape(BlockState state, BlockGetter level, BlockPos pos) {
         VoxelShape shape = CENTER;
-        Direction facing = state.getValue(FACING);
-        ConnectionMode mode = state.getValue(MODE);
-        for (Direction dir : Direction.values()) {
-            if (state.getValue(getPropertyFor(dir))) {
-                if (facing == dir) {
+        BlockEntity be = level.getBlockEntity(pos);
+        if (be instanceof AbyssEnergyCableBlockEntity cable) {
+            for (Direction dir : Direction.values()) {
+                if (state.getValue(getPropertyFor(dir))) {
+                    ConnectionMode mode = cable.getModeForSide(dir);
                     if (mode == ConnectionMode.INPUT) {
                         shape = Shapes.or(shape, SIDES_PULL[dir.ordinal()]);
                     } else if (mode == ConnectionMode.OUTPUT) {
@@ -196,7 +204,11 @@ public class AbyssEnergyCable extends BaseEntityBlock {
                     } else {
                         shape = Shapes.or(shape, SIDES[dir.ordinal()]);
                     }
-                } else {
+                }
+            }
+        } else {
+            for (Direction dir : Direction.values()) {
+                if (state.getValue(getPropertyFor(dir))) {
                     shape = Shapes.or(shape, SIDES[dir.ordinal()]);
                 }
             }

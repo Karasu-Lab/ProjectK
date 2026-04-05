@@ -11,7 +11,6 @@ import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.neoforged.neoforge.client.model.generators.BlockStateProvider;
 import net.neoforged.neoforge.client.model.generators.ConfiguredModel;
 import net.neoforged.neoforge.client.model.generators.ModelFile;
@@ -107,25 +106,13 @@ public class NeoForgeBlockStateProvider extends BlockStateProvider implements Co
                 .allFaces((d, f) -> f.uvs(5, 3, 11, 5).texture("#all")).end();
 
         MultiPartBlockStateBuilder builder = getMultipartBuilder(block);
-
         builder.part().modelFile(centerModel).addModel().end();
-
-        addSide(builder, Direction.NORTH, sideModel, 0, 0);
-        addSide(builder, Direction.EAST, sideModel, 90, 0);
-        addSide(builder, Direction.SOUTH, sideModel, 180, 0);
-        addSide(builder, Direction.WEST, sideModel, 270, 0);
-        addSide(builder, Direction.UP, sideModel, 0, 270);
-        addSide(builder, Direction.DOWN, sideModel, 0, 90);
 
         for (Direction dir : Direction.values()) {
             int yRot = getRotationY(dir);
             int xRot = getRotationX(dir);
-            builder.part().modelFile(inputModel).rotationY(yRot).rotationX(xRot).addModel()
-                    .condition(AbyssEnergyCable.FACING, dir)
-                    .condition(AbyssEnergyCable.MODE, AbyssEnergyCable.ConnectionMode.INPUT).end();
-            builder.part().modelFile(outputModel).rotationY(yRot).rotationX(xRot).addModel()
-                    .condition(AbyssEnergyCable.FACING, dir)
-                    .condition(AbyssEnergyCable.MODE, AbyssEnergyCable.ConnectionMode.OUTPUT).end();
+            builder.part().modelFile(sideModel).rotationY(yRot).rotationX(xRot).addModel()
+                    .condition(AbyssEnergyCable.getConnectionPropertyFor(dir), true).end();
         }
     }
 
@@ -146,30 +133,6 @@ public class NeoForgeBlockStateProvider extends BlockStateProvider implements Co
         };
     }
 
-    private void addSide(MultiPartBlockStateBuilder builder, Direction dir, ModelFile model, int yRot, int xRot) {
-        BooleanProperty prop = getPropertyFor(dir);
-        for (Direction f : Direction.values()) {
-            if (f == dir) {
-                builder.part().modelFile(model).rotationY(yRot).rotationX(xRot).addModel().condition(prop, true)
-                        .condition(AbyssEnergyCable.FACING, f)
-                        .condition(AbyssEnergyCable.MODE, AbyssEnergyCable.ConnectionMode.CONNECTED).end();
-            } else {
-                builder.part().modelFile(model).rotationY(yRot).rotationX(xRot).addModel().condition(prop, true)
-                        .condition(AbyssEnergyCable.FACING, f).end();
-            }
-        }
-    }
-
-    private BooleanProperty getPropertyFor(Direction dir) {
-        return switch (dir) {
-            case NORTH -> AbyssEnergyCable.NORTH;
-            case SOUTH -> AbyssEnergyCable.SOUTH;
-            case EAST -> AbyssEnergyCable.EAST;
-            case WEST -> AbyssEnergyCable.WEST;
-            case UP -> AbyssEnergyCable.UP;
-            case DOWN -> AbyssEnergyCable.DOWN;
-        };
-    }
 
     @Override
     public void simpleItem(@NotNull RegistrySupplier<Item> item) {

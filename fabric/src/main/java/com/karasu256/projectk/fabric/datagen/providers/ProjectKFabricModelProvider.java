@@ -123,24 +123,19 @@ public class ProjectKFabricModelProvider extends FabricModelProvider implements 
                 new float[][]{{7, 0, 9, 2}, {6, 2, 10, 3}, {5, 3, 11, 5}}));
 
         MultiPartGenerator generator = MultiPartGenerator.multiPart(block);
-
         generator.with(Variant.variant().with(VariantProperties.MODEL, centerModel));
 
-        addSide(generator, Direction.NORTH, sideModel, VariantProperties.Rotation.R0, VariantProperties.Rotation.R0);
-        addSide(generator, Direction.EAST, sideModel, VariantProperties.Rotation.R90, VariantProperties.Rotation.R0);
-        addSide(generator, Direction.SOUTH, sideModel, VariantProperties.Rotation.R180, VariantProperties.Rotation.R0);
-        addSide(generator, Direction.WEST, sideModel, VariantProperties.Rotation.R270, VariantProperties.Rotation.R0);
-        addSide(generator, Direction.UP, sideModel, VariantProperties.Rotation.R0, VariantProperties.Rotation.R270);
-        addSide(generator, Direction.DOWN, sideModel, VariantProperties.Rotation.R0, VariantProperties.Rotation.R90);
-
         for (Direction dir : Direction.values()) {
-            generator.with(Condition.condition().term(AbyssEnergyCable.FACING, dir)
-                    .term(AbyssEnergyCable.MODE, AbyssEnergyCable.ConnectionMode.INPUT), getVariant(inputModel, dir));
-            generator.with(Condition.condition().term(AbyssEnergyCable.FACING, dir)
-                    .term(AbyssEnergyCable.MODE, AbyssEnergyCable.ConnectionMode.OUTPUT), getVariant(outputModel, dir));
+            BooleanProperty prop = AbyssEnergyCable.getConnectionPropertyFor(dir);
+            generator.with(Condition.condition().term(prop, true), getVariant(sideModel, dir));
         }
 
         this.blockModelGenerators.blockStateOutput.accept(generator);
+    }
+
+    @Override
+    public void simpleItem(RegistrySupplier<Item> item) {
+        this.itemModelGenerators.generateFlatItem(item.get(), ModelTemplates.FLAT_ITEM);
     }
 
     private Variant getVariant(ResourceLocation model, Direction dir) {
@@ -169,40 +164,6 @@ public class ProjectKFabricModelProvider extends FabricModelProvider implements 
             case DOWN -> VariantProperties.Rotation.R90;
             default -> VariantProperties.Rotation.R0;
         };
-    }
-
-    private void addSide(MultiPartGenerator generator, Direction dir, ResourceLocation model, VariantProperties.Rotation yRot, VariantProperties.Rotation xRot) {
-        BooleanProperty prop = getPropertyFor(dir);
-        for (Direction f : Direction.values()) {
-            Variant variant = Variant.variant().with(VariantProperties.MODEL, model);
-            if (yRot != VariantProperties.Rotation.R0)
-                variant = variant.with(VariantProperties.Y_ROT, yRot);
-            if (xRot != VariantProperties.Rotation.R0)
-                variant = variant.with(VariantProperties.X_ROT, xRot);
-
-            if (f == dir) {
-                generator.with(Condition.condition().term(prop, true).term(AbyssEnergyCable.FACING, f)
-                        .term(AbyssEnergyCable.MODE, AbyssEnergyCable.ConnectionMode.CONNECTED), variant);
-            } else {
-                generator.with(Condition.condition().term(prop, true).term(AbyssEnergyCable.FACING, f), variant);
-            }
-        }
-    }
-
-    private BooleanProperty getPropertyFor(Direction dir) {
-        return switch (dir) {
-            case NORTH -> AbyssEnergyCable.NORTH;
-            case SOUTH -> AbyssEnergyCable.SOUTH;
-            case EAST -> AbyssEnergyCable.EAST;
-            case WEST -> AbyssEnergyCable.WEST;
-            case UP -> AbyssEnergyCable.UP;
-            case DOWN -> AbyssEnergyCable.DOWN;
-        };
-    }
-
-    @Override
-    public void simpleItem(RegistrySupplier<Item> item) {
-        this.itemModelGenerators.generateFlatItem(item.get(), ModelTemplates.FLAT_ITEM);
     }
 
     private JsonObject createCableJson(ResourceLocation texture, float[][] boxes, float[][] uvs) {
