@@ -209,6 +209,7 @@ public class ProjectKFabricModelProvider extends FabricModelProvider implements 
         JsonObject json = new JsonObject();
         json.addProperty("parent", "minecraft:block/block");
         JsonObject textures = new JsonObject();
+        textures.addProperty("particle", texture.toString());
         textures.addProperty("all", texture.toString());
         json.add("textures", textures);
         JsonArray elements = new JsonArray();
