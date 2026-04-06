@@ -1,0 +1,7 @@
+{
+  "capacity": 60000,
+  "concentration": 200,
+  "level": 1,
+  "lifetime": 200,
+  "pulse_interval": 15
+}

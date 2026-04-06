@@ -11,9 +11,25 @@ import java.util.function.Function;
 
 public class ProjectKRenderTypes extends RenderStateShard {
     public static final Function<ResourceLocation, RenderType> ABYSS_ENERGY = Util.memoize(texture -> {
-        RenderType.CompositeState compositeState = RenderType.CompositeState.builder().setShaderState(new ShaderStateShard(ProjectKCoreShaders::getAbyssEnergyShader)).setTextureState(new TextureStateShard(texture, false, false)).setTransparencyState(ADDITIVE_TRANSPARENCY).setWriteMaskState(COLOR_WRITE).createCompositeState(false);
+        RenderType.CompositeState compositeState = RenderType.CompositeState.builder()
+                .setShaderState(new ShaderStateShard(ProjectKCoreShaders::getAbyssEnergyShader))
+                .setTextureState(new TextureStateShard(texture, false, false))
+                .setTransparencyState(ADDITIVE_TRANSPARENCY).setWriteMaskState(COLOR_WRITE).createCompositeState(false);
 
-        return RenderType.create("abyss_energy", DefaultVertexFormat.NEW_ENTITY, VertexFormat.Mode.QUADS, 1536, false, true, compositeState);
+        return RenderType.create("abyss_energy", DefaultVertexFormat.NEW_ENTITY, VertexFormat.Mode.QUADS, 1536, false,
+                true, compositeState);
+    });
+
+    public static final Function<ResourceLocation, RenderType> ABYSS_LASER = Util.memoize(texture -> {
+        RenderType.CompositeState compositeState = RenderType.CompositeState.builder()
+                .setShaderState(new ShaderStateShard(ProjectKCoreShaders::getAbyssLaserShader))
+                .setTextureState(new TextureStateShard(texture, false, false))
+                .setTransparencyState(TRANSLUCENT_TRANSPARENCY).setWriteMaskState(COLOR_WRITE)
+                .setDepthTestState(LEQUAL_DEPTH_TEST).setLayeringState(VIEW_OFFSET_Z_LAYERING)
+                .setCullState(NO_CULL).createCompositeState(false);
+
+        return RenderType.create("abyss_laser", DefaultVertexFormat.NEW_ENTITY, VertexFormat.Mode.QUADS, 1536, false,
+                true, compositeState);
     });
 
     public ProjectKRenderTypes(String string, Runnable runnable, Runnable runnable2) {

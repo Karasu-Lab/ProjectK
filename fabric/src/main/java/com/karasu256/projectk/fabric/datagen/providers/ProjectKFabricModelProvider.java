@@ -3,7 +3,9 @@ package com.karasu256.projectk.fabric.datagen.providers;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.karasu256.projectk.ProjectK;
+import com.karasu256.projectk.block.ProjectKBlocks;
 import com.karasu256.projectk.block.custom.AbyssEnergyCable;
+import com.karasu256.projectk.block.custom.AbyssLaserEmitter;
 import com.karasu256.projectk.datagen.providers.CommonBlockStateProvider;
 import com.karasu256.projectk.datagen.providers.CommonItemModelProvider;
 import dev.architectury.registry.registries.RegistrySupplier;
@@ -12,10 +14,7 @@ import net.fabricmc.fabric.api.datagen.v1.provider.FabricModelProvider;
 import net.minecraft.core.Direction;
 import net.minecraft.data.models.BlockModelGenerators;
 import net.minecraft.data.models.ItemModelGenerators;
-import net.minecraft.data.models.blockstates.Condition;
-import net.minecraft.data.models.blockstates.MultiPartGenerator;
-import net.minecraft.data.models.blockstates.Variant;
-import net.minecraft.data.models.blockstates.VariantProperties;
+import net.minecraft.data.models.blockstates.*;
 import net.minecraft.data.models.model.ModelLocationUtils;
 import net.minecraft.data.models.model.ModelTemplates;
 import net.minecraft.data.models.model.TextureMapping;
@@ -79,12 +78,68 @@ public class ProjectKFabricModelProvider extends FabricModelProvider implements 
 
     @Override
     public void simpleBlockItem(Block block) {
-        this.blockModelGenerators.delegateItemModel(block, ModelLocationUtils.getModelLocation(block));
+        ResourceLocation modelLocation = ModelLocationUtils.getModelLocation(block);
+        if (block == ProjectKBlocks.ABYSS_LASER_EMITTER.get()) {
+            modelLocation = ResourceLocation.fromNamespaceAndPath(ProjectK.MOD_ID, "block/abyss_laser_emitter_pulse");
+        }
+        this.blockModelGenerators.delegateItemModel(block, modelLocation);
+    }
+
+    @Override
+    public void directionalModeBlock(Block block, String baseName) {
+        ResourceLocation pulseModel = ResourceLocation.fromNamespaceAndPath(ProjectK.MOD_ID,
+                "block/" + baseName + "_pulse");
+        ResourceLocation dcModel = ResourceLocation.fromNamespaceAndPath(ProjectK.MOD_ID, "block/" + baseName + "_dc");
+
+        ModelTemplates.CUBE_ORIENTABLE_TOP_BOTTOM.create(pulseModel, new TextureMapping().put(TextureSlot.TOP,
+                                ResourceLocation.fromNamespaceAndPath(ProjectK.MOD_ID, "block/" + baseName + "_pulse"))
+                        .put(TextureSlot.FRONT,
+                                ResourceLocation.fromNamespaceAndPath(ProjectK.MOD_ID, "block/" + baseName + "_pulse"))
+                        .put(TextureSlot.SIDE,
+                                ResourceLocation.fromNamespaceAndPath(ProjectK.MOD_ID, "block/" + baseName + "_side"))
+                        .put(TextureSlot.BOTTOM,
+                                ResourceLocation.fromNamespaceAndPath(ProjectK.MOD_ID, "block/" + baseName + "_back")),
+                this.blockModelGenerators.modelOutput);
+
+        ModelTemplates.CUBE_ORIENTABLE_TOP_BOTTOM.create(dcModel, new TextureMapping().put(TextureSlot.TOP,
+                                ResourceLocation.fromNamespaceAndPath(ProjectK.MOD_ID, "block/" + baseName + "_dc"))
+                        .put(TextureSlot.FRONT,
+                                ResourceLocation.fromNamespaceAndPath(ProjectK.MOD_ID, "block/" + baseName + "_dc"))
+                        .put(TextureSlot.SIDE,
+                                ResourceLocation.fromNamespaceAndPath(ProjectK.MOD_ID, "block/" + baseName + "_side"))
+                        .put(TextureSlot.BOTTOM,
+                                ResourceLocation.fromNamespaceAndPath(ProjectK.MOD_ID, "block/" + baseName + "_back")),
+                this.blockModelGenerators.modelOutput);
+
+        var propertyDispatch = PropertyDispatch.properties(AbyssLaserEmitter.FACING, AbyssLaserEmitter.MODE);
+
+        for (Direction direction : Direction.values()) {
+            for (AbyssLaserEmitter.Mode mode : AbyssLaserEmitter.Mode.values()) {
+                ResourceLocation model = mode == AbyssLaserEmitter.Mode.PULSE ? pulseModel : dcModel;
+                Variant variant = Variant.variant().with(VariantProperties.MODEL, model);
+
+                switch (direction) {
+                    case SOUTH -> variant = variant.with(VariantProperties.Y_ROT, VariantProperties.Rotation.R180);
+                    case EAST -> variant = variant.with(VariantProperties.Y_ROT, VariantProperties.Rotation.R90);
+                    case WEST -> variant = variant.with(VariantProperties.Y_ROT, VariantProperties.Rotation.R270);
+                    case UP -> variant = variant.with(VariantProperties.X_ROT, VariantProperties.Rotation.R270);
+                    case DOWN -> variant = variant.with(VariantProperties.X_ROT, VariantProperties.Rotation.R90);
+                    default -> {
+                    }
+                }
+                propertyDispatch = propertyDispatch.select(direction, mode, variant);
+            }
+        }
+
+        this.blockModelGenerators.blockStateOutput.accept(
+                MultiVariantGenerator.multiVariant(block).with(propertyDispatch));
     }
 
     @Override
     public void existingModelBlock(Block block, String modelPath) {
         ResourceLocation modelLocation = ResourceLocation.parse(modelPath);
+        TextureMapping textures = TextureMapping.cube(block);
+        ModelTemplates.CUBE_ALL.create(modelLocation, textures, this.blockModelGenerators.modelOutput);
         this.blockModelGenerators.blockStateOutput.accept(BlockModelGenerators.createSimpleBlock(block, modelLocation));
     }
 

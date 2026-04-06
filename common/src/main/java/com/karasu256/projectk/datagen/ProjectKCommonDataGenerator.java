@@ -15,6 +15,7 @@ public class ProjectKCommonDataGenerator {
         registry.register(output -> new CommonEnchantmentTagsProvider(output, registries));
         registry.register(AbyssEnergySpawnRuleProvider::new);
         registry.register(output -> new AbyssEnchanterTierProvider(output));
+        registry.register(output -> new AbyssLaserEmitterTierProvider(output));
         registry.register(output -> new ProjectKEnchantmentProvider(output));
         if (includeRecipes) {
             registry.register(output -> new CommonRecipeProvider(output, registries));

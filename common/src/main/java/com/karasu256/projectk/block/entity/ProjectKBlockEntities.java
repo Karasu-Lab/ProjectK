@@ -67,6 +67,10 @@ public class ProjectKBlockEntities implements IKRegistryInitializerTarget {
             "abyss_synthesizer",
             () -> BlockEntityType.Builder.of(AbyssSynthesizerBlockEntity::new, ProjectKBlocks.ABYSS_SYNTHESIZER.get())
                     .build(null));
+    public static final RegistrySupplier<BlockEntityType<AbyssLaserEmitterBlockEntity>> ABYSS_LASER_EMITTER = blockEntity(
+            "abyss_laser_emitter",
+            () -> BlockEntityType.Builder.of(AbyssLaserEmitterBlockEntity::new, ProjectKBlocks.ABYSS_LASER_EMITTER.get())
+                    .build(null));
 
 
 }

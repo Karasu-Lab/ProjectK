@@ -9,21 +9,27 @@ import com.karasu256.projectk.entity.ProjectKEntities;
 import com.karasu256.projectk.utils.Id;
 import dev.architectury.event.EventResult;
 import dev.architectury.event.events.common.EntityEvent;
+import dev.architectury.event.events.common.LootEvent;
 import dev.architectury.event.events.common.TickEvent;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.level.storage.loot.BuiltInLootTables;
+import net.minecraft.world.level.storage.loot.LootPool;
+import net.minecraft.world.level.storage.loot.entries.NestedLootTable;
 
 public class ModEvents {
     private static final ResourceLocation ABYSS_BOOSTER_ID = Id.id("abyss_booster_bonus");
 
     public static void init() {
         EntityEvent.LIVING_DEATH.register((entity, source) -> {
-            if (entity.level().isClientSide) return EventResult.pass();
+            if (entity.level().isClientSide)
+                return EventResult.pass();
 
             BlockPos pos = entity.blockPosition();
             ResourceLocation energyId;
@@ -39,7 +45,8 @@ public class ModEvents {
                 amount = AbyssEnergySpawnRuleManager.fallbackAmount(entity);
             }
 
-            AbyssEnergyEntity aeEntity = new AbyssEnergyEntity(ProjectKEntities.ABYSS_ENERGY_ENTITY.get(), entity.level());
+            AbyssEnergyEntity aeEntity = new AbyssEnergyEntity(ProjectKEntities.ABYSS_ENERGY_ENTITY.get(),
+                    entity.level());
             aeEntity.setPos(entity.getX(), entity.getY(), entity.getZ());
             aeEntity.setEnergy(amount);
             aeEntity.setEnergyId(energyId);
@@ -49,6 +56,14 @@ public class ModEvents {
         });
 
         TickEvent.PLAYER_POST.register(ModEvents::applyAbyssBooster);
+
+        LootEvent.MODIFY_LOOT_TABLE.register((key, context, builtin) -> {
+            if (key.equals(BuiltInLootTables.ANCIENT_CITY)) {
+                context.addPool(LootPool.lootPool()
+                        .add(NestedLootTable.lootTableReference(
+                                ResourceKey.create(Registries.LOOT_TABLE, Id.id("chests/ancient_city_injection")))));
+            }
+        });
     }
 
     private static void applyAbyssBooster(LivingEntity entity) {
@@ -63,7 +78,8 @@ public class ModEvents {
             return;
         }
         var enchantmentLookup = entity.level().holderLookup(Registries.ENCHANTMENT);
-        int level = net.minecraft.world.item.enchantment.EnchantmentHelper.getItemEnchantmentLevel(enchantmentLookup.getOrThrow(ProjectKEnchantments.ABYSS_BOOSTER_KEY), stack);
+        int level = net.minecraft.world.item.enchantment.EnchantmentHelper.getItemEnchantmentLevel(
+                enchantmentLookup.getOrThrow(ProjectKEnchantments.ABYSS_BOOSTER_KEY), stack);
         if (level <= 0) {
             return;
         }
@@ -75,7 +91,8 @@ public class ModEvents {
         if (bonusLevels <= 0) {
             return;
         }
-        attribute.addTransientModifier(new AttributeModifier(ABYSS_BOOSTER_ID, (double) bonusLevels, AttributeModifier.Operation.ADD_VALUE));
+        attribute.addTransientModifier(
+                new AttributeModifier(ABYSS_BOOSTER_ID, (double) bonusLevels, AttributeModifier.Operation.ADD_VALUE));
     }
 
 }

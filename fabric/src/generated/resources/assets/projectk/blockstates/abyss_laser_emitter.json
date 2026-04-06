@@ -1,0 +1,50 @@
+{
+  "variants": {
+    "facing=down,mode=dc": {
+      "model": "projectk:block/abyss_laser_emitter_dc",
+      "x": 90
+    },
+    "facing=down,mode=pulse": {
+      "model": "projectk:block/abyss_laser_emitter_pulse",
+      "x": 90
+    },
+    "facing=east,mode=dc": {
+      "model": "projectk:block/abyss_laser_emitter_dc",
+      "y": 90
+    },
+    "facing=east,mode=pulse": {
+      "model": "projectk:block/abyss_laser_emitter_pulse",
+      "y": 90
+    },
+    "facing=north,mode=dc": {
+      "model": "projectk:block/abyss_laser_emitter_dc"
+    },
+    "facing=north,mode=pulse": {
+      "model": "projectk:block/abyss_laser_emitter_pulse"
+    },
+    "facing=south,mode=dc": {
+      "model": "projectk:block/abyss_laser_emitter_dc",
+      "y": 180
+    },
+    "facing=south,mode=pulse": {
+      "model": "projectk:block/abyss_laser_emitter_pulse",
+      "y": 180
+    },
+    "facing=up,mode=dc": {
+      "model": "projectk:block/abyss_laser_emitter_dc",
+      "x": 270
+    },
+    "facing=up,mode=pulse": {
+      "model": "projectk:block/abyss_laser_emitter_pulse",
+      "x": 270
+    },
+    "facing=west,mode=dc": {
+      "model": "projectk:block/abyss_laser_emitter_dc",
+      "y": 270
+    },
+    "facing=west,mode=pulse": {
+      "model": "projectk:block/abyss_laser_emitter_pulse",
+      "y": 270
+    }
+  }
+}

@@ -1,4 +1,5 @@
 {
+  "block.projectk.abyss_absorption_prism": "Abyss Absorption Prism",
   "block.projectk.abyss_alchemy_blend_machine": "Abyss Alchemy Blend Machine",
   "block.projectk.abyss_charger": "Abyss Charger",
   "block.projectk.abyss_core": "Abyss Core",
@@ -6,6 +7,7 @@
   "block.projectk.abyss_enchanter": "Abyss Enchanter",
   "block.projectk.abyss_energy_cable": "Abyss Energy Cable",
   "block.projectk.abyss_generator": "Abyss Generator",
+  "block.projectk.abyss_laser_emitter": "Abyss Laser Emitter",
   "block.projectk.abyss_magic_table": "Abyss Magic Table",
   "block.projectk.abyss_storage": "Abyss Storage",
   "block.projectk.abyss_synthesizer": "Abyss Synthesizer",
@@ -28,6 +30,7 @@
   "energy.projectk.yin_abyss_energy": "§5Yin",
   "gui.configscreen.title": "ProjectK Config",
   "gui.projectk.dump": "Dump",
+  "item.projectk.abyss_absorption_prism_shard": "Abyss Absorption Prism Shard",
   "item.projectk.abyss_bracelet": "Abyss Bracelet",
   "item.projectk.abyss_ingot": "Abyss Ingot",
   "item.projectk.abyss_wrench": "Abyss Wrench",

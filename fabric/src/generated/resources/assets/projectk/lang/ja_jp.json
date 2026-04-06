@@ -1,4 +1,5 @@
 {
+  "block.projectk.abyss_absorption_prism": "深淵吸収プリズム",
   "block.projectk.abyss_alchemy_blend_machine": "深淵錬金合成機",
   "block.projectk.abyss_charger": "深淵チャージャー",
   "block.projectk.abyss_core": "深淵コア",
@@ -6,6 +7,7 @@
   "block.projectk.abyss_enchanter": "深淵エンチャンター",
   "block.projectk.abyss_energy_cable": "深淵エネルギーケーブル",
   "block.projectk.abyss_generator": "深淵発電機",
+  "block.projectk.abyss_laser_emitter": "深淵レーザー発射機",
   "block.projectk.abyss_magic_table": "深淵魔術テーブル",
   "block.projectk.abyss_storage": "深淵貯蔵機",
   "block.projectk.abyss_synthesizer": "深淵合成機",
@@ -26,6 +28,7 @@
   "energy.projectk.yang_abyss_energy": "§d陽",
   "energy.projectk.yin_abyss_energy": "§5陰",
   "gui.projectk.dump": "破棄",
+  "item.projectk.abyss_absorption_prism_shard": "深淵吸収プリズムの欠片",
   "item.projectk.abyss_bracelet": "深淵ブレスレット",
   "item.projectk.abyss_ingot": "深淵インゴット",
   "item.projectk.abyss_wrench": "深淵レンチ",

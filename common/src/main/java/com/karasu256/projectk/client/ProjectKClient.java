@@ -4,10 +4,12 @@ import com.karasu256.projectk.block.entity.ProjectKBlockEntities;
 import com.karasu256.projectk.client.render.block.AbyssEnergyCableRenderer;
 import com.karasu256.projectk.client.render.block.geckolib.AbyssGeoBlockRenderer;
 import com.karasu256.projectk.client.render.entity.AbyssEnergyEntityRenderer;
+import com.karasu256.projectk.client.render.entity.AbyssLaserEntityRenderer;
 import com.karasu256.projectk.data.AbyssEnergyData;
 import com.karasu256.projectk.data.ProjectKDataComponets;
 import com.karasu256.projectk.energy.ProjectKEnergies;
 import com.karasu256.projectk.entity.ProjectKEntities;
+import com.karasu256.projectk.particle.AbyssLaserParticle;
 import com.karasu256.projectk.particle.AbyssParticle;
 import com.karasu256.projectk.particle.ProjectKParticles;
 import dev.architectury.registry.client.level.entity.EntityRendererRegistry;
@@ -18,10 +20,13 @@ import net.minecraft.world.item.ItemStack;
 public class ProjectKClient {
     public static void init() {
         EntityRendererRegistry.register(ProjectKEntities.ABYSS_ENERGY_ENTITY, AbyssEnergyEntityRenderer::new);
+        EntityRendererRegistry.register(ProjectKEntities.ABYSS_LASER_ENTITY, AbyssLaserEntityRenderer::new);
     }
 
     public static void initLate() {
         ParticleProviderRegistry.register(ProjectKParticles.ABYSS_PARTICLE.get(), AbyssParticle.Provider::new);
+        ParticleProviderRegistry.register(ProjectKParticles.ABYSS_LASER_PARTICLE.get(),
+                context -> new AbyssLaserParticle.Provider());
         BlockEntityRendererRegistry.register(ProjectKBlockEntities.ABYSS_CORE.get(),
                 context -> new AbyssGeoBlockRenderer<>());
         BlockEntityRendererRegistry.register(ProjectKBlockEntities.ABYSS_ENERGY_CABLE.get(),

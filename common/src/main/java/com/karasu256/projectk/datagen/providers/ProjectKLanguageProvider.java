@@ -125,6 +125,8 @@ public class ProjectKLanguageProvider implements DataProvider {
         add(en, "block.projectk.deepslate_karasium_ore", "Deepslate Karasium Ore");
         add(en, "block.projectk.abyss_enchant_remover", "Abyss Enchant Remover");
         add(en, "block.projectk.abyss_synthesizer", "Abyss Synthesizer");
+        add(en, "block.projectk.abyss_laser_emitter", "Abyss Laser Emitter");
+        add(en, "block.projectk.abyss_absorption_prism", "Abyss Absorption Prism");
         add(ja, "block.projectk.abyss_enchant_remover", "深淵エンチャントリムーバー");
 
         add(ja, "block.projectk.abyss_generator", "深淵発電機");
@@ -135,6 +137,8 @@ public class ProjectKLanguageProvider implements DataProvider {
         add(ja, "block.projectk.abyss_storage", "深淵貯蔵機");
         add(ja, "block.projectk.abyss_energy_cable", "深淵エネルギーケーブル");
         add(ja, "block.projectk.abyss_synthesizer", "深淵合成機");
+        add(ja, "block.projectk.abyss_laser_emitter", "深淵レーザー発射機");
+        add(ja, "block.projectk.abyss_absorption_prism", "深淵吸収プリズム");
         add(ja, "block.projectk.karasium_ore", "カラシウム鉱石");
         add(ja, "block.projectk.deepslate_karasium_ore", "深層カラシウム鉱石");
 
@@ -145,6 +149,7 @@ public class ProjectKLanguageProvider implements DataProvider {
         add(en, "item.projectk.abyss_ingot", "Abyss Ingot");
         add(en, "item.projectk.tier_upgrade", "Tier Upgrade");
         add(en, "item.projectk.abyss_bracelet", "Abyss Bracelet");
+        add(en, "item.projectk.abyss_absorption_prism_shard", "Abyss Absorption Prism Shard");
 
         add(ja, "item.projectk.wither_bone", "ウィザーの骨");
         add(ja, "item.projectk.karasium", "カラシウム");
@@ -153,6 +158,7 @@ public class ProjectKLanguageProvider implements DataProvider {
         add(ja, "item.projectk.abyss_ingot", "深淵インゴット");
         add(ja, "item.projectk.tier_upgrade", "ティアアップグレード");
         add(ja, "item.projectk.abyss_bracelet", "深淵ブレスレット");
+        add(ja, "item.projectk.abyss_absorption_prism_shard", "深淵吸収プリズムの欠片");
 
         add(en, "enchantment.projectk.abyss_booster", "Abyss Booster");
         add(ja, "enchantment.projectk.abyss_booster", "深淵ブースター");

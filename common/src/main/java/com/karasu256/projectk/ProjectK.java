@@ -2,6 +2,7 @@ package com.karasu256.projectk;
 
 import com.karasu256.projectk.data.AbyssEnchanterTierManager;
 import com.karasu256.projectk.data.AbyssEnergySpawnRuleManager;
+import com.karasu256.projectk.data.AbyssLaserEmitterTierManager;
 import com.karasu256.projectk.event.ModEvents;
 import net.karasuniki.karasunikilib.api.registry.KRegistryScanner;
 
@@ -12,6 +13,7 @@ public final class ProjectK {
         KRegistryScanner.scan(MOD_ID);
 
         AbyssEnchanterTierManager.init();
+        AbyssLaserEmitterTierManager.init();
         AbyssEnergySpawnRuleManager.init();
         ModEvents.init();
     }

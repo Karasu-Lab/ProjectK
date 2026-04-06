@@ -1,7 +1,9 @@
 package com.karasu256.projectk.neoforge.datagen.providers;
 
 import com.karasu256.projectk.ProjectK;
+import com.karasu256.projectk.block.ProjectKBlocks;
 import com.karasu256.projectk.block.custom.AbyssEnergyCable;
+import com.karasu256.projectk.block.custom.AbyssLaserEmitter;
 import com.karasu256.projectk.datagen.providers.CommonBlockStateProvider;
 import com.karasu256.projectk.datagen.providers.CommonItemModelProvider;
 import dev.architectury.registry.registries.RegistrySupplier;
@@ -11,6 +13,7 @@ import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.neoforged.neoforge.client.model.generators.BlockStateProvider;
 import net.neoforged.neoforge.client.model.generators.ConfiguredModel;
 import net.neoforged.neoforge.client.model.generators.ModelFile;
@@ -54,14 +57,18 @@ public class NeoForgeBlockStateProvider extends BlockStateProvider implements Co
     @Override
     public void simpleBlockItem(Block block) {
         String name = BuiltInRegistries.BLOCK.getKey(block).getPath();
-        itemModels().getBuilder(name).parent(new ModelFile.UncheckedModelFile(
+        if (block == ProjectKBlocks.ABYSS_LASER_EMITTER.get()) {
+            name += "_pulse";
+        }
+        itemModels().getBuilder(BuiltInRegistries.BLOCK.getKey(block).getPath()).parent(new ModelFile.UncheckedModelFile(
                 ResourceLocation.fromNamespaceAndPath(ProjectK.MOD_ID, "block/" + name)));
     }
 
     @Override
     public void existingModelBlock(Block block, String modelPath) {
         ResourceLocation modelLocation = ResourceLocation.parse(modelPath);
-        simpleBlock(block, new ModelFile.UncheckedModelFile(modelLocation));
+        String name = modelLocation.getPath().replace("block/", "");
+        simpleBlock(block, models().cubeAll(name, ResourceLocation.fromNamespaceAndPath(modelLocation.getNamespace(), "block/" + name)));
     }
 
     @Override
@@ -114,6 +121,31 @@ public class NeoForgeBlockStateProvider extends BlockStateProvider implements Co
             builder.part().modelFile(sideModel).rotationY(yRot).rotationX(xRot).addModel()
                     .condition(AbyssEnergyCable.getConnectionPropertyFor(dir), true).end();
         }
+    }
+
+    @Override
+    public void directionalModeBlock(Block block, String baseName) {
+        ModelFile pulse = models().withExistingParent(baseName + "_pulse", "minecraft:block/orientable_with_bottom")
+                .texture("top", "projectk:block/" + baseName + "_pulse")
+                .texture("front", "projectk:block/" + baseName + "_pulse")
+                .texture("side", "projectk:block/" + baseName + "_side")
+                .texture("bottom", "projectk:block/" + baseName + "_back");
+
+        ModelFile dc = models().withExistingParent(baseName + "_dc", "minecraft:block/orientable_with_bottom")
+                .texture("top", "projectk:block/" + baseName + "_dc")
+                .texture("front", "projectk:block/" + baseName + "_dc")
+                .texture("side", "projectk:block/" + baseName + "_side")
+                .texture("bottom", "projectk:block/" + baseName + "_back");
+
+        getVariantBuilder(block).forAllStates(state -> {
+            Direction facing = state.getValue(AbyssLaserEmitter.FACING);
+            AbyssLaserEmitter.Mode mode = state.getValue(AbyssLaserEmitter.MODE);
+            return ConfiguredModel.builder()
+                    .modelFile(mode == AbyssLaserEmitter.Mode.PULSE ? pulse : dc)
+                    .rotationX(facing == Direction.DOWN ? 90 : facing == Direction.UP ? 270 : 0)
+                    .rotationY(facing.getAxis().isVertical() ? 0 : (((int) facing.toYRot()) + 180) % 360)
+                    .build();
+        });
     }
 
     private int getRotationY(Direction dir) {

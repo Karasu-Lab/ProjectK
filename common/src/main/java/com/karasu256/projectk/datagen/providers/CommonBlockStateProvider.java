@@ -59,6 +59,12 @@ public class CommonBlockStateProvider {
         generator.multipartCable(ProjectKBlocks.ABYSS_ENERGY_CABLE.get(), "abyss_energy_cable");
         generator.simpleBlockItem(ProjectKBlocks.ABYSS_ENERGY_CABLE.get());
 
+        generator.directionalModeBlock(ProjectKBlocks.ABYSS_LASER_EMITTER.get(), "abyss_laser_emitter");
+        generator.simpleBlockItem(ProjectKBlocks.ABYSS_LASER_EMITTER.get());
+
+        generator.simpleBlock(ProjectKBlocks.ABYSS_ABSORPTION_PRISM.get());
+        generator.simpleBlockItem(ProjectKBlocks.ABYSS_ABSORPTION_PRISM.get());
+
         for (ProjectKEnergies.EnergyDefinition definition : ProjectKEnergies.getDefinitions()) {
             String fluidId = "fluid_" + definition.idPath();
             generator.existingModelBlockAllStates(ProjectKBlocks.getFluidBlock(definition.id()).get(), "projectk:block/" + fluidId);
@@ -79,5 +85,7 @@ public class CommonBlockStateProvider {
         void existingModelBlockAllStates(Block block, String modelPath);
 
         void multipartCable(Block block, String id);
+
+        void directionalModeBlock(Block block, String baseName);
     }
 }

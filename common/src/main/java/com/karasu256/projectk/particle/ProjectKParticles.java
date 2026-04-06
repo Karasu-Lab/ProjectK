@@ -27,6 +27,20 @@ public class ProjectKParticles implements IKRegistryInitializerTarget {
         }
     });
 
+    public static final RegistrySupplier<ParticleType<LaserParticleOptions>> ABYSS_LASER_PARTICLE = KParticleRegistry.particle(ProjectK.MOD_ID, "abyss_laser_particle", () -> new ParticleType<>(false) {
+        @Override
+        @NotNull
+        public MapCodec<LaserParticleOptions> codec() {
+            return LaserParticleOptions.CODEC;
+        }
+
+        @Override
+        @NotNull
+        public StreamCodec<? super RegistryFriendlyByteBuf, LaserParticleOptions> streamCodec() {
+            return LaserParticleOptions.STREAM_CODEC;
+        }
+    });
+
     public static void init() {
     }
 }

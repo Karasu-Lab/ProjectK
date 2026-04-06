@@ -29,6 +29,8 @@ public class CommonBlockLootProvider extends BlockLootSubProvider {
         this.dropSelf(ProjectKBlocks.ABYSS_STORAGE.get());
         this.dropSelf(ProjectKBlocks.ABYSS_ENCHANT_REMOVER.get());
         this.dropSelf(ProjectKBlocks.ABYSS_SYNTHESIZER.get());
+        this.dropSelf(ProjectKBlocks.ABYSS_LASER_EMITTER.get());
+        this.dropSelf(ProjectKBlocks.ABYSS_ABSORPTION_PRISM.get());
         for (ProjectKEnergies.EnergyDefinition definition : ProjectKEnergies.getDefinitions()) {
             this.dropSelf(ProjectKBlocks.getCore(definition.id()).get());
         }

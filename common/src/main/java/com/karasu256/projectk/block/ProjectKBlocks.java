@@ -70,6 +70,12 @@ public class ProjectKBlocks implements IKRegistryInitializerTarget {
     public static RegistrySupplier<Block> ABYSS_SYNTHESIZER = block("abyss_synthesizer",
             () -> new AbyssSynthesizer(BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_BLOCK),
                     ProjectKBlock.CustomProperties.of().capacity(100000L)), new Item.Properties());
+    public static RegistrySupplier<Block> ABYSS_LASER_EMITTER = block("abyss_laser_emitter",
+            () -> new AbyssLaserEmitter(BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_BLOCK),
+                    new AbstractEnergyBlock.Properties(30000L)), new Item.Properties());
+    public static RegistrySupplier<Block> ABYSS_ABSORPTION_PRISM = block("abyss_absorption_prism",
+            () -> new AbyssAbsorptionPrism(BlockBehaviour.Properties.ofFullCopy(Blocks.GLASS).noOcclusion().sound(SoundType.GLASS)),
+            new Item.Properties());
     public static RegistrySupplier<Block> KARASIUM_ORE = block("karasium_ore", ProjectKBlock::new,
             new Item.Properties());
     public static RegistrySupplier<Block> DEEPSLATE_KARASIUM_ORE = block("deepslate_karasium_ore",

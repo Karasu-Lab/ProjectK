@@ -13,7 +13,8 @@ public class ProjectKLootTableProvider extends LootTableProvider {
     public ProjectKLootTableProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> registries) {
         super(output, Set.of(), List.of(
                 new SubProviderEntry(CommonBlockLootProvider::new, LootContextParamSets.BLOCK),
-                new SubProviderEntry(CommonEntityLootProvider::new, LootContextParamSets.ENTITY)
+                new SubProviderEntry(CommonEntityLootProvider::new, LootContextParamSets.ENTITY),
+                new SubProviderEntry(r -> new CommonChestLootProvider(), LootContextParamSets.CHEST)
         ), registries);
     }
 
