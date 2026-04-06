@@ -54,4 +54,8 @@ public interface ITierInfo {
                     ProjectKItems.TIER_UPGRADE.get().getDefaultInstance());
         }
     }
+
+    default void syncTier(CompoundTag nbt) {
+        saveTier(nbt);
+    }
 }

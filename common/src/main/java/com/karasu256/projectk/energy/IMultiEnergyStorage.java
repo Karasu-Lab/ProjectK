@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public interface IMultiEnergyStorage extends IEnergyListHolder {
-    String ENERGY_LIST_KEY = "projectk:abyss_energy_list";
+    String ENERGY_LIST_KEY = EnergyKeys.ENERGY_LIST.toString();
 
     List<AbyssEnergyData> getEnergyList();
 
@@ -34,7 +34,7 @@ public interface IMultiEnergyStorage extends IEnergyListHolder {
     default int getEnergyTypeCount() {
         int count = 0;
         for (AbyssEnergyData data : getEnergyList()) {
-            if (data != null && data.energyId() != null && data.amount() > 0) {
+            if (data != null && data.energyId() != null && data.hasPositiveAmount()) {
                 count++;
             }
         }
@@ -48,10 +48,10 @@ public interface IMultiEnergyStorage extends IEnergyListHolder {
         long capacity = getEnergyCapacity();
         for (int i = 0; i < list.size(); i++) {
             AbyssEnergyData data = list.get(i);
-            if (data == null || data.energyId() == null || data.amount() <= 0) {
+            if (data == null || data.energyId() == null || !data.hasPositiveAmount()) {
                 continue;
             }
-            entries.add(new EnergyEntry(data.energyId(), data.amount(), capacity, i == activeIndex));
+            entries.add(new EnergyEntry(data.energyId(), data.amountOrZero(), capacity, i == activeIndex));
         }
         return entries;
     }

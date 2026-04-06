@@ -49,7 +49,8 @@ public class AbyssAlchemyBlendMachineBlockEntity extends AbstractAbyssEnergyMach
     }
 
     public static void tick(Level level, BlockPos pos, BlockState state, AbyssAlchemyBlendMachineBlockEntity be) {
-        if (level.isClientSide) return;
+        if (level.isClientSide)
+            return;
         be.serverTick();
     }
 
@@ -261,7 +262,7 @@ public class AbyssAlchemyBlendMachineBlockEntity extends AbstractAbyssEnergyMach
                 energies.remove(i--);
                 continue;
             }
-            long nextAmount = Math.min(data.amount(), capacity);
+            long nextAmount = Math.min(data.amountOrZero(), capacity);
             if (nextAmount <= 0) {
                 energies.remove(i--);
                 continue;
@@ -350,7 +351,8 @@ public class AbyssAlchemyBlendMachineBlockEntity extends AbstractAbyssEnergyMach
             lockedRecipeId = null;
         }
         if (nbt.contains(EnergyKeys.MAGIC_TABLE_OUTPUT_ITEM.toString())) {
-            outputItem = ItemStack.parse(registries, nbt.getCompound(EnergyKeys.MAGIC_TABLE_OUTPUT_ITEM.toString())).orElse(ItemStack.EMPTY);
+            outputItem = ItemStack.parse(registries, nbt.getCompound(EnergyKeys.MAGIC_TABLE_OUTPUT_ITEM.toString()))
+                    .orElse(ItemStack.EMPTY);
         } else {
             outputItem = ItemStack.EMPTY;
         }
@@ -373,12 +375,14 @@ public class AbyssAlchemyBlendMachineBlockEntity extends AbstractAbyssEnergyMach
 
     @Nullable
     private RecipeHolder<AbyssAlchemyBlendRecipe> findMatchingRecipe(ItemStack input) {
-        if (level == null) return null;
+        if (level == null)
+            return null;
         List<RecipeHolder<AbyssAlchemyBlendRecipe>> recipes = level.getRecipeManager()
                 .getAllRecipesFor(ProjectKRecipes.ABYSS_ALCHEMY_BLEND.get());
         for (RecipeHolder<AbyssAlchemyBlendRecipe> holder : recipes) {
             AbyssAlchemyBlendRecipe recipe = holder.value();
-            if (!recipe.matchesInput(input)) continue;
+            if (!recipe.matchesInput(input))
+                continue;
             return holder;
         }
         return null;

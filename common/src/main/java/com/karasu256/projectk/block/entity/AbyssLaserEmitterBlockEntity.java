@@ -29,11 +29,6 @@ public class AbyssLaserEmitterBlockEntity extends AbstractPKEnergyBlockEntity<Ab
         super(ProjectKBlockEntities.ABYSS_LASER_EMITTER.get(), pos, state, 30000L);
     }
 
-    @Override
-    protected AbyssEnergy createEnergy() {
-        return new AbyssEnergy(0L);
-    }
-
     public static void tick(Level level, BlockPos pos, BlockState state, AbyssLaserEmitterBlockEntity be) {
         if (level.isClientSide)
             return;
@@ -57,6 +52,11 @@ public class AbyssLaserEmitterBlockEntity extends AbstractPKEnergyBlockEntity<Ab
         }
     }
 
+    @Override
+    protected AbyssEnergy createEnergy() {
+        return new AbyssEnergy(0L);
+    }
+
     private boolean fireLaser(Level level, BlockPos pos, Direction facing, AbyssLaserEmitterTier tierData) {
         ResourceLocation energyId = getAbyssEnergyId();
         if (energyId == null)
@@ -78,11 +78,18 @@ public class AbyssLaserEmitterBlockEntity extends AbstractPKEnergyBlockEntity<Ab
                         new ClipContext(startVec, endVec, ClipContext.Block.VISUAL, ClipContext.Fluid.NONE,
                                 CollisionContext.empty()));
                 Vec3 actualEndVec = result.getLocation();
+                BlockPos hitPos = result.getBlockPos();
+                BlockState hitState = level.getBlockState(hitPos);
+
+                if (hitState.getBlock() instanceof com.karasu256.projectk.block.custom.ILaserEnergyReactiveBlock reactive) {
+                    reactive.onLaserHit(level, hitPos, hitState, energyId, cost);
+                }
 
                 AbyssLaserEntity laser = new AbyssLaserEntity(ProjectKEntities.ABYSS_LASER_ENTITY.get(), level);
                 laser.setPos(startVec);
                 laser.setTarget(actualEndVec);
-                laser.setEnergyId(energyId.toString());
+                laser.setEnergyId(energyId);
+                laser.setEnergyAmount(cost);
                 laser.setFacing(facing);
                 laser.setLifetime(1);
                 level.addFreshEntity(laser);

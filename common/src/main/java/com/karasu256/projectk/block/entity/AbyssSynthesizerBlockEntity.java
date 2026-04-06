@@ -35,11 +35,11 @@ import java.util.List;
 
 public class AbyssSynthesizerBlockEntity extends KarasuCoreBlockEntity implements ICableInputable, MenuProvider, IMultiEnergyStorage, Container, IWthitCustomEnergy {
     private static final int MAX_TYPES = 64;
+    private static final int MAX_PROGRESS = 100;
     private final NonNullList<ItemStack> items = NonNullList.withSize(7, ItemStack.EMPTY);
     private final List<AbyssEnergyData> energies = new ArrayList<>();
     private final long capacity;
     private int progress = 0;
-    private static final int MAX_PROGRESS = 100;
 
     public AbyssSynthesizerBlockEntity(BlockPos pos, BlockState state) {
         super(ProjectKBlockEntities.ABYSS_SYNTHESIZER.get(), pos, state);
@@ -50,6 +50,13 @@ public class AbyssSynthesizerBlockEntity extends KarasuCoreBlockEntity implement
         if (level.isClientSide)
             return;
         be.serverTick();
+    }
+
+    private static long resolveCapacity(BlockState state) {
+        if (state.getBlock() instanceof AbyssSynthesizer synthesizer) {
+            return synthesizer.getCapacity();
+        }
+        return 10000L;
     }
 
     private void serverTick() {
@@ -106,7 +113,7 @@ public class AbyssSynthesizerBlockEntity extends KarasuCoreBlockEntity implement
             }
         }
         for (var req : recipe.energies()) {
-            extractInternal(req.energyId(), req.amount(), false);
+            extractInternal(req.energyId(), req.amountOrZero(), false);
         }
         ItemStack result = recipe.result().copy();
         if (items.get(0).isEmpty()) {
@@ -118,19 +125,12 @@ public class AbyssSynthesizerBlockEntity extends KarasuCoreBlockEntity implement
         sync();
     }
 
-    private static long resolveCapacity(BlockState state) {
-        if (state.getBlock() instanceof AbyssSynthesizer synthesizer) {
-            return synthesizer.getCapacity();
-        }
-        return 10000L;
-    }
-
     @Override
     public long insert(ResourceLocation id, long maxAmount, boolean simulate) {
         if (id == null || maxAmount <= 0)
             return 0;
 
-        long totalCurrent = energies.stream().mapToLong(AbyssEnergyData::amount).sum();
+        long totalCurrent = energies.stream().mapToLong(AbyssEnergyData::amountOrZero).sum();
         long received = Math.min(capacity - totalCurrent, maxAmount);
 
         if (received <= 0)
@@ -142,7 +142,7 @@ public class AbyssSynthesizerBlockEntity extends KarasuCoreBlockEntity implement
         }
 
         if (!simulate) {
-            long current = index >= 0 ? energies.get(index).amount() : 0L;
+            long current = index >= 0 ? energies.get(index).amountOrZero() : 0L;
             long nextAmount = current + received;
             if (index >= 0) {
                 energies.set(index, new AbyssEnergyData(id, nextAmount));
@@ -161,10 +161,10 @@ public class AbyssSynthesizerBlockEntity extends KarasuCoreBlockEntity implement
             return 0;
 
         AbyssEnergyData data = energies.get(index);
-        long extracted = Math.min(data.amount(), maxAmount);
+        long extracted = Math.min(data.amountOrZero(), maxAmount);
 
         if (extracted > 0 && !simulate) {
-            long remaining = data.amount() - extracted;
+            long remaining = data.amountOrZero() - extracted;
             if (remaining <= 0) {
                 energies.remove(index);
             } else {

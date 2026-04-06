@@ -338,13 +338,6 @@ public class AbyssMagicTableBlockEntity extends AbstractPKEnergyBlockEntity<Abys
     }
 
     @Override
-    public CompoundTag getUpdateTag(HolderLookup.Provider registries) {
-        CompoundTag nbt = super.getUpdateTag(registries);
-        saveAdditional(nbt, registries);
-        return nbt;
-    }
-
-    @Override
     public boolean shouldShowDefaultEnergyTooltip() {
         return false;
     }

@@ -71,7 +71,8 @@ public record AbyssSynthesizerRecipe(List<AbyssEnergyData> energies, List<Ingred
         for (AbyssEnergyData req : energies) {
             boolean found = false;
             for (AbyssEnergyData available : availableEnergies) {
-                if (available.energyId().equals(req.energyId()) && available.amount() >= req.amount()) {
+                if (available.energyId().equals(req.energyId())
+                        && available.amountOrZero() >= req.amountOrZero()) {
                     found = true;
                     break;
                 }

@@ -1,6 +1,7 @@
 package com.karasu256.projectk.client;
 
 import com.karasu256.projectk.block.entity.ProjectKBlockEntities;
+import com.karasu256.projectk.client.render.block.AbyssAbsorptionPrismRenderer;
 import com.karasu256.projectk.client.render.block.AbyssEnergyCableRenderer;
 import com.karasu256.projectk.client.render.block.geckolib.AbyssGeoBlockRenderer;
 import com.karasu256.projectk.client.render.entity.AbyssEnergyEntityRenderer;
@@ -31,6 +32,8 @@ public class ProjectKClient {
                 context -> new AbyssGeoBlockRenderer<>());
         BlockEntityRendererRegistry.register(ProjectKBlockEntities.ABYSS_ENERGY_CABLE.get(),
                 AbyssEnergyCableRenderer::new);
+        BlockEntityRendererRegistry.register(ProjectKBlockEntities.ABYSS_ABSORPTION_PRISM.get(),
+                AbyssAbsorptionPrismRenderer::new);
     }
 
     public static float getAbyssEnergyModelIndex(ItemStack stack) {

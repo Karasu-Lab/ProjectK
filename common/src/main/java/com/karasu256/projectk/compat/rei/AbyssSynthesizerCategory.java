@@ -78,7 +78,7 @@ public class AbyssSynthesizerCategory implements DisplayCategory<AbyssSynthesize
 
         widgets.add(Widgets.createDrawableWidget((graphics, mouseX, mouseY, delta) -> {
             List<AbyssEnergyData> energies = display.getEnergies();
-            long capacity = energies.stream().mapToLong(AbyssEnergyData::amount).sum();
+            long capacity = energies.stream().mapToLong(AbyssEnergyData::amountOrZero).sum();
             if (capacity > 0) {
                 graphics.pose().pushPose();
                 graphics.pose().translate(0, 0, 100);
@@ -90,7 +90,7 @@ public class AbyssSynthesizerCategory implements DisplayCategory<AbyssSynthesize
 
         widgets.add(Widgets.createTooltip(mouse -> {
             List<AbyssEnergyData> energies = display.getEnergies();
-            long capacity = energies.stream().mapToLong(AbyssEnergyData::amount).sum();
+            long capacity = energies.stream().mapToLong(AbyssEnergyData::amountOrZero).sum();
             return EnergyBarRenderer.getDonutTooltipComponents(mouse.x, mouse.y, (float) centerX, (float) centerY,
                             energies, capacity, capacity, new EnergyBarRenderer.DonutRadius(56.0f - 6.0f, 56.0f + 6.0f), -90.0f)
                     .map(Tooltip::create).orElse(null);

@@ -114,7 +114,7 @@ public class AbyssStorageBlockEntity extends KarasuCoreBlockEntity implements IC
         if (index < 0 && getEnergyTypeCount() >= maxTypes) {
             return 0;
         }
-        long current = index >= 0 ? energies.get(index).amount() : 0L;
+        long current = index >= 0 ? energies.get(index).amountOrZero() : 0L;
         long received = Math.min(capacity - current, maxAmount);
         if (received <= 0) {
             return 0;
@@ -144,12 +144,12 @@ public class AbyssStorageBlockEntity extends KarasuCoreBlockEntity implements IC
         if (active == null) {
             return 0;
         }
-        long extracted = Math.min(active.amount(), maxAmount);
+        long extracted = Math.min(active.amountOrZero(), maxAmount);
         if (extracted <= 0) {
             return 0;
         }
         if (!simulate) {
-            long remaining = active.amount() - extracted;
+            long remaining = active.amountOrZero() - extracted;
             if (remaining <= 0) {
                 removeEnergyAt(activeIndex);
             } else {
@@ -259,32 +259,32 @@ public class AbyssStorageBlockEntity extends KarasuCoreBlockEntity implements IC
 
     public ResourceLocation getEnergyId1() {
         AbyssEnergyData data = getEnergyByIndex(0);
-        return data == null || data.amount() <= 0 ? null : data.energyId();
+        return data == null || !data.hasPositiveAmount() ? null : data.energyId();
     }
 
     public ResourceLocation getEnergyId2() {
         AbyssEnergyData data = getEnergyByIndex(1);
-        return data == null || data.amount() <= 0 ? null : data.energyId();
+        return data == null || !data.hasPositiveAmount() ? null : data.energyId();
     }
 
     public ResourceLocation getEnergyId3() {
         AbyssEnergyData data = getEnergyByIndex(2);
-        return data == null || data.amount() <= 0 ? null : data.energyId();
+        return data == null || !data.hasPositiveAmount() ? null : data.energyId();
     }
 
     public long getEnergyAmount1() {
         AbyssEnergyData data = getEnergyByIndex(0);
-        return data == null ? 0L : data.amount();
+        return data == null ? 0L : data.amountOrZero();
     }
 
     public long getEnergyAmount2() {
         AbyssEnergyData data = getEnergyByIndex(1);
-        return data == null ? 0L : data.amount();
+        return data == null ? 0L : data.amountOrZero();
     }
 
     public long getEnergyAmount3() {
         AbyssEnergyData data = getEnergyByIndex(2);
-        return data == null ? 0L : data.amount();
+        return data == null ? 0L : data.amountOrZero();
     }
 
     public int getActiveIndex() {
@@ -301,7 +301,7 @@ public class AbyssStorageBlockEntity extends KarasuCoreBlockEntity implements IC
             return false;
         }
         AbyssEnergyData data = getEnergyByIndex(index);
-        if (data == null || data.amount() <= 0) {
+        if (data == null || !data.hasPositiveAmount()) {
             return false;
         }
         if (!TOGGLE_CONDITION.test(new ToggleContext(this, player, index))) {
@@ -324,7 +324,7 @@ public class AbyssStorageBlockEntity extends KarasuCoreBlockEntity implements IC
             return false;
         }
         for (AbyssEnergyData data : entries) {
-            if (data == null || data.energyId() == null || data.amount() <= 0) {
+            if (data == null || data.energyId() == null || !data.hasPositiveAmount()) {
                 continue;
             }
             if (findEnergyIndex(data.energyId()) >= 0) {
@@ -349,14 +349,14 @@ public class AbyssStorageBlockEntity extends KarasuCoreBlockEntity implements IC
         boolean changed = false;
         for (int i = 0; i < entries.size(); ) {
             AbyssEnergyData data = entries.get(i);
-            if (data == null || data.energyId() == null || data.amount() <= 0) {
+            if (data == null || data.energyId() == null || !data.hasPositiveAmount()) {
                 entries.remove(i);
                 changed = true;
                 continue;
             }
-            long inserted = insert(data.energyId(), data.amount(), false);
+            long inserted = insert(data.energyId(), data.amountOrZero(), false);
             if (inserted > 0) {
-                long remaining = data.amount() - inserted;
+                long remaining = data.amountOrZero() - inserted;
                 if (remaining <= 0) {
                     entries.remove(i);
                     changed = true;
@@ -401,7 +401,7 @@ public class AbyssStorageBlockEntity extends KarasuCoreBlockEntity implements IC
         }
         List<AbyssEnergyData> energies = readEnergyList(stack);
         int index = findEnergyIndex(energies, activeId);
-        long current = index >= 0 ? energies.get(index).amount() : 0L;
+        long current = index >= 0 ? energies.get(index).amountOrZero() : 0L;
         long cap = capacityData.capacity();
         if (current >= cap) {
             return stack;
@@ -432,7 +432,7 @@ public class AbyssStorageBlockEntity extends KarasuCoreBlockEntity implements IC
         }
         if (list.isEmpty()) {
             AbyssEnergyData data = stack.get(ProjectKDataComponets.ABYSS_ENERGY_DATA_COMPONENT_TYPE.get());
-            if (data != null && data.amount() > 0 && data.energyId() != null) {
+            if (data != null && data.energyId() != null && data.hasPositiveAmount()) {
                 list.add(data);
             }
         }
@@ -457,7 +457,8 @@ public class AbyssStorageBlockEntity extends KarasuCoreBlockEntity implements IC
         stack.remove(ProjectKDataComponets.ABYSS_ENERGY_DATA_COMPONENT_TYPE.get());
         ListTag listTag = new ListTag();
         for (AbyssEnergyData data : list) {
-            AbyssEnergyData.CODEC.encodeStart(NbtOps.INSTANCE, data).result().ifPresent(element -> listTag.add(element));
+            AbyssEnergyData.CODEC.encodeStart(NbtOps.INSTANCE, data).result()
+                    .ifPresent(element -> listTag.add(element));
         }
         tag.put(IMultiEnergyStorage.ENERGY_LIST_KEY, listTag);
         stack.set(DataComponents.CUSTOM_DATA, CustomData.of(tag));
@@ -492,7 +493,7 @@ public class AbyssStorageBlockEntity extends KarasuCoreBlockEntity implements IC
 
     private long getActiveEnergyAmount() {
         AbyssEnergyData data = getActiveEnergy();
-        return data == null ? 0L : data.amount();
+        return data == null ? 0L : data.amountOrZero();
     }
 
     @Nullable
@@ -522,7 +523,7 @@ public class AbyssStorageBlockEntity extends KarasuCoreBlockEntity implements IC
                 energies.remove(i--);
                 continue;
             }
-            long nextAmount = Math.min(data.amount(), capacity);
+            long nextAmount = Math.min(data.amountOrZero(), capacity);
             if (nextAmount <= 0) {
                 energies.remove(i--);
                 continue;

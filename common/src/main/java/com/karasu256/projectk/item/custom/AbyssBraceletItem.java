@@ -29,6 +29,6 @@ public class AbyssBraceletItem extends ProjectKItem {
 
     private long getEnergyAmount(ItemStack stack) {
         AbyssEnergyData data = stack.get(ProjectKDataComponets.ABYSS_ENERGY_DATA_COMPONENT_TYPE.get());
-        return data == null ? 0L : data.amount();
+        return data == null ? 0L : data.amountOrZero();
     }
 }

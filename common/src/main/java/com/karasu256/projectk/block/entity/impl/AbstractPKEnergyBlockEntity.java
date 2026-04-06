@@ -2,9 +2,7 @@ package com.karasu256.projectk.block.entity.impl;
 
 import com.karasu256.projectk.client.animation.RotationAnimSpeed;
 import com.karasu256.projectk.data.AbyssEnergyData;
-import com.karasu256.projectk.energy.AbyssEnergy;
-import com.karasu256.projectk.energy.IAbyssEnergy;
-import com.karasu256.projectk.energy.IProjectKEnergy;
+import com.karasu256.projectk.energy.*;
 import com.karasu256.projectk.utils.Id;
 import net.karasuniki.karasunikilib.api.block.entity.impl.AbstractEnergyBlockEntity;
 import net.karasuniki.karasunikilib.api.client.model.animation.IRotationAnimSpeed;
@@ -192,7 +190,13 @@ public abstract class AbstractPKEnergyBlockEntity<T extends IProjectKEnergy> ext
 
     @Override
     public void readNbt(CompoundTag nbt, HolderLookup.Provider registries) {
-        super.loadAdditional(nbt, registries);
+        loadAdditional(nbt, registries);
+        if (this instanceof ITierInfo tierInfo) {
+            tierInfo.loadTier(nbt);
+        }
+        if (this instanceof IMaxEnergyInfo maxEnergyInfo) {
+            maxEnergyInfo.loadMaxEnergy(nbt);
+        }
         rotationSpeed.readNbt(nbt, registries);
         if (pkEnergy instanceof AbyssEnergy abyssEnergy) {
             abyssEnergy.readNbt(nbt, registries);
@@ -201,7 +205,13 @@ public abstract class AbstractPKEnergyBlockEntity<T extends IProjectKEnergy> ext
 
     @Override
     public void writeNbt(CompoundTag nbt, HolderLookup.Provider registries) {
-        super.saveAdditional(nbt, registries);
+        saveAdditional(nbt, registries);
+        if (this instanceof ITierInfo tierInfo) {
+            tierInfo.syncTier(nbt);
+        }
+        if (this instanceof IMaxEnergyInfo maxEnergyInfo) {
+            maxEnergyInfo.saveMaxEnergy(nbt);
+        }
         rotationSpeed.writeNbt(nbt, registries);
         if (pkEnergy instanceof AbyssEnergy abyssEnergy) {
             abyssEnergy.writeNbt(nbt, registries);

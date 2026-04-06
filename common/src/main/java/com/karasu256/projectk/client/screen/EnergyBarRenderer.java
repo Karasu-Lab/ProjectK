@@ -25,9 +25,6 @@ public final class EnergyBarRenderer {
     private EnergyBarRenderer() {
     }
 
-    public record DonutRadius(float inner, float outer) {
-    }
-
     public static void renderDonut(GuiGraphics graphics, float cx, float cy, List<AbyssEnergyData> energies, long visualCapacity, DonutRadius radius, float startAngle) {
         if (visualCapacity <= 0 || energies.isEmpty())
             return;
@@ -45,16 +42,16 @@ public final class EnergyBarRenderer {
         Matrix4f pose = graphics.pose().last().pose();
 
         for (AbyssEnergyData data : energies) {
-            long amount = data.amount();
+            long amount = data.amountOrZero();
             if (amount <= 0)
                 continue;
 
             float sweepDeg = ((float) amount / visualCapacity) * 360.0f;
             ResourceLocation energyId = data.energyId();
-            
+
             ResourceLocation spriteId = ResourceLocation.fromNamespaceAndPath(energyId.getNamespace(),
                     "block/fluid_" + energyId.getPath() + "_still");
-            
+
             TextureAtlasSprite sprite = Minecraft.getInstance().getModelManager().getAtlas(InventoryMenu.BLOCK_ATLAS)
                     .getSprite(spriteId);
 
@@ -151,7 +148,7 @@ public final class EnergyBarRenderer {
 
         float currentAngle = startAngle;
         for (AbyssEnergyData data : energies) {
-            long amount = data.amount();
+            long amount = data.amountOrZero();
             if (amount <= 0)
                 continue;
 
@@ -175,8 +172,8 @@ public final class EnergyBarRenderer {
         return Optional.empty();
     }
 
-    public static void renderFluidBar(GuiGraphics graphics, ResourceLocation energyId, long amount, long capacity, int x, int y, int width, int height) {
-        if (energyId == null || capacity <= 0) {
+    public static void renderFluidBar(GuiGraphics graphics, ResourceLocation energyId, long amount, Long capacity, int x, int y, int width, int height) {
+        if (energyId == null || capacity == null || capacity <= 0) {
             return;
         }
         int fill = (int) Math.min((amount * (long) height) / capacity, height);
@@ -196,8 +193,8 @@ public final class EnergyBarRenderer {
         graphics.disableScissor();
     }
 
-    public static void renderFluidBarHorizontal(GuiGraphics graphics, ResourceLocation energyId, long amount, long capacity, int x, int y, int width, int height) {
-        if (energyId == null || capacity <= 0) {
+    public static void renderFluidBarHorizontal(GuiGraphics graphics, ResourceLocation energyId, long amount, Long capacity, int x, int y, int width, int height) {
+        if (energyId == null || capacity == null || capacity <= 0) {
             return;
         }
         int fill = (int) Math.min((amount * (long) width) / capacity, width);
@@ -217,18 +214,24 @@ public final class EnergyBarRenderer {
         graphics.disableScissor();
     }
 
-    public static List<Component> toolTipComponents(ResourceLocation energyId, long amount, long capacity) {
+    public static List<Component> toolTipComponents(ResourceLocation energyId, long amount, Long capacity) {
         if (energyId == null) {
             return List.of();
         }
         return ProjectKEnergies.getDefinition(energyId).map(definition -> {
-            Component formatted = Component.translatable("energy.projectk.abyss_energy_format", definition.getDisplayName());
-            Component energyLine = Component.translatable("tooltip.projectk.wthit.energy", amount, capacity);
+            Component formatted = Component.translatable("energy.projectk.abyss_energy_format",
+                    definition.getDisplayName());
+            Component energyLine = capacity == null
+                    ? Component.translatable("tooltip.projectk.wthit.energy_no_limit", amount)
+                    : Component.translatable("tooltip.projectk.wthit.energy", amount, capacity);
             return List.of(formatted, energyLine);
         }).orElseGet(() -> List.of(Component.literal(energyId.toString())));
     }
 
-    public static List<FormattedCharSequence> toolTip(ResourceLocation energyId, long amount, long capacity) {
+    public static List<FormattedCharSequence> toolTip(ResourceLocation energyId, long amount, Long capacity) {
         return toolTipComponents(energyId, amount, capacity).stream().map(Component::getVisualOrderText).toList();
+    }
+
+    public record DonutRadius(float inner, float outer) {
     }
 }

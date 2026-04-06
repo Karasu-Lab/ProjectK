@@ -52,6 +52,7 @@
   "tooltip.projectk.energy_type.yin": "陰",
   "tooltip.projectk.synthesizer.energy_total": "合計エネルギー: %s/%s",
   "tooltip.projectk.wthit.energy": "エネルギー: %s/%s",
+  "tooltip.projectk.wthit.energy_no_limit": "エネルギー: %s",
   "tooltip.projectk.wthit.energy_type": "エネルギータイプ: %s",
   "tooltip.projectk.wthit.held_item": "アイテム: %s",
   "tooltip.projectk.wthit.input_item": "入力: %s",

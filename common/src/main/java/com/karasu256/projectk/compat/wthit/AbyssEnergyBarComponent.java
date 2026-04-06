@@ -12,10 +12,10 @@ public class AbyssEnergyBarComponent implements ITooltipComponent {
 
     private final ResourceLocation energyId;
     private final long amount;
-    private final long capacity;
+    private final Long capacity;
     private final boolean active;
 
-    public AbyssEnergyBarComponent(ResourceLocation energyId, long amount, long capacity, boolean active) {
+    public AbyssEnergyBarComponent(ResourceLocation energyId, long amount, Long capacity, boolean active) {
         this.energyId = energyId;
         this.amount = amount;
         this.capacity = capacity;

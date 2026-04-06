@@ -4,6 +4,7 @@ import com.karasu256.projectk.block.custom.AbyssEnchantRemover;
 import com.karasu256.projectk.data.AbyssEnergyData;
 import com.karasu256.projectk.data.EnergyCapacityData;
 import com.karasu256.projectk.data.ProjectKDataComponets;
+import com.karasu256.projectk.energy.EnergyKeys;
 import com.karasu256.projectk.menu.AbyssEnchantRemoverMenu;
 import com.karasu256.projectk.registry.ProjectKTags;
 import com.karasu256.projectk.utils.Id;
@@ -19,6 +20,9 @@ import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.NbtOps;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.protocol.Packet;
+import net.minecraft.network.protocol.game.ClientGamePacketListener;
+import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.player.Inventory;
@@ -34,7 +38,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class AbyssEnchantRemoverBlockEntity extends KarasuCoreBlockEntity implements MenuProvider {
-    private static final String ENERGY_LIST_KEY = "projectk:abyss_energy_list";
+    private static final String ENERGY_LIST_KEY = EnergyKeys.ENERGY_LIST.toString();
 
     private final HeldItem inputItem = new HeldItem(Id.id("enchant_remover_input"));
     private final HeldItem bookItem = new HeldItem(Id.id("enchant_remover_book"));
@@ -217,14 +221,14 @@ public class AbyssEnchantRemoverBlockEntity extends KarasuCoreBlockEntity implem
 
         for (int i = 0; i < inputList.size(); ) {
             AbyssEnergyData data = inputList.get(i);
-            if (data == null || data.energyId() == null || data.amount() <= 0) {
+            if (data == null || data.energyId() == null || !data.hasPositiveAmount()) {
                 inputList.remove(i);
                 continue;
             }
             int bookIndex = findEnergyIndex(bookList, data.energyId());
-            long current = bookIndex >= 0 ? bookList.get(bookIndex).amount() : 0L;
+            long current = bookIndex >= 0 ? bookList.get(bookIndex).amountOrZero() : 0L;
             long allowed = Math.max(0L, capacity - current);
-            long moved = Math.min(allowed, data.amount());
+            long moved = Math.min(allowed, data.amountOrZero());
             if (moved > 0) {
                 long nextAmount = current + moved;
                 if (bookIndex >= 0) {
@@ -232,7 +236,7 @@ public class AbyssEnchantRemoverBlockEntity extends KarasuCoreBlockEntity implem
                 } else {
                     bookList.add(new AbyssEnergyData(data.energyId(), nextAmount));
                 }
-                long remaining = data.amount() - moved;
+                long remaining = data.amountOrZero() - moved;
                 if (remaining <= 0) {
                     inputList.remove(i);
                     continue;
@@ -272,7 +276,7 @@ public class AbyssEnchantRemoverBlockEntity extends KarasuCoreBlockEntity implem
         }
         if (list.isEmpty()) {
             AbyssEnergyData data = stack.get(ProjectKDataComponets.ABYSS_ENERGY_DATA_COMPONENT_TYPE.get());
-            if (data != null && data.amount() > 0 && data.energyId() != null) {
+            if (data != null && data.energyId() != null && data.hasPositiveAmount()) {
                 list.add(data);
             }
         }
@@ -297,7 +301,8 @@ public class AbyssEnchantRemoverBlockEntity extends KarasuCoreBlockEntity implem
         stack.remove(ProjectKDataComponets.ABYSS_ENERGY_DATA_COMPONENT_TYPE.get());
         ListTag listTag = new ListTag();
         for (AbyssEnergyData data : list) {
-            AbyssEnergyData.CODEC.encodeStart(NbtOps.INSTANCE, data).result().ifPresent(element -> listTag.add(element));
+            AbyssEnergyData.CODEC.encodeStart(NbtOps.INSTANCE, data).result()
+                    .ifPresent(element -> listTag.add(element));
         }
         tag.put(ENERGY_LIST_KEY, listTag);
         stack.set(DataComponents.CUSTOM_DATA, CustomData.of(tag));
@@ -337,5 +342,17 @@ public class AbyssEnchantRemoverBlockEntity extends KarasuCoreBlockEntity implem
         } else {
             outputItem = ItemStack.EMPTY;
         }
+    }
+
+    @Override
+    public CompoundTag getUpdateTag(HolderLookup.Provider registries) {
+        CompoundTag tag = super.getUpdateTag(registries);
+        saveAdditional(tag, registries);
+        return tag;
+    }
+
+    @Override
+    public Packet<ClientGamePacketListener> getUpdatePacket() {
+        return ClientboundBlockEntityDataPacket.create(this);
     }
 }

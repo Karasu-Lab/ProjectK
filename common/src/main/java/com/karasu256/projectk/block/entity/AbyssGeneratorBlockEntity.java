@@ -115,11 +115,4 @@ public class AbyssGeneratorBlockEntity extends AbstractPKEnergyBlockEntity<Abyss
         loadMaxEnergy(nbt);
         refreshMaxEnergy();
     }
-
-    @Override
-    public CompoundTag getUpdateTag(HolderLookup.Provider registries) {
-        CompoundTag nbt = super.getUpdateTag(registries);
-        saveAdditional(nbt, registries);
-        return nbt;
-    }
 }

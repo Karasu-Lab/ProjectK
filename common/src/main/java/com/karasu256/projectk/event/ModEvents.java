@@ -87,7 +87,7 @@ public class ModEvents {
         if (data == null) {
             return;
         }
-        long bonusLevels = data.amount() / 10000L;
+        long bonusLevels = data.amountOrZero() / 10000L;
         if (bonusLevels <= 0) {
             return;
         }

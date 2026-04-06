@@ -323,7 +323,7 @@ public class AbyssEnergyCableBlockEntity extends BlockEntity implements ICableIn
             int activeIndex = multiStorage.getActiveEnergyIndex();
             if (activeIndex >= 0) {
                 AbyssEnergyData data = multiStorage.getEnergyByIndex(activeIndex);
-                if (data != null && data.amount() > 0) {
+                if (data != null && data.hasPositiveAmount()) {
                     return data.energyId();
                 }
             }

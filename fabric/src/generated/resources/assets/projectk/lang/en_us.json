@@ -54,6 +54,7 @@
   "tooltip.projectk.energy_type.yin": "Yin",
   "tooltip.projectk.synthesizer.energy_total": "Total Energy: %s/%s",
   "tooltip.projectk.wthit.energy": "Energy: %s/%s",
+  "tooltip.projectk.wthit.energy_no_limit": "Energy: %s",
   "tooltip.projectk.wthit.energy_type": "Energy Type: %s",
   "tooltip.projectk.wthit.held_item": "Item: %s",
   "tooltip.projectk.wthit.input_item": "Input: %s",

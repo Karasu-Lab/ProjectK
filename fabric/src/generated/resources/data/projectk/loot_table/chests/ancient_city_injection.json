@@ -17,5 +17,5 @@
       }
     }
   ],
-  "random_sequence": "minecraft:chests/ancient_city"
+  "random_sequence": "projectk:chests/ancient_city_injection"
 }

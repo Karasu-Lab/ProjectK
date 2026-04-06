@@ -25,16 +25,25 @@ public abstract class AbstractProjectKWthitProvider {
                     .orElseGet(() -> AbyssEnergyItem.resolveEnergyName(id));
             Component formatted = Component.translatable("energy.projectk.abyss_energy_format", name);
             tooltip.addLine(formatted);
-            tooltip.addLine(Component.translatable("tooltip.projectk.wthit.energy", entry.amount(), entry.capacity()));
+            if (entry.capacity() == null) {
+                tooltip.addLine(Component.translatable("tooltip.projectk.wthit.energy_no_limit", entry.amount()));
+            } else {
+                tooltip.addLine(
+                        Component.translatable("tooltip.projectk.wthit.energy", entry.amount(), entry.capacity()));
+            }
             tooltip.addLine(new AbyssEnergyBarComponent(id, entry.amount(), entry.capacity(), entry.active()));
         }
     }
 
-    protected void addEnergyInfo(ITooltip tooltip, IProjectKEnergy energy, long amount, long capacity) {
+    protected void addEnergyInfo(ITooltip tooltip, IProjectKEnergy energy, long amount, Long capacity) {
         if (energy != null) {
             tooltip.addLine(Component.translatable("tooltip.projectk.wthit.energy_type", energy.getName()));
         }
-        tooltip.addLine(Component.translatable("tooltip.projectk.wthit.energy", amount, capacity));
+        if (capacity == null) {
+            tooltip.addLine(Component.translatable("tooltip.projectk.wthit.energy_no_limit", amount));
+        } else {
+            tooltip.addLine(Component.translatable("tooltip.projectk.wthit.energy", amount, capacity));
+        }
     }
 
     protected void addHeldItem(ITooltip tooltip, IHeldItem heldItem) {

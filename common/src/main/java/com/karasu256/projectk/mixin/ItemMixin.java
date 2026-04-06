@@ -2,6 +2,7 @@ package com.karasu256.projectk.mixin;
 
 import com.karasu256.projectk.data.AbyssEnergyData;
 import com.karasu256.projectk.data.ProjectKDataComponets;
+import com.karasu256.projectk.energy.EnergyKeys;
 import com.karasu256.projectk.item.custom.AbyssEnergyItem;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.nbt.CompoundTag;
@@ -23,7 +24,6 @@ import java.util.List;
 
 @Mixin(Item.class)
 public abstract class ItemMixin {
-    private static final String ENERGY_LIST_KEY = "projectk:abyss_energy_list";
 
     @Inject(method = "appendHoverText", at = @At("TAIL"))
     private void projectk$appendAbyssEnergyTooltip(ItemStack stack, Item.TooltipContext context, List<Component> tooltip, TooltipFlag flag, CallbackInfo ci) {
@@ -32,25 +32,26 @@ public abstract class ItemMixin {
             return;
         }
         for (AbyssEnergyData data : entries) {
-            if (data == null || data.energyId() == null || data.amount() <= 0) {
+            if (data == null || data.energyId() == null || !data.hasPositiveAmount()) {
                 continue;
             }
-            tooltip.add(AbyssEnergyItem.buildTooltip(data.energyId(), data.amount()));
+            tooltip.add(AbyssEnergyItem.buildTooltip(data.energyId(), data.amountOrZero()));
         }
     }
 
     private List<AbyssEnergyData> readEnergyList(ItemStack stack) {
         List<AbyssEnergyData> list = new ArrayList<>();
         CompoundTag tag = stack.getOrDefault(DataComponents.CUSTOM_DATA, CustomData.EMPTY).copyTag();
-        if (tag.contains(ENERGY_LIST_KEY, Tag.TAG_LIST)) {
-            ListTag listTag = tag.getList(ENERGY_LIST_KEY, Tag.TAG_COMPOUND);
+        String key = EnergyKeys.ENERGY_LIST.toString();
+        if (tag.contains(key, Tag.TAG_LIST)) {
+            ListTag listTag = tag.getList(key, Tag.TAG_COMPOUND);
             for (int i = 0; i < listTag.size(); i++) {
                 AbyssEnergyData.CODEC.parse(NbtOps.INSTANCE, listTag.getCompound(i)).result().ifPresent(list::add);
             }
         }
         if (list.isEmpty()) {
             AbyssEnergyData data = stack.get(ProjectKDataComponets.ABYSS_ENERGY_DATA_COMPONENT_TYPE.get());
-            if (data != null && data.amount() > 0 && data.energyId() != null) {
+            if (data != null && data.energyId() != null && data.hasPositiveAmount()) {
                 list.add(data);
             }
         }

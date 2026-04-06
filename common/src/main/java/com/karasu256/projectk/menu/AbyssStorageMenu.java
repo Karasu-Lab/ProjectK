@@ -4,20 +4,21 @@ import com.karasu256.projectk.block.ProjectKBlocks;
 import com.karasu256.projectk.block.entity.AbyssStorageBlockEntity;
 import com.karasu256.projectk.data.AbyssEnergyData;
 import com.karasu256.projectk.data.ProjectKDataComponets;
+import com.karasu256.projectk.energy.EnergyKeys;
 import com.karasu256.projectk.energy.ProjectKEnergies;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.NbtOps;
 import net.minecraft.nbt.Tag;
-import net.minecraft.core.component.DataComponents;
-import net.minecraft.world.item.component.CustomData;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.Container;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.*;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.component.CustomData;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,11 +35,13 @@ public class AbyssStorageMenu extends AbstractContainerMenu {
     private final AbyssStorageBlockEntity blockEntity;
 
     public AbyssStorageMenu(int syncId, Inventory inventory) {
-        this(syncId, inventory, new SimpleContainer(CONTAINER_SIZE), new SimpleContainerData(DATA_SIZE), ContainerLevelAccess.NULL, null);
+        this(syncId, inventory, new SimpleContainer(CONTAINER_SIZE), new SimpleContainerData(DATA_SIZE),
+                ContainerLevelAccess.NULL, null);
     }
 
     public AbyssStorageMenu(int syncId, Inventory inventory, AbyssStorageBlockEntity blockEntity) {
-        this(syncId, inventory, new StorageContainer(blockEntity), new StorageData(blockEntity), ContainerLevelAccess.create(blockEntity.getLevel(), blockEntity.getBlockPos()), blockEntity);
+        this(syncId, inventory, new StorageContainer(blockEntity), new StorageData(blockEntity),
+                ContainerLevelAccess.create(blockEntity.getLevel(), blockEntity.getBlockPos()), blockEntity);
     }
 
     private AbyssStorageMenu(int syncId, Inventory inventory, Container container, ContainerData data, ContainerLevelAccess access, AbyssStorageBlockEntity blockEntity) {
@@ -139,7 +142,7 @@ public class AbyssStorageMenu extends AbstractContainerMenu {
             }
         }
         for (AbyssEnergyData data : entries) {
-            if (data == null || data.energyId() == null || data.amount() <= 0) {
+            if (data == null || data.energyId() == null || !data.hasPositiveAmount()) {
                 continue;
             }
             for (int i = 0; i < 3; i++) {
@@ -158,15 +161,16 @@ public class AbyssStorageMenu extends AbstractContainerMenu {
     private List<AbyssEnergyData> readEnergyList(ItemStack stack) {
         List<AbyssEnergyData> list = new ArrayList<>();
         CompoundTag tag = stack.getOrDefault(DataComponents.CUSTOM_DATA, CustomData.EMPTY).copyTag();
-        if (tag.contains("projectk:abyss_energy_list", Tag.TAG_LIST)) {
-            ListTag listTag = tag.getList("projectk:abyss_energy_list", Tag.TAG_COMPOUND);
+        String key = EnergyKeys.ENERGY_LIST.toString();
+        if (tag.contains(key, Tag.TAG_LIST)) {
+            ListTag listTag = tag.getList(key, Tag.TAG_COMPOUND);
             for (int i = 0; i < listTag.size(); i++) {
                 AbyssEnergyData.CODEC.parse(NbtOps.INSTANCE, listTag.getCompound(i)).result().ifPresent(list::add);
             }
         }
         if (list.isEmpty()) {
             AbyssEnergyData data = stack.get(ProjectKDataComponets.ABYSS_ENERGY_DATA_COMPONENT_TYPE.get());
-            if (data != null && data.amount() > 0 && data.energyId() != null) {
+            if (data != null && data.energyId() != null && data.hasPositiveAmount()) {
                 list.add(data);
             }
         }

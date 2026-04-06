@@ -11,4 +11,5 @@ public class EnergyKeys {
     public static final ResourceLocation MAGIC_TABLE_LOCKED_RECIPE = Id.id("magic_table_locked_recipe");
     public static final ResourceLocation MAGIC_TABLE_OUTPUT_ITEM = Id.id("magic_table_output_item");
     public static final ResourceLocation CABLE_BEHAVIORS = Id.id("cable_behaviors");
+    public static final ResourceLocation ENERGY_LIST = Id.id("energy_list");
 }

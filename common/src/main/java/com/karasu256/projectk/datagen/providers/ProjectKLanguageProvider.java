@@ -63,6 +63,7 @@ public class ProjectKLanguageProvider implements DataProvider {
         add(en, "tooltip.projectk.abyss_wrench_behavior", "Mode: %s");
         add(en, "tooltip.projectk.wthit.energy_type", "Energy Type: %s");
         add(en, "tooltip.projectk.wthit.energy", "Energy: %s/%s");
+        add(en, "tooltip.projectk.wthit.energy_no_limit", "Energy: %s");
         add(en, "tooltip.projectk.wthit.held_item", "Item: %s");
         add(en, "tooltip.projectk.wthit.input_item", "Input: %s");
         add(en, "tooltip.projectk.wthit.output_item", "Output: %s");
@@ -72,6 +73,7 @@ public class ProjectKLanguageProvider implements DataProvider {
         add(ja, "tooltip.projectk.abyss_wrench_behavior", "モード: %s");
         add(ja, "tooltip.projectk.wthit.energy_type", "エネルギータイプ: %s");
         add(ja, "tooltip.projectk.wthit.energy", "エネルギー: %s/%s");
+        add(ja, "tooltip.projectk.wthit.energy_no_limit", "エネルギー: %s");
         add(ja, "tooltip.projectk.wthit.held_item", "アイテム: %s");
         add(ja, "tooltip.projectk.wthit.input_item", "入力: %s");
         add(ja, "tooltip.projectk.wthit.output_item", "出力: %s");

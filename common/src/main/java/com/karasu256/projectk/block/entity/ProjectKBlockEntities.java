@@ -31,6 +31,11 @@ public class ProjectKBlockEntities implements IKRegistryInitializerTarget {
             "abyss_generator",
             () -> BlockEntityType.Builder.of(AbyssGeneratorBlockEntity::new, ProjectKBlocks.ABYSS_GENERATOR.get())
                     .build(null));
+    public static final RegistrySupplier<BlockEntityType<AbyssAbsorptionPrismBlockEntity>> ABYSS_ABSORPTION_PRISM = blockEntity(
+            "abyss_absorption_prism",
+            () -> BlockEntityType.Builder.of(AbyssAbsorptionPrismBlockEntity::new,
+                            ProjectKBlocks.ABYSS_ABSORPTION_PRISM.get())
+                    .build(null));
 
 
     public static final RegistrySupplier<BlockEntityType<AbyssCoreBlockEntity>> ABYSS_CORE = blockEntity("abyss_core",
@@ -69,7 +74,8 @@ public class ProjectKBlockEntities implements IKRegistryInitializerTarget {
                     .build(null));
     public static final RegistrySupplier<BlockEntityType<AbyssLaserEmitterBlockEntity>> ABYSS_LASER_EMITTER = blockEntity(
             "abyss_laser_emitter",
-            () -> BlockEntityType.Builder.of(AbyssLaserEmitterBlockEntity::new, ProjectKBlocks.ABYSS_LASER_EMITTER.get())
+            () -> BlockEntityType.Builder.of(AbyssLaserEmitterBlockEntity::new,
+                            ProjectKBlocks.ABYSS_LASER_EMITTER.get())
                     .build(null));
 
 

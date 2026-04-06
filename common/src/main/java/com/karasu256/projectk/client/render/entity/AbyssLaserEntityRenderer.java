@@ -51,7 +51,7 @@ public class AbyssLaserEntityRenderer extends EntityRenderer<AbyssLaserEntity> {
         if (distance < 0.0001)
             return;
 
-        ResourceLocation energyId = ResourceLocation.parse(entity.getEnergyId());
+        ResourceLocation energyId = entity.getEnergyId();
         var attributes = ProjectKFluids.getAttributes(energyId);
         if (attributes == null)
             return;

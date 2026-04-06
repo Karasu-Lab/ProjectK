@@ -62,7 +62,7 @@ public abstract class AbstractAbyssEnergyMachineBlockEntity extends KarasuCoreBl
         if (index < 0 && getEnergyTypeCount() >= maxEnergyTypes()) {
             return 0;
         }
-        long current = index >= 0 ? energies.get(index).amount() : 0L;
+        long current = index >= 0 ? energies.get(index).amountOrZero() : 0L;
         long received = Math.min(capacity - current, maxAmount);
         if (received <= 0) {
             return 0;
@@ -89,7 +89,7 @@ public abstract class AbstractAbyssEnergyMachineBlockEntity extends KarasuCoreBl
         if (index < 0) {
             return 0;
         }
-        long current = energies.get(index).amount();
+        long current = energies.get(index).amountOrZero();
         long extracted = Math.min(current, maxAmount);
         if (extracted <= 0) {
             return 0;
@@ -122,22 +122,22 @@ public abstract class AbstractAbyssEnergyMachineBlockEntity extends KarasuCoreBl
 
     public ResourceLocation getEnergyId1() {
         AbyssEnergyData data = getEnergyByIndex(0);
-        return data == null || data.amount() <= 0 ? null : data.energyId();
+        return data == null || !data.hasPositiveAmount() ? null : data.energyId();
     }
 
     public ResourceLocation getEnergyId2() {
         AbyssEnergyData data = getEnergyByIndex(1);
-        return data == null || data.amount() <= 0 ? null : data.energyId();
+        return data == null || !data.hasPositiveAmount() ? null : data.energyId();
     }
 
     public long getEnergyAmount1() {
         AbyssEnergyData data = getEnergyByIndex(0);
-        return data == null ? 0L : data.amount();
+        return data == null ? 0L : data.amountOrZero();
     }
 
     public long getEnergyAmount2() {
         AbyssEnergyData data = getEnergyByIndex(1);
-        return data == null ? 0L : data.amount();
+        return data == null ? 0L : data.amountOrZero();
     }
 
     protected long getEnergyAmount(ResourceLocation id) {
@@ -145,7 +145,7 @@ public abstract class AbstractAbyssEnergyMachineBlockEntity extends KarasuCoreBl
         if (index < 0) {
             return 0L;
         }
-        return energies.get(index).amount();
+        return energies.get(index).amountOrZero();
     }
 
     protected void writeEnergyNbt(CompoundTag nbt, HolderLookup.Provider registries) {

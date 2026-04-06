@@ -1,5 +1,6 @@
 package com.karasu256.projectk.data;
 
+import com.karasu256.projectk.energy.EnergyKeys;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import io.netty.buffer.ByteBuf;
@@ -16,26 +17,28 @@ import net.minecraft.world.item.component.CustomData;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
-public record AbyssEnergyData(ResourceLocation energyId, long amount) {
+public record AbyssEnergyData(ResourceLocation energyId, Long amount) {
     public static final Codec<AbyssEnergyData> CODEC = RecordCodecBuilder.create(instance -> instance.group(
             ResourceLocation.CODEC.fieldOf("energy_id").forGetter(AbyssEnergyData::energyId),
-            Codec.LONG.fieldOf("amount").forGetter(AbyssEnergyData::amount)
-    ).apply(instance, AbyssEnergyData::new));
+            Codec.LONG.optionalFieldOf("amount")
+                    .forGetter(data -> Optional.ofNullable(data.amount()))
+    ).apply(instance, (energyId, amount) -> new AbyssEnergyData(energyId, amount.orElse(null))));
     public static final StreamCodec<ByteBuf, AbyssEnergyData> STREAM_CODEC = StreamCodec.composite(
             ResourceLocation.STREAM_CODEC,
             AbyssEnergyData::energyId,
-            ByteBufCodecs.VAR_LONG,
-            AbyssEnergyData::amount,
-            AbyssEnergyData::new
+            ByteBufCodecs.optional(ByteBufCodecs.VAR_LONG),
+            data -> Optional.ofNullable(data.amount()),
+            (energyId, amount) -> new AbyssEnergyData(energyId, amount.orElse(null))
     );
-    private static final String ENERGY_LIST_KEY = "projectk:abyss_energy_list";
+    private static final String ENERGY_LIST_KEY = EnergyKeys.ENERGY_LIST.toString();
 
-    public static void applyToStack(ItemStack stack, ResourceLocation energyId, long amount) {
+    public static void applyToStack(ItemStack stack, ResourceLocation energyId, Long amount) {
         if (stack == null || energyId == null) {
             return;
         }
-        if (amount < 0) {
+        if (amount != null && amount < 0) {
             removeFromStack(stack, energyId);
             return;
         }
@@ -91,7 +94,7 @@ public record AbyssEnergyData(ResourceLocation energyId, long amount) {
         return -1;
     }
 
-    private static List<AbyssEnergyData> readEnergyList(ItemStack stack) {
+    public static List<AbyssEnergyData> readEnergyList(ItemStack stack) {
         List<AbyssEnergyData> list = new ArrayList<>();
         CompoundTag tag = stack.getOrDefault(DataComponents.CUSTOM_DATA, CustomData.EMPTY).copyTag();
         if (tag.contains(ENERGY_LIST_KEY, Tag.TAG_LIST)) {
@@ -102,7 +105,7 @@ public record AbyssEnergyData(ResourceLocation energyId, long amount) {
         }
         if (list.isEmpty()) {
             AbyssEnergyData data = stack.get(ProjectKDataComponets.ABYSS_ENERGY_DATA_COMPONENT_TYPE.get());
-            if (data != null && data.amount() > 0 && data.energyId() != null) {
+            if (data != null && data.energyId() != null) {
                 list.add(data);
             }
         }
@@ -131,5 +134,13 @@ public record AbyssEnergyData(ResourceLocation energyId, long amount) {
         }
         tag.put(ENERGY_LIST_KEY, listTag);
         stack.set(DataComponents.CUSTOM_DATA, CustomData.of(tag));
+    }
+
+    public long amountOrZero() {
+        return amount == null ? 0L : amount;
+    }
+
+    public boolean hasPositiveAmount() {
+        return amount != null && amount > 0;
     }
 }

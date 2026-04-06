@@ -104,9 +104,9 @@ public class AbyssSynthesizerScreen extends AbstractContainerScreen<AbyssSynthes
         float easedProgress = (float) (Math.sin(Math.PI * progress - Math.PI / 2) * 0.5 + 0.5);
 
         Map<ResourceLocation, Long> startMap = startEnergies.stream()
-                .collect(Collectors.toMap(AbyssEnergyData::energyId, AbyssEnergyData::amount, (a, b) -> a));
+                .collect(Collectors.toMap(AbyssEnergyData::energyId, AbyssEnergyData::amountOrZero, (a, b) -> a));
         Map<ResourceLocation, Long> targetMap = targetEnergies.stream()
-                .collect(Collectors.toMap(AbyssEnergyData::energyId, AbyssEnergyData::amount, (a, b) -> a));
+                .collect(Collectors.toMap(AbyssEnergyData::energyId, AbyssEnergyData::amountOrZero, (a, b) -> a));
 
         Set<ResourceLocation> allIds = new HashSet<>(startMap.keySet());
         allIds.addAll(targetMap.keySet());
@@ -137,7 +137,7 @@ public class AbyssSynthesizerScreen extends AbstractContainerScreen<AbyssSynthes
             return;
 
         List<AbyssEnergyData> energies = animatedEnergies;
-        long currentTotal = energies.stream().mapToLong(AbyssEnergyData::amount).sum();
+        long currentTotal = energies.stream().mapToLong(AbyssEnergyData::amountOrZero).sum();
         if (currentTotal <= 0)
             return;
 
@@ -166,7 +166,7 @@ public class AbyssSynthesizerScreen extends AbstractContainerScreen<AbyssSynthes
             return;
 
         List<AbyssEnergyData> energies = clientBe.getEnergyList();
-        long currentTotal = energies.stream().mapToLong(AbyssEnergyData::amount).sum();
+        long currentTotal = energies.stream().mapToLong(AbyssEnergyData::amountOrZero).sum();
         if (currentTotal <= 0)
             return;
 
