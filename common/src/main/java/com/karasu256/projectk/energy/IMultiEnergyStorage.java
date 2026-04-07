@@ -6,6 +6,7 @@ import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.NbtOps;
 import net.minecraft.nbt.Tag;
 import net.minecraft.resources.ResourceLocation;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,7 +16,7 @@ public interface IMultiEnergyStorage extends IEnergyListHolder {
 
     List<AbyssEnergyData> getEnergyList();
 
-    long getEnergyCapacity();
+    Long getEnergyCapacity();
 
     int getMaxEnergyTypes();
 
@@ -45,7 +46,7 @@ public interface IMultiEnergyStorage extends IEnergyListHolder {
         List<EnergyEntry> entries = new ArrayList<>();
         List<AbyssEnergyData> list = getEnergyList();
         int activeIndex = getActiveEnergyIndex();
-        long capacity = getEnergyCapacity();
+        Long capacity = getEnergyCapacity();
         for (int i = 0; i < list.size(); i++) {
             AbyssEnergyData data = list.get(i);
             if (data == null || data.energyId() == null || !data.hasPositiveAmount()) {
@@ -93,4 +94,19 @@ public interface IMultiEnergyStorage extends IEnergyListHolder {
         }
         return -1;
     }
+
+    default long getEnergyAmount() {
+        List<AbyssEnergyData> list = getEnergyList();
+        return list.isEmpty() ? 0L : list.get(0).amountOrZero();
+    }
+
+    @Nullable
+    default ResourceLocation getAbyssEnergyId() {
+        List<AbyssEnergyData> list = getEnergyList();
+        return list.isEmpty() ? null : list.get(0).energyId();
+    }
+
+    long insert(ResourceLocation id, long maxAmount, boolean simulate);
+
+    long extract(ResourceLocation id, long maxAmount, boolean simulate);
 }

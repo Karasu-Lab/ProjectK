@@ -56,6 +56,9 @@ public class CommonBlockStateProvider {
         generator.existingModelBlock(ProjectKBlocks.ABYSS_ENCHANT_REMOVER.get(), "projectk:block/abyss_enchant_remover");
         generator.simpleBlockItem(ProjectKBlocks.ABYSS_ENCHANT_REMOVER.get());
 
+        generator.existingModelBlockAllStates(ProjectKBlocks.CREATIVE_ABYSS_STORAGE.get(), "projectk:block/abyss_storage");
+        generator.simpleBlockItem(ProjectKBlocks.CREATIVE_ABYSS_STORAGE.get(), "projectk:block/abyss_storage");
+
         generator.multipartCable(ProjectKBlocks.ABYSS_ENERGY_CABLE.get(), "abyss_energy_cable");
         generator.simpleBlockItem(ProjectKBlocks.ABYSS_ENERGY_CABLE.get());
 
@@ -75,6 +78,8 @@ public class CommonBlockStateProvider {
         void simpleBlock(Block block);
 
         void simpleBlockItem(Block block);
+
+        void simpleBlockItem(Block block, String modelPath);
 
         void cubeBottomTop(Block block, String base, String side, String bottom, String top);
 

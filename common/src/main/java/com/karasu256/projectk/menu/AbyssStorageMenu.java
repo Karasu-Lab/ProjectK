@@ -62,7 +62,8 @@ public class AbyssStorageMenu extends AbstractContainerMenu {
 
     @Override
     public boolean stillValid(Player player) {
-        return stillValid(access, player, ProjectKBlocks.ABYSS_STORAGE.get());
+        return stillValid(access, player, ProjectKBlocks.ABYSS_STORAGE.get()) || stillValid(access, player,
+                ProjectKBlocks.CREATIVE_ABYSS_STORAGE.get());
     }
 
     public int getActiveIndex() {
@@ -87,7 +88,7 @@ public class AbyssStorageMenu extends AbstractContainerMenu {
     public long getCapacity() {
         int low = data.get(11);
         int high = data.get(12);
-        return (long) high << 32 | (low & 0xffffffffL);
+        return (long) high << 32 | (low & 0xFFFFFFFFL);
     }
 
     @Override

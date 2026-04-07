@@ -1,6 +1,7 @@
 package com.karasu256.projectk.mixin;
 
 import com.karasu256.projectk.data.AbyssEnergyData;
+import com.karasu256.projectk.data.EnergyCapacityData;
 import com.karasu256.projectk.data.ProjectKDataComponets;
 import com.karasu256.projectk.energy.EnergyKeys;
 import com.karasu256.projectk.item.custom.AbyssEnergyItem;
@@ -22,6 +23,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import java.util.ArrayList;
 import java.util.List;
 
+@SuppressWarnings("unused")
 @Mixin(Item.class)
 public abstract class ItemMixin {
 
@@ -31,11 +33,13 @@ public abstract class ItemMixin {
         if (entries.isEmpty()) {
             return;
         }
-        for (AbyssEnergyData data : entries) {
-            if (data == null || data.energyId() == null || !data.hasPositiveAmount()) {
+        EnergyCapacityData data = stack.get(ProjectKDataComponets.ENERGY_CAPACITY_DATA_COMPONENT_TYPE.get());
+
+        for (AbyssEnergyData energy : entries) {
+            if (energy == null || energy.energyId() == null || !energy.hasPositiveAmount()) {
                 continue;
             }
-            tooltip.add(AbyssEnergyItem.buildTooltip(data.energyId(), data.amountOrZero()));
+            tooltip.add(AbyssEnergyItem.buildTooltip(energy.energyId(), energy.amountOrZero(), data));
         }
     }
 

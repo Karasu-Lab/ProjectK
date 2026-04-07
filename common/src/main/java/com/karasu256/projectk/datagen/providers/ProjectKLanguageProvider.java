@@ -61,8 +61,7 @@ public class ProjectKLanguageProvider implements DataProvider {
         add(ja, "energy.projectk.abyss_energy_format", "%sの深淵エネルギー");
 
         add(en, "tooltip.projectk.abyss_wrench_behavior", "Mode: %s");
-        add(en, "tooltip.projectk.wthit.energy_type", "Energy Type: %s");
-        add(en, "tooltip.projectk.wthit.energy", "Energy: %s/%s");
+        add(en, "tooltip.projectk.wthit.energy_none", "None");
         add(en, "tooltip.projectk.wthit.energy_no_limit", "Energy: %s");
         add(en, "tooltip.projectk.wthit.held_item", "Item: %s");
         add(en, "tooltip.projectk.wthit.input_item", "Input: %s");
@@ -71,8 +70,8 @@ public class ProjectKLanguageProvider implements DataProvider {
         add(en, "tooltip.projectk.wthit.tier", "Tier: %s/%s");
 
         add(ja, "tooltip.projectk.abyss_wrench_behavior", "モード: %s");
-        add(ja, "tooltip.projectk.wthit.energy_type", "エネルギータイプ: %s");
-        add(ja, "tooltip.projectk.wthit.energy", "エネルギー: %s/%s");
+        add(ja, "tooltip.projectk.wthit.energy_type", "エネルギータイプ");
+        add(ja, "tooltip.projectk.wthit.energy_none", "なし");
         add(ja, "tooltip.projectk.wthit.energy_no_limit", "エネルギー: %s");
         add(ja, "tooltip.projectk.wthit.held_item", "アイテム: %s");
         add(ja, "tooltip.projectk.wthit.input_item", "入力: %s");
@@ -95,8 +94,17 @@ public class ProjectKLanguageProvider implements DataProvider {
         add(ja, "container.projectk.abyss_enchant_remover", "深淵エンチャントリムーバー");
         add(ja, "container.projectk.abyss_synthesizer", "深淵合成機");
 
+        add(en, "container.projectk.creative_abyss_storage", "Creative Abyss Storage");
+        add(ja, "container.projectk.creative_abyss_storage", "クリエイティブ深淵貯蔵機");
+
         add(en, "gui.projectk.dump", "Dump");
         add(ja, "gui.projectk.dump", "破棄");
+
+        add(en, "tooltip.projectk.infinite", "Infinite");
+        add(ja, "tooltip.projectk.infinite", "無限");
+
+        add(en, "tooltip.projectk.energy_unit", "AE");
+        add(ja, "tooltip.projectk.energy_unit", "AE");
 
         add(en, "tooltip.projectk.synthesizer.energy_total", "Total Energy: %s/%s");
         add(ja, "tooltip.projectk.synthesizer.energy_total", "合計エネルギー: %s/%s");
@@ -122,6 +130,7 @@ public class ProjectKLanguageProvider implements DataProvider {
         add(en, "block.projectk.abyss_enchanter", "Abyss Enchanter");
         add(en, "block.projectk.abyss_charger", "Abyss Charger");
         add(en, "block.projectk.abyss_storage", "Abyss Storage");
+        add(en, "block.projectk.creative_abyss_storage", "Creative Abyss Storage");
         add(en, "block.projectk.abyss_energy_cable", "Abyss Energy Cable");
         add(en, "block.projectk.karasium_ore", "Karasium Ore");
         add(en, "block.projectk.deepslate_karasium_ore", "Deepslate Karasium Ore");
@@ -137,6 +146,7 @@ public class ProjectKLanguageProvider implements DataProvider {
         add(ja, "block.projectk.abyss_enchanter", "深淵エンチャンター");
         add(ja, "block.projectk.abyss_charger", "深淵チャージャー");
         add(ja, "block.projectk.abyss_storage", "深淵貯蔵機");
+        add(ja, "block.projectk.creative_abyss_storage", "クリエイティブ深淵貯蔵機");
         add(ja, "block.projectk.abyss_energy_cable", "深淵エネルギーケーブル");
         add(ja, "block.projectk.abyss_synthesizer", "深淵合成機");
         add(ja, "block.projectk.abyss_laser_emitter", "深淵レーザー発射機");

@@ -20,18 +20,14 @@ import java.util.List;
 import java.util.Optional;
 
 public record AbyssEnergyData(ResourceLocation energyId, Long amount) {
-    public static final Codec<AbyssEnergyData> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-            ResourceLocation.CODEC.fieldOf("energy_id").forGetter(AbyssEnergyData::energyId),
-            Codec.LONG.optionalFieldOf("amount")
-                    .forGetter(data -> Optional.ofNullable(data.amount()))
-    ).apply(instance, (energyId, amount) -> new AbyssEnergyData(energyId, amount.orElse(null))));
+    public static final Codec<AbyssEnergyData> CODEC = RecordCodecBuilder.create(
+            instance -> instance.group(ResourceLocation.CODEC.fieldOf("energy_id").forGetter(AbyssEnergyData::energyId),
+                            Codec.LONG.optionalFieldOf("amount").forGetter(data -> Optional.ofNullable(data.amount())))
+                    .apply(instance, (energyId, amount) -> new AbyssEnergyData(energyId, amount.orElse(null))));
     public static final StreamCodec<ByteBuf, AbyssEnergyData> STREAM_CODEC = StreamCodec.composite(
-            ResourceLocation.STREAM_CODEC,
-            AbyssEnergyData::energyId,
-            ByteBufCodecs.optional(ByteBufCodecs.VAR_LONG),
+            ResourceLocation.STREAM_CODEC, AbyssEnergyData::energyId, ByteBufCodecs.optional(ByteBufCodecs.VAR_LONG),
             data -> Optional.ofNullable(data.amount()),
-            (energyId, amount) -> new AbyssEnergyData(energyId, amount.orElse(null))
-    );
+            (energyId, amount) -> new AbyssEnergyData(energyId, amount.orElse(null)));
     private static final String ENERGY_LIST_KEY = EnergyKeys.ENERGY_LIST.toString();
 
     public static void applyToStack(ItemStack stack, ResourceLocation energyId, Long amount) {
@@ -112,7 +108,7 @@ public record AbyssEnergyData(ResourceLocation energyId, Long amount) {
         return list;
     }
 
-    private static void writeEnergyList(ItemStack stack, List<AbyssEnergyData> list) {
+    public static void writeEnergyList(ItemStack stack, List<AbyssEnergyData> list) {
         CompoundTag tag = stack.getOrDefault(DataComponents.CUSTOM_DATA, CustomData.EMPTY).copyTag();
         if (list.isEmpty()) {
             stack.remove(ProjectKDataComponets.ABYSS_ENERGY_DATA_COMPONENT_TYPE.get());

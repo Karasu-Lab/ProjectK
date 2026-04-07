@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_shard": {
+      "conditions": {
+        "items": [
+          {
+            "items": "projectk:abyss_absorption_prism_shard"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "projectk:abyss_absorption_prism"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_shard"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "projectk:abyss_absorption_prism"
+    ]
+  }
+}

@@ -1,7 +1,6 @@
 package com.karasu256.projectk.compat.wthit;
 
 import com.karasu256.projectk.block.entity.AbyssMagicTableBlockEntity;
-import com.karasu256.projectk.energy.IEnergyListHolder;
 import com.karasu256.projectk.utils.AbyssMagicTableInfo;
 import mcp.mobius.waila.api.IBlockAccessor;
 import mcp.mobius.waila.api.IBlockComponentProvider;
@@ -19,11 +18,6 @@ public class AbyssMagicTableWthitProvider extends AbstractProjectKWthitProvider 
         if (!(be instanceof AbyssMagicTableBlockEntity table)) {
             return;
         }
-
-        if (table instanceof IEnergyListHolder listHolder) {
-            addEnergyEntries(tooltip, listHolder.getEnergyEntries());
-        }
-        addTierInfo(tooltip, table);
 
         float ratio = AbyssMagicTableInfo.progressRatio(table.getProgress(), table.getMaxProgress());
         ItemStack input = table.getInputItem();

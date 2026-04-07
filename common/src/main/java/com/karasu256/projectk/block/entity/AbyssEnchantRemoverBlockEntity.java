@@ -1,56 +1,43 @@
 package com.karasu256.projectk.block.entity;
 
 import com.karasu256.projectk.block.custom.AbyssEnchantRemover;
+import com.karasu256.projectk.block.entity.impl.AbstractAbyssMachineBlockEntity;
 import com.karasu256.projectk.data.AbyssEnergyData;
 import com.karasu256.projectk.data.EnergyCapacityData;
 import com.karasu256.projectk.data.ProjectKDataComponets;
-import com.karasu256.projectk.energy.EnergyKeys;
 import com.karasu256.projectk.menu.AbyssEnchantRemoverMenu;
 import com.karasu256.projectk.registry.ProjectKTags;
 import com.karasu256.projectk.utils.Id;
-import net.karasuniki.karasunikilib.api.block.entity.impl.KarasuCoreBlockEntity;
-import net.karasuniki.karasunikilib.api.data.impl.HeldItem;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.ListTag;
-import net.minecraft.nbt.NbtOps;
-import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.protocol.Packet;
-import net.minecraft.network.protocol.game.ClientGamePacketListener;
-import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.component.CustomData;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.ItemEnchantments;
 import net.minecraft.world.level.block.state.BlockState;
 
-import java.util.ArrayList;
 import java.util.List;
 
-public class AbyssEnchantRemoverBlockEntity extends KarasuCoreBlockEntity implements MenuProvider {
-    private static final String ENERGY_LIST_KEY = EnergyKeys.ENERGY_LIST.toString();
-
-    private final HeldItem inputItem = new HeldItem(Id.id("enchant_remover_input"));
-    private final HeldItem bookItem = new HeldItem(Id.id("enchant_remover_book"));
-    private ItemStack outputItem = ItemStack.EMPTY;
+public class AbyssEnchantRemoverBlockEntity extends AbstractAbyssMachineBlockEntity implements MenuProvider {
     private boolean suppressRefresh = false;
     private boolean refreshInProgress = false;
-
     private long defaultBookCapacity;
 
     public AbyssEnchantRemoverBlockEntity(BlockPos pos, BlockState state) {
-        super(ProjectKBlockEntities.ABYSS_ENCHANT_REMOVER.get(), pos, state);
+        super(ProjectKBlockEntities.ABYSS_ENCHANT_REMOVER.get(), pos, state, 0L);
         this.defaultBookCapacity = resolveDefaultBookCapacity(state);
+        addItemSlot(Id.id("input"));
+        addItemSlot(Id.id("book"));
+        addItemSlot(Id.id("output"));
     }
 
     private static long resolveDefaultBookCapacity(BlockState state) {
@@ -61,33 +48,36 @@ public class AbyssEnchantRemoverBlockEntity extends KarasuCoreBlockEntity implem
     }
 
     public ItemStack getInputItem() {
-        return inputItem.getHeldItem();
+        return heldItems.get(0).getHeldItem();
     }
 
     public void setInputItem(ItemStack stack) {
-        inputItem.setHeldItem(stack);
+        heldItems.get(0).setHeldItem(stack);
         refreshOutput();
+        markDirtyAndSync();
     }
 
     public ItemStack getBookItem() {
-        return bookItem.getHeldItem();
+        return heldItems.get(1).getHeldItem();
     }
 
     public void setBookItem(ItemStack stack) {
-        bookItem.setHeldItem(stack);
+        heldItems.get(1).setHeldItem(stack);
         refreshOutput();
+        markDirtyAndSync();
     }
 
     public ItemStack getOutputItem() {
-        return outputItem;
+        return heldItems.get(2).getHeldItem();
     }
 
     public void setOutputItem(ItemStack stack) {
-        if (ItemStack.isSameItemSameComponents(outputItem, stack) && outputItem.getCount() == stack.getCount()) {
+        ItemStack current = getOutputItem();
+        if (ItemStack.isSameItemSameComponents(current, stack) && current.getCount() == stack.getCount()) {
             return;
         }
-        outputItem = stack;
-        setChanged();
+        heldItems.get(2).setHeldItem(stack);
+        markDirtyAndSync();
     }
 
     public boolean canAcceptInput(ItemStack stack) {
@@ -212,11 +202,11 @@ public class AbyssEnchantRemoverBlockEntity extends KarasuCoreBlockEntity implem
     }
 
     private void transferEnergyToBook(ItemStack input, ItemStack book) {
-        List<AbyssEnergyData> inputList = readEnergyList(input);
+        List<AbyssEnergyData> inputList = AbyssEnergyData.readEnergyList(input);
         if (inputList.isEmpty()) {
             return;
         }
-        List<AbyssEnergyData> bookList = readEnergyList(book);
+        List<AbyssEnergyData> bookList = AbyssEnergyData.readEnergyList(book);
         long capacity = getBookCapacity(book);
 
         for (int i = 0; i < inputList.size(); ) {
@@ -246,13 +236,13 @@ public class AbyssEnchantRemoverBlockEntity extends KarasuCoreBlockEntity implem
             i++;
         }
 
-        writeEnergyList(book, bookList);
-        writeEnergyList(input, inputList);
+        AbyssEnergyData.writeEnergyList(book, bookList);
+        AbyssEnergyData.writeEnergyList(input, inputList);
     }
 
     private long getBookCapacity(ItemStack book) {
         EnergyCapacityData cap = book.get(ProjectKDataComponets.ENERGY_CAPACITY_DATA_COMPONENT_TYPE.get());
-        return cap == null ? defaultBookCapacity : cap.capacity();
+        return (cap == null || cap.isInfinite()) ? defaultBookCapacity : cap.get();
     }
 
     private int findEnergyIndex(List<AbyssEnergyData> list, ResourceLocation id) {
@@ -263,49 +253,6 @@ public class AbyssEnchantRemoverBlockEntity extends KarasuCoreBlockEntity implem
             }
         }
         return -1;
-    }
-
-    private List<AbyssEnergyData> readEnergyList(ItemStack stack) {
-        List<AbyssEnergyData> list = new ArrayList<>();
-        CompoundTag tag = stack.getOrDefault(DataComponents.CUSTOM_DATA, CustomData.EMPTY).copyTag();
-        if (tag.contains(ENERGY_LIST_KEY, Tag.TAG_LIST)) {
-            ListTag listTag = tag.getList(ENERGY_LIST_KEY, Tag.TAG_COMPOUND);
-            for (int i = 0; i < listTag.size(); i++) {
-                AbyssEnergyData.CODEC.parse(NbtOps.INSTANCE, listTag.getCompound(i)).result().ifPresent(list::add);
-            }
-        }
-        if (list.isEmpty()) {
-            AbyssEnergyData data = stack.get(ProjectKDataComponets.ABYSS_ENERGY_DATA_COMPONENT_TYPE.get());
-            if (data != null && data.energyId() != null && data.hasPositiveAmount()) {
-                list.add(data);
-            }
-        }
-        return list;
-    }
-
-    private void writeEnergyList(ItemStack stack, List<AbyssEnergyData> list) {
-        CompoundTag tag = stack.getOrDefault(DataComponents.CUSTOM_DATA, CustomData.EMPTY).copyTag();
-        if (list.isEmpty()) {
-            stack.remove(ProjectKDataComponets.ABYSS_ENERGY_DATA_COMPONENT_TYPE.get());
-            tag.remove(ENERGY_LIST_KEY);
-            stack.set(DataComponents.CUSTOM_DATA, CustomData.of(tag));
-            return;
-        }
-        if (list.size() == 1) {
-            AbyssEnergyData data = list.get(0);
-            AbyssEnergyData.applyToStack(stack, data.energyId(), data.amount());
-            tag.remove(ENERGY_LIST_KEY);
-            stack.set(DataComponents.CUSTOM_DATA, CustomData.of(tag));
-            return;
-        }
-        stack.remove(ProjectKDataComponets.ABYSS_ENERGY_DATA_COMPONENT_TYPE.get());
-        ListTag listTag = new ListTag();
-        for (AbyssEnergyData data : list) {
-            AbyssEnergyData.CODEC.encodeStart(NbtOps.INSTANCE, data).result()
-                    .ifPresent(element -> listTag.add(element));
-        }
-        tag.put(ENERGY_LIST_KEY, listTag);
-        stack.set(DataComponents.CUSTOM_DATA, CustomData.of(tag));
     }
 
     @Override
@@ -322,11 +269,6 @@ public class AbyssEnchantRemoverBlockEntity extends KarasuCoreBlockEntity implem
     protected void saveAdditional(CompoundTag nbt, HolderLookup.Provider registries) {
         super.saveAdditional(nbt, registries);
         nbt.putLong("default_book_capacity", defaultBookCapacity);
-        inputItem.writeNbt(nbt, registries);
-        bookItem.writeNbt(nbt, registries);
-        if (!outputItem.isEmpty()) {
-            nbt.put("output_item", outputItem.save(registries));
-        }
     }
 
     @Override
@@ -335,24 +277,5 @@ public class AbyssEnchantRemoverBlockEntity extends KarasuCoreBlockEntity implem
         if (nbt.contains("default_book_capacity")) {
             defaultBookCapacity = nbt.getLong("default_book_capacity");
         }
-        inputItem.readNbt(nbt, registries);
-        bookItem.readNbt(nbt, registries);
-        if (nbt.contains("output_item")) {
-            outputItem = ItemStack.parse(registries, nbt.getCompound("output_item")).orElse(ItemStack.EMPTY);
-        } else {
-            outputItem = ItemStack.EMPTY;
-        }
-    }
-
-    @Override
-    public CompoundTag getUpdateTag(HolderLookup.Provider registries) {
-        CompoundTag tag = super.getUpdateTag(registries);
-        saveAdditional(tag, registries);
-        return tag;
-    }
-
-    @Override
-    public Packet<ClientGamePacketListener> getUpdatePacket() {
-        return ClientboundBlockEntityDataPacket.create(this);
     }
 }

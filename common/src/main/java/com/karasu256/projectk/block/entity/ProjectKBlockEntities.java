@@ -60,6 +60,10 @@ public class ProjectKBlockEntities implements IKRegistryInitializerTarget {
             "abyss_storage",
             () -> BlockEntityType.Builder.of(AbyssStorageBlockEntity::new, ProjectKBlocks.ABYSS_STORAGE.get())
                     .build(null));
+    public static final RegistrySupplier<BlockEntityType<CreativeAbyssStorageBlockEntity>> CREATIVE_ABYSS_STORAGE = blockEntity(
+            "creative_abyss_storage",
+            () -> BlockEntityType.Builder.of(CreativeAbyssStorageBlockEntity::new, ProjectKBlocks.CREATIVE_ABYSS_STORAGE.get())
+                    .build(null));
     public static final RegistrySupplier<BlockEntityType<AbyssEnchantRemoverBlockEntity>> ABYSS_ENCHANT_REMOVER = blockEntity(
             "abyss_enchant_remover", () -> BlockEntityType.Builder.of(AbyssEnchantRemoverBlockEntity::new,
                     ProjectKBlocks.ABYSS_ENCHANT_REMOVER.get()).build(null));

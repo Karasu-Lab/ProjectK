@@ -1,20 +1,19 @@
 package com.karasu256.projectk.block.entity;
 
 import com.karasu256.projectk.block.custom.AbyssEnchanter;
-import com.karasu256.projectk.block.entity.impl.AbstractPKEnergyBlockEntity;
+import com.karasu256.projectk.block.entity.impl.AbstractAbyssMachineBlockEntity;
 import com.karasu256.projectk.data.AbyssEnchanterTier;
 import com.karasu256.projectk.data.AbyssEnchanterTierManager;
 import com.karasu256.projectk.data.AbyssEnergyData;
 import com.karasu256.projectk.enchant.ProjectKEnchantments;
-import com.karasu256.projectk.energy.*;
+import com.karasu256.projectk.energy.ProjectKEnergies;
 import com.karasu256.projectk.menu.AbyssEnchanterMenu;
 import com.karasu256.projectk.registry.ProjectKTags;
+import com.karasu256.projectk.utils.Id;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
-import net.minecraft.core.HolderLookup;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.ItemTags;
@@ -34,20 +33,15 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
-public class AbyssEnchanterBlockEntity extends AbstractPKEnergyBlockEntity<AbyssEnergy> implements MenuProvider, IEnergyListHolder, IMaxEnrgyInfo, ITierInfo {
+public class AbyssEnchanterBlockEntity extends AbstractAbyssMachineBlockEntity implements MenuProvider {
     private static final int OPTION_COUNT = 3;
     private static final int MAX_TIER = 3;
     private static final int DEFAULT_TIER = 1;
-    private final long baseMaxEnergy;
-    private ItemStack outputItem = ItemStack.EMPTY;
-    private long maxEnergy;
-    private int tier;
 
     public AbyssEnchanterBlockEntity(BlockPos pos, BlockState state) {
         super(ProjectKBlockEntities.ABYSS_ENCHANTER.get(), pos, state, resolveCapacity(state));
-        this.baseMaxEnergy = resolveCapacity(state);
-        this.tier = DEFAULT_TIER;
-        refreshMaxEnergy();
+        addItemSlot(Id.id("input"));
+        addItemSlot(Id.id("output"));
     }
 
     public static void tick(Level level, BlockPos pos, BlockState state, AbyssEnchanterBlockEntity be) {
@@ -58,20 +52,6 @@ public class AbyssEnchanterBlockEntity extends AbstractPKEnergyBlockEntity<Abyss
             return enchanter.getCapacity();
         }
         return 0L;
-    }
-
-    @Override
-    protected AbyssEnergy createEnergy() {
-        return new AbyssEnergy(0L);
-    }
-
-    @Override
-    public List<EnergyEntry> getEnergyEntries() {
-        ResourceLocation id = getAbyssEnergyId();
-        if (id == null || getAmount() <= 0) {
-            return List.of();
-        }
-        return List.of(new EnergyEntry(id, getAmount(), getCapacity(), false));
     }
 
     public boolean applyEnchantment(int option, Player player) {
@@ -96,7 +76,7 @@ public class AbyssEnchanterBlockEntity extends AbstractPKEnergyBlockEntity<Abyss
         if (tier == null) {
             return false;
         }
-        if (getAmount() < tier.cost()) {
+        if (getEnergyAmount() < tier.cost()) {
             return false;
         }
 
@@ -105,7 +85,7 @@ public class AbyssEnchanterBlockEntity extends AbstractPKEnergyBlockEntity<Abyss
     }
 
     private boolean canAcceptOutput() {
-        return outputItem.isEmpty();
+        return getOutputItem().isEmpty();
     }
 
     @Nullable
@@ -144,9 +124,8 @@ public class AbyssEnchanterBlockEntity extends AbstractPKEnergyBlockEntity<Abyss
             setInputItem(next);
         }
 
-        outputItem = result;
-        setChanged();
-        sync();
+        setOutputItem(result);
+        markDirtyAndSync();
     }
 
     private ItemStack buildResult(ItemStack input, AbyssEnchanterTier tier) {
@@ -174,54 +153,19 @@ public class AbyssEnchanterBlockEntity extends AbstractPKEnergyBlockEntity<Abyss
     }
 
     public ItemStack getInputItem() {
-        return getHeldItem();
+        return heldItems.get(0).getHeldItem();
     }
 
     public void setInputItem(ItemStack stack) {
-        setHeldItem(stack);
+        heldItems.get(0).setHeldItem(stack);
     }
 
     public ItemStack getOutputItem() {
-        return outputItem;
+        return heldItems.get(1).getHeldItem();
     }
 
     public void setOutputItem(ItemStack stack) {
-        outputItem = stack;
-        setChanged();
-        sync();
-    }
-
-    private void refreshMaxEnergy() {
-        setMaxEnergy(getTieredMaxEnergy(getTier()));
-        setMaxEnergyCapacity(getMaxEnergy());
-    }
-
-    @Override
-    public long getBaseMaxEnergy() {
-        return baseMaxEnergy;
-    }
-
-    @Override
-    public long getMaxEnergy() {
-        return maxEnergy;
-    }
-
-    @Override
-    public void setMaxEnergy(long maxEnergy) {
-        this.maxEnergy = maxEnergy;
-    }
-
-    @Override
-    public int getTier() {
-        return tier;
-    }
-
-    @Override
-    public void setTier(int tier) {
-        this.tier = clampTier(tier);
-        refreshMaxEnergy();
-        setChanged();
-        sync();
+        heldItems.get(1).setHeldItem(stack);
     }
 
     @Override
@@ -237,10 +181,10 @@ public class AbyssEnchanterBlockEntity extends AbstractPKEnergyBlockEntity<Abyss
     public int getDataValue(int index) {
         if (!shouldExposeOptions()) {
             return switch (index) {
-                case 6 -> (int) getAmount();
-                case 7 -> (int) (getAmount() >>> 32);
-                case 8 -> (int) getCapacity();
-                case 9 -> (int) (getCapacity() >>> 32);
+                case 6 -> (int) getEnergyAmount();
+                case 7 -> (int) (getEnergyAmount() >>> 32);
+                case 8 -> (int) (long) getEnergyCapacity();
+                case 9 -> (int) (long) (getEnergyCapacity() >>> 32);
                 case 10 -> getAbyssEnergyId() == null ? 0 : ProjectKEnergies.getModelIndex(getAbyssEnergyId());
                 case 11, 12, 13 -> -1;
                 default -> 0;
@@ -253,10 +197,10 @@ public class AbyssEnchanterBlockEntity extends AbstractPKEnergyBlockEntity<Abyss
             case 3 -> getTierCost(0);
             case 4 -> getTierCost(1);
             case 5 -> getTierCost(2);
-            case 6 -> (int) getAmount();
-            case 7 -> (int) (getAmount() >>> 32);
-            case 8 -> (int) getCapacity();
-            case 9 -> (int) (getCapacity() >>> 32);
+            case 6 -> (int) getEnergyAmount();
+            case 7 -> (int) (getEnergyAmount() >>> 32);
+            case 8 -> (int) (long) getEnergyCapacity();
+            case 9 -> (int) (long) (getEnergyCapacity() >>> 32);
             case 10 -> getAbyssEnergyId() == null ? 0 : ProjectKEnergies.getModelIndex(getAbyssEnergyId());
             case 11 -> getOptionEnchantmentId(0);
             case 12 -> getOptionEnchantmentId(1);
@@ -349,29 +293,5 @@ public class AbyssEnchanterBlockEntity extends AbstractPKEnergyBlockEntity<Abyss
         return !stack.is(ItemTags.AXES) && !stack.is(ItemTags.HOES) && !stack.is(ItemTags.PICKAXES) && !stack.is(
                 ItemTags.SHOVELS) && !stack.is(ItemTags.SWORDS) && !stack.is(ItemTags.TRIMMABLE_ARMOR) && !stack.is(
                 Items.MACE) && !stack.is(Items.TRIDENT);
-    }
-
-    @Override
-    protected void saveAdditional(CompoundTag nbt, HolderLookup.Provider registries) {
-        super.saveAdditional(nbt, registries);
-        saveTier(nbt);
-        saveMaxEnergy(nbt);
-        if (!outputItem.isEmpty()) {
-            nbt.put(EnergyKeys.MAGIC_TABLE_OUTPUT_ITEM.toString(), outputItem.save(registries));
-        }
-    }
-
-    @Override
-    protected void loadAdditional(CompoundTag nbt, HolderLookup.Provider registries) {
-        super.loadAdditional(nbt, registries);
-        loadTier(nbt);
-        loadMaxEnergy(nbt);
-        refreshMaxEnergy();
-        if (nbt.contains(EnergyKeys.MAGIC_TABLE_OUTPUT_ITEM.toString())) {
-            outputItem = ItemStack.parse(registries, nbt.getCompound(EnergyKeys.MAGIC_TABLE_OUTPUT_ITEM.toString()))
-                    .orElse(ItemStack.EMPTY);
-        } else {
-            outputItem = ItemStack.EMPTY;
-        }
     }
 }

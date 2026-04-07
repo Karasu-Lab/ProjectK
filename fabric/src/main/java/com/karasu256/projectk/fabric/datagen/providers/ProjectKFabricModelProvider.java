@@ -86,6 +86,12 @@ public class ProjectKFabricModelProvider extends FabricModelProvider implements 
     }
 
     @Override
+    public void simpleBlockItem(Block block, String modelPath) {
+        ResourceLocation modelLocation = ResourceLocation.parse(modelPath);
+        this.blockModelGenerators.delegateItemModel(block, modelLocation);
+    }
+
+    @Override
     public void directionalModeBlock(Block block, String baseName) {
         ResourceLocation pulseModel = ResourceLocation.fromNamespaceAndPath(ProjectK.MOD_ID,
                 "block/" + baseName + "_pulse");

@@ -1,22 +1,19 @@
 package com.karasu256.projectk.block.entity;
 
 import com.karasu256.projectk.block.custom.AbyssCharger;
-import com.karasu256.projectk.block.entity.impl.AbstractPKEnergyBlockEntity;
+import com.karasu256.projectk.block.entity.impl.AbstractAbyssMachineBlockEntity;
 import com.karasu256.projectk.data.AbyssEnergyData;
 import com.karasu256.projectk.data.EnergyCapacityData;
 import com.karasu256.projectk.data.ProjectKDataComponets;
-import com.karasu256.projectk.energy.*;
+import com.karasu256.projectk.energy.IEnergyItemInput;
+import com.karasu256.projectk.energy.IEnergyItemOutput;
+import com.karasu256.projectk.energy.ProjectKEnergies;
 import com.karasu256.projectk.menu.AbyssChargerMenu;
 import com.karasu256.projectk.utils.Id;
 import net.karasuniki.karasunikilib.api.block.ICableInputable;
-import net.karasuniki.karasunikilib.api.data.impl.HeldItem;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
-import net.minecraft.core.component.DataComponents;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.ListTag;
-import net.minecraft.nbt.NbtOps;
-import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.MenuProvider;
@@ -24,25 +21,19 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.component.CustomData;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 
-import java.util.ArrayList;
 import java.util.List;
 
-public class AbyssChargerBlockEntity extends AbstractPKEnergyBlockEntity<AbyssEnergy> implements MenuProvider, IEnergyListHolder, ICableInputable, IEnergyItemInput, IEnergyItemOutput {
-    private static final String ENERGY_LIST_KEY = EnergyKeys.ENERGY_LIST.toString();
-    private final HeldItem inputItem = new HeldItem(Id.id("abyss_charger_input"));
-    private final HeldItem outputItem = new HeldItem(Id.id("abyss_charger_output"));
-
-    private long capacity;
+public class AbyssChargerBlockEntity extends AbstractAbyssMachineBlockEntity implements MenuProvider, ICableInputable, IEnergyItemInput, IEnergyItemOutput {
     private long transferRate;
 
     public AbyssChargerBlockEntity(BlockPos pos, BlockState state) {
         super(ProjectKBlockEntities.ABYSS_CHARGER.get(), pos, state, resolveCapacity(state));
-        this.capacity = resolveCapacity(state);
         this.transferRate = resolveTransferRate(state);
+        addItemSlot(Id.id("input"));
+        addItemSlot(Id.id("output"));
     }
 
     public static void tick(Level level, BlockPos pos, BlockState state, AbyssChargerBlockEntity be) {
@@ -67,17 +58,17 @@ public class AbyssChargerBlockEntity extends AbstractPKEnergyBlockEntity<AbyssEn
     }
 
     @Override
-    protected AbyssEnergy createEnergy() {
-        return new AbyssEnergy(0L);
+    public int getMaxTier() {
+        return 3;
     }
 
     @Override
-    public List<EnergyEntry> getEnergyEntries() {
-        ResourceLocation id = getAbyssEnergyId();
-        if (id == null || getAmount() <= 0) {
-            return List.of();
-        }
-        return List.of(new EnergyEntry(id, getAmount(), getCapacity(), false));
+    public int getDefaultTier() {
+        return 1;
+    }
+
+    public long getTieredTransferRate() {
+        return transferRate * getTier();
     }
 
     @Override
@@ -95,7 +86,7 @@ public class AbyssChargerBlockEntity extends AbstractPKEnergyBlockEntity<AbyssEn
         if (input.isEmpty()) {
             return input;
         }
-        List<AbyssEnergyData> energies = readEnergyList(input);
+        List<AbyssEnergyData> energies = AbyssEnergyData.readEnergyList(input);
         if (energies.isEmpty()) {
             return input;
         }
@@ -107,11 +98,11 @@ public class AbyssChargerBlockEntity extends AbstractPKEnergyBlockEntity<AbyssEn
         if (!canAcceptEnergy(data.energyId())) {
             return input;
         }
-        long room = capacity - getAmount();
+        long room = getEnergyCapacity() - getEnergyAmount();
         if (room <= 0) {
             return input;
         }
-        long maxMove = transferRate > 0 ? Math.min(transferRate, room) : room;
+        long maxMove = getTieredTransferRate() > 0 ? Math.min(getTieredTransferRate(), room) : room;
         long toMove = Math.min(maxMove, data.amountOrZero());
         if (toMove <= 0) {
             return input;
@@ -126,7 +117,7 @@ public class AbyssChargerBlockEntity extends AbstractPKEnergyBlockEntity<AbyssEn
         } else {
             energies.set(selectedIndex, new AbyssEnergyData(data.energyId(), remaining));
         }
-        writeEnergyList(input, energies);
+        AbyssEnergyData.writeEnergyList(input, energies);
         return input;
     }
 
@@ -136,26 +127,26 @@ public class AbyssChargerBlockEntity extends AbstractPKEnergyBlockEntity<AbyssEn
             return output;
         }
         EnergyCapacityData capacityData = output.get(ProjectKDataComponets.ENERGY_CAPACITY_DATA_COMPONENT_TYPE.get());
-        if (capacityData == null || capacityData.capacity() <= 0) {
-            if (capacity <= 0) {
+        if (capacityData == null || capacityData.isInfinite() || (capacityData.get() != null && capacityData.get() <= 0)) {
+            if (getEnergyCapacity() <= 0) {
                 return output;
             }
-            capacityData = new EnergyCapacityData(capacity);
+            capacityData = EnergyCapacityData.of(getEnergyCapacity());
             output.set(ProjectKDataComponets.ENERGY_CAPACITY_DATA_COMPONENT_TYPE.get(), capacityData);
         }
         ResourceLocation energyId = getAbyssEnergyId();
-        if (energyId == null || getAmount() <= 0) {
+        if (energyId == null || getEnergyAmount() <= 0) {
             return output;
         }
-        List<AbyssEnergyData> energies = readEnergyList(output);
+        List<AbyssEnergyData> energies = AbyssEnergyData.readEnergyList(output);
         int existingIndex = findEnergyIndex(energies, energyId);
         long current = existingIndex >= 0 ? energies.get(existingIndex).amountOrZero() : 0L;
-        long cap = capacityData.capacity();
+        long cap = capacityData.get() != null ? capacityData.get() : Long.MAX_VALUE;
         if (current >= cap) {
             return output;
         }
-        long maxMove = transferRate > 0 ? Math.min(transferRate, cap - current) : (cap - current);
-        long toMove = Math.min(maxMove, getAmount());
+        long maxMove = getTieredTransferRate() > 0 ? Math.min(getTieredTransferRate(), cap - current) : (cap - current);
+        long toMove = Math.min(maxMove, getEnergyAmount());
         if (toMove <= 0) {
             return output;
         }
@@ -169,28 +160,26 @@ public class AbyssChargerBlockEntity extends AbstractPKEnergyBlockEntity<AbyssEn
         } else {
             energies.add(new AbyssEnergyData(energyId, nextAmount));
         }
-        writeEnergyList(output, energies);
+        AbyssEnergyData.writeEnergyList(output, energies);
         return output;
     }
 
     public ItemStack getInputItem() {
-        return inputItem.getHeldItem();
+        return heldItems.get(0).getHeldItem();
     }
 
     public void setInputItem(ItemStack stack) {
-        inputItem.setHeldItem(stack);
-        setChanged();
-        sync();
+        heldItems.get(0).setHeldItem(stack);
+        markDirtyAndSync();
     }
 
     public ItemStack getOutputItem() {
-        return outputItem.getHeldItem();
+        return heldItems.get(1).getHeldItem();
     }
 
     public void setOutputItem(ItemStack stack) {
-        outputItem.setHeldItem(stack);
-        setChanged();
-        sync();
+        heldItems.get(1).setHeldItem(stack);
+        markDirtyAndSync();
     }
 
     @Override
@@ -198,7 +187,7 @@ public class AbyssChargerBlockEntity extends AbstractPKEnergyBlockEntity<AbyssEn
         if (stack.isEmpty()) {
             return false;
         }
-        List<AbyssEnergyData> energies = readEnergyList(stack);
+        List<AbyssEnergyData> energies = AbyssEnergyData.readEnergyList(stack);
         if (energies.isEmpty()) {
             return false;
         }
@@ -248,54 +237,12 @@ public class AbyssChargerBlockEntity extends AbstractPKEnergyBlockEntity<AbyssEn
         return -1;
     }
 
-    private List<AbyssEnergyData> readEnergyList(ItemStack stack) {
-        List<AbyssEnergyData> list = new ArrayList<>();
-        CompoundTag tag = stack.getOrDefault(DataComponents.CUSTOM_DATA, CustomData.EMPTY).copyTag();
-        if (tag.contains(ENERGY_LIST_KEY, Tag.TAG_LIST)) {
-            ListTag listTag = tag.getList(ENERGY_LIST_KEY, Tag.TAG_COMPOUND);
-            for (int i = 0; i < listTag.size(); i++) {
-                AbyssEnergyData.CODEC.parse(NbtOps.INSTANCE, listTag.getCompound(i)).result().ifPresent(list::add);
-            }
-        }
-        if (list.isEmpty()) {
-            AbyssEnergyData data = stack.get(ProjectKDataComponets.ABYSS_ENERGY_DATA_COMPONENT_TYPE.get());
-            if (data != null && data.energyId() != null && data.hasPositiveAmount()) {
-                list.add(data);
-            }
-        }
-        return list;
-    }
-
-    private void writeEnergyList(ItemStack stack, List<AbyssEnergyData> list) {
-        CompoundTag tag = stack.getOrDefault(DataComponents.CUSTOM_DATA, CustomData.EMPTY).copyTag();
-        if (list.isEmpty()) {
-            stack.remove(ProjectKDataComponets.ABYSS_ENERGY_DATA_COMPONENT_TYPE.get());
-            tag.remove(ENERGY_LIST_KEY);
-            stack.set(DataComponents.CUSTOM_DATA, CustomData.of(tag));
-            return;
-        }
-        if (list.size() == 1) {
-            AbyssEnergyData data = list.get(0);
-            AbyssEnergyData.applyToStack(stack, data.energyId(), data.amount());
-            tag.remove(ENERGY_LIST_KEY);
-            stack.set(DataComponents.CUSTOM_DATA, CustomData.of(tag));
-            return;
-        }
-        stack.remove(ProjectKDataComponets.ABYSS_ENERGY_DATA_COMPONENT_TYPE.get());
-        ListTag listTag = new ListTag();
-        for (AbyssEnergyData data : list) {
-            AbyssEnergyData.CODEC.encodeStart(NbtOps.INSTANCE, data).result().ifPresent(listTag::add);
-        }
-        tag.put(ENERGY_LIST_KEY, listTag);
-        stack.set(DataComponents.CUSTOM_DATA, CustomData.of(tag));
-    }
-
     public int getDataValue(int index) {
         return switch (index) {
-            case 0 -> (int) getAmount();
-            case 1 -> (int) (getAmount() >>> 32);
-            case 2 -> (int) getCapacity();
-            case 3 -> (int) (getCapacity() >>> 32);
+            case 0 -> (int) getEnergyAmount();
+            case 1 -> (int) (getEnergyAmount() >>> 32);
+            case 2 -> (int) (long) getEnergyCapacity();
+            case 3 -> (int) (long) (getEnergyCapacity() >>> 32);
             case 4 -> getAbyssEnergyId() == null ? 0 : ProjectKEnergies.getModelIndex(getAbyssEnergyId());
             default -> 0;
         };
@@ -317,20 +264,12 @@ public class AbyssChargerBlockEntity extends AbstractPKEnergyBlockEntity<AbyssEn
     @Override
     protected void saveAdditional(CompoundTag nbt, HolderLookup.Provider registries) {
         super.saveAdditional(nbt, registries);
-        inputItem.writeNbt(nbt, registries);
-        outputItem.writeNbt(nbt, registries);
-        nbt.putLong("capacity", capacity);
         nbt.putLong("transfer_rate", transferRate);
     }
 
     @Override
     protected void loadAdditional(CompoundTag nbt, HolderLookup.Provider registries) {
         super.loadAdditional(nbt, registries);
-        inputItem.readNbt(nbt, registries);
-        outputItem.readNbt(nbt, registries);
-        if (nbt.contains("capacity")) {
-            capacity = nbt.getLong("capacity");
-        }
         if (nbt.contains("transfer_rate")) {
             transferRate = nbt.getLong("transfer_rate");
         }

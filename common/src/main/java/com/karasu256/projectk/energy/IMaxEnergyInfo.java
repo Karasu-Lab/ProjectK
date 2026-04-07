@@ -2,8 +2,9 @@ package com.karasu256.projectk.energy;
 
 import net.minecraft.nbt.CompoundTag;
 
-public interface IMaxEnergyInfo {
-    String MAX_ENERGY_KEY = "max_energy";
+import com.karasu256.projectk.energy.EnergyKeys;
+
+public interface IMaxEnergyInfo extends IEnergyBlockEntitySync {
 
     long getBaseMaxEnergy();
 
@@ -13,13 +14,14 @@ public interface IMaxEnergyInfo {
 
     default long getTieredMaxEnergy(int tier) {
         int safeTier = Math.max(1, tier);
-        return Math.max(0L, getBaseMaxEnergy() * safeTier);
+        if (safeTier <= 1) return getBaseMaxEnergy();
+        return (long) (getBaseMaxEnergy() * Math.pow(2.5, safeTier - 1));
     }
 
     default void loadMaxEnergy(CompoundTag nbt) {
         long maxEnergy;
-        if (nbt.contains(MAX_ENERGY_KEY)) {
-            maxEnergy = nbt.getLong(MAX_ENERGY_KEY);
+        if (nbt.contains(EnergyKeys.MAX_ENERGY.toString())) {
+            maxEnergy = nbt.getLong(EnergyKeys.MAX_ENERGY.toString());
         } else if (this instanceof ITierInfo tierInfo) {
             maxEnergy = getTieredMaxEnergy(tierInfo.getTier());
         } else {
@@ -29,6 +31,6 @@ public interface IMaxEnergyInfo {
     }
 
     default void saveMaxEnergy(CompoundTag nbt) {
-        nbt.putLong(MAX_ENERGY_KEY, getMaxEnergy());
+        nbt.putLong(EnergyKeys.MAX_ENERGY.toString(), getMaxEnergy());
     }
 }

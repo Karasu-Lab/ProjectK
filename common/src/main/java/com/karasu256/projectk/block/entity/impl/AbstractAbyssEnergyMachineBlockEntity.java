@@ -21,13 +21,11 @@ import org.jetbrains.annotations.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class AbstractAbyssEnergyMachineBlockEntity extends KarasuCoreBlockEntity implements ICableInputable, ICableOutputable, ICapacity, IMultiEnergyStorage {
+public abstract class AbstractAbyssEnergyMachineBlockEntity extends AbstractAbyssTieredBlockEntity implements ICableInputable, ICableOutputable, ICapacity, IMultiEnergyStorage {
     protected final List<AbyssEnergyData> energies = new ArrayList<>();
-    protected long capacity;
 
     protected AbstractAbyssEnergyMachineBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state, long capacity) {
-        super(type, pos, state);
-        this.capacity = capacity;
+        super(type, pos, state, capacity);
     }
 
     protected int maxEnergyTypes() {
@@ -44,8 +42,8 @@ public abstract class AbstractAbyssEnergyMachineBlockEntity extends KarasuCoreBl
     }
 
     @Override
-    public long getEnergyCapacity() {
-        return capacity;
+    public Long getEnergyCapacity() {
+        return getMaxEnergy();
     }
 
     @Override
@@ -63,7 +61,7 @@ public abstract class AbstractAbyssEnergyMachineBlockEntity extends KarasuCoreBl
             return 0;
         }
         long current = index >= 0 ? energies.get(index).amountOrZero() : 0L;
-        long received = Math.min(capacity - current, maxAmount);
+        long received = Math.min(getMaxEnergy() - current, maxAmount);
         if (received <= 0) {
             return 0;
         }
@@ -74,8 +72,7 @@ public abstract class AbstractAbyssEnergyMachineBlockEntity extends KarasuCoreBl
             } else {
                 energies.add(new AbyssEnergyData(id, nextAmount));
             }
-            setChanged();
-            sync();
+            markDirtyAndSync();
         }
         return received;
     }
@@ -101,8 +98,7 @@ public abstract class AbstractAbyssEnergyMachineBlockEntity extends KarasuCoreBl
             } else {
                 energies.set(index, new AbyssEnergyData(id, remaining));
             }
-            setChanged();
-            sync();
+            markDirtyAndSync();
         }
         return extracted;
     }
@@ -117,7 +113,7 @@ public abstract class AbstractAbyssEnergyMachineBlockEntity extends KarasuCoreBl
 
     @Override
     public long getCapacity() {
-        return capacity;
+        return getMaxEnergy();
     }
 
     public ResourceLocation getEnergyId1() {
@@ -148,11 +144,15 @@ public abstract class AbstractAbyssEnergyMachineBlockEntity extends KarasuCoreBl
         return energies.get(index).amountOrZero();
     }
 
-    protected void writeEnergyNbt(CompoundTag nbt, HolderLookup.Provider registries) {
+    @Override
+    protected void saveAdditional(CompoundTag nbt, HolderLookup.Provider registries) {
+        super.saveAdditional(nbt, registries);
         writeEnergyListNbt(nbt);
     }
 
-    protected void readEnergyNbt(CompoundTag nbt, HolderLookup.Provider registries) {
+    @Override
+    protected void loadAdditional(CompoundTag nbt, HolderLookup.Provider registries) {
+        super.loadAdditional(nbt, registries);
         readEnergyListNbt(nbt);
     }
 

@@ -1,9 +1,9 @@
 package com.karasu256.projectk.block.entity;
 
+import com.karasu256.projectk.block.entity.impl.AbstractAbyssMachineBlockEntity;
 import com.karasu256.projectk.utils.Id;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
 import software.bernie.geckolib.animation.AnimatableManager;
@@ -11,12 +11,12 @@ import software.bernie.geckolib.animation.AnimationController;
 import software.bernie.geckolib.animation.RawAnimation;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
-public class AbyssCoreBlockEntity extends BlockEntity implements GeoAnimatableBlockEntity {
+public class AbyssCoreBlockEntity extends AbstractAbyssMachineBlockEntity implements GeoAnimatableBlockEntity {
     private static final RawAnimation IDLE = RawAnimation.begin().thenLoop("idle");
     private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
 
     public AbyssCoreBlockEntity(BlockPos pos, BlockState state) {
-        super(ProjectKBlockEntities.ABYSS_CORE.get(), pos, state);
+        super(ProjectKBlockEntities.ABYSS_CORE.get(), pos, state, 0);
     }
 
     @Override

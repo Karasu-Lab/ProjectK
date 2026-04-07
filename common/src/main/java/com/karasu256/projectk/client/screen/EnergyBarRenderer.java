@@ -1,7 +1,9 @@
 package com.karasu256.projectk.client.screen;
 
 import com.karasu256.projectk.data.AbyssEnergyData;
+import com.karasu256.projectk.data.EnergyCapacityData;
 import com.karasu256.projectk.energy.ProjectKEnergies;
+import com.karasu256.projectk.item.custom.AbyssEnergyItem;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
 import net.minecraft.client.Minecraft;
@@ -121,11 +123,10 @@ public final class EnergyBarRenderer {
 
     public static void renderDonutTooltip(GuiGraphics graphics, Font font, int mouseX, int mouseY, float cx, float cy, List<AbyssEnergyData> energies, long visualCapacity, long tooltipCapacity, float centerRadius, float thickness, float startAngle) {
         getDonutTooltipComponents(mouseX, mouseY, cx, cy, energies, visualCapacity, tooltipCapacity,
-                new DonutRadius(centerRadius - thickness / 2.0f, centerRadius + thickness / 2.0f), startAngle)
-                .ifPresent(tooltip -> {
-                    graphics.renderTooltip(font, tooltip.stream().map(Component::getVisualOrderText).toList(), mouseX,
-                            mouseY);
-                });
+                new DonutRadius(centerRadius - thickness / 2.0f, centerRadius + thickness / 2.0f),
+                startAngle).ifPresent(tooltip -> {
+            graphics.renderTooltip(font, tooltip.stream().map(Component::getVisualOrderText).toList(), mouseX, mouseY);
+        });
     }
 
     public static Optional<List<Component>> getDonutTooltipComponents(int mouseX, int mouseY, float cx, float cy, List<AbyssEnergyData> energies, long visualCapacity, long tooltipCapacity, DonutRadius radius, float startAngle) {
@@ -173,10 +174,17 @@ public final class EnergyBarRenderer {
     }
 
     public static void renderFluidBar(GuiGraphics graphics, ResourceLocation energyId, long amount, Long capacity, int x, int y, int width, int height) {
-        if (energyId == null || capacity == null || capacity <= 0) {
+        if (energyId == null) {
             return;
         }
-        int fill = (int) Math.min((amount * (long) height) / capacity, height);
+        int fill;
+        if (ProjectKEnergies.isInfinite(amount, capacity)) {
+            fill = height;
+        } else if (capacity == null || capacity <= 0) {
+            fill = 0;
+        } else {
+            fill = (int) Math.min((amount * (long) height) / capacity, height);
+        }
         if (fill <= 0) {
             return;
         }
@@ -194,10 +202,17 @@ public final class EnergyBarRenderer {
     }
 
     public static void renderFluidBarHorizontal(GuiGraphics graphics, ResourceLocation energyId, long amount, Long capacity, int x, int y, int width, int height) {
-        if (energyId == null || capacity == null || capacity <= 0) {
+        if (energyId == null) {
             return;
         }
-        int fill = (int) Math.min((amount * (long) width) / capacity, width);
+        int fill;
+        if (ProjectKEnergies.isInfinite(amount, capacity)) {
+            fill = width;
+        } else if (capacity == null || capacity <= 0) {
+            fill = 0;
+        } else {
+            fill = (int) Math.min((amount * (long) width) / capacity, width);
+        }
         if (fill <= 0) {
             return;
         }
@@ -215,17 +230,9 @@ public final class EnergyBarRenderer {
     }
 
     public static List<Component> toolTipComponents(ResourceLocation energyId, long amount, Long capacity) {
-        if (energyId == null) {
-            return List.of();
-        }
-        return ProjectKEnergies.getDefinition(energyId).map(definition -> {
-            Component formatted = Component.translatable("energy.projectk.abyss_energy_format",
-                    definition.getDisplayName());
-            Component energyLine = capacity == null
-                    ? Component.translatable("tooltip.projectk.wthit.energy_no_limit", amount)
-                    : Component.translatable("tooltip.projectk.wthit.energy", amount, capacity);
-            return List.of(formatted, energyLine);
-        }).orElseGet(() -> List.of(Component.literal(energyId.toString())));
+        EnergyCapacityData capacityData = (capacity == null || capacity < 0) ? EnergyCapacityData.infinite() : EnergyCapacityData.of(
+                capacity);
+        return AbyssEnergyItem.toolTipComponents(energyId, amount, capacityData);
     }
 
     public static List<FormattedCharSequence> toolTip(ResourceLocation energyId, long amount, Long capacity) {

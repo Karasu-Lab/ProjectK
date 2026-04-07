@@ -17,6 +17,7 @@ import net.minecraft.world.item.ItemStack;
 import java.util.List;
 
 public class AbyssAbsorptionPrismRenderer implements BlockEntityRenderer<AbyssAbsorptionPrismBlockEntity> {
+    @SuppressWarnings("unused")
     public AbyssAbsorptionPrismRenderer(BlockEntityRendererProvider.Context context) {
     }
 
@@ -27,21 +28,26 @@ public class AbyssAbsorptionPrismRenderer implements BlockEntityRenderer<AbyssAb
             return;
         }
 
-        ResourceLocation energyId = energies.get(0).energyId();
+        ResourceLocation energyId = energies.getFirst().energyId();
         ItemStack displayStack = new ItemStack(ProjectKItems.ABYSS_INGOT.get());
         AbyssEnergyData.applyToStack(displayStack, energyId, 1L);
+
+        var level = blockEntity.getLevel();
+        if (level == null) {
+            return;
+        }
 
         poseStack.pushPose();
 
         poseStack.translate(0.5, 0.5, 0.5);
 
-        float time = (blockEntity.getLevel().getGameTime() + partialTick) * 0.05f;
+        float time = (level.getGameTime() + partialTick) * 0.05f;
         poseStack.mulPose(Axis.YP.rotation(time));
         poseStack.scale(0.6f, 0.6f, 0.6f);
 
         ItemRenderer itemRenderer = Minecraft.getInstance().getItemRenderer();
         itemRenderer.renderStatic(displayStack, ItemDisplayContext.FIXED, packedLight, packedOverlay, poseStack,
-                bufferSource, blockEntity.getLevel(), 0);
+                bufferSource, level, 0);
 
         poseStack.popPose();
     }

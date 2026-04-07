@@ -1,0 +1,13 @@
+{
+  "amount": {
+    "type": "built_in"
+  },
+  "block": {
+    "ids": [
+      "minecraft:wither_rose"
+    ],
+    "radius": 5
+  },
+  "energy_id": "projectk:abyss_energy",
+  "mob": {}
+}

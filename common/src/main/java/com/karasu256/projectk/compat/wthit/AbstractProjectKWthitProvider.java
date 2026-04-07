@@ -16,20 +16,26 @@ import java.util.List;
 
 public abstract class AbstractProjectKWthitProvider {
     protected void addEnergyEntries(ITooltip tooltip, List<IEnergyListHolder.EnergyEntry> entries) {
+        if (entries.isEmpty()) {
+            return;
+        }
         for (IEnergyListHolder.EnergyEntry entry : entries) {
             ResourceLocation id = entry.id();
-            if (id == null || entry.amount() <= 0) {
+            if (id == null) {
                 continue;
             }
             Component name = ProjectKEnergies.getDefinition(id).map(ProjectKEnergies.EnergyDefinition::getDisplayName)
                     .orElseGet(() -> AbyssEnergyItem.resolveEnergyName(id));
-            Component formatted = Component.translatable("energy.projectk.abyss_energy_format", name);
-            tooltip.addLine(formatted);
-            if (entry.capacity() == null) {
-                tooltip.addLine(Component.translatable("tooltip.projectk.wthit.energy_no_limit", entry.amount()));
+            tooltip.addLine(name);
+
+            boolean isInfinite = ProjectKEnergies.isInfinite(entry.amount(), entry.capacity());
+
+            if (isInfinite) {
+                tooltip.addLine(Component.translatable("tooltip.projectk.infinite"));
+            } else if (entry.capacity() == null || entry.capacity() <= 0) {
+                tooltip.addLine(Component.literal(String.format("%,d ", entry.amount())).append(Component.translatable("tooltip.projectk.energy_unit")));
             } else {
-                tooltip.addLine(
-                        Component.translatable("tooltip.projectk.wthit.energy", entry.amount(), entry.capacity()));
+                tooltip.addLine(Component.literal(String.format("%,d / %,d ", entry.amount(), entry.capacity())).append(Component.translatable("tooltip.projectk.energy_unit")));
             }
             tooltip.addLine(new AbyssEnergyBarComponent(id, entry.amount(), entry.capacity(), entry.active()));
         }
@@ -37,12 +43,8 @@ public abstract class AbstractProjectKWthitProvider {
 
     protected void addEnergyInfo(ITooltip tooltip, IProjectKEnergy energy, long amount, Long capacity) {
         if (energy != null) {
-            tooltip.addLine(Component.translatable("tooltip.projectk.wthit.energy_type", energy.getName()));
-        }
-        if (capacity == null) {
-            tooltip.addLine(Component.translatable("tooltip.projectk.wthit.energy_no_limit", amount));
-        } else {
-            tooltip.addLine(Component.translatable("tooltip.projectk.wthit.energy", amount, capacity));
+            ResourceLocation id = energy.getId();
+            addEnergyEntries(tooltip, List.of(new IEnergyListHolder.EnergyEntry(id, amount, capacity, false)));
         }
     }
 

@@ -20,7 +20,7 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.Nullable;
 
-public abstract class AbstractPKEnergyBlockEntity<T extends IProjectKEnergy> extends AbstractEnergyBlockEntity<T> implements IRotationAnimSpeed {
+public abstract class AbstractPKEnergyBlockEntity<T extends IProjectKEnergy> extends AbstractEnergyBlockEntity<T> implements IRotationAnimSpeed, IEnergyBlockEntitySync, IAbyssNbtHelper {
     protected final IRotationAnimSpeed rotationSpeed = new RotationAnimSpeed(1.0f);
     protected final T pkEnergy;
     protected long maxEnergyCapacity;
@@ -55,8 +55,7 @@ public abstract class AbstractPKEnergyBlockEntity<T extends IProjectKEnergy> ext
     @Override
     public void setRotationSpeed(float speed) {
         rotationSpeed.setRotationSpeed(speed);
-        setChanged();
-        sync();
+        markDirtyAndSync();
     }
 
     @Override
@@ -67,8 +66,7 @@ public abstract class AbstractPKEnergyBlockEntity<T extends IProjectKEnergy> ext
     @Override
     public void setSpeed(float speed) {
         rotationSpeed.setSpeed(speed);
-        setChanged();
-        sync();
+        markDirtyAndSync();
     }
 
     @Override
@@ -86,8 +84,7 @@ public abstract class AbstractPKEnergyBlockEntity<T extends IProjectKEnergy> ext
         long inserted = pkEnergy instanceof AbyssEnergy ae ? ae.insert(id, capped, getMaxEnergyCapacity(),
                 simulate) : pkEnergy.insert(id, capped, simulate);
         if (inserted > 0 && !simulate) {
-            setChanged();
-            sync();
+            markDirtyAndSync();
         }
         return inserted;
     }
@@ -96,8 +93,7 @@ public abstract class AbstractPKEnergyBlockEntity<T extends IProjectKEnergy> ext
     public long extract(ResourceLocation id, long maxAmount, boolean simulate) {
         long extracted = pkEnergy.extract(id, maxAmount, simulate);
         if (extracted > 0 && !simulate) {
-            setChanged();
-            sync();
+            markDirtyAndSync();
         }
         return extracted;
     }
@@ -120,15 +116,15 @@ public abstract class AbstractPKEnergyBlockEntity<T extends IProjectKEnergy> ext
     }
 
     protected void setMaxEnergyCapacity(long capacity) {
+        if (this.maxEnergyCapacity == capacity) return;
         this.maxEnergyCapacity = capacity;
         if (energy != null) {
             energy.setCapacity(capacity);
         }
         if (pkEnergy != null && pkEnergy.getValue() > capacity && energy != null) {
             energy.setValue(capacity);
-            setChanged();
-            sync();
         }
+        markDirtyAndSync();
     }
 
     @Override

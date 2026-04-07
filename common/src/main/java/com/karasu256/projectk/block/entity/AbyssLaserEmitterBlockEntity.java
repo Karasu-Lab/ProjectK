@@ -1,11 +1,9 @@
 package com.karasu256.projectk.block.entity;
 
 import com.karasu256.projectk.block.custom.AbyssLaserEmitter;
-import com.karasu256.projectk.block.entity.impl.AbstractPKEnergyBlockEntity;
+import com.karasu256.projectk.block.entity.impl.AbstractAbyssMachineBlockEntity;
 import com.karasu256.projectk.data.AbyssLaserEmitterTier;
 import com.karasu256.projectk.data.AbyssLaserEmitterTierManager;
-import com.karasu256.projectk.energy.AbyssEnergy;
-import com.karasu256.projectk.energy.ITierInfo;
 import com.karasu256.projectk.entity.AbyssLaserEntity;
 import com.karasu256.projectk.entity.ProjectKEntities;
 import net.minecraft.core.BlockPos;
@@ -21,8 +19,7 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.CollisionContext;
 
-public class AbyssLaserEmitterBlockEntity extends AbstractPKEnergyBlockEntity<AbyssEnergy> implements ITierInfo {
-    private int tier = 0;
+public class AbyssLaserEmitterBlockEntity extends AbstractAbyssMachineBlockEntity {
     private int cooldown = 0;
 
     public AbyssLaserEmitterBlockEntity(BlockPos pos, BlockState state) {
@@ -33,8 +30,8 @@ public class AbyssLaserEmitterBlockEntity extends AbstractPKEnergyBlockEntity<Ab
         if (level.isClientSide)
             return;
 
-        AbyssLaserEmitterTier tierData = AbyssLaserEmitterTierManager.getTier(be.tier);
-        be.setMaxEnergyCapacity(tierData.capacity());
+        AbyssLaserEmitterTier tierData = AbyssLaserEmitterTierManager.getTier(be.getTier());
+        be.setMaxEnergy(tierData.capacity());
 
         AbyssLaserEmitter.Mode mode = state.getValue(AbyssLaserEmitter.MODE);
         Direction facing = state.getValue(AbyssLaserEmitter.FACING);
@@ -52,17 +49,12 @@ public class AbyssLaserEmitterBlockEntity extends AbstractPKEnergyBlockEntity<Ab
         }
     }
 
-    @Override
-    protected AbyssEnergy createEnergy() {
-        return new AbyssEnergy(0L);
-    }
-
     private boolean fireLaser(Level level, BlockPos pos, Direction facing, AbyssLaserEmitterTier tierData) {
         ResourceLocation energyId = getAbyssEnergyId();
         if (energyId == null)
             return false;
 
-        long energyAmount = getAmount();
+        long energyAmount = getEnergyAmount();
         long cost = tierData.concentration() / 10;
         if (cost <= 0)
             cost = 1;
@@ -91,24 +83,12 @@ public class AbyssLaserEmitterBlockEntity extends AbstractPKEnergyBlockEntity<Ab
                 laser.setEnergyId(energyId);
                 laser.setEnergyAmount(cost);
                 laser.setFacing(facing);
-                laser.setLifetime(1);
+                laser.setLifetime(2);
                 level.addFreshEntity(laser);
             }
             return true;
         }
         return false;
-    }
-
-    @Override
-    public int getTier() {
-        return tier;
-    }
-
-    @Override
-    public void setTier(int tier) {
-        this.tier = tier;
-        setChanged();
-        sync();
     }
 
     @Override
@@ -124,14 +104,12 @@ public class AbyssLaserEmitterBlockEntity extends AbstractPKEnergyBlockEntity<Ab
     @Override
     protected void saveAdditional(CompoundTag nbt, HolderLookup.Provider registries) {
         super.saveAdditional(nbt, registries);
-        saveTier(nbt);
         nbt.putInt("Cooldown", cooldown);
     }
 
     @Override
     protected void loadAdditional(CompoundTag nbt, HolderLookup.Provider registries) {
         super.loadAdditional(nbt, registries);
-        loadTier(nbt);
         cooldown = nbt.getInt("Cooldown");
     }
 }

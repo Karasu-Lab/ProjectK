@@ -2,20 +2,14 @@ package com.karasu256.projectk.block.entity;
 
 import com.karasu256.projectk.block.custom.AbyssEnergyCable;
 import com.karasu256.projectk.block.custom.AbyssEnergyCable.ConnectionMode;
+import com.karasu256.projectk.block.entity.impl.AbstractAbyssMachineBlockEntity;
 import com.karasu256.projectk.data.AbyssEnergyData;
-import com.karasu256.projectk.energy.IEnergyListHolder;
-import com.karasu256.projectk.energy.IMultiEnergyStorage;
 import net.karasuniki.karasunikilib.api.block.ICableInputable;
 import net.karasuniki.karasunikilib.api.block.ICableOutputable;
-import net.karasuniki.karasunikilib.api.block.IEnergyBlock;
-import net.karasuniki.karasunikilib.api.data.impl.EnergyValue;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.protocol.Packet;
-import net.minecraft.network.protocol.game.ClientGamePacketListener;
-import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -24,21 +18,15 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
 
-public class AbyssEnergyCableBlockEntity extends BlockEntity implements ICableInputable, ICableOutputable, IEnergyListHolder {
+public class AbyssEnergyCableBlockEntity extends AbstractAbyssMachineBlockEntity implements ICableInputable, ICableOutputable {
     private static final WeakHashMap<Level, Long> LAST_TICK = new WeakHashMap<>();
     private static final WeakHashMap<Level, Set<BlockPos>> PROCESSED = new WeakHashMap<>();
-    private final EnergyValue energy = new EnergyValue();
     private final ConnectionMode[] sideModes = new ConnectionMode[6];
-    private long capacity;
     private long transferRate;
 
     public AbyssEnergyCableBlockEntity(BlockPos pos, BlockState state) {
-        super(ProjectKBlockEntities.ABYSS_ENERGY_CABLE.get(), pos, state);
-        this.capacity = resolveCapacity(state);
+        super(ProjectKBlockEntities.ABYSS_ENERGY_CABLE.get(), pos, state, resolveCapacity(state));
         this.transferRate = resolveTransferRate(state);
-        energy.setCapacity(capacity);
-        energy.setValue(0);
-        energy.setId(null);
         Arrays.fill(sideModes, ConnectionMode.CONNECTED);
     }
 
@@ -76,33 +64,12 @@ public class AbyssEnergyCableBlockEntity extends BlockEntity implements ICableIn
     }
 
     @Override
-    public long insert(ResourceLocation id, long maxAmount, boolean simulate) {
-        return insert(id, maxAmount, simulate, null);
-    }
-
-    @Override
     public long insert(ResourceLocation id, long maxAmount, boolean simulate, @Nullable Direction side) {
         ConnectionMode mode = getModeForSide(side);
         if (mode == ConnectionMode.INPUT || mode == ConnectionMode.NONE) {
             return 0;
         }
-        if (energy.getValue() > 0 && energy.getId() != null && !energy.getId().equals(id)) {
-            return 0;
-        }
-        long accepted = Math.min(maxAmount, capacity - energy.getValue());
-        if (!simulate && accepted > 0) {
-            if (energy.getValue() == 0 || energy.getId() == null) {
-                energy.setId(id);
-            }
-            energy.setValue(energy.getValue() + accepted);
-            setChanged();
-        }
-        return accepted;
-    }
-
-    @Override
-    public long extract(ResourceLocation id, long maxAmount, boolean simulate) {
-        return extract(id, maxAmount, simulate, null);
+        return insert(id, maxAmount, simulate);
     }
 
     @Override
@@ -111,18 +78,7 @@ public class AbyssEnergyCableBlockEntity extends BlockEntity implements ICableIn
         if (mode == ConnectionMode.OUTPUT || mode == ConnectionMode.NONE) {
             return 0;
         }
-        if (energy.getId() == null || !energy.getId().equals(id)) {
-            return 0;
-        }
-        long extracted = Math.min(energy.getValue(), maxAmount);
-        if (!simulate && extracted > 0) {
-            energy.setValue(energy.getValue() - extracted);
-            if (energy.getValue() == 0) {
-                energy.setId(null);
-            }
-            setChanged();
-        }
-        return extracted;
+        return extract(id, maxAmount, simulate);
     }
 
     private NetworkState collectNetwork() {
@@ -141,7 +97,7 @@ public class AbyssEnergyCableBlockEntity extends BlockEntity implements ICableIn
             state.capacity += cable.getEnergyCapacity();
             long value = cable.getEnergyAmount();
             if (value > 0) {
-                ResourceLocation id = cable.energy.getId();
+                ResourceLocation id = cable.getAbyssEnergyId();
                 if (state.energyId == null) {
                     state.energyId = id;
                 } else if (!state.energyId.equals(id)) {
@@ -214,9 +170,6 @@ public class AbyssEnergyCableBlockEntity extends BlockEntity implements ICableIn
             return;
         }
         long available = Math.min(network.energy, transferRate);
-        if (available <= 0) {
-            return;
-        }
 
         List<TransferTarget> targets = new ArrayList<>();
         long totalAccept = 0;
@@ -313,20 +266,8 @@ public class AbyssEnergyCableBlockEntity extends BlockEntity implements ICableIn
         if (networkAmount > 0 && networkId != null) {
             return networkId;
         }
-        if (neighbor instanceof IEnergyBlock<?> energyBlock) {
-            if (energyBlock.getAmount() <= 0) {
-                return null;
-            }
-            return energyBlock.getEnergyType().getId();
-        }
-        if (neighbor instanceof IMultiEnergyStorage multiStorage) {
-            int activeIndex = multiStorage.getActiveEnergyIndex();
-            if (activeIndex >= 0) {
-                AbyssEnergyData data = multiStorage.getEnergyByIndex(activeIndex);
-                if (data != null && data.hasPositiveAmount()) {
-                    return data.energyId();
-                }
-            }
+        if (neighbor instanceof AbstractAbyssMachineBlockEntity machine) {
+            return machine.getAbyssEnergyId();
         }
         return null;
     }
@@ -350,43 +291,9 @@ public class AbyssEnergyCableBlockEntity extends BlockEntity implements ICableIn
         return mode != ConnectionMode.NONE;
     }
 
-    private void setEnergyInternal(ResourceLocation energyId, long value) {
-        if (value <= 0) {
-            energy.setValue(0);
-            energy.setId(null);
-        } else {
-            if (energyId != null) {
-                energy.setId(energyId);
-            }
-            energy.setValue(value);
-        }
-        setChanged();
-    }
-
-    public long getEnergyAmount() {
-        return energy.getValue();
-    }
-
-    public long getEnergyCapacity() {
-        return capacity;
-    }
-
-    public com.karasu256.projectk.energy.IProjectKEnergy getEnergyType() {
-        return energy instanceof com.karasu256.projectk.energy.IProjectKEnergy pkEnergy ? pkEnergy : null;
-    }
-
-    @Override
-    public List<EnergyEntry> getEnergyEntries() {
-        if (energy.getId() == null || energy.getValue() <= 0) {
-            return List.of();
-        }
-        return List.of(new EnergyEntry(energy.getId(), energy.getValue(), capacity, false));
-    }
-
     @Override
     protected void saveAdditional(CompoundTag nbt, HolderLookup.Provider registries) {
         super.saveAdditional(nbt, registries);
-        energy.writeNbt(nbt, registries);
         CompoundTag modesTag = new CompoundTag();
         for (int i = 0; i < 6; i++) {
             modesTag.putString("side" + i, sideModes[i].getSerializedName());
@@ -397,13 +304,7 @@ public class AbyssEnergyCableBlockEntity extends BlockEntity implements ICableIn
     @Override
     protected void loadAdditional(CompoundTag nbt, HolderLookup.Provider registries) {
         super.loadAdditional(nbt, registries);
-        energy.readNbt(nbt, registries);
-        if (energy.getValue() <= 0) {
-            energy.setId(null);
-        }
-        this.capacity = resolveCapacity(getBlockState());
         this.transferRate = resolveTransferRate(getBlockState());
-        energy.setCapacity(capacity);
         if (nbt.contains("modes")) {
             CompoundTag modesTag = nbt.getCompound("modes");
             for (int i = 0; i < 6; i++) {
@@ -413,7 +314,7 @@ public class AbyssEnergyCableBlockEntity extends BlockEntity implements ICableIn
         }
     }
 
-    private ConnectionMode parseMode(String name) {
+    private static ConnectionMode parseMode(String name) {
         for (ConnectionMode mode : ConnectionMode.values()) {
             if (mode.getSerializedName().equals(name)) {
                 return mode;
@@ -422,31 +323,37 @@ public class AbyssEnergyCableBlockEntity extends BlockEntity implements ICableIn
         return ConnectionMode.NONE;
     }
 
-    @Override
-    public CompoundTag getUpdateTag(HolderLookup.Provider registries) {
-        CompoundTag nbt = super.getUpdateTag(registries);
-        saveAdditional(nbt, registries);
-        return nbt;
-    }
-
-    @Override
-    @Nullable
-    public Packet<ClientGamePacketListener> getUpdatePacket() {
-        return ClientboundBlockEntityDataPacket.create(this);
-    }
-
-    private long resolveCapacity(BlockState state) {
+    private static long resolveCapacity(BlockState state) {
         if (state.getBlock() instanceof AbyssEnergyCable cable) {
             return cable.getCapacity();
         }
         return 0L;
     }
 
-    private long resolveTransferRate(BlockState state) {
+    private static long resolveTransferRate(BlockState state) {
         if (state.getBlock() instanceof AbyssEnergyCable cable) {
             return cable.getTransferRate();
         }
         return 0L;
+    }
+
+    private void setEnergyInternal(ResourceLocation energyId, long value) {
+        if (value <= 0) {
+            getEnergyList().clear();
+        } else {
+            if (energyId != null) {
+                int index = findEnergyIndex(energyId);
+                if (index >= 0) {
+                    getEnergyList().set(index, new AbyssEnergyData(energyId, value));
+                } else {
+                    getEnergyList().clear();
+                    getEnergyList().add(new AbyssEnergyData(energyId, value));
+                }
+            } else {
+                getEnergyList().clear();
+            }
+        }
+        setChanged();
     }
 
     private void syncToClient() {

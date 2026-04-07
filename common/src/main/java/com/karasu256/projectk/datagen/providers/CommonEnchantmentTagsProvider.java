@@ -17,7 +17,6 @@ public class CommonEnchantmentTagsProvider extends TagsProvider<Enchantment> {
 
     @Override
     protected void addTags(HolderLookup.Provider provider) {
-        tag(ProjectKTags.Enchantments.ABYSS_ENCHANT)
-                .add(ProjectKEnchantments.ABYSS_BOOSTER_KEY);
+        tag(ProjectKTags.Enchantments.ABYSS_ENCHANT).addOptional(ProjectKEnchantments.ABYSS_BOOSTER_KEY.location());
     }
 }

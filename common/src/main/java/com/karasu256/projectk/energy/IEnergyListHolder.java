@@ -4,7 +4,7 @@ import net.minecraft.resources.ResourceLocation;
 
 import java.util.List;
 
-public interface IEnergyListHolder {
+public interface IEnergyListHolder extends IEnergyBlockEntitySync {
     List<EnergyEntry> getEnergyEntries();
 
     record EnergyEntry(ResourceLocation id, long amount, Long capacity, boolean active) {

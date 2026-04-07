@@ -87,17 +87,11 @@ public class AbyssLaserEntityRenderer extends EntityRenderer<AbyssLaserEntity> {
         addVertex(consumer, last, x1, y0, z1, u1, v0, light);
         addVertex(consumer, last, x1, y1, z1, u1, v1, light);
         addVertex(consumer, last, x0, y1, z0, u0, v1, light);
-
-        // Double sided
-        addVertex(consumer, last, x0, y1, z0, u0, v1, light);
-        addVertex(consumer, last, x1, y1, z1, u1, v1, light);
-        addVertex(consumer, last, x1, y0, z1, u1, v0, light);
-        addVertex(consumer, last, x0, y0, z0, u0, v0, light);
     }
 
     private void addVertex(VertexConsumer consumer, PoseStack.Pose last, float x, float y, float z, float u, float v, int light) {
         consumer.addVertex(last.pose(), x, y, z).setColor(255, 255, 255, 255).setUv(u, v)
-                .setOverlay(OverlayTexture.NO_OVERLAY).setLight(light).setNormal(last, 0, 1, 0);
+                .setOverlay(OverlayTexture.NO_OVERLAY).setLight(light).setNormal(last, 0, 0, 1);
     }
 
     @Override

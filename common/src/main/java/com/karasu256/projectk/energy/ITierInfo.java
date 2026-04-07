@@ -6,8 +6,9 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.Containers;
 import net.minecraft.world.level.Level;
 
-public interface ITierInfo {
-    String TIER_KEY = "tier";
+import com.karasu256.projectk.energy.EnergyKeys;
+
+public interface ITierInfo extends IEnergyBlockEntitySync {
 
     int getTier();
 
@@ -34,12 +35,12 @@ public interface ITierInfo {
     }
 
     default void loadTier(CompoundTag nbt) {
-        int tier = nbt.contains(TIER_KEY) ? nbt.getInt(TIER_KEY) : getDefaultTier();
-        setTier(clampTier(tier));
+        int loaded = nbt.contains(EnergyKeys.TIER.toString()) ? nbt.getInt(EnergyKeys.TIER.toString()) : getDefaultTier();
+        setTier(clampTier(loaded));
     }
 
     default void saveTier(CompoundTag nbt) {
-        nbt.putInt(TIER_KEY, getTier());
+        nbt.putInt(EnergyKeys.TIER.toString(), getTier());
     }
 
     default int getCraftTimeForTier(int baseTime) {

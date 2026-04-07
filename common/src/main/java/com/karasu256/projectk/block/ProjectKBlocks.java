@@ -61,6 +61,9 @@ public class ProjectKBlocks implements IKRegistryInitializerTarget {
     public static RegistrySupplier<Block> ABYSS_STORAGE = block("abyss_storage",
             () -> new AbyssStorage(BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_BLOCK),
                     AbyssStorage.Properties.of().capacity(30000L).maxTypes(3)), new Item.Properties());
+    public static RegistrySupplier<Block> CREATIVE_ABYSS_STORAGE = block("creative_abyss_storage",
+            () -> new CreativeAbyssStorage(BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_BLOCK),
+                    AbyssStorage.Properties.of().capacity(0L).maxTypes(1)), new Item.Properties());
     public static RegistrySupplier<Block> ABYSS_ENCHANT_REMOVER = block("abyss_enchant_remover",
             () -> new AbyssEnchantRemover(BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_BLOCK),
                     AbyssEnchantRemover.Properties.of().defaultBookCapacity(30000L)), new Item.Properties());

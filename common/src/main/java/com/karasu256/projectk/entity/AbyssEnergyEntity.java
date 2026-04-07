@@ -3,7 +3,7 @@ package com.karasu256.projectk.entity;
 import com.karasu256.projectk.energy.EnergyKeys;
 import com.karasu256.projectk.energy.IProjectKEnergy;
 import com.karasu256.projectk.particle.AbyssParticleOptions;
-import com.karasu256.projectk.particle.IAbssParticleMoveable;
+import com.karasu256.projectk.particle.IAbyssParticleMoveable;
 import com.karasu256.projectk.utils.Id;
 import dev.architectury.registry.registries.RegistrarManager;
 import net.karasuniki.karasunikilib.api.KarasunikiLib;
@@ -143,7 +143,7 @@ public class AbyssEnergyEntity extends Entity {
 
     private boolean isValidTarget(BlockPos pos) {
         BlockEntity be = level().getBlockEntity(pos);
-        if (be instanceof IAbssParticleMoveable moveable) {
+        if (be instanceof IAbyssParticleMoveable moveable) {
             if (moveable.getCapacity() <= 0) {
                 return false;
             }
@@ -158,7 +158,7 @@ public class AbyssEnergyEntity extends Entity {
 
     private void insertEnergy() {
         BlockEntity be = level().getBlockEntity(targetGenerator);
-        if (be instanceof IAbssParticleMoveable moveable) {
+        if (be instanceof IAbyssParticleMoveable moveable) {
             Vec3 center = Vec3.atCenterOf(targetGenerator);
             Vec3 diff = position().subtract(center);
             Direction side = Direction.getNearest(diff.x, diff.y, diff.z);

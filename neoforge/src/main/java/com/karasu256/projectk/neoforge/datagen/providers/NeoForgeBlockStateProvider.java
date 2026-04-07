@@ -13,7 +13,6 @@ import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.neoforged.neoforge.client.model.generators.BlockStateProvider;
 import net.neoforged.neoforge.client.model.generators.ConfiguredModel;
 import net.neoforged.neoforge.client.model.generators.ModelFile;
@@ -60,15 +59,22 @@ public class NeoForgeBlockStateProvider extends BlockStateProvider implements Co
         if (block == ProjectKBlocks.ABYSS_LASER_EMITTER.get()) {
             name += "_pulse";
         }
-        itemModels().getBuilder(BuiltInRegistries.BLOCK.getKey(block).getPath()).parent(new ModelFile.UncheckedModelFile(
-                ResourceLocation.fromNamespaceAndPath(ProjectK.MOD_ID, "block/" + name)));
+        itemModels().getBuilder(BuiltInRegistries.BLOCK.getKey(block).getPath())
+                .parent(new ModelFile.UncheckedModelFile(
+                        ResourceLocation.fromNamespaceAndPath(ProjectK.MOD_ID, "block/" + name)));
+    }
+
+    @Override
+    public void simpleBlockItem(Block block, String modelPath) {
+        ResourceLocation modelLocation = ResourceLocation.parse(modelPath);
+        itemModels().getBuilder(BuiltInRegistries.BLOCK.getKey(block).getPath())
+                .parent(new ModelFile.UncheckedModelFile(modelLocation));
     }
 
     @Override
     public void existingModelBlock(Block block, String modelPath) {
-        ResourceLocation modelLocation = ResourceLocation.parse(modelPath);
-        String name = modelLocation.getPath().replace("block/", "");
-        simpleBlock(block, models().cubeAll(name, ResourceLocation.fromNamespaceAndPath(modelLocation.getNamespace(), "block/" + name)));
+        getVariantBuilder(block).forAllStates(state -> ConfiguredModel.builder()
+                .modelFile(new ModelFile.UncheckedModelFile(ResourceLocation.parse(modelPath))).build());
     }
 
     @Override
@@ -125,26 +131,16 @@ public class NeoForgeBlockStateProvider extends BlockStateProvider implements Co
 
     @Override
     public void directionalModeBlock(Block block, String baseName) {
-        ModelFile pulse = models().withExistingParent(baseName + "_pulse", "minecraft:block/orientable_with_bottom")
-                .texture("top", "projectk:block/" + baseName + "_pulse")
-                .texture("front", "projectk:block/" + baseName + "_pulse")
-                .texture("side", "projectk:block/" + baseName + "_side")
-                .texture("bottom", "projectk:block/" + baseName + "_back");
-
-        ModelFile dc = models().withExistingParent(baseName + "_dc", "minecraft:block/orientable_with_bottom")
-                .texture("top", "projectk:block/" + baseName + "_dc")
-                .texture("front", "projectk:block/" + baseName + "_dc")
-                .texture("side", "projectk:block/" + baseName + "_side")
-                .texture("bottom", "projectk:block/" + baseName + "_back");
+        ResourceLocation pulse = ResourceLocation.fromNamespaceAndPath(ProjectK.MOD_ID, "block/" + baseName + "_pulse");
+        ResourceLocation dc = ResourceLocation.fromNamespaceAndPath(ProjectK.MOD_ID, "block/" + baseName + "_dc");
 
         getVariantBuilder(block).forAllStates(state -> {
             Direction facing = state.getValue(AbyssLaserEmitter.FACING);
             AbyssLaserEmitter.Mode mode = state.getValue(AbyssLaserEmitter.MODE);
             return ConfiguredModel.builder()
-                    .modelFile(mode == AbyssLaserEmitter.Mode.PULSE ? pulse : dc)
+                    .modelFile(new ModelFile.UncheckedModelFile(mode == AbyssLaserEmitter.Mode.PULSE ? pulse : dc))
                     .rotationX(facing == Direction.DOWN ? 90 : facing == Direction.UP ? 270 : 0)
-                    .rotationY(facing.getAxis().isVertical() ? 0 : (((int) facing.toYRot()) + 180) % 360)
-                    .build();
+                    .rotationY(facing.getAxis().isVertical() ? 0 : (((int) facing.toYRot()) + 180) % 360).build();
         });
     }
 

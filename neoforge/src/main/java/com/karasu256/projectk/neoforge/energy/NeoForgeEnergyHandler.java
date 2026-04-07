@@ -12,6 +12,7 @@ import org.jetbrains.annotations.NotNull;
 public class NeoForgeEnergyHandler {
     @SubscribeEvent
     public static void registerCapabilities(@NotNull RegisterCapabilitiesEvent event) {
-        event.registerBlockEntity(Capabilities.EnergyStorage.BLOCK, ProjectKBlockEntities.ABYSS_GENERATOR.get(), (be, side) -> new AbyssEnergyForgeWrapper(be));
+        event.registerBlockEntity(Capabilities.EnergyStorage.BLOCK, ProjectKBlockEntities.ABYSS_GENERATOR.get(),
+                (be, side) -> new AbyssEnergyForgeWrapper(be, be));
     }
 }

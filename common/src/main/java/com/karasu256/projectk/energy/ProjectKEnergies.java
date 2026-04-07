@@ -3,6 +3,7 @@ package com.karasu256.projectk.energy;
 import com.karasu256.projectk.ProjectK;
 import com.karasu256.projectk.registry.EnergiesRegistry;
 import com.karasu256.projectk.utils.Id;
+import com.karasu256.projectk.data.EnergyCapacityData;
 import dev.architectury.registry.registries.RegistrySupplier;
 import net.karasuniki.karasunikilib.api.data.IEnergy;
 import net.karasuniki.karasunikilib.api.registry.IKRegistryInitializerTarget;
@@ -23,6 +24,7 @@ public class ProjectKEnergies implements IKRegistryInitializerTarget {
     public static final RegistrySupplier<IEnergy> YIN_ABYSS_ENERGY = energy(YIN);
     public static final EnergyDefinition YANG = registerDefinition("yang_abyss_energy", "§dYang", "§d陽", EnergyKind.YANG, 500L);
     public static final RegistrySupplier<IEnergy> YANG_ABYSS_ENERGY = energy(YANG);
+    public static final long INFINITE_THRESHOLD = 1_000_000_000_000_000_000L;
     private static final float MODEL_PREDICATE_SCALE = 1000.0f;
 
     public static void init() {
@@ -72,6 +74,27 @@ public class ProjectKEnergies implements IKRegistryInitializerTarget {
 
     public static boolean isAbyssEnergyId(ResourceLocation id) {
         return id != null && ENERGIES.containsKey(id);
+    }
+
+    public static boolean isInfinite(long amount) {
+        return amount >= INFINITE_THRESHOLD || amount < 0;
+    }
+
+    public static boolean isInfinite(long amount, Long capacity) {
+        if (isInfinite(amount)) {
+            return true;
+        }
+        return capacity != null && isInfinite(capacity);
+    }
+
+    public static boolean isInfinite(long amount, EnergyCapacityData capacityData) {
+        if (capacityData == null) {
+            return isInfinite(amount);
+        }
+        if (capacityData.isInfinite()) {
+            return true;
+        }
+        return isInfinite(amount, capacityData.get());
     }
 
     public static RegistrySupplier<IEnergy> energy(EnergyDefinition definition) {
