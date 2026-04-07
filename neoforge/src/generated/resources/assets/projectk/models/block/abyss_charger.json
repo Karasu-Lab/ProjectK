@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:block/cube_all",
   "textures": {
-    "all": "projectk:block/abyss_magic_table"
+    "all": "projectk:block/abyss_charger"
   }
 }

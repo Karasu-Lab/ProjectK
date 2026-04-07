@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/cube_bottom_top",
+  "textures": {
+    "bottom": "projectk:block/abyss_alchemy_blend_machine_bottom",
+    "side": "projectk:block/abyss_alchemy_blend_machine_side",
+    "top": "projectk:block/abyss_alchemy_blend_machine_top"
+  }
+}

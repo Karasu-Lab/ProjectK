@@ -1,0 +1,195 @@
+{
+  "parent": "minecraft:block/block",
+  "elements": [
+    {
+      "faces": {
+        "down": {
+          "texture": "#all",
+          "uv": [
+            7.0,
+            0.0,
+            9.0,
+            2.0
+          ]
+        },
+        "east": {
+          "texture": "#all",
+          "uv": [
+            7.0,
+            0.0,
+            9.0,
+            2.0
+          ]
+        },
+        "north": {
+          "texture": "#all",
+          "uv": [
+            7.0,
+            0.0,
+            9.0,
+            2.0
+          ]
+        },
+        "south": {
+          "texture": "#all",
+          "uv": [
+            7.0,
+            0.0,
+            9.0,
+            2.0
+          ]
+        },
+        "up": {
+          "texture": "#all"
+        },
+        "west": {
+          "texture": "#all",
+          "uv": [
+            7.0,
+            0.0,
+            9.0,
+            2.0
+          ]
+        }
+      },
+      "from": [
+        7,
+        7,
+        0
+      ],
+      "to": [
+        9,
+        9,
+        2
+      ]
+    },
+    {
+      "faces": {
+        "down": {
+          "texture": "#all",
+          "uv": [
+            6.0,
+            2.0,
+            10.0,
+            3.0
+          ]
+        },
+        "east": {
+          "texture": "#all",
+          "uv": [
+            6.0,
+            2.0,
+            10.0,
+            3.0
+          ]
+        },
+        "north": {
+          "texture": "#all",
+          "uv": [
+            6.0,
+            2.0,
+            10.0,
+            3.0
+          ]
+        },
+        "south": {
+          "texture": "#all",
+          "uv": [
+            6.0,
+            2.0,
+            10.0,
+            3.0
+          ]
+        },
+        "up": {
+          "texture": "#all"
+        },
+        "west": {
+          "texture": "#all",
+          "uv": [
+            6.0,
+            2.0,
+            10.0,
+            3.0
+          ]
+        }
+      },
+      "from": [
+        6,
+        6,
+        2
+      ],
+      "to": [
+        10,
+        10,
+        3
+      ]
+    },
+    {
+      "faces": {
+        "down": {
+          "texture": "#all",
+          "uv": [
+            5.0,
+            3.0,
+            11.0,
+            5.0
+          ]
+        },
+        "east": {
+          "texture": "#all",
+          "uv": [
+            5.0,
+            3.0,
+            11.0,
+            5.0
+          ]
+        },
+        "north": {
+          "texture": "#all",
+          "uv": [
+            5.0,
+            3.0,
+            11.0,
+            5.0
+          ]
+        },
+        "south": {
+          "texture": "#all",
+          "uv": [
+            5.0,
+            3.0,
+            11.0,
+            5.0
+          ]
+        },
+        "up": {
+          "texture": "#all"
+        },
+        "west": {
+          "texture": "#all",
+          "uv": [
+            5.0,
+            3.0,
+            11.0,
+            5.0
+          ]
+        }
+      },
+      "from": [
+        5,
+        5,
+        3
+      ],
+      "to": [
+        11,
+        11,
+        5
+      ]
+    }
+  ],
+  "textures": {
+    "all": "projectk:block/multipart/abyss_energy_cable_output",
+    "particle": "projectk:block/multipart/abyss_energy_cable_output"
+  }
+}

@@ -10,6 +10,11 @@
         "type": "projecte:item",
         "emc_value": 128,
         "id": "projectk:karasium_dust"
+      },
+      {
+        "type": "projecte:item",
+        "emc_value": 128,
+        "id": "projectk:abyss_absorption_prism_shard"
       }
     ]
   }

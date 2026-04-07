@@ -1,0 +1,23 @@
+{
+  "type": "projectk:abyss_alchemy_blend_machine",
+  "energy_amount_1": 1000,
+  "energy_amount_2": 1000,
+  "energy_id_1": "projectk:yin_abyss_energy",
+  "energy_id_2": "projectk:yang_abyss_energy",
+  "input": {
+    "count": 1,
+    "ingredient": {
+      "item": "minecraft:netherite_upgrade_smithing_template"
+    }
+  },
+  "result": {
+    "components": {
+      "projectk:abyss_energy": {
+        "amount": 2000,
+        "energy_id": "projectk:abyss_energy"
+      }
+    },
+    "count": 1,
+    "id": "projectk:tier_upgrade"
+  }
+}

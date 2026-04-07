@@ -1,0 +1,53 @@
+{
+  "type": "projectk:abyss_synthesizer",
+  "energies": [
+    {
+      "amount": 1000,
+      "energy_id": "projectk:yin_abyss_energy"
+    },
+    {
+      "amount": 2000,
+      "energy_id": "projectk:yang_abyss_energy"
+    },
+    {
+      "amount": 500,
+      "energy_id": "projectk:abyss_energy"
+    }
+  ],
+  "inputs": [
+    {
+      "count": 1,
+      "ingredient": {
+        "item": "projectk:abyss_ingot"
+      }
+    },
+    {
+      "count": 1,
+      "ingredient": {
+        "item": "projectk:abyss_ingot"
+      }
+    },
+    {
+      "count": 1,
+      "ingredient": {
+        "item": "projectk:abyss_ingot"
+      }
+    },
+    {
+      "count": 1,
+      "ingredient": {
+        "item": "minecraft:gold_ingot"
+      }
+    },
+    {
+      "count": 1,
+      "ingredient": {
+        "item": "minecraft:iron_ingot"
+      }
+    }
+  ],
+  "result": {
+    "count": 1,
+    "id": "minecraft:diamond"
+  }
+}
