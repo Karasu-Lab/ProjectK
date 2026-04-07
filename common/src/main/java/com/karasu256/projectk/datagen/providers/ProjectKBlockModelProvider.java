@@ -3,6 +3,8 @@ package com.karasu256.projectk.datagen.providers;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.karasu256.projectk.ProjectK;
+import com.karasu256.projectk.api.energy.PKMaterials;
+import com.karasu256.projectk.datagen.utils.ProjectKModelUtils;
 import com.karasu256.projectk.energy.ProjectKEnergies;
 import com.karasu256.projectk.registry.ItemsRegistry;
 import net.minecraft.data.CachedOutput;
@@ -52,27 +54,35 @@ public class ProjectKBlockModelProvider implements DataProvider {
         futures.add(writeModel(output, "block/abyss_energy_cable_side_output",
                 cableSideModelWithTexture(ProjectK.MOD_ID + ":block/multipart/abyss_energy_cable_vertical")));
 
-        for (ProjectKEnergies.EnergyDefinition definition : ProjectKEnergies.getDefinitions()) {
+        for (PKMaterials material : PKMaterials.values()) {
+            ProjectKEnergies.EnergyDefinition definition = ProjectKEnergies.getByMaterial(material);
             String fluidId = "fluid_" + definition.idPath();
             futures.add(writeModel(output, "block/" + fluidId, fluidModel(fluidId)));
 
             String coreId = definition.idPath().replace("_energy", "_core");
             futures.add(writeModel(output, "block/" + coreId, coreModel()));
+
+            String bucketPath = "item/bucket_of_" + definition.idPath();
+            futures.add(writeModel(output, bucketPath,
+                    ProjectKModelUtils.bucketModel(ProjectK.MOD_ID + ":" + fluidId, ProjectK.MOD_ID + ":item/bucket_of_abyss_enrgy_fluid")));
         }
 
         for (ResourceLocation itemId : ItemsRegistry.getEnergySuffixItems()) {
-            List<JsonObject> overrides = new ArrayList<>();
-            for (ProjectKEnergies.EnergyDefinition definition : ProjectKEnergies.getDefinitions()) {
+            JsonArray overrides = new JsonArray();
+            for (PKMaterials material : PKMaterials.values()) {
+                ProjectKEnergies.EnergyDefinition definition = ProjectKEnergies.getByMaterial(material);
                 String suffix = energySuffix(definition.id());
                 String modelPath = "item/" + itemId.getPath() + "_" + suffix;
-                String texturePath = ProjectK.MOD_ID + ":item/" + itemId.getPath() + "_" + suffix;
-                futures.add(writeModel(output, modelPath, itemModel(texturePath)));
+                futures.add(writeModel(output, modelPath,
+                        ProjectKModelUtils.simpleItemModel(ProjectK.MOD_ID + ":item/abyss_ingot")));
                 overrides.add(
-                        itemOverride(ABYSS_ENERGY_PROPERTY, ProjectKEnergies.getModelPredicateValue(definition.id()),
+                        ProjectKModelUtils.itemOverride(ABYSS_ENERGY_PROPERTY,
+                                ProjectKEnergies.getModelPredicateValue(definition.id()),
                                 ProjectK.MOD_ID + ":" + modelPath));
             }
             String baseTexture = ProjectK.MOD_ID + ":item/" + itemId.getPath();
-            futures.add(writeModel(output, "item/" + itemId.getPath(), itemModelWithOverrides(baseTexture, overrides)));
+            futures.add(writeModel(output, "item/" + itemId.getPath(),
+                    ProjectKModelUtils.itemModelWithOverrides(baseTexture, overrides)));
         }
 
         return CompletableFuture.allOf(futures.toArray(CompletableFuture[]::new));
@@ -240,12 +250,8 @@ public class ProjectKBlockModelProvider implements DataProvider {
 
     private JsonObject fluidModel(String id) {
         JsonObject json = new JsonObject();
-        json.addProperty("parent", "minecraft:block/water");
-        JsonObject textures = new JsonObject();
-        textures.addProperty("particle", ProjectK.MOD_ID + ":block/" + id + "_still");
-        textures.addProperty("still", ProjectK.MOD_ID + ":block/" + id + "_still");
-        textures.addProperty("flow", ProjectK.MOD_ID + ":block/" + id + "_flow");
-        json.add("textures", textures);
+        json.addProperty("loader", "neoforge:fluid");
+        json.addProperty("fluid", ProjectK.MOD_ID + ":" + id);
         return json;
     }
 

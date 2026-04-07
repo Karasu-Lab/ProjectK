@@ -1,6 +1,7 @@
 package com.karasu256.projectk.neoforge;
 
 import com.karasu256.projectk.ProjectK;
+import com.karasu256.projectk.api.energy.PKMaterials;
 import com.karasu256.projectk.block.ProjectKBlocks;
 import com.karasu256.projectk.client.ProjectKClient;
 import com.karasu256.projectk.client.ProjectKCoreShaders;
@@ -25,6 +26,7 @@ import net.minecraft.client.renderer.item.ItemProperties;
 import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
+import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
@@ -54,7 +56,6 @@ public final class ProjectKNeoForge {
                         "com.karasu256.projectk.neoforge.integrations.forge.ForgeEnergyIntegration"));
 
         if (FMLEnvironment.dist.isClient()) {
-            ProjectKClient.init();
             container.getEventBus().addListener(this::onClientSetup);
             container.getEventBus().addListener(this::onRegisterScreens);
             container.getEventBus().addListener(this::onRegisterShaders);
@@ -72,9 +73,9 @@ public final class ProjectKNeoForge {
         }
     }
 
-    private static void registerFluidExtensions(RegisterClientExtensionsEvent event, String baseName, FluidType fluidType) {
-        ResourceLocation still = ResourceLocation.fromNamespaceAndPath(ProjectK.MOD_ID, "block/" + baseName + "_still");
-        ResourceLocation flow = ResourceLocation.fromNamespaceAndPath(ProjectK.MOD_ID, "block/" + baseName + "_flow");
+    private static void registerFluidExtensions(RegisterClientExtensionsEvent event, int tintColor, FluidType fluidType) {
+        ResourceLocation still = ResourceLocation.fromNamespaceAndPath(ProjectK.MOD_ID, "block/base_fluid_still");
+        ResourceLocation flow = ResourceLocation.fromNamespaceAndPath(ProjectK.MOD_ID, "block/base_fluid_flow");
         event.registerFluidType(new IClientFluidTypeExtensions() {
             @Override
             public ResourceLocation getStillTexture() {
@@ -84,6 +85,11 @@ public final class ProjectKNeoForge {
             @Override
             public ResourceLocation getFlowingTexture() {
                 return flow;
+            }
+
+            @Override
+            public int getTintColor() {
+                return tintColor;
             }
         }, fluidType);
     }
@@ -108,6 +114,7 @@ public final class ProjectKNeoForge {
 
     @SuppressWarnings("deprecation")
     private void onClientSetup(FMLClientSetupEvent event) {
+        ProjectKClient.init();
         ProjectKClient.initLate();
         registerItemModelProperties();
         ItemBlockRenderTypes.setRenderLayer(ProjectKBlocks.ABYSS_GENERATOR.get(), RenderType.CUTOUT);
@@ -133,10 +140,13 @@ public final class ProjectKNeoForge {
         });
     }
 
-    private void onRegisterClientExtensions(RegisterClientExtensionsEvent event) {
-        registerFluidExtensions(event, "fluid_abyss_energy", ProjectKFluids.ABYSS_ENERGY.get().getFluidType());
-        registerFluidExtensions(event, "fluid_yin_abyss_energy", ProjectKFluids.YIN_ABYSS_ENERGY.get().getFluidType());
-        registerFluidExtensions(event, "fluid_yang_abyss_energy",
+    @SubscribeEvent
+    public void onRegisterClientExtensions(RegisterClientExtensionsEvent event) {
+        registerFluidExtensions(event, PKMaterials.ABYSS.color() | 0xFF000000,
+                ProjectKFluids.ABYSS_ENERGY.get().getFluidType());
+        registerFluidExtensions(event, PKMaterials.YIN.color() | 0xFF000000,
+                ProjectKFluids.YIN_ABYSS_ENERGY.get().getFluidType());
+        registerFluidExtensions(event, PKMaterials.YANG.color() | 0xFF000000,
                 ProjectKFluids.YANG_ABYSS_ENERGY.get().getFluidType());
     }
 }

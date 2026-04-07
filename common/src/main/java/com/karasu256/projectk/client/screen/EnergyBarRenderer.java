@@ -1,8 +1,10 @@
 package com.karasu256.projectk.client.screen;
 
+import com.karasu256.projectk.client.util.PKColorUtils;
 import com.karasu256.projectk.data.AbyssEnergyData;
 import com.karasu256.projectk.data.EnergyCapacityData;
 import com.karasu256.projectk.energy.ProjectKEnergies;
+import com.karasu256.projectk.fluid.ProjectKFluids;
 import com.karasu256.projectk.item.custom.AbyssEnergyItem;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
@@ -51,12 +53,13 @@ public final class EnergyBarRenderer {
             float sweepDeg = ((float) amount / visualCapacity) * 360.0f;
             ResourceLocation energyId = data.energyId();
 
-            ResourceLocation spriteId = ResourceLocation.fromNamespaceAndPath(energyId.getNamespace(),
-                    "block/fluid_" + energyId.getPath() + "_still");
+            var attributes = ProjectKFluids.getAttributes(energyId);
+            if (attributes == null) continue;
 
             TextureAtlasSprite sprite = Minecraft.getInstance().getModelManager().getAtlas(InventoryMenu.BLOCK_ATLAS)
-                    .getSprite(spriteId);
+                    .getSprite(attributes.getSourceTexture());
 
+            PKColorUtils.setShaderColor(PKColorUtils.getEnergyColor(energyId, PKColorUtils.OPAQUE));
             RenderSystem.setShaderTexture(0, InventoryMenu.BLOCK_ATLAS);
 
             float u0 = sprite.getU0();
@@ -188,17 +191,21 @@ public final class EnergyBarRenderer {
         if (fill <= 0) {
             return;
         }
-        ResourceLocation spriteId = ResourceLocation.fromNamespaceAndPath(energyId.getNamespace(),
-                "block/fluid_" + energyId.getPath() + "_still");
+        var attributes = ProjectKFluids.getAttributes(energyId);
+        if (attributes == null) return;
+
         TextureAtlasSprite sprite = Minecraft.getInstance().getModelManager().getAtlas(InventoryMenu.BLOCK_ATLAS)
-                .getSprite(spriteId);
+                .getSprite(attributes.getSourceTexture());
         int clipY = y + height - fill;
+
+        PKColorUtils.setShaderColor(PKColorUtils.getEnergyColor(energyId, PKColorUtils.OPAQUE));
 
         graphics.enableScissor(x, clipY, x + width, y + height);
         for (int drawY = y + height - SPRITE_SIZE; drawY > clipY - SPRITE_SIZE; drawY -= SPRITE_SIZE) {
             graphics.blit(x, drawY, 0, width, SPRITE_SIZE, sprite);
         }
         graphics.disableScissor();
+        RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, 1.0f);
     }
 
     public static void renderFluidBarHorizontal(GuiGraphics graphics, ResourceLocation energyId, long amount, Long capacity, int x, int y, int width, int height) {
@@ -216,17 +223,21 @@ public final class EnergyBarRenderer {
         if (fill <= 0) {
             return;
         }
-        ResourceLocation spriteId = ResourceLocation.fromNamespaceAndPath(energyId.getNamespace(),
-                "block/fluid_" + energyId.getPath() + "_still");
+        var attributes = ProjectKFluids.getAttributes(energyId);
+        if (attributes == null) return;
+
         TextureAtlasSprite sprite = Minecraft.getInstance().getModelManager().getAtlas(InventoryMenu.BLOCK_ATLAS)
-                .getSprite(spriteId);
+                .getSprite(attributes.getSourceTexture());
         int clipX = x + fill;
+
+        PKColorUtils.setShaderColor(PKColorUtils.getEnergyColor(energyId, PKColorUtils.OPAQUE));
 
         graphics.enableScissor(x, y, clipX, y + height);
         for (int drawX = x; drawX < x + width; drawX += SPRITE_SIZE) {
             graphics.blit(drawX, y, 0, SPRITE_SIZE, height, sprite);
         }
         graphics.disableScissor();
+        RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, 1.0f);
     }
 
     public static List<Component> toolTipComponents(ResourceLocation energyId, long amount, Long capacity) {

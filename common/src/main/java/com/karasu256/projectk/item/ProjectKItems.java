@@ -1,6 +1,7 @@
 package com.karasu256.projectk.item;
 
 import com.karasu256.projectk.ProjectK;
+import com.karasu256.projectk.api.energy.PKMaterials;
 import com.karasu256.projectk.api.fluid.AbyssEnergyFluidConversion;
 import com.karasu256.projectk.data.AbyssEnergyData;
 import com.karasu256.projectk.data.ProjectKDataComponets;
@@ -75,6 +76,10 @@ public class ProjectKItems implements IKRegistryInitializerTarget {
 
     public static RegistrySupplier<Item> getBucket(ResourceLocation energyId) {
         return ABYSS_ENERGY_BUCKETS.get(energyId);
+    }
+
+    public static RegistrySupplier<Item> getBucketByMaterial(PKMaterials material) {
+        return getBucket(ProjectKEnergies.getByMaterial(material).id());
     }
 
     private static ItemStack buildAbyssIngotVariant(ProjectKEnergies.EnergyDefinition definition) {

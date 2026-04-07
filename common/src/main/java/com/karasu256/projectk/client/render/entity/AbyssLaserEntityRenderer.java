@@ -19,6 +19,7 @@
 package com.karasu256.projectk.client.render.entity;
 
 import com.karasu256.projectk.client.ProjectKRenderTypes;
+import com.karasu256.projectk.client.util.PKColorUtils;
 import com.karasu256.projectk.entity.AbyssLaserEntity;
 import com.karasu256.projectk.fluid.ProjectKFluids;
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -56,6 +57,8 @@ public class AbyssLaserEntityRenderer extends EntityRenderer<AbyssLaserEntity> {
         if (attributes == null)
             return;
 
+        int color = attributes.getColor();
+
         TextureAtlasSprite sprite = Minecraft.getInstance().getTextureAtlas(InventoryMenu.BLOCK_ATLAS)
                 .apply(attributes.getSourceTexture());
 
@@ -74,23 +77,25 @@ public class AbyssLaserEntityRenderer extends EntityRenderer<AbyssLaserEntity> {
         float v0 = sprite.getV0();
         float v1 = sprite.getV1();
 
-        renderFace(consumer, last, -size, size, 0, 0, 0, distance, u0, u1, v0, v1, packedLight);
-        renderFace(consumer, last, 0, 0, -size, size, 0, distance, u0, u1, v0, v1, packedLight);
+        renderFace(consumer, last, -size, size, 0, 0, 0, distance, u0, u1, v0, v1, packedLight, color);
+        renderFace(consumer, last, 0, 0, -size, size, 0, distance, u0, u1, v0, v1, packedLight, color);
 
         poseStack.popPose();
 
         super.render(entity, entityYaw, partialTicks, poseStack, buffer, packedLight);
     }
 
-    private void renderFace(VertexConsumer consumer, PoseStack.Pose last, float x0, float x1, float z0, float z1, float y0, float y1, float u0, float u1, float v0, float v1, int light) {
-        addVertex(consumer, last, x0, y0, z0, u0, v0, light);
-        addVertex(consumer, last, x1, y0, z1, u1, v0, light);
-        addVertex(consumer, last, x1, y1, z1, u1, v1, light);
-        addVertex(consumer, last, x0, y1, z0, u0, v1, light);
+    private void renderFace(VertexConsumer consumer, PoseStack.Pose last, float x0, float x1, float z0, float z1, float y0, float y1, float u0, float u1, float v0, float v1, int light, int color) {
+        addVertex(consumer, last, x0, y0, z0, u0, v0, light, color);
+        addVertex(consumer, last, x1, y0, z1, u1, v0, light, color);
+        addVertex(consumer, last, x1, y1, z1, u1, v1, light, color);
+        addVertex(consumer, last, x0, y1, z0, u0, v1, light, color);
     }
 
-    private void addVertex(VertexConsumer consumer, PoseStack.Pose last, float x, float y, float z, float u, float v, int light) {
-        consumer.addVertex(last.pose(), x, y, z).setColor(255, 255, 255, 255).setUv(u, v)
+    private void addVertex(VertexConsumer consumer, PoseStack.Pose last, float x, float y, float z, float u, float v, int light, int color) {
+        float[] rgba = PKColorUtils.unpack(color);
+
+        consumer.addVertex(last.pose(), x, y, z).setColor(rgba[0], rgba[1], rgba[2], rgba[3]).setUv(u, v)
                 .setOverlay(OverlayTexture.NO_OVERLAY).setLight(light).setNormal(last, 0, 0, 1);
     }
 

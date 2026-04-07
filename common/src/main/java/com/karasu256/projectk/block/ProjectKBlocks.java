@@ -1,6 +1,7 @@
 package com.karasu256.projectk.block;
 
 import com.karasu256.projectk.ProjectK;
+import com.karasu256.projectk.api.energy.PKMaterials;
 import com.karasu256.projectk.block.custom.*;
 import com.karasu256.projectk.energy.ProjectKEnergies;
 import com.karasu256.projectk.fluid.ProjectKFluids;
@@ -77,7 +78,8 @@ public class ProjectKBlocks implements IKRegistryInitializerTarget {
             () -> new AbyssLaserEmitter(BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_BLOCK),
                     new AbstractEnergyBlock.Properties(30000L)), new Item.Properties());
     public static RegistrySupplier<Block> ABYSS_ABSORPTION_PRISM = block("abyss_absorption_prism",
-            () -> new AbyssAbsorptionPrism(BlockBehaviour.Properties.ofFullCopy(Blocks.GLASS).noOcclusion().sound(SoundType.GLASS)),
+            () -> new AbyssAbsorptionPrism(
+                    BlockBehaviour.Properties.ofFullCopy(Blocks.GLASS).noOcclusion().sound(SoundType.GLASS)),
             new Item.Properties());
     public static RegistrySupplier<Block> KARASIUM_ORE = block("karasium_ore", ProjectKBlock::new,
             new Item.Properties());
@@ -91,7 +93,15 @@ public class ProjectKBlocks implements IKRegistryInitializerTarget {
         return ABYSS_CORES.get(energyId);
     }
 
+    public static RegistrySupplier<Block> getCoreByMaterial(PKMaterials material) {
+        return getCore(ProjectKEnergies.getByMaterial(material).id());
+    }
+
     public static RegistrySupplier<LiquidBlock> getFluidBlock(ResourceLocation energyId) {
         return FLUID_BLOCKS.get(energyId);
+    }
+
+    public static RegistrySupplier<LiquidBlock> getFluidBlockByMaterial(PKMaterials material) {
+        return getFluidBlock(ProjectKEnergies.getByMaterial(material).id());
     }
 }

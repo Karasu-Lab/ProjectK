@@ -1,6 +1,5 @@
 package com.karasu256.projectk.datagen.providers;
 
-import com.karasu256.projectk.energy.ProjectKEnergies;
 import com.karasu256.projectk.item.ProjectKItems;
 import com.karasu256.projectk.registry.ItemsRegistry;
 import dev.architectury.registry.registries.RegistrySupplier;
@@ -21,9 +20,6 @@ public class CommonItemModelProvider {
         generator.simpleItem(ProjectKItems.TIER_UPGRADE);
         generator.simpleItem(ProjectKItems.ABYSS_BRACELET);
         generator.simpleItem(ProjectKItems.ABYSS_ABSORPTION_PRISM_SHARD);
-        for (ProjectKEnergies.EnergyDefinition definition : ProjectKEnergies.getDefinitions()) {
-            generator.simpleItem(ProjectKItems.getBucket(definition.id()));
-        }
     }
 
     public interface ItemGenerator {

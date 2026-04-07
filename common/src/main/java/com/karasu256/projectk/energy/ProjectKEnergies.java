@@ -1,9 +1,10 @@
 package com.karasu256.projectk.energy;
 
 import com.karasu256.projectk.ProjectK;
+import com.karasu256.projectk.api.energy.PKMaterials;
+import com.karasu256.projectk.data.EnergyCapacityData;
 import com.karasu256.projectk.registry.EnergiesRegistry;
 import com.karasu256.projectk.utils.Id;
-import com.karasu256.projectk.data.EnergyCapacityData;
 import dev.architectury.registry.registries.RegistrySupplier;
 import net.karasuniki.karasunikilib.api.data.IEnergy;
 import net.karasuniki.karasunikilib.api.registry.IKRegistryInitializerTarget;
@@ -15,17 +16,28 @@ import java.util.*;
 
 @KRegistryInitializer(modId = ProjectK.MOD_ID, order = 2)
 public class ProjectKEnergies implements IKRegistryInitializerTarget {
+    public static final long INFINITE_THRESHOLD = 1_000_000_000_000_000_000L;
     private static final Map<ResourceLocation, RegistrySupplier<IEnergy>> ENERGIES = new LinkedHashMap<>();
     private static final Map<ResourceLocation, EnergyDefinition> DEFINITIONS = new LinkedHashMap<>();
     private static final Map<ResourceLocation, Integer> MODEL_INDICES = new LinkedHashMap<>();
-    public static final EnergyDefinition ABYSS = registerDefinition("abyss_energy", "Abyss", "深淵", EnergyKind.NEUTRAL, 500L);
-    public static final RegistrySupplier<IEnergy> ABYSS_ENERGY = energy(ABYSS);
-    public static final EnergyDefinition YIN = registerDefinition("yin_abyss_energy", "§5Yin", "§5陰", EnergyKind.YIN, 500L);
-    public static final RegistrySupplier<IEnergy> YIN_ABYSS_ENERGY = energy(YIN);
-    public static final EnergyDefinition YANG = registerDefinition("yang_abyss_energy", "§dYang", "§d陽", EnergyKind.YANG, 500L);
-    public static final RegistrySupplier<IEnergy> YANG_ABYSS_ENERGY = energy(YANG);
-    public static final long INFINITE_THRESHOLD = 1_000_000_000_000_000_000L;
+    private static final Map<PKMaterials, EnergyDefinition> MATERIAL_TO_DEFINITION = new EnumMap<>(PKMaterials.class);
+    private static final Map<PKMaterials, RegistrySupplier<IEnergy>> MATERIAL_TO_ENERGY = new EnumMap<>(
+            PKMaterials.class);
+    public static final EnergyDefinition ABYSS = registerFromMaterial(PKMaterials.ABYSS, 500L);
+    public static final RegistrySupplier<IEnergy> ABYSS_ENERGY = energy(PKMaterials.ABYSS);
+    public static final EnergyDefinition YIN = registerFromMaterial(PKMaterials.YIN, 500L);
+    public static final RegistrySupplier<IEnergy> YIN_ABYSS_ENERGY = energy(PKMaterials.YIN);
+    public static final EnergyDefinition YANG = registerFromMaterial(PKMaterials.YANG, 500L);
+    public static final RegistrySupplier<IEnergy> YANG_ABYSS_ENERGY = energy(PKMaterials.YANG);
     private static final float MODEL_PREDICATE_SCALE = 1000.0f;
+
+    static {
+        for (PKMaterials material : PKMaterials.values()) {
+            if (!MATERIAL_TO_DEFINITION.containsKey(material)) {
+                registerFromMaterial(material, 500L);
+            }
+        }
+    }
 
     public static void init() {
     }
@@ -99,6 +111,22 @@ public class ProjectKEnergies implements IKRegistryInitializerTarget {
 
     public static RegistrySupplier<IEnergy> energy(EnergyDefinition definition) {
         return ENERGIES.get(definition.id());
+    }
+
+    public static RegistrySupplier<IEnergy> energy(PKMaterials material) {
+        return MATERIAL_TO_ENERGY.get(material);
+    }
+
+    public static EnergyDefinition getByMaterial(PKMaterials material) {
+        return MATERIAL_TO_DEFINITION.get(material);
+    }
+
+    private static EnergyDefinition registerFromMaterial(PKMaterials material, long defaultAmount) {
+        EnergyDefinition definition = registerDefinition(material.energyIdPath(), material.enName(), material.jaName(),
+                material.kind(), defaultAmount);
+        MATERIAL_TO_DEFINITION.put(material, definition);
+        MATERIAL_TO_ENERGY.put(material, ENERGIES.get(definition.id()));
+        return definition;
     }
 
     private static EnergyDefinition registerDefinition(String idPath, String enName, String jaName, EnergyKind kind, long defaultAmount) {

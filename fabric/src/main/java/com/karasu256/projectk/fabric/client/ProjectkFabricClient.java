@@ -4,6 +4,7 @@ import com.karasu256.projectk.block.ProjectKBlocks;
 import com.karasu256.projectk.client.ProjectKClient;
 import com.karasu256.projectk.client.ProjectKCoreShaders;
 import com.karasu256.projectk.client.screen.*;
+import com.karasu256.projectk.api.energy.PKMaterials;
 import com.karasu256.projectk.fluid.ProjectKFluids;
 import com.karasu256.projectk.item.ProjectKItems;
 import com.karasu256.projectk.menu.ProjectKMenus;
@@ -34,10 +35,10 @@ public class ProjectkFabricClient implements ClientModInitializer {
         }
     }
 
-    private static void registerFluidRender(Fluid source, Fluid flowing, String textureBase) {
-        ResourceLocation still = ResourceLocation.fromNamespaceAndPath("projectk", "block/" + textureBase + "_still");
-        ResourceLocation flow = ResourceLocation.fromNamespaceAndPath("projectk", "block/" + textureBase + "_flow");
-        FluidRenderHandlerRegistry.INSTANCE.register(source, flowing, new SimpleFluidRenderHandler(still, flow));
+    private static void registerFluidRender(Fluid source, Fluid flowing, int color) {
+        ResourceLocation still = ResourceLocation.fromNamespaceAndPath("projectk", "block/base_fluid_still");
+        ResourceLocation flow = ResourceLocation.fromNamespaceAndPath("projectk", "block/base_fluid_flow");
+        FluidRenderHandlerRegistry.INSTANCE.register(source, flowing, new SimpleFluidRenderHandler(still, flow, color));
     }
 
     @Override
@@ -64,12 +65,20 @@ public class ProjectkFabricClient implements ClientModInitializer {
                 ProjectKFluids.YANG_ABYSS_ENERGY.get(),
                 ProjectKFluids.FLOWING_YANG_ABYSS_ENERGY.get());
 
-        registerFluidRender(ProjectKFluids.ABYSS_ENERGY.get(), ProjectKFluids.FLOWING_ABYSS_ENERGY.get(),
-                "fluid_abyss_energy");
-        registerFluidRender(ProjectKFluids.YIN_ABYSS_ENERGY.get(), ProjectKFluids.FLOWING_YIN_ABYSS_ENERGY.get(),
-                "fluid_yin_abyss_energy");
-        registerFluidRender(ProjectKFluids.YANG_ABYSS_ENERGY.get(), ProjectKFluids.FLOWING_YANG_ABYSS_ENERGY.get(),
-                "fluid_yang_abyss_energy");
+        registerFluidRender(
+                ProjectKFluids.YIN_ABYSS_ENERGY.get(),
+                ProjectKFluids.FLOWING_YIN_ABYSS_ENERGY.get(),
+                PKMaterials.YIN.color() | 0xFF000000);
+
+        registerFluidRender(
+                ProjectKFluids.ABYSS_ENERGY.get(),
+                ProjectKFluids.FLOWING_ABYSS_ENERGY.get(),
+                PKMaterials.ABYSS.color() | 0xFF000000);
+
+        registerFluidRender(
+                ProjectKFluids.YANG_ABYSS_ENERGY.get(),
+                ProjectKFluids.FLOWING_YANG_ABYSS_ENERGY.get(),
+                PKMaterials.YANG.color() | 0xFF000000);
 
         CoreShaderRegistrationCallback.EVENT.register(ctx -> {
             ProjectKCoreShaders.init((id, format, onLoaded) -> {
