@@ -1,5 +1,8 @@
 {
   "values": [
-    "projectk:abyss_booster"
+    {
+      "id": "projectk:abyss_booster",
+      "required": false
+    }
   ]
 }

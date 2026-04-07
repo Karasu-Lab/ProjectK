@@ -1,8 +1,4 @@
 {
-  "parent": "minecraft:block/water",
-  "textures": {
-    "flow": "projectk:block/fluid_abyss_energy_flow",
-    "particle": "projectk:block/fluid_abyss_energy_still",
-    "still": "projectk:block/fluid_abyss_energy_still"
-  }
+  "fluid": "projectk:fluid_abyss_energy",
+  "loader": "neoforge:fluid"
 }

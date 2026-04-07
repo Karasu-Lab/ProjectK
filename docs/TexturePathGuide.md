@@ -29,7 +29,7 @@ This guide lists expected texture locations for ProjectK assets.
   - textures/block/abyss_synthesizer_top.png
 
 ### Generators (Abyss Generator)
-*Note: Textures for different energy types*
+*Note: Textures for different energy types (BlockState based)*
 - Normal Abyss
   - textures/block/abyss_generator/abyss_energy/top.png
   - textures/block/abyss_generator/abyss_energy/side.png
@@ -50,9 +50,9 @@ This guide lists expected texture locations for ProjectK assets.
   - textures/block/abyss_laser_emitter_pulse.png (front/top in pulse mode)
   - textures/block/abyss_laser_emitter_dc.png (front/top in DC mode)
 
-### Resources & Others
-- Abyss Core / Yang Abyss Core / Yin Abyss Core
-  - textures/block/abyss_core.png (shared)
+### Resources & Standardized Materials
+- Abyss Core (Shared)
+  - textures/block/abyss_core.png
 - Karasium Ore
   - textures/block/karasium_ore.png
 - Deepslate Karasium Ore
@@ -64,6 +64,9 @@ This guide lists expected texture locations for ProjectK assets.
   - textures/block/multipart/abyss_energy_cable_vertical.png
   - textures/block/multipart/abyss_energy_cable_input.png
   - textures/block/multipart/abyss_energy_cable_output.png
+- **Standardized Fluid Textures (Colored via Code)**
+  - textures/block/base_fluid_still.png
+  - textures/block/base_fluid_flow.png
 
 ## Items
 
@@ -71,11 +74,9 @@ This guide lists expected texture locations for ProjectK assets.
   - textures/item/karasium.png
   - textures/item/raw_karasium.png
   - textures/item/karasium_dust.png
-- Abyss Ingot
-  - textures/item/abyss_ingot.png (base)
-  - textures/item/abyss_ingot_projectk_abyss_energy.png
-  - textures/item/abyss_ingot_projectk_yang_abyss_energy.png
-  - textures/item/abyss_ingot_projectk_yin_abyss_energy.png
+- **Abyss Ingot (Code-based Tinting)**
+  - textures/item/abyss_ingot.png (Fallback/Vanilla appearance)
+  - textures/item/base_ingot.png (Grayscale texture used for all PKMaterials variations)
 - Abyss Wrench
   - textures/item/abyss_wrench.png
 - Tier Upgrade
@@ -86,10 +87,9 @@ This guide lists expected texture locations for ProjectK assets.
   - textures/item/abyss_absorption_prism_shard.png
 - Wither Bone
   - textures/item/wither_bone.png
-- Buckets
-  - textures/item/bucket_of_abyss_energy.png
-  - textures/item/bucket_of_yang_abyss_energy.png
-  - textures/item/bucket_of_yin_abyss_energy.png
+- **Buckets (Code-based Tinting)**
+  - Layer 0: minecraft:item/bucket (Standard bucket)
+  - Layer 1: textures/item/base_fluid_bucket_content.png (Grayscale mask for fluid content)
 
 ## GUI
 
