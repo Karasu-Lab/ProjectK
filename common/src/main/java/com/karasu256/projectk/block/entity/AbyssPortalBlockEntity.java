@@ -40,7 +40,7 @@ public class AbyssPortalBlockEntity extends AbstractAbyssMachineBlockEntity impl
         if (allOverHalf) {
             for (int i = 0; i < energies.size(); i++) {
                 AbyssEnergyData data = energies.get(i);
-                long nextAmount = Math.max(0, data.amountOrZero() - 10);
+                long nextAmount = Math.max(0, data.amountOrZero() - 5);
                 energies.set(i, new AbyssEnergyData(data.energyId(), nextAmount));
             }
             markDirtyAndSync();

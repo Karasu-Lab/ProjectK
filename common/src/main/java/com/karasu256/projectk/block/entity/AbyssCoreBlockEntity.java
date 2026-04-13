@@ -4,8 +4,8 @@ import com.karasu256.projectk.block.entity.impl.AbstractAbyssMachineBlockEntity;
 import com.karasu256.projectk.energy.ProjectKEnergies;
 import com.karasu256.projectk.entity.AbyssPortalEnergyEntity;
 import com.karasu256.projectk.entity.ProjectKEntities;
-import com.karasu256.projectk.utils.Id;
 import com.karasu256.projectk.registry.ProjectKMachineCapacities;
+import com.karasu256.projectk.utils.Id;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -22,6 +22,7 @@ import java.util.Optional;
 public class AbyssCoreBlockEntity extends AbstractAbyssMachineBlockEntity implements GeoAnimatableBlockEntity {
     private static final RawAnimation IDLE = RawAnimation.begin().thenLoop("idle");
     private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
+    private static final long PER_ENERGY = 20L;
 
     public AbyssCoreBlockEntity(BlockPos pos, BlockState state) {
         super(ProjectKBlockEntities.ABYSS_CORE.get(), pos, state, ProjectKMachineCapacities.ABYSS_CORE);
@@ -29,17 +30,17 @@ public class AbyssCoreBlockEntity extends AbstractAbyssMachineBlockEntity implem
 
     public void tick() {
         Optional.ofNullable(level).filter(l -> !l.isClientSide).filter(l -> l.getGameTime() % 2 < 1).ifPresent(
-                l -> Optional.ofNullable(getAbyssEnergyId()).filter(energyId -> getEnergyAmount() >= 100)
+                l -> Optional.ofNullable(getAbyssEnergyId()).filter(energyId -> getEnergyAmount() >= PER_ENERGY)
                         .ifPresent(id -> Optional.ofNullable(findNearbyPortal(id)).ifPresent(targetPos -> {
                             AbyssPortalEnergyEntity entity = new AbyssPortalEnergyEntity(
                                     ProjectKEntities.ABYSS_PORTAL_ENERGY_ENTITY.get(), l);
                             entity.setPos(worldPosition.getX() + 0.5, worldPosition.getY() + 0.5,
                                     worldPosition.getZ() + 0.5);
                             entity.setEnergyId(id);
-                            entity.setEnergy(100);
+                            entity.setEnergy(PER_ENERGY);
                             entity.setTargetGenerator(targetPos);
                             l.addFreshEntity(entity);
-                            extract(id, 100, false);
+                            extract(id, PER_ENERGY, false);
                         })));
     }
 
