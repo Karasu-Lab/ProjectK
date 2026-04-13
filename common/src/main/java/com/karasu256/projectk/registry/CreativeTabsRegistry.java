@@ -2,6 +2,7 @@ package com.karasu256.projectk.registry;
 
 import com.karasu256.projectk.ProjectK;
 import com.karasu256.projectk.block.ProjectKBlocks;
+import com.karasu256.projectk.energy.ProjectKEnergies;
 import dev.architectury.registry.registries.DeferredRegister;
 import dev.architectury.registry.registries.RegistrySupplier;
 import net.karasuniki.karasunikilib.api.registry.IKRegistryTarget;
@@ -19,11 +20,14 @@ import java.util.function.Supplier;
 
 @KRegistry(modId = ProjectK.MOD_ID, order = 7)
 public class CreativeTabsRegistry implements IKRegistryTarget {
-    private static final DeferredRegister<CreativeModeTab> TABS = DeferredRegister.create(ProjectK.MOD_ID, Registries.CREATIVE_MODE_TAB);
+    private static final DeferredRegister<CreativeModeTab> TABS = DeferredRegister.create(ProjectK.MOD_ID,
+            Registries.CREATIVE_MODE_TAB);
     private static final List<RegistrySupplier<? extends ItemLike>> ITEMS = new ArrayList<>();
     private static final List<Supplier<ItemStack>> STACKS = new ArrayList<>();
 
-    public static final RegistrySupplier<CreativeModeTab> TAB = TABS.register(id(), () -> CreativeModeTab.builder(CreativeModeTab.Row.BOTTOM, ITEMS.size()).title(title()).icon(CreativeTabsRegistry::icon).displayItems(CreativeTabsRegistry::displayItems).build());
+    public static final RegistrySupplier<CreativeModeTab> TAB = TABS.register(id(),
+            () -> CreativeModeTab.builder(CreativeModeTab.Row.BOTTOM, ITEMS.size()).title(title())
+                    .icon(CreativeTabsRegistry::icon).displayItems(CreativeTabsRegistry::displayItems).build());
 
     private static String id() {
         return ProjectK.MOD_ID;
@@ -42,13 +46,13 @@ public class CreativeTabsRegistry implements IKRegistryTarget {
             output.accept(item.get());
         }
 
-        for (com.karasu256.projectk.energy.ProjectKEnergies.EnergyDefinition def : com.karasu256.projectk.energy.ProjectKEnergies.getDefinitions()) {
+        for (ProjectKEnergies.EnergyDefinition def : ProjectKEnergies.getDefinitions()) {
             ItemStack stack = new ItemStack(ProjectKBlocks.ABYSS_CORE.get());
-            com.karasu256.projectk.data.AbyssEnergyData.applyToStack(stack, def.id(), null);
+            com.karasu256.projectk.data.AbyssEnergyData.applyToStack(stack, def.id(), 0L);
             output.accept(stack);
         }
 
-        for (com.karasu256.projectk.energy.ProjectKEnergies.EnergyDefinition def : com.karasu256.projectk.energy.ProjectKEnergies.getDefinitions()) {
+        for (ProjectKEnergies.EnergyDefinition def : ProjectKEnergies.getDefinitions()) {
             ItemStack stack = new ItemStack(ProjectKBlocks.CREATIVE_ABYSS_STORAGE.get());
             com.karasu256.projectk.data.AbyssEnergyData.applyToStack(stack, def.id(), Long.MAX_VALUE / 2);
             output.accept(stack);
