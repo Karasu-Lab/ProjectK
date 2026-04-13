@@ -141,9 +141,9 @@ public class AbyssSynthesizerScreen extends AbstractContainerScreen<AbyssSynthes
         if (currentTotal <= 0)
             return;
 
-        float progress = Math.min(1.0f, (samplingTickTimer + Minecraft.getInstance().getTimer()
+        float animProgress = Math.min(1.0f, (samplingTickTimer + Minecraft.getInstance().getTimer()
                 .getGameTimeDeltaPartialTick(true)) / (float) SAMPLING_INTERVAL);
-        float easedProgress = (float) (Math.sin(Math.PI * progress - Math.PI / 2) * 0.5 + 0.5);
+        float easedProgress = (float) (Math.sin(Math.PI * animProgress - Math.PI / 2) * 0.5 + 0.5);
 
         long visualTotal = introAnimationDone ? currentTotal : (long) (currentTotal / Math.max(0.0001f, easedProgress));
 
@@ -154,6 +154,18 @@ public class AbyssSynthesizerScreen extends AbstractContainerScreen<AbyssSynthes
         graphics.pose().translate(0, 0, 100);
         EnergyBarRenderer.renderDonut(graphics, cx, cy, energies, visualTotal, DONUT_CENTER_RADIUS, DONUT_THICKNESS,
                 -90.0f);
+
+        int progress = menu.getProgress();
+        int maxProgress = menu.getMaxProgress();
+        if (progress > 0) {
+            float craftRatio = (float) progress / (float) maxProgress;
+            float shrinkingRadius = DONUT_CENTER_RADIUS * (1.0f - craftRatio);
+            float shrinkingThickness = 2.0f;
+            EnergyBarRenderer.renderDonut(graphics, cx, cy, energies, visualTotal,
+                    new EnergyBarRenderer.DonutRadius(shrinkingRadius - shrinkingThickness / 2.0f,
+                            shrinkingRadius + shrinkingThickness / 2.0f), -90.0f, 0.5f);
+        }
+
         graphics.pose().popPose();
     }
 

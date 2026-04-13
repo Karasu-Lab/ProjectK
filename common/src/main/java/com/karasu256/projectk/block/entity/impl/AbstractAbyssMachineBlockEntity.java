@@ -65,7 +65,13 @@ public abstract class AbstractAbyssMachineBlockEntity extends AbstractAbyssTiere
             return 0;
         }
         long current = index >= 0 ? energies.get(index).amountOrZero() : 0L;
-        long received = Math.min(getMaxEnergy() - current, maxAmount);
+        long received;
+        if (getMaxEnergy() < 0) {
+            received = maxAmount;
+        } else {
+            received = Math.min(getMaxEnergy() - current, maxAmount);
+        }
+
         if (received <= 0) {
             return 0;
         }

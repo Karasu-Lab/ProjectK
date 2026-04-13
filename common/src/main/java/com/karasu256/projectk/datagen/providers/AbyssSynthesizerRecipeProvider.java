@@ -1,5 +1,6 @@
 package com.karasu256.projectk.datagen.providers;
 
+import com.karasu256.projectk.block.ProjectKBlocks;
 import com.karasu256.projectk.data.AbyssEnergyData;
 import com.karasu256.projectk.energy.ProjectKEnergies;
 import com.karasu256.projectk.item.ProjectKItems;
@@ -28,21 +29,28 @@ public class AbyssSynthesizerRecipeProvider extends RecipeProvider {
     @Override
     public void buildRecipes(RecipeOutput output) {
         this.output = output;
-        addSynthesizerRecipe(new AbyssSynthesizerRecipe(
-                List.of(
-                        new AbyssEnergyData(ProjectKEnergies.YIN.id(), 1000L),
-                        new AbyssEnergyData(ProjectKEnergies.YANG.id(), 2000L),
-                        new AbyssEnergyData(ProjectKEnergies.ABYSS.id(), 500L)
-                ),
-                List.of(
-                        new IngredientStack(Ingredient.of(ProjectKItems.ABYSS_INGOT.get()), 1),
+        addSynthesizerRecipe(new AbyssSynthesizerRecipe(List.of(new AbyssEnergyData(ProjectKEnergies.YIN.id(), 1000L),
+                new AbyssEnergyData(ProjectKEnergies.YANG.id(), 2000L),
+                new AbyssEnergyData(ProjectKEnergies.ABYSS.id(), 500L)),
+                List.of(new IngredientStack(Ingredient.of(ProjectKItems.ABYSS_INGOT.get()), 1),
                         new IngredientStack(Ingredient.of(ProjectKItems.ABYSS_INGOT.get()), 1),
                         new IngredientStack(Ingredient.of(ProjectKItems.ABYSS_INGOT.get()), 1),
                         new IngredientStack(Ingredient.of(Items.GOLD_INGOT), 1),
-                        new IngredientStack(Ingredient.of(Items.IRON_INGOT), 1)
-                ),
-                new ItemStack(Items.DIAMOND)
-        ));
+                        new IngredientStack(Ingredient.of(Items.IRON_INGOT), 1)), new ItemStack(Items.DIAMOND)));
+
+        addSynthesizerRecipe(new AbyssSynthesizerRecipe(List.of(),
+                List.of(new IngredientStack(Ingredient.of(ProjectKBlocks.ABYSS_ABSORPTION_PRISM.get()), 1, List.of(), 1,
+                                1000L),
+                        new IngredientStack(Ingredient.of(ProjectKBlocks.ABYSS_ABSORPTION_PRISM.get()), 1, List.of(), 1,
+                                1000L),
+                        new IngredientStack(Ingredient.of(ProjectKBlocks.ABYSS_ABSORPTION_PRISM.get()), 1, List.of(), 1,
+                                1000L),
+                        new IngredientStack(Ingredient.of(ProjectKBlocks.ABYSS_ABSORPTION_PRISM.get()), 1, List.of(), 1,
+                                1000L),
+                        new IngredientStack(Ingredient.of(ProjectKBlocks.ABYSS_ABSORPTION_PRISM.get()), 1, List.of(), 1,
+                                1000L),
+                        new IngredientStack(Ingredient.of(ProjectKBlocks.ABYSS_ABSORPTION_PRISM.get()), 1, List.of(), 1,
+                                1000L)), new ItemStack(ProjectKBlocks.ABYSS_PORTAL.get()), 0, 0, 6000L));
     }
 
     @Override

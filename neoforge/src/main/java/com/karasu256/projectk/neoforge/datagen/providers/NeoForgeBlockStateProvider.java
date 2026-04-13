@@ -4,6 +4,7 @@ import com.karasu256.projectk.ProjectK;
 import com.karasu256.projectk.block.ProjectKBlocks;
 import com.karasu256.projectk.block.custom.AbyssEnergyCable;
 import com.karasu256.projectk.block.custom.AbyssLaserEmitter;
+import com.karasu256.projectk.block.custom.AbyssPortal;
 import com.karasu256.projectk.datagen.providers.CommonBlockStateProvider;
 import com.karasu256.projectk.datagen.providers.CommonItemModelProvider;
 import dev.architectury.registry.registries.RegistrySupplier;
@@ -144,6 +145,16 @@ public class NeoForgeBlockStateProvider extends BlockStateProvider implements Co
         });
     }
 
+    @Override
+    public void activeBlock(Block block, String modelPath, String activeModelPath) {
+        ModelFile inactive = new ModelFile.UncheckedModelFile(ResourceLocation.parse(modelPath));
+        ModelFile active = new ModelFile.UncheckedModelFile(ResourceLocation.parse(activeModelPath));
+        getVariantBuilder(block).forAllStates(state -> {
+            boolean isActive = state.getValue(AbyssPortal.ACTIVE);
+            return ConfiguredModel.builder().modelFile(isActive ? active : inactive).build();
+        });
+    }
+
     private int getRotationY(Direction dir) {
         return switch (dir) {
             case EAST -> 90;
@@ -167,4 +178,5 @@ public class NeoForgeBlockStateProvider extends BlockStateProvider implements Co
         itemModels().withExistingParent(item.getId().getPath(), "item/generated").texture("layer0",
                 ResourceLocation.fromNamespaceAndPath(ProjectK.MOD_ID, "item/" + item.getId().getPath()));
     }
+
 }

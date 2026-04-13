@@ -1,6 +1,7 @@
 package com.karasu256.projectk.recipe;
 
 import com.karasu256.projectk.data.AbyssEnergyData;
+import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.HolderLookup;
@@ -19,23 +20,32 @@ import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 
-public record AbyssSynthesizerRecipe(List<AbyssEnergyData> energies, List<IngredientStack> inputs,
-                                     ItemStack result) implements Recipe<RecipeInput> {
+public record AbyssSynthesizerRecipe(List<AbyssEnergyData> energies, List<IngredientStack> inputs, ItemStack result,
+                                     int minMachineDistinctEnergies, long minMachineAmountPerEnergy,
+                                     long minMachineTotalEnergy) implements Recipe<RecipeInput> {
+    public AbyssSynthesizerRecipe(List<AbyssEnergyData> energies, List<IngredientStack> inputs, ItemStack result) {
+        this(energies, inputs, result, 0, 0L, 0L);
+    }
+
     public static final MapCodec<AbyssSynthesizerRecipe> CODEC = RecordCodecBuilder.mapCodec(builder -> builder.group(
-            AbyssEnergyData.CODEC.listOf().fieldOf("energies").forGetter(AbyssSynthesizerRecipe::energies),
-            IngredientStack.CODEC.codec().listOf().fieldOf("inputs").forGetter(AbyssSynthesizerRecipe::inputs),
-            ItemStack.CODEC.fieldOf("result").forGetter(AbyssSynthesizerRecipe::result)
-    ).apply(builder, AbyssSynthesizerRecipe::new));
+                    AbyssEnergyData.CODEC.listOf().fieldOf("energies").forGetter(AbyssSynthesizerRecipe::energies),
+                    IngredientStack.CODEC.codec().listOf().fieldOf("inputs").forGetter(AbyssSynthesizerRecipe::inputs),
+                    ItemStack.CODEC.fieldOf("result").forGetter(AbyssSynthesizerRecipe::result),
+                    Codec.INT.optionalFieldOf("min_machine_distinct_energies", 0)
+                            .forGetter(AbyssSynthesizerRecipe::minMachineDistinctEnergies),
+                    Codec.LONG.optionalFieldOf("min_machine_amount_per_energy", 0L)
+                            .forGetter(AbyssSynthesizerRecipe::minMachineAmountPerEnergy),
+                    Codec.LONG.optionalFieldOf("min_machine_total_energy", 0L)
+                            .forGetter(AbyssSynthesizerRecipe::minMachineTotalEnergy))
+            .apply(builder, AbyssSynthesizerRecipe::new));
 
     public static final StreamCodec<RegistryFriendlyByteBuf, AbyssSynthesizerRecipe> STREAM_CODEC = StreamCodec.composite(
-            AbyssEnergyData.STREAM_CODEC.apply(ByteBufCodecs.list()),
-            AbyssSynthesizerRecipe::energies,
-            IngredientStack.STREAM_CODEC.apply(ByteBufCodecs.list()),
-            AbyssSynthesizerRecipe::inputs,
-            ItemStack.STREAM_CODEC,
-            AbyssSynthesizerRecipe::result,
-            AbyssSynthesizerRecipe::new
-    );
+            AbyssEnergyData.STREAM_CODEC.apply(ByteBufCodecs.list()), AbyssSynthesizerRecipe::energies,
+            IngredientStack.STREAM_CODEC.apply(ByteBufCodecs.list()), AbyssSynthesizerRecipe::inputs,
+            ItemStack.STREAM_CODEC, AbyssSynthesizerRecipe::result, ByteBufCodecs.VAR_INT,
+            AbyssSynthesizerRecipe::minMachineDistinctEnergies, ByteBufCodecs.VAR_LONG,
+            AbyssSynthesizerRecipe::minMachineAmountPerEnergy, ByteBufCodecs.VAR_LONG,
+            AbyssSynthesizerRecipe::minMachineTotalEnergy, AbyssSynthesizerRecipe::new);
 
     public boolean matchesContainer(Container container) {
         List<ItemStack> providedItems = new ArrayList<>();
@@ -50,7 +60,7 @@ public record AbyssSynthesizerRecipe(List<AbyssEnergyData> energies, List<Ingred
             boolean matched = false;
             for (int i = 0; i < providedItems.size(); i++) {
                 ItemStack provided = providedItems.get(i);
-                if (req.ingredient().test(provided) && provided.getCount() >= req.count()) {
+                if (req.test(provided)) {
                     provided.shrink(req.count());
                     if (provided.isEmpty()) {
                         providedItems.remove(i);
@@ -71,8 +81,7 @@ public record AbyssSynthesizerRecipe(List<AbyssEnergyData> energies, List<Ingred
         for (AbyssEnergyData req : energies) {
             boolean found = false;
             for (AbyssEnergyData available : availableEnergies) {
-                if (available.energyId().equals(req.energyId())
-                        && available.amountOrZero() >= req.amountOrZero()) {
+                if (available.energyId().equals(req.energyId()) && available.amountOrZero() >= req.amountOrZero()) {
                     found = true;
                     break;
                 }
@@ -81,6 +90,31 @@ public record AbyssSynthesizerRecipe(List<AbyssEnergyData> energies, List<Ingred
                 return false;
             }
         }
+
+        if (minMachineDistinctEnergies > 0) {
+            int count = 0;
+            long totalAmount = 0;
+            for (AbyssEnergyData available : availableEnergies) {
+                if (available.amountOrZero() >= minMachineAmountPerEnergy) {
+                    count++;
+                }
+                totalAmount += available.amountOrZero();
+            }
+            if (count < minMachineDistinctEnergies && totalAmount < (minMachineDistinctEnergies * minMachineAmountPerEnergy)) {
+                return false;
+            }
+        }
+
+        if (minMachineTotalEnergy > 0) {
+            long total = 0;
+            for (AbyssEnergyData available : availableEnergies) {
+                total += available.amountOrZero();
+            }
+            if (total < minMachineTotalEnergy) {
+                return false;
+            }
+        }
+
         return true;
     }
 

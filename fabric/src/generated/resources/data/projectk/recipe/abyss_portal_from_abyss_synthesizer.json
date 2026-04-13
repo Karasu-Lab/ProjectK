@@ -1,0 +1,59 @@
+{
+  "type": "projectk:abyss_synthesizer",
+  "energies": [],
+  "inputs": [
+    {
+      "count": 1,
+      "ingredient": {
+        "item": "projectk:abyss_absorption_prism"
+      },
+      "min_amount_per_energy": 1000,
+      "min_distinct_energies": 1
+    },
+    {
+      "count": 1,
+      "ingredient": {
+        "item": "projectk:abyss_absorption_prism"
+      },
+      "min_amount_per_energy": 1000,
+      "min_distinct_energies": 1
+    },
+    {
+      "count": 1,
+      "ingredient": {
+        "item": "projectk:abyss_absorption_prism"
+      },
+      "min_amount_per_energy": 1000,
+      "min_distinct_energies": 1
+    },
+    {
+      "count": 1,
+      "ingredient": {
+        "item": "projectk:abyss_absorption_prism"
+      },
+      "min_amount_per_energy": 1000,
+      "min_distinct_energies": 1
+    },
+    {
+      "count": 1,
+      "ingredient": {
+        "item": "projectk:abyss_absorption_prism"
+      },
+      "min_amount_per_energy": 1000,
+      "min_distinct_energies": 1
+    },
+    {
+      "count": 1,
+      "ingredient": {
+        "item": "projectk:abyss_absorption_prism"
+      },
+      "min_amount_per_energy": 1000,
+      "min_distinct_energies": 1
+    }
+  ],
+  "min_machine_total_energy": 6000,
+  "result": {
+    "count": 1,
+    "id": "projectk:abyss_portal"
+  }
+}

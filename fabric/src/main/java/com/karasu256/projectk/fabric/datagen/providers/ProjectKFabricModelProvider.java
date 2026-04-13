@@ -6,6 +6,7 @@ import com.karasu256.projectk.ProjectK;
 import com.karasu256.projectk.block.ProjectKBlocks;
 import com.karasu256.projectk.block.custom.AbyssEnergyCable;
 import com.karasu256.projectk.block.custom.AbyssLaserEmitter;
+import com.karasu256.projectk.block.custom.AbyssPortal;
 import com.karasu256.projectk.datagen.providers.CommonBlockStateProvider;
 import com.karasu256.projectk.datagen.providers.CommonItemModelProvider;
 import dev.architectury.registry.registries.RegistrySupplier;
@@ -139,6 +140,17 @@ public class ProjectKFabricModelProvider extends FabricModelProvider implements 
 
         this.blockModelGenerators.blockStateOutput.accept(
                 MultiVariantGenerator.multiVariant(block).with(propertyDispatch));
+    }
+    @Override
+    public void activeBlock(Block block, String modelPath, String activeModelPath) {
+        ResourceLocation inactive = ResourceLocation.parse(modelPath);
+        ResourceLocation active = ResourceLocation.parse(activeModelPath);
+        this.blockModelGenerators.blockStateOutput.accept(
+                MultiVariantGenerator.multiVariant(block)
+                        .with(PropertyDispatch.property(AbyssPortal.ACTIVE)
+                                .select(false, Variant.variant().with(VariantProperties.MODEL, inactive))
+                                .select(true, Variant.variant().with(VariantProperties.MODEL, active)))
+        );
     }
 
     @Override

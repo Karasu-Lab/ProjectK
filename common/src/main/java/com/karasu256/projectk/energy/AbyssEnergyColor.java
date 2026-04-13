@@ -8,6 +8,11 @@ public class AbyssEnergyColor {
     public static final Color GOLD = new Color(255, 215, 0);
     public static final Color RED = new Color(255, 50, 50);
     public static final Color WHITE = new Color(255, 255, 255);
+    public static final Color EXTREME = new Color(0, 0, 0);
+    public static final Color EVIL = new Color(128, 0, 255);
+    public static final Color HEAT = new Color(255, 0, 0);
+    public static final Color COLD = new Color(0, 255, 255);
+    public static final Color LOVE = new Color(255, 0, 255);
 
     public static Color getColor(long energy) {
         if (energy >= 1_000_000_000_000_000L) {

@@ -16,7 +16,7 @@ import java.util.List;
 public class AbyssAbsorptionPrismBlockEntity extends AbstractAbyssMachineBlockEntity implements ILaserEnergyNbtStorage {
 
     public AbyssAbsorptionPrismBlockEntity(BlockPos pos, BlockState state) {
-        super(ProjectKBlockEntities.ABYSS_ABSORPTION_PRISM.get(), pos, state, -1L, 64);
+        super(ProjectKBlockEntities.ABYSS_ABSORPTION_PRISM.get(), pos, state, 1000L, 1);
     }
 
     public List<AbyssEnergyData> getEnergies() {

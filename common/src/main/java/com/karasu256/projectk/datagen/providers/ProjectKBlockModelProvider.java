@@ -53,6 +53,9 @@ public class ProjectKBlockModelProvider implements DataProvider {
                 cableSideModelWithTexture(ProjectK.MOD_ID + ":block/multipart/abyss_energy_cable_vertical")));
         futures.add(writeModel(output, "block/abyss_energy_cable_side_output",
                 cableSideModelWithTexture(ProjectK.MOD_ID + ":block/multipart/abyss_energy_cable_vertical")));
+        futures.add(writeModel(output, "block/abyss_portal", abyssPortalModel(false)));
+        futures.add(writeModel(output, "block/abyss_portal_active", abyssPortalModel(true)));
+        futures.add(writeModel(output, "item/abyss_portal", abyssPortalItemModel()));
 
         for (PKMaterials material : PKMaterials.values()) {
             ProjectKEnergies.EnergyDefinition definition = ProjectKEnergies.getByMaterial(material);
@@ -208,6 +211,21 @@ public class ProjectKBlockModelProvider implements DataProvider {
     private JsonObject abyssEnchantRemoverItemModel() {
         JsonObject json = new JsonObject();
         json.addProperty("parent", ProjectK.MOD_ID + ":block/abyss_enchant_remover");
+        return json;
+    }
+
+    private JsonObject abyssPortalModel(boolean active) {
+        JsonObject json = new JsonObject();
+        json.addProperty("parent", "minecraft:block/cube_all");
+        JsonObject textures = new JsonObject();
+        textures.addProperty("all", ProjectK.MOD_ID + ":block/abyss_portal" + (active ? "_active" : ""));
+        json.add("textures", textures);
+        return json;
+    }
+
+    private JsonObject abyssPortalItemModel() {
+        JsonObject json = new JsonObject();
+        json.addProperty("parent", ProjectK.MOD_ID + ":block/abyss_portal");
         return json;
     }
 

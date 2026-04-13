@@ -139,6 +139,7 @@ public class ProjectKLanguageProvider implements DataProvider {
         add(en, "block.projectk.abyss_synthesizer", "Abyss Synthesizer");
         add(en, "block.projectk.abyss_laser_emitter", "Abyss Laser Emitter");
         add(en, "block.projectk.abyss_absorption_prism", "Abyss Absorption Prism");
+        add(en, "block.projectk.abyss_portal", "Abyss Portal");
         add(ja, "block.projectk.abyss_enchant_remover", "深淵エンチャントリムーバー");
 
         add(ja, "block.projectk.abyss_generator", "深淵発電機");
@@ -152,6 +153,7 @@ public class ProjectKLanguageProvider implements DataProvider {
         add(ja, "block.projectk.abyss_synthesizer", "深淵合成機");
         add(ja, "block.projectk.abyss_laser_emitter", "深淵レーザー発射機");
         add(ja, "block.projectk.abyss_absorption_prism", "深淵吸収プリズム");
+        add(ja, "block.projectk.abyss_portal", "深淵ポータル");
         add(ja, "block.projectk.karasium_ore", "カラシウム鉱石");
         add(ja, "block.projectk.deepslate_karasium_ore", "深層カラシウム鉱石");
 

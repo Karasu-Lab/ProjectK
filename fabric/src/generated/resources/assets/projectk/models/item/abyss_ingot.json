@@ -18,6 +18,42 @@
       "predicate": {
         "projectk:abyss_energy": 0.003
       }
+    },
+    {
+      "model": "projectk:item/abyss_ingot_projectk_god_energy",
+      "predicate": {
+        "projectk:abyss_energy": 0.004
+      }
+    },
+    {
+      "model": "projectk:item/abyss_ingot_projectk_extreme_energy",
+      "predicate": {
+        "projectk:abyss_energy": 0.005
+      }
+    },
+    {
+      "model": "projectk:item/abyss_ingot_projectk_evil_energy",
+      "predicate": {
+        "projectk:abyss_energy": 0.006
+      }
+    },
+    {
+      "model": "projectk:item/abyss_ingot_projectk_heat_energy",
+      "predicate": {
+        "projectk:abyss_energy": 0.007
+      }
+    },
+    {
+      "model": "projectk:item/abyss_ingot_projectk_cold_energy",
+      "predicate": {
+        "projectk:abyss_energy": 0.008
+      }
+    },
+    {
+      "model": "projectk:item/abyss_ingot_projectk_love_energy",
+      "predicate": {
+        "projectk:abyss_energy": 0.009
+      }
     }
   ],
   "textures": {

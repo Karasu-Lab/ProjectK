@@ -2,6 +2,7 @@ package com.karasu256.projectk.block.entity;
 
 import com.karasu256.projectk.block.custom.AbyssSynthesizer;
 import com.karasu256.projectk.block.entity.impl.AbstractAbyssMachineBlockEntity;
+import com.karasu256.projectk.data.AbyssEnergyData;
 import com.karasu256.projectk.energy.EnergyKeys;
 import com.karasu256.projectk.menu.AbyssSynthesizerMenu;
 import com.karasu256.projectk.recipe.AbyssSynthesizerRecipe;
@@ -16,19 +17,44 @@ import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.ArrayList;
+
 public class AbyssSynthesizerBlockEntity extends AbstractAbyssMachineBlockEntity implements MenuProvider, Container {
     private static final int MAX_TYPES = 64;
     private static final int MAX_PROGRESS = 100;
     private int progress = 0;
+    private final ContainerData data;
 
     public AbyssSynthesizerBlockEntity(BlockPos pos, BlockState state) {
         super(ProjectKBlockEntities.ABYSS_SYNTHESIZER.get(), pos, state, resolveCapacity(state));
+        this.data = new ContainerData() {
+            @Override
+            public int get(int index) {
+                return switch (index) {
+                    case 0 -> progress;
+                    case 1 -> getMaxProgress();
+                    default -> 0;
+                };
+            }
+
+            @Override
+            public void set(int index, int value) {
+                if (index == 0)
+                    progress = value;
+            }
+
+            @Override
+            public int getCount() {
+                return 2;
+            }
+        };
         for (int i = 0; i < 7; i++) {
             addItemSlot(Id.id("slot_" + i));
         }
@@ -88,7 +114,10 @@ public class AbyssSynthesizerBlockEntity extends AbstractAbyssMachineBlockEntity
             return true;
         if (!ItemStack.isSameItemSameComponents(currentOutput, result))
             return false;
-        return currentOutput.getCount() + result.getCount() <= result.getMaxStackSize();
+        if (currentOutput.getCount() + result.getCount() > result.getMaxStackSize())
+            return false;
+        long totalEnergy = getEnergyList().stream().mapToLong(AbyssEnergyData::amountOrZero).sum();
+        return totalEnergy >= 6000L;
     }
 
     private void craft(AbyssSynthesizerRecipe recipe) {
@@ -96,17 +125,44 @@ public class AbyssSynthesizerBlockEntity extends AbstractAbyssMachineBlockEntity
             int toConsume = req.count();
             for (int i = 1; i <= 6; i++) {
                 ItemStack stack = getItem(i);
-                if (!stack.isEmpty() && req.ingredient().test(stack)) {
+                if (!stack.isEmpty() && req.test(stack)) {
                     int take = Math.min(stack.getCount(), toConsume);
                     stack.shrink(take);
                     toConsume -= take;
-                    if (toConsume <= 0)
+                    if (toConsume <= 0) {
                         break;
+                    }
                 }
             }
         }
         for (var req : recipe.energies()) {
             extract(req.energyId(), req.amountOrZero(), false);
+        }
+        if (recipe.minMachineDistinctEnergies() > 0) {
+            long toExtract = recipe.minMachineDistinctEnergies() * recipe.minMachineAmountPerEnergy();
+            for (var entry : new ArrayList<>(energies)) {
+                long take = Math.min(entry.amountOrZero(), toExtract);
+                if (take > 0) {
+                    extract(entry.energyId(), take, false);
+                    toExtract -= take;
+                    if (toExtract <= 0)
+                        break;
+                }
+            }
+        }
+        if (recipe.minMachineTotalEnergy() > 0) {
+            long remainingToExtract = recipe.minMachineTotalEnergy();
+            for (var entry : new ArrayList<>(energies)) {
+                long available = entry.amountOrZero();
+                long take = Math.min(available, remainingToExtract);
+                if (take > 0) {
+                    extract(entry.energyId(), take, false);
+                    remainingToExtract -= take;
+                    if (remainingToExtract <= 0) {
+                        break;
+                    }
+                }
+            }
         }
         ItemStack result = recipe.result().copy();
         if (getItem(0).isEmpty()) {
@@ -206,6 +262,6 @@ public class AbyssSynthesizerBlockEntity extends AbstractAbyssMachineBlockEntity
     @Nullable
     @Override
     public AbstractContainerMenu createMenu(int syncId, Inventory inventory, Player player) {
-        return new AbyssSynthesizerMenu(syncId, inventory, this);
+        return new AbyssSynthesizerMenu(syncId, inventory, this, this.data);
     }
 }

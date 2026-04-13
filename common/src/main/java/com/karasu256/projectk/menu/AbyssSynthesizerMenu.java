@@ -6,9 +6,7 @@ import net.minecraft.world.Container;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.inventory.AbstractContainerMenu;
-import net.minecraft.world.inventory.ContainerLevelAccess;
-import net.minecraft.world.inventory.Slot;
+import net.minecraft.world.inventory.*;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntity;
 
@@ -20,22 +18,26 @@ public class AbyssSynthesizerMenu extends AbstractContainerMenu {
     private final Container container;
     private final ContainerLevelAccess access;
     private final BlockEntity blockEntity;
+    private final ContainerData data;
 
     public AbyssSynthesizerMenu(int syncId, Inventory playerInventory) {
-        this(syncId, playerInventory, new SimpleContainer(7), ContainerLevelAccess.NULL, null);
+        this(syncId, playerInventory, new SimpleContainer(7), ContainerLevelAccess.NULL, null,
+                new SimpleContainerData(2));
     }
 
-    public AbyssSynthesizerMenu(int syncId, Inventory playerInventory, BlockEntity blockEntity) {
+    public AbyssSynthesizerMenu(int syncId, Inventory playerInventory, BlockEntity blockEntity, ContainerData data) {
         this(syncId, playerInventory, ((Container) blockEntity),
-                ContainerLevelAccess.create(blockEntity.getLevel(), blockEntity.getBlockPos()), blockEntity);
+                ContainerLevelAccess.create(blockEntity.getLevel(), blockEntity.getBlockPos()), blockEntity, data);
     }
 
-    public AbyssSynthesizerMenu(int syncId, Inventory playerInventory, Container container, ContainerLevelAccess access, BlockEntity blockEntity) {
+    public AbyssSynthesizerMenu(int syncId, Inventory playerInventory, Container container, ContainerLevelAccess access, BlockEntity blockEntity, ContainerData data) {
         super(ProjectKMenus.ABYSS_SYNTHESIZER.get(), syncId);
         checkContainerSize(container, 7);
         this.container = container;
         this.access = access;
         this.blockEntity = blockEntity;
+        this.data = data;
+        this.addDataSlots(data);
 
         container.startOpen(playerInventory.player);
 
@@ -74,6 +76,14 @@ public class AbyssSynthesizerMenu extends AbstractContainerMenu {
             return be;
         }
         return null;
+    }
+
+    public int getProgress() {
+        return this.data.get(0);
+    }
+
+    public int getMaxProgress() {
+        return this.data.get(1);
     }
 
     @Override

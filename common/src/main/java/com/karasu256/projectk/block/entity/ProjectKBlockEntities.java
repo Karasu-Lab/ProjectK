@@ -62,7 +62,8 @@ public class ProjectKBlockEntities implements IKRegistryInitializerTarget {
                     .build(null));
     public static final RegistrySupplier<BlockEntityType<CreativeAbyssStorageBlockEntity>> CREATIVE_ABYSS_STORAGE = blockEntity(
             "creative_abyss_storage",
-            () -> BlockEntityType.Builder.of(CreativeAbyssStorageBlockEntity::new, ProjectKBlocks.CREATIVE_ABYSS_STORAGE.get())
+            () -> BlockEntityType.Builder.of(CreativeAbyssStorageBlockEntity::new,
+                            ProjectKBlocks.CREATIVE_ABYSS_STORAGE.get())
                     .build(null));
     public static final RegistrySupplier<BlockEntityType<AbyssEnchantRemoverBlockEntity>> ABYSS_ENCHANT_REMOVER = blockEntity(
             "abyss_enchant_remover", () -> BlockEntityType.Builder.of(AbyssEnchantRemoverBlockEntity::new,
@@ -80,6 +81,10 @@ public class ProjectKBlockEntities implements IKRegistryInitializerTarget {
             "abyss_laser_emitter",
             () -> BlockEntityType.Builder.of(AbyssLaserEmitterBlockEntity::new,
                             ProjectKBlocks.ABYSS_LASER_EMITTER.get())
+                    .build(null));
+    public static final RegistrySupplier<BlockEntityType<AbyssPortalBlockEntity>> ABYSS_PORTAL = blockEntity(
+            "abyss_portal",
+            () -> BlockEntityType.Builder.of(AbyssPortalBlockEntity::new, ProjectKBlocks.ABYSS_PORTAL.get())
                     .build(null));
 
 

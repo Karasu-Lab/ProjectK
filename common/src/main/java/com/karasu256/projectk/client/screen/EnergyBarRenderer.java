@@ -30,6 +30,10 @@ public final class EnergyBarRenderer {
     }
 
     public static void renderDonut(GuiGraphics graphics, float cx, float cy, List<AbyssEnergyData> energies, long visualCapacity, DonutRadius radius, float startAngle) {
+        renderDonut(graphics, cx, cy, energies, visualCapacity, radius, startAngle, 1.0f);
+    }
+
+    public static void renderDonut(GuiGraphics graphics, float cx, float cy, List<AbyssEnergyData> energies, long visualCapacity, DonutRadius radius, float startAngle, float alpha) {
         if (visualCapacity <= 0 || energies.isEmpty())
             return;
 
@@ -41,7 +45,7 @@ public final class EnergyBarRenderer {
         RenderSystem.enableBlend();
         RenderSystem.defaultBlendFunc();
         RenderSystem.setShader(GameRenderer::getPositionTexShader);
-        RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, 1.0f);
+        RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, alpha);
 
         Matrix4f pose = graphics.pose().last().pose();
 
@@ -54,12 +58,15 @@ public final class EnergyBarRenderer {
             ResourceLocation energyId = data.energyId();
 
             var attributes = ProjectKFluids.getAttributes(energyId);
-            if (attributes == null) continue;
+            if (attributes == null)
+                continue;
 
             TextureAtlasSprite sprite = Minecraft.getInstance().getModelManager().getAtlas(InventoryMenu.BLOCK_ATLAS)
                     .getSprite(attributes.getSourceTexture());
 
-            PKColorUtils.setShaderColor(PKColorUtils.getEnergyColor(energyId, PKColorUtils.OPAQUE));
+            int color = PKColorUtils.getEnergyColor(energyId, PKColorUtils.OPAQUE);
+            RenderSystem.setShaderColor((color >> 16 & 255) / 255.0f, (color >> 8 & 255) / 255.0f,
+                    (color & 255) / 255.0f, alpha);
             RenderSystem.setShaderTexture(0, InventoryMenu.BLOCK_ATLAS);
 
             float u0 = sprite.getU0();
@@ -192,7 +199,8 @@ public final class EnergyBarRenderer {
             return;
         }
         var attributes = ProjectKFluids.getAttributes(energyId);
-        if (attributes == null) return;
+        if (attributes == null)
+            return;
 
         TextureAtlasSprite sprite = Minecraft.getInstance().getModelManager().getAtlas(InventoryMenu.BLOCK_ATLAS)
                 .getSprite(attributes.getSourceTexture());
@@ -224,7 +232,8 @@ public final class EnergyBarRenderer {
             return;
         }
         var attributes = ProjectKFluids.getAttributes(energyId);
-        if (attributes == null) return;
+        if (attributes == null)
+            return;
 
         TextureAtlasSprite sprite = Minecraft.getInstance().getModelManager().getAtlas(InventoryMenu.BLOCK_ATLAS)
                 .getSprite(attributes.getSourceTexture());
