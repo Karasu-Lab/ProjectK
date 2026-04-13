@@ -1,6 +1,5 @@
 package com.karasu256.projectk.block.entity;
 
-import com.karasu256.projectk.block.custom.AbyssMagicTable;
 import com.karasu256.projectk.block.entity.impl.AbstractAbyssMachineBlockEntity;
 import com.karasu256.projectk.data.AbyssEnergyData;
 import com.karasu256.projectk.energy.EnergyKeys;
@@ -8,6 +7,7 @@ import com.karasu256.projectk.energy.ProjectKEnergies;
 import com.karasu256.projectk.menu.AbyssMagicTableMenu;
 import com.karasu256.projectk.recipe.AbyssMagicTableRecipe;
 import com.karasu256.projectk.recipe.ProjectKRecipes;
+import com.karasu256.projectk.registry.ProjectKMachineCapacities;
 import com.karasu256.projectk.utils.Id;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
@@ -35,7 +35,7 @@ public class AbyssMagicTableBlockEntity extends AbstractAbyssMachineBlockEntity 
     private ResourceLocation lockedRecipeId;
 
     public AbyssMagicTableBlockEntity(BlockPos pos, BlockState state) {
-        super(ProjectKBlockEntities.ABYSS_MAGIC_TABLE.get(), pos, state, resolveCapacity(state));
+        super(ProjectKBlockEntities.ABYSS_MAGIC_TABLE.get(), pos, state, ProjectKMachineCapacities.ABYSS_MAGIC_TABLE);
         addItemSlot(Id.id("input"));
         addItemSlot(Id.id("output"));
     }
@@ -46,12 +46,6 @@ public class AbyssMagicTableBlockEntity extends AbstractAbyssMachineBlockEntity 
         be.serverTick();
     }
 
-    private static long resolveCapacity(BlockState state) {
-        if (state.getBlock() instanceof AbyssMagicTable magicTable) {
-            return magicTable.getCapacity();
-        }
-        return 0L;
-    }
 
     private void serverTick() {
         ItemStack input = getInputItem();
@@ -202,10 +196,6 @@ public class AbyssMagicTableBlockEntity extends AbstractAbyssMachineBlockEntity 
 
     private int getCraftTime() {
         return getCraftTimeForTier(BASE_CRAFT_TIME);
-    }
-
-    public void refreshMaxEnergy() {
-        setMaxEnergy(getTieredMaxEnergy(getTier()));
     }
 
     @Override

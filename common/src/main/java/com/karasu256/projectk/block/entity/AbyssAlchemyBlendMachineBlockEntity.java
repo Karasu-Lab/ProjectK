@@ -1,6 +1,5 @@
 package com.karasu256.projectk.block.entity;
 
-import com.karasu256.projectk.block.custom.AbyssAlchemyBlendMachine;
 import com.karasu256.projectk.block.entity.impl.AbstractAbyssMachineBlockEntity;
 import com.karasu256.projectk.data.AbyssEnergyData;
 import com.karasu256.projectk.energy.EnergyKeys;
@@ -8,6 +7,7 @@ import com.karasu256.projectk.energy.ProjectKEnergies;
 import com.karasu256.projectk.menu.AbyssAlchemyBlendMachineMenu;
 import com.karasu256.projectk.recipe.AbyssAlchemyBlendRecipe;
 import com.karasu256.projectk.recipe.ProjectKRecipes;
+import com.karasu256.projectk.registry.ProjectKMachineCapacities;
 import com.karasu256.projectk.utils.Id;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
@@ -35,7 +35,8 @@ public class AbyssAlchemyBlendMachineBlockEntity extends AbstractAbyssMachineBlo
     private ResourceLocation lockedRecipeId;
 
     public AbyssAlchemyBlendMachineBlockEntity(BlockPos pos, BlockState state) {
-        super(ProjectKBlockEntities.ABYSS_ALCHEMY_BLEND_MACHINE.get(), pos, state, resolveCapacity(state));
+        super(ProjectKBlockEntities.ABYSS_ALCHEMY_BLEND_MACHINE.get(), pos, state,
+                ProjectKMachineCapacities.ABYSS_ALCHEMY_BLEND_MACHINE);
         addItemSlot(Id.id("input"));
         addItemSlot(Id.id("output"));
     }
@@ -46,12 +47,6 @@ public class AbyssAlchemyBlendMachineBlockEntity extends AbstractAbyssMachineBlo
         be.serverTick();
     }
 
-    private static long resolveCapacity(BlockState state) {
-        if (state.getBlock() instanceof AbyssAlchemyBlendMachine machine) {
-            return machine.getCapacity();
-        }
-        return 0L;
-    }
 
     private void serverTick() {
         ItemStack input = getInputItem();

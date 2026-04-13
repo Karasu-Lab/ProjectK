@@ -8,8 +8,9 @@ import net.minecraft.world.level.block.state.BlockBehaviour;
 public class ProjectKBlock extends AbstractProjectKBlock {
     public interface ITieredMachineProperties {
         long capacity();
-        double capacityScaling();
+
         int maxTier();
+
         int defaultTier();
     }
 
@@ -33,28 +34,25 @@ public class ProjectKBlock extends AbstractProjectKBlock {
     }
 
     public static class CustomProperties implements ITieredMachineProperties {
-        public static final Codec<CustomProperties> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-                Codec.LONG.fieldOf("capacity").forGetter(CustomProperties::capacity),
-                Codec.LONG.fieldOf("transferRate").forGetter(CustomProperties::transferRate),
-                Codec.DOUBLE.optionalFieldOf("capacityScaling", 2.5).forGetter(CustomProperties::capacityScaling),
-                Codec.INT.optionalFieldOf("maxTier", 3).forGetter(CustomProperties::maxTier),
-                Codec.INT.optionalFieldOf("defaultTier", 1).forGetter(CustomProperties::defaultTier)
-        ).apply(instance, CustomProperties::new));
+        public static final Codec<CustomProperties> CODEC = RecordCodecBuilder.create(
+                instance -> instance.group(Codec.LONG.fieldOf("capacity").forGetter(CustomProperties::capacity),
+                                Codec.LONG.fieldOf("transferRate").forGetter(CustomProperties::transferRate),
+                                Codec.INT.optionalFieldOf("maxTier", 3).forGetter(CustomProperties::maxTier),
+                                Codec.INT.optionalFieldOf("defaultTier", 1).forGetter(CustomProperties::defaultTier))
+                        .apply(instance, CustomProperties::new));
 
         private final long capacity;
         private final long transferRate;
-        private final double capacityScaling;
         private final int maxTier;
         private final int defaultTier;
 
         private CustomProperties(long capacity, long transferRate) {
-            this(capacity, transferRate, 2.5, 3, 1);
+            this(capacity, transferRate, 3, 1);
         }
 
-        private CustomProperties(long capacity, long transferRate, double capacityScaling, int maxTier, int defaultTier) {
+        private CustomProperties(long capacity, long transferRate, int maxTier, int defaultTier) {
             this.capacity = capacity;
             this.transferRate = transferRate;
-            this.capacityScaling = capacityScaling;
             this.maxTier = maxTier;
             this.defaultTier = defaultTier;
         }
@@ -64,23 +62,19 @@ public class ProjectKBlock extends AbstractProjectKBlock {
         }
 
         public CustomProperties capacity(long capacity) {
-            return new CustomProperties(capacity, transferRate, capacityScaling, maxTier, defaultTier);
+            return new CustomProperties(capacity, transferRate, maxTier, defaultTier);
         }
 
         public CustomProperties transferRate(long transferRate) {
-            return new CustomProperties(capacity, transferRate, capacityScaling, maxTier, defaultTier);
-        }
-
-        public CustomProperties capacityScaling(double capacityScaling) {
-            return new CustomProperties(capacity, transferRate, capacityScaling, maxTier, defaultTier);
+            return new CustomProperties(capacity, transferRate, maxTier, defaultTier);
         }
 
         public CustomProperties maxTier(int maxTier) {
-            return new CustomProperties(capacity, transferRate, capacityScaling, maxTier, defaultTier);
+            return new CustomProperties(capacity, transferRate, maxTier, defaultTier);
         }
 
         public CustomProperties defaultTier(int defaultTier) {
-            return new CustomProperties(capacity, transferRate, capacityScaling, maxTier, defaultTier);
+            return new CustomProperties(capacity, transferRate, maxTier, defaultTier);
         }
 
         public long capacity() {
@@ -89,10 +83,6 @@ public class ProjectKBlock extends AbstractProjectKBlock {
 
         public long transferRate() {
             return transferRate;
-        }
-
-        public double capacityScaling() {
-            return capacityScaling;
         }
 
         public int maxTier() {

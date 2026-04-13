@@ -6,6 +6,7 @@ import com.karasu256.projectk.data.AbyssLaserEmitterTier;
 import com.karasu256.projectk.data.AbyssLaserEmitterTierManager;
 import com.karasu256.projectk.entity.AbyssLaserEntity;
 import com.karasu256.projectk.entity.ProjectKEntities;
+import com.karasu256.projectk.registry.ProjectKMachineCapacities;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
@@ -23,7 +24,8 @@ public class AbyssLaserEmitterBlockEntity extends AbstractAbyssMachineBlockEntit
     private int cooldown = 0;
 
     public AbyssLaserEmitterBlockEntity(BlockPos pos, BlockState state) {
-        super(ProjectKBlockEntities.ABYSS_LASER_EMITTER.get(), pos, state, 30000L);
+        super(ProjectKBlockEntities.ABYSS_LASER_EMITTER.get(), pos, state,
+                ProjectKMachineCapacities.ABYSS_LASER_EMITTER);
     }
 
     public static void tick(Level level, BlockPos pos, BlockState state, AbyssLaserEmitterBlockEntity be) {
@@ -61,7 +63,7 @@ public class AbyssLaserEmitterBlockEntity extends AbstractAbyssMachineBlockEntit
         if (energyAmount >= cost) {
             extract(energyId, cost, false);
 
-            if (level instanceof ServerLevel serverLevel) {
+            if (level instanceof ServerLevel) {
                 Vec3 startVec = Vec3.atCenterOf(pos).add(Vec3.atLowerCornerOf(facing.getNormal()).scale(0.51));
                 Vec3 endVec = startVec.add(Vec3.atLowerCornerOf(facing.getNormal()).scale(32));
 
@@ -88,12 +90,6 @@ public class AbyssLaserEmitterBlockEntity extends AbstractAbyssMachineBlockEntit
             return true;
         }
         return false;
-    }
-
-    @Override
-    protected void refreshMaxEnergy() {
-        AbyssLaserEmitterTier tierData = AbyssLaserEmitterTierManager.getTier(getTier());
-        this.maxEnergy = tierData.capacity();
     }
 
     @Override

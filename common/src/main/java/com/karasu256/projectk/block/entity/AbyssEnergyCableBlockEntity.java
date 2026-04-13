@@ -4,6 +4,7 @@ import com.karasu256.projectk.block.custom.AbyssEnergyCable;
 import com.karasu256.projectk.block.custom.AbyssEnergyCable.ConnectionMode;
 import com.karasu256.projectk.block.entity.impl.AbstractAbyssMachineBlockEntity;
 import com.karasu256.projectk.data.AbyssEnergyData;
+import com.karasu256.projectk.registry.ProjectKMachineCapacities;
 import net.karasuniki.karasunikilib.api.block.ICableInputable;
 import net.karasuniki.karasunikilib.api.block.ICableOutputable;
 import net.minecraft.core.BlockPos;
@@ -25,7 +26,7 @@ public class AbyssEnergyCableBlockEntity extends AbstractAbyssMachineBlockEntity
     private long transferRate;
 
     public AbyssEnergyCableBlockEntity(BlockPos pos, BlockState state) {
-        super(ProjectKBlockEntities.ABYSS_ENERGY_CABLE.get(), pos, state, resolveCapacity(state));
+        super(ProjectKBlockEntities.ABYSS_ENERGY_CABLE.get(), pos, state, ProjectKMachineCapacities.ABYSS_ENERGY_CABLE);
         this.transferRate = resolveTransferRate(state);
         Arrays.fill(sideModes, ConnectionMode.CONNECTED);
     }
@@ -323,12 +324,6 @@ public class AbyssEnergyCableBlockEntity extends AbstractAbyssMachineBlockEntity
         return ConnectionMode.NONE;
     }
 
-    private static long resolveCapacity(BlockState state) {
-        if (state.getBlock() instanceof AbyssEnergyCable cable) {
-            return cable.getCapacity();
-        }
-        return 0L;
-    }
 
     private static long resolveTransferRate(BlockState state) {
         if (state.getBlock() instanceof AbyssEnergyCable cable) {

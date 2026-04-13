@@ -9,6 +9,7 @@ import com.karasu256.projectk.energy.IEnergyItemInput;
 import com.karasu256.projectk.energy.IEnergyItemOutput;
 import com.karasu256.projectk.energy.ProjectKEnergies;
 import com.karasu256.projectk.menu.AbyssChargerMenu;
+import com.karasu256.projectk.registry.ProjectKMachineCapacities;
 import com.karasu256.projectk.utils.Id;
 import net.karasuniki.karasunikilib.api.block.ICableInputable;
 import net.minecraft.core.BlockPos;
@@ -30,7 +31,7 @@ public class AbyssChargerBlockEntity extends AbstractAbyssMachineBlockEntity imp
     private long transferRate;
 
     public AbyssChargerBlockEntity(BlockPos pos, BlockState state) {
-        super(ProjectKBlockEntities.ABYSS_CHARGER.get(), pos, state, resolveCapacity(state));
+        super(ProjectKBlockEntities.ABYSS_CHARGER.get(), pos, state, ProjectKMachineCapacities.ABYSS_CHARGER);
         this.transferRate = resolveTransferRate(state);
         addItemSlot(Id.id("input"));
         addItemSlot(Id.id("output"));
@@ -43,12 +44,6 @@ public class AbyssChargerBlockEntity extends AbstractAbyssMachineBlockEntity imp
         be.serverTick();
     }
 
-    private static long resolveCapacity(BlockState state) {
-        if (state.getBlock() instanceof AbyssCharger charger) {
-            return charger.getCapacity();
-        }
-        return 0L;
-    }
 
     private static long resolveTransferRate(BlockState state) {
         if (state.getBlock() instanceof AbyssCharger charger) {
@@ -62,18 +57,8 @@ public class AbyssChargerBlockEntity extends AbstractAbyssMachineBlockEntity imp
         return 3;
     }
 
-    @Override
-    public int getDefaultTier() {
-        return 1;
-    }
-
     public long getTieredTransferRate() {
         return transferRate * getTier();
-    }
-
-    @Override
-    protected boolean canOutputEnergy() {
-        return false;
     }
 
     private void serverTick() {
@@ -165,11 +150,11 @@ public class AbyssChargerBlockEntity extends AbstractAbyssMachineBlockEntity imp
     }
 
     public ItemStack getInputItem() {
-        return heldItems.get(0).getHeldItem();
+        return heldItems.getFirst().getHeldItem();
     }
 
     public void setInputItem(ItemStack stack) {
-        heldItems.get(0).setHeldItem(stack);
+        heldItems.getFirst().setHeldItem(stack);
         markDirtyAndSync();
     }
 

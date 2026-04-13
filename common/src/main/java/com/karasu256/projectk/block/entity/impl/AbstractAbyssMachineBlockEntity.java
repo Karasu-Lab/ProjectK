@@ -1,9 +1,13 @@
 package com.karasu256.projectk.block.entity.impl;
 
+import com.karasu256.projectk.api.machine.IMachineCapacity;
 import com.karasu256.projectk.data.AbyssEnergyData;
 import com.karasu256.projectk.energy.IMultiEnergyStorage;
+import com.karasu256.projectk.registry.ProjectKMachineCapacities;
+import dev.architectury.registry.registries.RegistrySupplier;
 import net.karasuniki.karasunikilib.api.block.ICableInputable;
 import net.karasuniki.karasunikilib.api.block.ICableOutputable;
+import net.karasuniki.karasunikilib.api.data.ICapacity;
 import net.karasuniki.karasunikilib.api.data.impl.HeldItem;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -15,25 +19,29 @@ import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class AbstractAbyssMachineBlockEntity extends AbstractAbyssTieredBlockEntity implements IMultiEnergyStorage, ICableInputable, ICableOutputable {
+public abstract class AbstractAbyssMachineBlockEntity extends AbstractAbyssTieredBlockEntity implements IMultiEnergyStorage, ICableInputable, ICableOutputable, ICapacity {
     protected final List<AbyssEnergyData> energies = new ArrayList<>();
     protected final List<HeldItem> heldItems = new ArrayList<>();
     protected final int maxEnergyTypes;
 
-    protected AbstractAbyssMachineBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state, long baseMaxEnergy) {
-        this(type, pos, state, baseMaxEnergy, 1);
+    protected AbstractAbyssMachineBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state, RegistrySupplier<? extends IMachineCapacity> capacitySupplier) {
+        this(type, pos, state, capacitySupplier, 1);
     }
 
-    protected AbstractAbyssMachineBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state, long baseMaxEnergy, int maxEnergyTypes) {
-        super(type, pos, state, baseMaxEnergy);
+    protected AbstractAbyssMachineBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
+        this(type, pos, state, ProjectKMachineCapacities.NONE);
+    }
+
+    protected AbstractAbyssMachineBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state, RegistrySupplier<? extends IMachineCapacity> capacitySupplier, int maxEnergyTypes) {
+        super(type, pos, state, capacitySupplier);
         this.maxEnergyTypes = maxEnergyTypes;
     }
 
@@ -127,16 +135,6 @@ public abstract class AbstractAbyssMachineBlockEntity extends AbstractAbyssTiere
     }
 
     @Override
-    public int getDefaultTier() {
-        return 1;
-    }
-
-    @Override
-    public int getMaxTier() {
-        return 1;
-    }
-
-    @Override
     protected void saveAdditional(CompoundTag nbt, HolderLookup.Provider registries) {
         super.saveAdditional(nbt, registries);
         writeEnergyListNbt(nbt);
@@ -171,8 +169,8 @@ public abstract class AbstractAbyssMachineBlockEntity extends AbstractAbyssTiere
     }
 
     @Override
-    protected void refreshMaxEnergy() {
-        super.refreshMaxEnergy();
+    protected void resolveMaxEnergy() {
+        super.resolveMaxEnergy();
         capEnergies();
     }
 
@@ -196,7 +194,12 @@ public abstract class AbstractAbyssMachineBlockEntity extends AbstractAbyssTiere
 
     @Override
     public long getEnergyAmount() {
-        return energies.isEmpty() ? 0L : energies.get(0).amountOrZero();
+        return energies.isEmpty() ? 0L : energies.getFirst().amountOrZero();
+    }
+
+    @Override
+    public long getCapacity() {
+        return getMaxEnergy();
     }
 
     public long getEnergyAmount(ResourceLocation id) {
@@ -207,7 +210,7 @@ public abstract class AbstractAbyssMachineBlockEntity extends AbstractAbyssTiere
     @Override
     @Nullable
     public ResourceLocation getAbyssEnergyId() {
-        return energies.isEmpty() ? null : energies.get(0).energyId();
+        return energies.isEmpty() ? null : energies.getFirst().energyId();
     }
 
     public boolean canAcceptEnergy(ResourceLocation id) {
@@ -221,7 +224,8 @@ public abstract class AbstractAbyssMachineBlockEntity extends AbstractAbyssTiere
 
     public void loadFromStack(ItemStack stack) {
         energies.clear();
-        AbyssEnergyData data = stack.get(com.karasu256.projectk.data.ProjectKDataComponets.ABYSS_ENERGY_DATA_COMPONENT_TYPE.get());
+        AbyssEnergyData data = stack.get(
+                com.karasu256.projectk.data.ProjectKDataComponets.ABYSS_ENERGY_DATA_COMPONENT_TYPE.get());
         if (data != null && data.energyId() != null) {
             energies.add(data);
         }

@@ -191,9 +191,6 @@ public abstract class AbstractPKEnergyBlockEntity<T extends IProjectKEnergy> ext
         if (this instanceof ITierInfo tierInfo) {
             tierInfo.loadTier(nbt);
         }
-        if (this instanceof IMaxEnergyInfo maxEnergyInfo) {
-            maxEnergyInfo.loadMaxEnergy(nbt);
-        }
         rotationSpeed.readNbt(nbt, registries);
         if (pkEnergy instanceof AbyssEnergy abyssEnergy) {
             abyssEnergy.readNbt(nbt, registries);

@@ -1,6 +1,7 @@
 package com.karasu256.projectk.block.entity;
 
 import com.karasu256.projectk.data.AbyssEnergyData;
+import com.karasu256.projectk.registry.ProjectKMachineCapacities;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
@@ -13,7 +14,7 @@ import java.util.List;
 
 public class CreativeAbyssStorageBlockEntity extends AbyssStorageBlockEntity {
     public CreativeAbyssStorageBlockEntity(BlockPos pos, BlockState state) {
-        super(ProjectKBlockEntities.CREATIVE_ABYSS_STORAGE.get(), pos, state, -1L);
+        super(ProjectKBlockEntities.CREATIVE_ABYSS_STORAGE.get(), pos, state, ProjectKMachineCapacities.INFINITIE);
     }
 
     public static void tick(Level level, BlockPos pos, BlockState state, CreativeAbyssStorageBlockEntity be) {

@@ -1,5 +1,6 @@
 package com.karasu256.projectk.particle;
 
+import com.karasu256.projectk.api.energy.PKMaterials;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.*;
 import org.jetbrains.annotations.NotNull;
@@ -9,7 +10,7 @@ public class AbyssParticle extends TextureSheetParticle {
     private final SpriteSet sprites;
     private final AbyssParticleOptions options;
 
-    protected AbyssParticle(ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed, SpriteSet sprites, AbyssParticleOptions options) {
+    public AbyssParticle(ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed, SpriteSet sprites, AbyssParticleOptions options) {
         super(level, x, y, z, xSpeed, ySpeed, zSpeed);
         this.sprites = sprites;
         this.options = options;
@@ -21,6 +22,13 @@ public class AbyssParticle extends TextureSheetParticle {
         this.quadSize *= 0.75F;
         this.hasPhysics = false;
         this.lifetime = 40 + level.random.nextInt(20);
+
+        PKMaterials material = PKMaterials.getByEnergyId(options.energyId());
+        int color = material.color();
+        this.rCol = (float) ((color >> 16) & 0xFF) / 255.0F;
+        this.gCol = (float) ((color >> 8) & 0xFF) / 255.0F;
+        this.bCol = (float) (color & 0xFF) / 255.0F;
+
         this.setSpriteFromAge(sprites);
     }
 

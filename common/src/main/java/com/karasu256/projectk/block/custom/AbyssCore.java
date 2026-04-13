@@ -1,25 +1,29 @@
 package com.karasu256.projectk.block.custom;
 
 import com.karasu256.projectk.block.entity.AbyssCoreBlockEntity;
+import com.karasu256.projectk.block.entity.ProjectKBlockEntities;
 import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.BaseEntityBlock;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityTicker;
+import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-public class AbyssCore extends BaseEntityBlock {
+public class AbyssCore extends BaseEntityBlock implements ILaserEnergyReactiveBlock {
     public static final MapCodec<AbyssCore> CODEC = simpleCodec(AbyssCore::new);
 
     public AbyssCore(Properties properties) {
@@ -55,7 +59,8 @@ public class AbyssCore extends BaseEntityBlock {
     @Override
     public @NotNull List<ItemStack> getDrops(BlockState state, net.minecraft.world.level.storage.loot.LootParams.Builder builder) {
         List<ItemStack> drops = super.getDrops(state, builder);
-        BlockEntity blockEntity = builder.getOptionalParameter(net.minecraft.world.level.storage.loot.parameters.LootContextParams.BLOCK_ENTITY);
+        BlockEntity blockEntity = builder.getOptionalParameter(
+                net.minecraft.world.level.storage.loot.parameters.LootContextParams.BLOCK_ENTITY);
         if (!(blockEntity instanceof AbyssCoreBlockEntity core)) {
             return drops;
         }
@@ -67,14 +72,7 @@ public class AbyssCore extends BaseEntityBlock {
         return drops;
     }
 
-    @Override
-    public ItemStack getCloneItemStack(net.minecraft.world.level.LevelReader level, BlockPos pos, BlockState state) {
-        ItemStack stack = super.getCloneItemStack(level, pos, state);
-        if (level.getBlockEntity(pos) instanceof AbyssCoreBlockEntity core) {
-            core.applyDropData(stack);
-        }
-        return stack;
-    }
+
 
     @Override
     @NotNull
@@ -92,5 +90,21 @@ public class AbyssCore extends BaseEntityBlock {
     @NotNull
     protected VoxelShape getVisualShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
         return Block.box(4.0, 0.0, 4.0, 12.0, 8.0, 12.0);
+    }
+
+    @Override
+    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
+        return createTickerHelper(type, ProjectKBlockEntities.ABYSS_CORE.get(), (level1, pos, state1, blockEntity) -> {
+            if (blockEntity instanceof AbyssCoreBlockEntity core) {
+                core.tick();
+            }
+        });
+    }
+
+    @Override
+    public void onLaserHit(Level level, BlockPos pos, BlockState state, ResourceLocation energyId, long amount) {
+        if (level.getBlockEntity(pos) instanceof AbyssCoreBlockEntity core) {
+            core.insert(energyId, amount, false);
+        }
     }
 }

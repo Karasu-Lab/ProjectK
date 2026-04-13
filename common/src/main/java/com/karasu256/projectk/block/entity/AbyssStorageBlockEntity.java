@@ -1,5 +1,6 @@
 package com.karasu256.projectk.block.entity;
 
+import com.karasu256.projectk.api.machine.IMachineCapacity;
 import com.karasu256.projectk.block.custom.AbyssStorage;
 import com.karasu256.projectk.block.entity.impl.AbstractAbyssMachineBlockEntity;
 import com.karasu256.projectk.data.AbyssEnergyData;
@@ -10,7 +11,9 @@ import com.karasu256.projectk.energy.IEnergyItemOutput;
 import com.karasu256.projectk.energy.IMultiEnergyStorage;
 import com.karasu256.projectk.energy.ProjectKEnergies;
 import com.karasu256.projectk.menu.AbyssStorageMenu;
+import com.karasu256.projectk.registry.ProjectKMachineCapacities;
 import com.karasu256.projectk.utils.Id;
+import dev.architectury.registry.registries.RegistrySupplier;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
@@ -46,12 +49,17 @@ public class AbyssStorageBlockEntity extends AbstractAbyssMachineBlockEntity imp
         this(ProjectKBlockEntities.ABYSS_STORAGE.get(), pos, state);
     }
 
-    protected AbyssStorageBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
-        this(type, pos, state, resolveCapacity(state));
+    protected AbyssStorageBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state, RegistrySupplier<? extends IMachineCapacity> capacitySupplier) {
+        super(type, pos, state, capacitySupplier, resolveMaxTypes(state));
+        addItemSlots();
     }
 
-    protected AbyssStorageBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state, long capacity) {
-        super(type, pos, state, capacity, resolveMaxTypes(state));
+    protected AbyssStorageBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
+        super(type, pos, state, ProjectKMachineCapacities.ABYSS_STORAGE, resolveMaxTypes(state));
+        addItemSlots();
+    }
+
+    private void addItemSlots() {
         addItemSlot(Id.id("storage_input"));
         addItemSlot(Id.id("storage_charge"));
     }
@@ -63,12 +71,6 @@ public class AbyssStorageBlockEntity extends AbstractAbyssMachineBlockEntity imp
         be.serverTick();
     }
 
-    private static long resolveCapacity(BlockState state) {
-        if (state.getBlock() instanceof AbyssStorage storage) {
-            return storage.getCapacity();
-        }
-        return 0L;
-    }
 
     private static int resolveMaxTypes(BlockState state) {
         if (state.getBlock() instanceof AbyssStorage storage) {
@@ -160,8 +162,8 @@ public class AbyssStorageBlockEntity extends AbstractAbyssMachineBlockEntity imp
     }
 
     @Override
-    protected void refreshMaxEnergy() {
-        super.refreshMaxEnergy();
+    protected void resolveMaxEnergy() {
+        super.resolveMaxEnergy();
         clampEnergyAmounts();
     }
 

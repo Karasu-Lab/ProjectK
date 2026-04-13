@@ -58,12 +58,5 @@ public class AbyssAbsorptionPrism extends Block implements EntityBlock, ILaserEn
         return drops;
     }
 
-    @Override
-    public ItemStack getCloneItemStack(LevelReader level, BlockPos pos, BlockState state) {
-        ItemStack stack = super.getCloneItemStack(level, pos, state);
-        if (level.getBlockEntity(pos) instanceof AbyssAbsorptionPrismBlockEntity prism) {
-            prism.applyDropData(stack);
-        }
-        return stack;
-    }
+
 }

@@ -18,6 +18,7 @@ import com.karasu256.projectk.fluid.ProjectKFluids;
 import com.karasu256.projectk.item.ProjectKItems;
 import com.karasu256.projectk.particle.AbyssLaserParticle;
 import com.karasu256.projectk.particle.AbyssParticle;
+import com.karasu256.projectk.particle.AbyssParticleOptions;
 import com.karasu256.projectk.particle.ProjectKParticles;
 import com.karasu256.projectk.registry.ItemsRegistry;
 import com.karasu256.projectk.utils.Id;
@@ -33,6 +34,7 @@ import net.minecraft.world.item.ItemStack;
 public class ProjectKClient {
     public static void init() {
         EntityRendererRegistry.register(ProjectKEntities.ABYSS_ENERGY_ENTITY, AbyssEnergyEntityRenderer::new);
+        EntityRendererRegistry.register(ProjectKEntities.ABYSS_PORTAL_ENERGY_ENTITY, AbyssEnergyEntityRenderer::new);
         EntityRendererRegistry.register(ProjectKEntities.ABYSS_LASER_ENTITY, AbyssLaserEntityRenderer::new);
 
         ResourceLocation propertyId = Id.id("abyss_energy");
@@ -49,7 +51,12 @@ public class ProjectKClient {
                 }
             }
             return 0xFFFFFFFF;
-        }, ProjectKItems.ABYSS_INGOT.get());
+        }, ProjectKItems.ABYSS_INGOT.get(), ProjectKBlocks.ABYSS_CORE.get(), ProjectKBlocks.ABYSS_PORTAL.get());
+
+        ItemPropertiesRegistry.register(ProjectKBlocks.ABYSS_CORE.get().asItem(), propertyId,
+                (stack, level, entity, seed) -> getAbyssEnergyModelIndex(stack));
+        ItemPropertiesRegistry.register(ProjectKBlocks.ABYSS_PORTAL.get().asItem(), propertyId,
+                (stack, level, entity, seed) -> getAbyssEnergyModelIndex(stack));
 
         for (PKMaterials material : PKMaterials.values()) {
             ColorHandlerRegistry.registerItemColors((stack, tintIndex) -> {
@@ -67,6 +74,9 @@ public class ProjectKClient {
 
     public static void initLate() {
         ParticleProviderRegistry.register(ProjectKParticles.ABYSS_PARTICLE.get(), AbyssParticle.Provider::new);
+        ParticleProviderRegistry.register(ProjectKParticles.ABYSS_PORTAL_PARTICLE.get(),
+                spriteSet -> (options, level, x, y, z, vx, vy, vz) -> new AbyssParticle(level, x, y, z, vx, vy, vz,
+                        spriteSet, new AbyssParticleOptions(options.energyId())));
         ParticleProviderRegistry.register(ProjectKParticles.ABYSS_LASER_PARTICLE.get(),
                 context -> new AbyssLaserParticle.Provider());
         BlockEntityRendererRegistry.register(ProjectKBlockEntities.ABYSS_CORE.get(),

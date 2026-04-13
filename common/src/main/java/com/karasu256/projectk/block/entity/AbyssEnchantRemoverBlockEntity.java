@@ -6,6 +6,7 @@ import com.karasu256.projectk.data.AbyssEnergyData;
 import com.karasu256.projectk.data.EnergyCapacityData;
 import com.karasu256.projectk.data.ProjectKDataComponets;
 import com.karasu256.projectk.menu.AbyssEnchantRemoverMenu;
+import com.karasu256.projectk.registry.ProjectKMachineCapacities;
 import com.karasu256.projectk.registry.ProjectKTags;
 import com.karasu256.projectk.utils.Id;
 import net.minecraft.core.BlockPos;
@@ -33,7 +34,7 @@ public class AbyssEnchantRemoverBlockEntity extends AbstractAbyssMachineBlockEnt
     private long defaultBookCapacity;
 
     public AbyssEnchantRemoverBlockEntity(BlockPos pos, BlockState state) {
-        super(ProjectKBlockEntities.ABYSS_ENCHANT_REMOVER.get(), pos, state, 0L);
+        super(ProjectKBlockEntities.ABYSS_ENCHANT_REMOVER.get(), pos, state);
         this.defaultBookCapacity = resolveDefaultBookCapacity(state);
         addItemSlot(Id.id("input"));
         addItemSlot(Id.id("book"));

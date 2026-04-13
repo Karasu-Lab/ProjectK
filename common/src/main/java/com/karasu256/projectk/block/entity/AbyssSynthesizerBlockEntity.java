@@ -1,12 +1,12 @@
 package com.karasu256.projectk.block.entity;
 
-import com.karasu256.projectk.block.custom.AbyssSynthesizer;
 import com.karasu256.projectk.block.entity.impl.AbstractAbyssMachineBlockEntity;
 import com.karasu256.projectk.data.AbyssEnergyData;
 import com.karasu256.projectk.energy.EnergyKeys;
 import com.karasu256.projectk.menu.AbyssSynthesizerMenu;
 import com.karasu256.projectk.recipe.AbyssSynthesizerRecipe;
 import com.karasu256.projectk.recipe.ProjectKRecipes;
+import com.karasu256.projectk.registry.ProjectKMachineCapacities;
 import com.karasu256.projectk.utils.Id;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
@@ -33,7 +33,7 @@ public class AbyssSynthesizerBlockEntity extends AbstractAbyssMachineBlockEntity
     private final ContainerData data;
 
     public AbyssSynthesizerBlockEntity(BlockPos pos, BlockState state) {
-        super(ProjectKBlockEntities.ABYSS_SYNTHESIZER.get(), pos, state, resolveCapacity(state));
+        super(ProjectKBlockEntities.ABYSS_SYNTHESIZER.get(), pos, state, ProjectKMachineCapacities.ABYSS_SYNTHESIZER);
         this.data = new ContainerData() {
             @Override
             public int get(int index) {
@@ -67,12 +67,6 @@ public class AbyssSynthesizerBlockEntity extends AbstractAbyssMachineBlockEntity
         be.serverTick();
     }
 
-    private static long resolveCapacity(BlockState state) {
-        if (state.getBlock() instanceof AbyssSynthesizer synthesizer) {
-            return synthesizer.getCapacity();
-        }
-        return 10000L;
-    }
 
     private void serverTick() {
         var recipe = findMatchingRecipe();

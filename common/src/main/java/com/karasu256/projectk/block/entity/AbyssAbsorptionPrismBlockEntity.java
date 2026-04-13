@@ -2,6 +2,7 @@ package com.karasu256.projectk.block.entity;
 
 import com.karasu256.projectk.block.entity.impl.AbstractAbyssMachineBlockEntity;
 import com.karasu256.projectk.data.AbyssEnergyData;
+import com.karasu256.projectk.registry.ProjectKMachineCapacities;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
@@ -14,7 +15,8 @@ import java.util.List;
 public class AbyssAbsorptionPrismBlockEntity extends AbstractAbyssMachineBlockEntity implements ILaserEnergyNbtStorage {
 
     public AbyssAbsorptionPrismBlockEntity(BlockPos pos, BlockState state) {
-        super(ProjectKBlockEntities.ABYSS_ABSORPTION_PRISM.get(), pos, state, 1000L, 1);
+        super(ProjectKBlockEntities.ABYSS_ABSORPTION_PRISM.get(), pos, state,
+                ProjectKMachineCapacities.ABYSS_ABSORPTION_PRISM, 1);
     }
 
     public List<AbyssEnergyData> getEnergies() {

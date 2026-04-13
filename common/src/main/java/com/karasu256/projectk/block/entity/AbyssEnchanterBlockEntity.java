@@ -8,6 +8,7 @@ import com.karasu256.projectk.data.AbyssEnergyData;
 import com.karasu256.projectk.enchant.ProjectKEnchantments;
 import com.karasu256.projectk.energy.ProjectKEnergies;
 import com.karasu256.projectk.menu.AbyssEnchanterMenu;
+import com.karasu256.projectk.registry.ProjectKMachineCapacities;
 import com.karasu256.projectk.registry.ProjectKTags;
 import com.karasu256.projectk.utils.Id;
 import net.minecraft.core.BlockPos;
@@ -39,7 +40,7 @@ public class AbyssEnchanterBlockEntity extends AbstractAbyssMachineBlockEntity i
     private static final int DEFAULT_TIER = 1;
 
     public AbyssEnchanterBlockEntity(BlockPos pos, BlockState state) {
-        super(ProjectKBlockEntities.ABYSS_ENCHANTER.get(), pos, state, resolveCapacity(state));
+        super(ProjectKBlockEntities.ABYSS_ENCHANTER.get(), pos, state, ProjectKMachineCapacities.ABYSS_ENCHANTER);
         addItemSlot(Id.id("input"));
         addItemSlot(Id.id("output"));
     }
@@ -47,12 +48,7 @@ public class AbyssEnchanterBlockEntity extends AbstractAbyssMachineBlockEntity i
     public static void tick(Level level, BlockPos pos, BlockState state, AbyssEnchanterBlockEntity be) {
     }
 
-    private static long resolveCapacity(BlockState state) {
-        if (state.getBlock() instanceof AbyssEnchanter enchanter) {
-            return enchanter.getCapacity();
-        }
-        return 0L;
-    }
+
 
     public boolean applyEnchantment(int option, Player player) {
         if (level == null || level.isClientSide) {

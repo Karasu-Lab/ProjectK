@@ -15,15 +15,16 @@ import org.joml.Matrix4f;
 
 import java.awt.*;
 
-public class AbyssEnergyEntityRenderer extends EntityRenderer<AbyssEnergyEntity> {
-    private static final ResourceLocation TEXTURE = ResourceLocation.fromNamespaceAndPath("minecraft", "textures/particle/sculk_charge_pop_0.png");
+public class AbyssEnergyEntityRenderer<T extends AbyssEnergyEntity> extends EntityRenderer<T> {
+    private static final ResourceLocation TEXTURE = ResourceLocation.fromNamespaceAndPath("minecraft",
+            "textures/particle/sculk_charge_pop_0.png");
 
     public AbyssEnergyEntityRenderer(EntityRendererProvider.Context context) {
         super(context);
     }
 
     @Override
-    public void render(AbyssEnergyEntity entity, float entityYaw, float partialTicks, PoseStack poseStack, MultiBufferSource buffer, int packedLight) {
+    public void render(T entity, float entityYaw, float partialTicks, PoseStack poseStack, MultiBufferSource buffer, int packedLight) {
         poseStack.pushPose();
 
         poseStack.translate(0.0, 0.2, 0.0);
@@ -49,12 +50,13 @@ public class AbyssEnergyEntityRenderer extends EntityRenderer<AbyssEnergyEntity>
     }
 
     private void renderVertex(VertexConsumer consumer, Matrix4f mat, PoseStack pose, float x, float y, float z, float u, float v, Color color, int light) {
-        consumer.addVertex(mat, x, y, z).setColor(color.getRed(), color.getGreen(), color.getBlue(), 255).setUv(u, v).setOverlay(OverlayTexture.NO_OVERLAY).setLight(light).setNormal(pose.last(), 0, 1, 0);
+        consumer.addVertex(mat, x, y, z).setColor(color.getRed(), color.getGreen(), color.getBlue(), 255).setUv(u, v)
+                .setOverlay(OverlayTexture.NO_OVERLAY).setLight(light).setNormal(pose.last(), 0, 1, 0);
     }
 
     @Override
     @NotNull
-    public ResourceLocation getTextureLocation(AbyssEnergyEntity entity) {
+    public ResourceLocation getTextureLocation(T entity) {
         return TEXTURE;
     }
 }

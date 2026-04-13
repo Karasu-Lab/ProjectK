@@ -7,7 +7,6 @@ import com.karasu256.projectk.particle.IAbyssParticleMoveable;
 import com.karasu256.projectk.utils.Id;
 import dev.architectury.registry.registries.RegistrarManager;
 import net.karasuniki.karasunikilib.api.KarasunikiLib;
-import net.karasuniki.karasunikilib.api.data.ICapacity;
 import net.karasuniki.karasunikilib.api.data.IEnergy;
 import net.karasuniki.karasunikilib.api.registry.KarasunikiRegistries;
 import net.minecraft.core.BlockPos;
@@ -27,9 +26,15 @@ import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
 
 public class AbyssEnergyEntity extends Entity {
-    private static final EntityDataAccessor<Long> ENERGY = SynchedEntityData.defineId(AbyssEnergyEntity.class, EntityDataSerializers.LONG);
-    private static final EntityDataAccessor<String> ENERGY_ID = SynchedEntityData.defineId(AbyssEnergyEntity.class, EntityDataSerializers.STRING);
+    private static final EntityDataAccessor<Long> ENERGY = SynchedEntityData.defineId(AbyssEnergyEntity.class,
+            EntityDataSerializers.LONG);
+    private static final EntityDataAccessor<String> ENERGY_ID = SynchedEntityData.defineId(AbyssEnergyEntity.class,
+            EntityDataSerializers.STRING);
     private BlockPos targetGenerator = null;
+
+    public void setTargetGenerator(BlockPos pos) {
+        this.targetGenerator = pos;
+    }
 
     public AbyssEnergyEntity(EntityType<?> type, Level level) {
         super(type, level);
@@ -141,7 +146,7 @@ public class AbyssEnergyEntity extends Entity {
         move(MoverType.SELF, getDeltaMovement());
     }
 
-    private boolean isValidTarget(BlockPos pos) {
+    protected boolean isValidTarget(BlockPos pos) {
         BlockEntity be = level().getBlockEntity(pos);
         if (be instanceof IAbyssParticleMoveable moveable) {
             if (moveable.getCapacity() <= 0) {
@@ -153,7 +158,8 @@ public class AbyssEnergyEntity extends Entity {
     }
 
     private void findTargetGenerator() {
-        BlockPos.betweenClosedStream(blockPosition().offset(-10, -10, -10), blockPosition().offset(10, 10, 10)).filter(this::isValidTarget).findFirst().ifPresent(pos -> targetGenerator = pos.immutable());
+        BlockPos.betweenClosedStream(blockPosition().offset(-10, -10, -10), blockPosition().offset(10, 10, 10))
+                .filter(this::isValidTarget).findFirst().ifPresent(pos -> targetGenerator = pos.immutable());
     }
 
     private void insertEnergy() {
@@ -162,13 +168,14 @@ public class AbyssEnergyEntity extends Entity {
             Vec3 center = Vec3.atCenterOf(targetGenerator);
             Vec3 diff = position().subtract(center);
             Direction side = Direction.getNearest(diff.x, diff.y, diff.z);
-            moveable.insert(getEnergyId(), getEnergy(), false, side);
+            moveable.acceptEnergyFromParticle(getEnergyId(), getEnergy(), false, side);
         }
     }
 
-    private void spawnParticles() {
+    protected void spawnParticles() {
         for (int i = 0; i < 3; i++) {
-            level().addParticle(new AbyssParticleOptions(getEnergyId()), getX() + (random.nextDouble() - 0.5) * 0.3, getY() + (random.nextDouble() - 0.5) * 0.3, getZ() + (random.nextDouble() - 0.5) * 0.3, 0, 0, 0);
+            level().addParticle(new AbyssParticleOptions(getEnergyId()), getX() + (random.nextDouble() - 0.5) * 0.3,
+                    getY() + (random.nextDouble() - 0.5) * 0.3, getZ() + (random.nextDouble() - 0.5) * 0.3, 0, 0, 0);
         }
     }
 
