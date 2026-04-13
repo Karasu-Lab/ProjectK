@@ -39,8 +39,6 @@ import java.util.function.Predicate;
 
 public class AbyssStorageBlockEntity extends AbstractAbyssMachineBlockEntity implements MenuProvider, IEnergyItemInput, IEnergyItemOutput {
     private static final int SLOT_COUNT = 3;
-    private static final int MAX_TIER = 3;
-    private static final int DEFAULT_TIER = 1;
     private static Predicate<ToggleContext> TOGGLE_CONDITION = context -> true;
     protected int activeIndex = -1;
 
@@ -175,16 +173,6 @@ public class AbyssStorageBlockEntity extends AbstractAbyssMachineBlockEntity imp
     public void setActiveEnergyIndex(int index) {
         this.activeIndex = index;
         markDirtyAndSync();
-    }
-
-    @Override
-    public int getMaxTier() {
-        return MAX_TIER;
-    }
-
-    @Override
-    public int getDefaultTier() {
-        return DEFAULT_TIER;
     }
 
     public ResourceLocation getEnergyId1() {

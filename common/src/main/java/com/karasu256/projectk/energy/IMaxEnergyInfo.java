@@ -12,22 +12,12 @@ public interface IMaxEnergyInfo extends IEnergyBlockEntitySync {
 
     void setMaxEnergy(long maxEnergy);
 
-    default long getTieredMaxEnergy(int tier) {
-        int safeTier = Math.max(1, tier);
-        if (safeTier <= 1) return getBaseMaxEnergy();
-        return (long) (getBaseMaxEnergy() * Math.pow(2.5, safeTier - 1));
-    }
+    long getTieredMaxEnergy(int tier);
 
     default void loadMaxEnergy(CompoundTag nbt) {
-        long maxEnergy;
         if (nbt.contains(EnergyKeys.MAX_ENERGY.toString())) {
-            maxEnergy = nbt.getLong(EnergyKeys.MAX_ENERGY.toString());
-        } else if (this instanceof ITierInfo tierInfo) {
-            maxEnergy = getTieredMaxEnergy(tierInfo.getTier());
-        } else {
-            maxEnergy = getBaseMaxEnergy();
+            setMaxEnergy(nbt.getLong(EnergyKeys.MAX_ENERGY.toString()));
         }
-        setMaxEnergy(maxEnergy);
     }
 
     default void saveMaxEnergy(CompoundTag nbt) {

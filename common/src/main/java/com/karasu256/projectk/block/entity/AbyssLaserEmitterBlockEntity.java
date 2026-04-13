@@ -31,7 +31,6 @@ public class AbyssLaserEmitterBlockEntity extends AbstractAbyssMachineBlockEntit
             return;
 
         AbyssLaserEmitterTier tierData = AbyssLaserEmitterTierManager.getTier(be.getTier());
-        be.setMaxEnergy(tierData.capacity());
 
         AbyssLaserEmitter.Mode mode = state.getValue(AbyssLaserEmitter.MODE);
         Direction facing = state.getValue(AbyssLaserEmitter.FACING);
@@ -89,6 +88,12 @@ public class AbyssLaserEmitterBlockEntity extends AbstractAbyssMachineBlockEntit
             return true;
         }
         return false;
+    }
+
+    @Override
+    protected void refreshMaxEnergy() {
+        AbyssLaserEmitterTier tierData = AbyssLaserEmitterTierManager.getTier(getTier());
+        this.maxEnergy = tierData.capacity();
     }
 
     @Override

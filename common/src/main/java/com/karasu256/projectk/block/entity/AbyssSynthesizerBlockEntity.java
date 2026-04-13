@@ -25,8 +25,6 @@ import org.jetbrains.annotations.Nullable;
 public class AbyssSynthesizerBlockEntity extends AbstractAbyssMachineBlockEntity implements MenuProvider, Container {
     private static final int MAX_TYPES = 64;
     private static final int MAX_PROGRESS = 100;
-    private static final int DEFAULT_TIER = 1;
-    private static final int MAX_TIER = 3;
     private int progress = 0;
 
     public AbyssSynthesizerBlockEntity(BlockPos pos, BlockState state) {
@@ -117,16 +115,6 @@ public class AbyssSynthesizerBlockEntity extends AbstractAbyssMachineBlockEntity
             getItem(0).grow(result.getCount());
         }
         markDirtyAndSync();
-    }
-
-    @Override
-    public int getMaxTier() {
-        return MAX_TIER;
-    }
-
-    @Override
-    public int getDefaultTier() {
-        return DEFAULT_TIER;
     }
 
     @Override

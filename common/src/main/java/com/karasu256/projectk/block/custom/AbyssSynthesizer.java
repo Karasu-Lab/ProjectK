@@ -82,7 +82,7 @@ public class AbyssSynthesizer extends BaseEntityBlock {
         return customProperties.capacity();
     }
 
-    private ProjectKBlock.CustomProperties getCustomProperties() {
+    public ProjectKBlock.CustomProperties getCustomProperties() {
         return customProperties;
     }
 }

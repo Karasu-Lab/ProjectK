@@ -1,0 +1,7 @@
+{
+  "projectk:plugin": {
+    "initializer": "com.karasu256.projectk.compat.wthit.ProjectKWTHITPlugin",
+    "side": "*",
+    "required": []
+  }
+}

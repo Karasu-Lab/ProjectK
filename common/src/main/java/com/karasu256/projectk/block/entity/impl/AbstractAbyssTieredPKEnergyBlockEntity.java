@@ -1,5 +1,6 @@
 package com.karasu256.projectk.block.entity.impl;
 
+import com.karasu256.projectk.energy.EnergyKeys;
 import com.karasu256.projectk.energy.IMaxEnergyInfo;
 import com.karasu256.projectk.energy.IProjectKEnergy;
 import com.karasu256.projectk.energy.ITierInfo;
@@ -78,7 +79,7 @@ public abstract class AbstractAbyssTieredPKEnergyBlockEntity<T extends IProjectK
     protected void loadAdditional(CompoundTag nbt, HolderLookup.Provider registries) {
         super.loadAdditional(nbt, registries);
         loadTier(nbt);
-        loadMaxEnergy(nbt);
         refreshMaxEnergy();
+        loadMaxEnergy(nbt);
     }
 }

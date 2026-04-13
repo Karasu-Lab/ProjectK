@@ -26,20 +26,13 @@ import static com.karasu256.projectk.registry.BlocksRegistry.block;
 public class ProjectKBlocks implements IKRegistryInitializerTarget {
     public static final Map<ResourceLocation, RegistrySupplier<Block>> ABYSS_CORES = EnergyAutoRegistry.mapByEnergy(
             definition -> definition.idPath().replace("_energy", "_core"),
-            (definition, id, map) -> map.put(definition.id(), block(id,
-                    () -> new AbyssCore(
+            (definition, id, map) -> map.put(definition.id(), block(id, () -> new AbyssCore(
                             BlockBehaviour.Properties.ofFullCopy(Blocks.STONE).noOcclusion().sound(SoundType.STONE)),
-                    new Item.Properties()
-            ))
-    );
+                    new Item.Properties())));
     public static final Map<ResourceLocation, RegistrySupplier<LiquidBlock>> FLUID_BLOCKS = EnergyAutoRegistry.mapByEnergy(
-            definition -> "fluid_" + definition.idPath(),
-            (definition, id, map) -> map.put(definition.id(), block(
-                    id,
+            definition -> "fluid_" + definition.idPath(), (definition, id, map) -> map.put(definition.id(), block(id,
                     () -> PlatformServices.platform().createFluidBlock(ProjectKFluids.getSource(definition.id()),
-                            BlockBehaviour.Properties.ofFullCopy(Blocks.WATER).noLootTable())
-            ))
-    );
+                            BlockBehaviour.Properties.ofFullCopy(Blocks.WATER).noLootTable()))));
     public static final RegistrySupplier<Block> ABYSS_CORE = getCore(ProjectKEnergies.ABYSS.id());
     public static final RegistrySupplier<LiquidBlock> FLUID_ABYSS_ENERGY = getFluidBlock(ProjectKEnergies.ABYSS.id());
     public static final RegistrySupplier<LiquidBlock> FLUID_YIN_ABYSS_ENERGY = getFluidBlock(ProjectKEnergies.YIN.id());

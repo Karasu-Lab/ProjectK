@@ -1,5 +1,10 @@
 package com.karasu256.projectk.block.entity.impl;
 
+import com.karasu256.projectk.block.custom.AbyssStorage;
+import com.karasu256.projectk.block.custom.AbyssSynthesizer;
+import com.karasu256.projectk.block.custom.ProjectKBlock;
+import com.karasu256.projectk.block.custom.ProjectKBlock.ITieredMachineProperties;
+import com.karasu256.projectk.energy.EnergyKeys;
 import com.karasu256.projectk.energy.IMaxEnergyInfo;
 import com.karasu256.projectk.energy.ITierInfo;
 import net.minecraft.core.BlockPos;
@@ -7,6 +12,8 @@ import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+
+import java.util.Optional;
 
 public abstract class AbstractAbyssTieredBlockEntity extends AbstractAbyssNbtBlockEntity implements ITierInfo, IMaxEnergyInfo {
     protected int tier;
@@ -37,6 +44,16 @@ public abstract class AbstractAbyssTieredBlockEntity extends AbstractAbyssNbtBlo
     }
 
     @Override
+    public int getMaxTier() {
+        return getTieredProperties().map(ITieredMachineProperties::maxTier).orElse(1);
+    }
+
+    @Override
+    public int getDefaultTier() {
+        return getTieredProperties().map(ITieredMachineProperties::defaultTier).orElse(1);
+    }
+
+    @Override
     public long getBaseMaxEnergy() {
         return baseMaxEnergy;
     }
@@ -52,7 +69,6 @@ public abstract class AbstractAbyssTieredBlockEntity extends AbstractAbyssNbtBlo
         markDirtyAndSync();
     }
 
-    @SuppressWarnings("NonStrictComparisonCanBeEquality")
     @Override
     public long getTieredMaxEnergy(int tier) {
         int safeTier = Math.max(1, tier);
@@ -63,7 +79,21 @@ public abstract class AbstractAbyssTieredBlockEntity extends AbstractAbyssNbtBlo
         if (base < 0) {
             return base;
         }
-        return (long) (base * Math.pow(2.5, safeTier - 1));
+        double scaling = getTieredProperties().map(ITieredMachineProperties::capacityScaling).orElse(2.5);
+        return (long) (base * Math.pow(scaling, safeTier - 1));
+    }
+
+    protected Optional<ITieredMachineProperties> getTieredProperties() {
+        if (getBlockState().getBlock() instanceof ProjectKBlock pkBlock) {
+            return Optional.of(pkBlock.getCustomProperties());
+        }
+        if (getBlockState().getBlock() instanceof AbyssSynthesizer synthesizer) {
+            return Optional.of(synthesizer.getCustomProperties());
+        }
+        if (getBlockState().getBlock() instanceof AbyssStorage storage) {
+            return Optional.of(storage.getTieredProperties());
+        }
+        return Optional.empty();
     }
 
     @Override
@@ -77,7 +107,7 @@ public abstract class AbstractAbyssTieredBlockEntity extends AbstractAbyssNbtBlo
     protected void loadAdditional(CompoundTag nbt, HolderLookup.Provider registries) {
         super.loadAdditional(nbt, registries);
         loadTier(nbt);
-        loadMaxEnergy(nbt);
         refreshMaxEnergy();
+        loadMaxEnergy(nbt);
     }
 }

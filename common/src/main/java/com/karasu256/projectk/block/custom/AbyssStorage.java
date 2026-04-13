@@ -1,9 +1,11 @@
 package com.karasu256.projectk.block.custom;
 
+import com.karasu256.projectk.block.custom.ProjectKBlock.ITieredMachineProperties;
 import com.karasu256.projectk.block.entity.AbyssStorageBlockEntity;
 import com.karasu256.projectk.block.entity.ProjectKBlockEntities;
 import com.karasu256.projectk.energy.ITierInfo;
 import com.karasu256.projectk.item.ProjectKItems;
+import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
@@ -25,10 +27,11 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public class AbyssStorage extends BaseEntityBlock {
-    public static final MapCodec<AbyssStorage> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
-            Properties.CODEC.fieldOf("properties").forGetter(AbyssStorage::getProperties)
-    ).apply(instance,
-            properties -> new AbyssStorage(BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_BLOCK), properties)));
+    public static final MapCodec<AbyssStorage> CODEC = RecordCodecBuilder.mapCodec(
+            instance -> instance.group(Properties.CODEC.fieldOf("properties").forGetter(AbyssStorage::getProperties))
+                    .apply(instance,
+                            properties -> new AbyssStorage(BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_BLOCK),
+                                    properties)));
 
     private static final VoxelShape SHAPE = box(0.0, 0.0, 0.0, 16.0, 16.0, 16.0);
     private final Properties properties;
@@ -111,19 +114,35 @@ public class AbyssStorage extends BaseEntityBlock {
         return properties;
     }
 
-    public static class Properties {
-        public static final com.mojang.serialization.Codec<Properties> CODEC = RecordCodecBuilder.create(
-                instance -> instance.group(
-                        com.mojang.serialization.Codec.LONG.fieldOf("capacity").forGetter(Properties::capacity),
-                        com.mojang.serialization.Codec.INT.fieldOf("max_types").forGetter(Properties::maxTypes)
-                ).apply(instance, Properties::new));
+    public ITieredMachineProperties getTieredProperties() {
+        return properties;
+    }
+
+    public static class Properties implements ITieredMachineProperties {
+        public static final Codec<Properties> CODEC = RecordCodecBuilder.create(
+                instance -> instance.group(Codec.LONG.fieldOf("capacity").forGetter(Properties::capacity),
+                                Codec.INT.fieldOf("max_types").forGetter(Properties::maxTypes),
+                                Codec.DOUBLE.optionalFieldOf("capacityScaling", 2.5).forGetter(Properties::capacityScaling),
+                                Codec.INT.optionalFieldOf("maxTier", 3).forGetter(Properties::maxTier),
+                                Codec.INT.optionalFieldOf("defaultTier", 1).forGetter(Properties::defaultTier))
+                        .apply(instance, Properties::new));
 
         private final long capacity;
         private final int maxTypes;
+        private final double capacityScaling;
+        private final int maxTier;
+        private final int defaultTier;
 
         private Properties(long capacity, int maxTypes) {
+            this(capacity, maxTypes, 2.5, 3, 1);
+        }
+
+        private Properties(long capacity, int maxTypes, double capacityScaling, int maxTier, int defaultTier) {
             this.capacity = capacity;
             this.maxTypes = maxTypes;
+            this.capacityScaling = capacityScaling;
+            this.maxTier = maxTier;
+            this.defaultTier = defaultTier;
         }
 
         public static Properties of() {
@@ -131,11 +150,23 @@ public class AbyssStorage extends BaseEntityBlock {
         }
 
         public Properties capacity(long capacity) {
-            return new Properties(capacity, maxTypes);
+            return new Properties(capacity, maxTypes, capacityScaling, maxTier, defaultTier);
         }
 
         public Properties maxTypes(int maxTypes) {
-            return new Properties(capacity, maxTypes);
+            return new Properties(capacity, maxTypes, capacityScaling, maxTier, defaultTier);
+        }
+
+        public Properties capacityScaling(double capacityScaling) {
+            return new Properties(capacity, maxTypes, capacityScaling, maxTier, defaultTier);
+        }
+
+        public Properties maxTier(int maxTier) {
+            return new Properties(capacity, maxTypes, capacityScaling, maxTier, defaultTier);
+        }
+
+        public Properties defaultTier(int defaultTier) {
+            return new Properties(capacity, maxTypes, capacityScaling, maxTier, defaultTier);
         }
 
         public long capacity() {
@@ -144,6 +175,18 @@ public class AbyssStorage extends BaseEntityBlock {
 
         public int maxTypes() {
             return maxTypes;
+        }
+
+        public double capacityScaling() {
+            return capacityScaling;
+        }
+
+        public int maxTier() {
+            return maxTier;
+        }
+
+        public int defaultTier() {
+            return defaultTier;
         }
     }
 }

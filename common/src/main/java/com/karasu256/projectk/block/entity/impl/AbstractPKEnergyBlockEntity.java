@@ -116,7 +116,8 @@ public abstract class AbstractPKEnergyBlockEntity<T extends IProjectKEnergy> ext
     }
 
     protected void setMaxEnergyCapacity(long capacity) {
-        if (this.maxEnergyCapacity == capacity) return;
+        if (this.maxEnergyCapacity == capacity)
+            return;
         this.maxEnergyCapacity = capacity;
         if (energy != null) {
             energy.setCapacity(capacity);

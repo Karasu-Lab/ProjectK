@@ -16,6 +16,10 @@ import java.util.Locale;
 
 public record MobCondition(List<MobCategory> types, List<TagKey<EntityType<?>>> tags, List<ResourceLocation> ids,
                            List<String> groups) {
+    public MobCondition() {
+        this(List.of(), List.of(), List.of(), List.of());
+    }
+
     public static final Codec<MobCategory> MOB_CATEGORY_CODEC = Codec.STRING.comapFlatMap(MobCondition::parseMobCategory, MobCategory::getName);
 
     public static final Codec<MobCondition> CODEC = RecordCodecBuilder.create(instance -> instance.group(Codec.list(MOB_CATEGORY_CODEC).optionalFieldOf("types", List.of()).forGetter(MobCondition::types), Codec.list(TagKey.codec(Registries.ENTITY_TYPE)).optionalFieldOf("tags", List.of()).forGetter(MobCondition::tags), Codec.list(ResourceLocation.CODEC).optionalFieldOf("ids", List.of()).forGetter(MobCondition::ids), Codec.list(Codec.STRING).optionalFieldOf("groups", List.of()).forGetter(MobCondition::groups)).apply(instance, MobCondition::new));
