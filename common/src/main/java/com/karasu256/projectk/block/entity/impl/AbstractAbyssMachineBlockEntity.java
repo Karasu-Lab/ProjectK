@@ -17,6 +17,7 @@ import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
@@ -216,5 +217,29 @@ public abstract class AbstractAbyssMachineBlockEntity extends AbstractAbyssTiere
         if (index >= 0)
             return true;
         return getEnergyTypeCount() < getMaxEnergyTypes();
+    }
+
+    public void loadFromStack(ItemStack stack) {
+        energies.clear();
+        AbyssEnergyData data = stack.get(com.karasu256.projectk.data.ProjectKDataComponets.ABYSS_ENERGY_DATA_COMPONENT_TYPE.get());
+        if (data != null && data.energyId() != null) {
+            energies.add(data);
+        }
+        List<AbyssEnergyData> list = AbyssEnergyData.readEnergyList(stack);
+        for (AbyssEnergyData d : list) {
+            if (energies.stream().noneMatch(e -> e.energyId().equals(d.energyId()))) {
+                energies.add(d);
+            }
+        }
+        markDirtyAndSync();
+    }
+
+    public void applyDropData(ItemStack stack) {
+        if (energies.isEmpty()) {
+            return;
+        }
+        for (AbyssEnergyData data : energies) {
+            AbyssEnergyData.applyToStack(stack, data.energyId(), data.amount());
+        }
     }
 }

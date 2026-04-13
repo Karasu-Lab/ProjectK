@@ -43,6 +43,12 @@ public class CreativeTabsRegistry implements IKRegistryTarget {
         }
 
         for (com.karasu256.projectk.energy.ProjectKEnergies.EnergyDefinition def : com.karasu256.projectk.energy.ProjectKEnergies.getDefinitions()) {
+            ItemStack stack = new ItemStack(ProjectKBlocks.ABYSS_CORE.get());
+            com.karasu256.projectk.data.AbyssEnergyData.applyToStack(stack, def.id(), null);
+            output.accept(stack);
+        }
+
+        for (com.karasu256.projectk.energy.ProjectKEnergies.EnergyDefinition def : com.karasu256.projectk.energy.ProjectKEnergies.getDefinitions()) {
             ItemStack stack = new ItemStack(ProjectKBlocks.CREATIVE_ABYSS_STORAGE.get());
             com.karasu256.projectk.data.AbyssEnergyData.applyToStack(stack, def.id(), Long.MAX_VALUE / 2);
             output.accept(stack);

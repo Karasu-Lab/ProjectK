@@ -1,7 +1,78 @@
 {
-  "parent": "minecraft:block/cube_bottom_top",
+  "parent": "block/block",
+  "elements": [
+    {
+      "faces": {
+        "down": {
+          "texture": "#bottom",
+          "uv": [
+            0.0,
+            0.0,
+            16.0,
+            16.0
+          ]
+        },
+        "east": {
+          "texture": "#side",
+          "uv": [
+            0.0,
+            0.0,
+            16.0,
+            16.0
+          ]
+        },
+        "north": {
+          "texture": "#side",
+          "uv": [
+            0.0,
+            0.0,
+            16.0,
+            16.0
+          ]
+        },
+        "south": {
+          "texture": "#side",
+          "uv": [
+            0.0,
+            0.0,
+            16.0,
+            16.0
+          ]
+        },
+        "up": {
+          "texture": "#top",
+          "uv": [
+            0.0,
+            0.0,
+            16.0,
+            16.0
+          ]
+        },
+        "west": {
+          "texture": "#side",
+          "uv": [
+            0.0,
+            0.0,
+            16.0,
+            16.0
+          ]
+        }
+      },
+      "from": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "to": [
+        16.0,
+        16.0,
+        16.0
+      ]
+    }
+  ],
   "textures": {
     "bottom": "projectk:block/abyss_synthesizer_bottom",
+    "particle": "projectk:block/abyss_synthesizer_side",
     "side": "projectk:block/abyss_synthesizer_side",
     "top": "projectk:block/abyss_synthesizer_top"
   }

@@ -1,7 +1,6 @@
 package com.karasu256.projectk.datagen.providers;
 
 import com.karasu256.projectk.block.ProjectKBlocks;
-import com.karasu256.projectk.energy.ProjectKEnergies;
 import com.karasu256.projectk.item.ProjectKItems;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.loot.BlockLootSubProvider;
@@ -32,9 +31,7 @@ public class CommonBlockLootProvider extends BlockLootSubProvider {
         this.dropSelf(ProjectKBlocks.ABYSS_SYNTHESIZER.get());
         this.dropSelf(ProjectKBlocks.ABYSS_LASER_EMITTER.get());
         this.dropSelf(ProjectKBlocks.ABYSS_ABSORPTION_PRISM.get());
-        for (ProjectKEnergies.EnergyDefinition definition : ProjectKEnergies.getDefinitions()) {
-            this.dropSelf(ProjectKBlocks.getCore(definition.id()).get());
-        }
+        this.dropSelf(ProjectKBlocks.ABYSS_CORE.get());
     }
 
     @Override

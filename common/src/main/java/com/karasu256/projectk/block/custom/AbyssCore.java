@@ -11,8 +11,13 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.List;
 
 public class AbyssCore extends BaseEntityBlock {
     public static final MapCodec<AbyssCore> CODEC = simpleCodec(AbyssCore::new);
@@ -37,6 +42,38 @@ public class AbyssCore extends BaseEntityBlock {
     @NotNull
     public RenderShape getRenderShape(BlockState state) {
         return RenderShape.ENTITYBLOCK_ANIMATED;
+    }
+
+    @Override
+    public void setPlacedBy(Level level, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack stack) {
+        super.setPlacedBy(level, pos, state, placer, stack);
+        if (level.getBlockEntity(pos) instanceof AbyssCoreBlockEntity core) {
+            core.loadFromStack(stack);
+        }
+    }
+
+    @Override
+    public @NotNull List<ItemStack> getDrops(BlockState state, net.minecraft.world.level.storage.loot.LootParams.Builder builder) {
+        List<ItemStack> drops = super.getDrops(state, builder);
+        BlockEntity blockEntity = builder.getOptionalParameter(net.minecraft.world.level.storage.loot.parameters.LootContextParams.BLOCK_ENTITY);
+        if (!(blockEntity instanceof AbyssCoreBlockEntity core)) {
+            return drops;
+        }
+        for (ItemStack drop : drops) {
+            if (drop.is(asItem())) {
+                core.applyDropData(drop);
+            }
+        }
+        return drops;
+    }
+
+    @Override
+    public ItemStack getCloneItemStack(net.minecraft.world.level.LevelReader level, BlockPos pos, BlockState state) {
+        ItemStack stack = super.getCloneItemStack(level, pos, state);
+        if (level.getBlockEntity(pos) instanceof AbyssCoreBlockEntity core) {
+            core.applyDropData(stack);
+        }
+        return stack;
     }
 
     @Override

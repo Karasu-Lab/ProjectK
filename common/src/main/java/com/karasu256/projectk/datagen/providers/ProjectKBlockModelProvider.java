@@ -56,14 +56,14 @@ public class ProjectKBlockModelProvider implements DataProvider {
         futures.add(writeModel(output, "block/abyss_portal", abyssPortalModel(false)));
         futures.add(writeModel(output, "block/abyss_portal_active", abyssPortalModel(true)));
         futures.add(writeModel(output, "item/abyss_portal", abyssPortalItemModel()));
+        futures.add(writeModel(output, "block/abyss_core", coreModel()));
+        futures.add(writeModel(output, "item/abyss_core", abyssCoreItemModel()));
 
         for (PKMaterials material : PKMaterials.values()) {
             ProjectKEnergies.EnergyDefinition definition = ProjectKEnergies.getByMaterial(material);
             String fluidId = "fluid_" + definition.idPath();
             futures.add(writeModel(output, "block/" + fluidId, fluidModel(fluidId)));
 
-            String coreId = definition.idPath().replace("_energy", "_core");
-            futures.add(writeModel(output, "block/" + coreId, coreModel()));
 
             String bucketPath = "item/bucket_of_" + definition.idPath();
             futures.add(writeModel(output, bucketPath, ProjectKModelUtils.bucketModel(ProjectK.MOD_ID + ":" + fluidId,
@@ -162,21 +162,29 @@ public class ProjectKBlockModelProvider implements DataProvider {
 
     private JsonObject abyssChargerModel() {
         JsonObject json = new JsonObject();
-        json.addProperty("parent", "minecraft:block/cube_all");
+        json.addProperty("parent", "block/block");
         JsonObject textures = new JsonObject();
         textures.addProperty("all", ProjectK.MOD_ID + ":block/abyss_charger");
+        textures.addProperty("particle", ProjectK.MOD_ID + ":block/abyss_charger");
         json.add("textures", textures);
+        JsonArray elements = new JsonArray();
+        elements.add(cubeElement(new double[]{0.0, 0.0, 0.0}, new double[]{16.0, 16.0, 16.0}, fullUv()));
+        json.add("elements", elements);
         return json;
     }
 
     private JsonObject abyssSynthesizerModel() {
         JsonObject json = new JsonObject();
-        json.addProperty("parent", "minecraft:block/cube_bottom_top");
+        json.addProperty("parent", "block/block");
         JsonObject textures = new JsonObject();
         textures.addProperty("side", ProjectK.MOD_ID + ":block/abyss_synthesizer_side");
         textures.addProperty("bottom", ProjectK.MOD_ID + ":block/abyss_synthesizer_bottom");
         textures.addProperty("top", ProjectK.MOD_ID + ":block/abyss_synthesizer_top");
+        textures.addProperty("particle", ProjectK.MOD_ID + ":block/abyss_synthesizer_side");
         json.add("textures", textures);
+        JsonArray elements = new JsonArray();
+        elements.add(cubeBottomTopElement(new double[]{0.0, 0.0, 0.0}, new double[]{16.0, 16.0, 16.0}, fullUv()));
+        json.add("elements", elements);
         return json;
     }
 
@@ -194,10 +202,14 @@ public class ProjectKBlockModelProvider implements DataProvider {
 
     private JsonObject abyssStorageModel() {
         JsonObject json = new JsonObject();
-        json.addProperty("parent", "minecraft:block/cube_all");
+        json.addProperty("parent", "block/block");
         JsonObject textures = new JsonObject();
         textures.addProperty("all", ProjectK.MOD_ID + ":block/abyss_storage");
+        textures.addProperty("particle", ProjectK.MOD_ID + ":block/abyss_storage");
         json.add("textures", textures);
+        JsonArray elements = new JsonArray();
+        elements.add(cubeElement(new double[]{0.0, 0.0, 0.0}, new double[]{16.0, 16.0, 16.0}, fullUv()));
+        json.add("elements", elements);
         return json;
     }
 
@@ -209,12 +221,16 @@ public class ProjectKBlockModelProvider implements DataProvider {
 
     private JsonObject abyssEnchantRemoverModel() {
         JsonObject json = new JsonObject();
-        json.addProperty("parent", "minecraft:block/cube_bottom_top");
+        json.addProperty("parent", "block/block");
         JsonObject textures = new JsonObject();
         textures.addProperty("side", ProjectK.MOD_ID + ":block/abyss_enchant_remover_side");
         textures.addProperty("bottom", ProjectK.MOD_ID + ":block/abyss_enchant_remover_bottom");
         textures.addProperty("top", ProjectK.MOD_ID + ":block/abyss_enchant_remover_top");
+        textures.addProperty("particle", ProjectK.MOD_ID + ":block/abyss_enchant_remover_side");
         json.add("textures", textures);
+        JsonArray elements = new JsonArray();
+        elements.add(cubeBottomTopElement(new double[]{0.0, 0.0, 0.0}, new double[]{16.0, 16.0, 16.0}, fullUv()));
+        json.add("elements", elements);
         return json;
     }
 
@@ -280,6 +296,12 @@ public class ProjectKBlockModelProvider implements DataProvider {
         JsonObject json = new JsonObject();
         json.addProperty("loader", "neoforge:fluid");
         json.addProperty("fluid", ProjectK.MOD_ID + ":" + id);
+        return json;
+    }
+
+    private JsonObject abyssCoreItemModel() {
+        JsonObject json = new JsonObject();
+        json.addProperty("parent", ProjectK.MOD_ID + ":block/abyss_core");
         return json;
     }
 

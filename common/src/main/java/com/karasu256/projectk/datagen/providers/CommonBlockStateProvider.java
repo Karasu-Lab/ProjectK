@@ -29,12 +29,8 @@ public class CommonBlockStateProvider {
                     "abyss_generator/" + energyId + "/bottom", "abyss_generator/" + energyId + "/top");
         }
 
-        for (ProjectKEnergies.EnergyDefinition definition : ProjectKEnergies.getDefinitions()) {
-            String coreId = definition.idPath().replace("_energy", "_core");
-            Block core = ProjectKBlocks.getCore(definition.id()).get();
-            generator.existingModelBlock(core, "projectk:block/" + coreId);
-            generator.simpleBlockItem(core);
-        }
+        generator.existingModelBlock(ProjectKBlocks.ABYSS_CORE.get(), "projectk:block/abyss_core");
+        generator.simpleBlockItem(ProjectKBlocks.ABYSS_CORE.get());
 
         generator.existingModelBlock(ProjectKBlocks.ABYSS_MAGIC_TABLE.get(), "projectk:block/abyss_magic_table");
         generator.simpleBlockItem(ProjectKBlocks.ABYSS_MAGIC_TABLE.get());
@@ -62,6 +58,9 @@ public class CommonBlockStateProvider {
 
         generator.multipartCable(ProjectKBlocks.ABYSS_ENERGY_CABLE.get(), "abyss_energy_cable");
         generator.simpleBlockItem(ProjectKBlocks.ABYSS_ENERGY_CABLE.get());
+
+        generator.existingModelBlock(ProjectKBlocks.ABYSS_SYNTHESIZER.get(), "projectk:block/abyss_synthesizer");
+        generator.simpleBlockItem(ProjectKBlocks.ABYSS_SYNTHESIZER.get());
 
         generator.directionalModeBlock(ProjectKBlocks.ABYSS_LASER_EMITTER.get(), "abyss_laser_emitter");
         generator.simpleBlockItem(ProjectKBlocks.ABYSS_LASER_EMITTER.get());

@@ -36,7 +36,7 @@ public abstract class ItemMixin {
         EnergyCapacityData data = stack.get(ProjectKDataComponets.ENERGY_CAPACITY_DATA_COMPONENT_TYPE.get());
 
         for (AbyssEnergyData energy : entries) {
-            if (energy == null || energy.energyId() == null || !energy.hasPositiveAmount()) {
+            if (energy == null || energy.energyId() == null) {
                 continue;
             }
             tooltip.add(AbyssEnergyItem.buildTooltip(energy.energyId(), energy.amountOrZero(), data));
@@ -55,7 +55,7 @@ public abstract class ItemMixin {
         }
         if (list.isEmpty()) {
             AbyssEnergyData data = stack.get(ProjectKDataComponets.ABYSS_ENERGY_DATA_COMPONENT_TYPE.get());
-            if (data != null && data.energyId() != null && data.hasPositiveAmount()) {
+            if (data != null && data.energyId() != null) {
                 list.add(data);
             }
         }

@@ -26,7 +26,11 @@ public class AbyssCoreBlockEntity extends AbstractAbyssMachineBlockEntity implem
 
     @Override
     public ResourceLocation getTextureResource() {
-        return Id.id("textures/block/abyss_core.png");
+        ResourceLocation id = getAbyssEnergyId();
+        if (id == null) {
+            return Id.id("textures/block/abyss_core.png");
+        }
+        return Id.id("textures/block/abyss_core_" + id.getPath().replace("_energy", "") + ".png");
     }
 
     @Override
