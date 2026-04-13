@@ -12,6 +12,7 @@ import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.BaseEntityBlock;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -25,8 +26,9 @@ import org.jetbrains.annotations.Nullable;
 
 public class AbyssCharger extends BaseEntityBlock {
     public static final MapCodec<AbyssCharger> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
-            ProjectKBlock.CustomProperties.CODEC.fieldOf("properties").forGetter(AbyssCharger::getCustomProperties)
-    ).apply(instance, properties -> new AbyssCharger(BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_BLOCK), properties)));
+                    ProjectKBlock.CustomProperties.CODEC.fieldOf("properties").forGetter(AbyssCharger::getCustomProperties))
+            .apply(instance, properties -> new AbyssCharger(BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_BLOCK),
+                    properties)));
 
     private static final VoxelShape SHAPE = box(0.0, 0.0, 0.0, 16.0, 16.0, 16.0);
 
@@ -46,6 +48,12 @@ public class AbyssCharger extends BaseEntityBlock {
     @Override
     public @Nullable BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
         return new AbyssChargerBlockEntity(pos, state);
+    }
+
+    @Override
+    @NotNull
+    public RenderShape getRenderShape(BlockState state) {
+        return RenderShape.MODEL;
     }
 
     @Override
@@ -86,7 +94,8 @@ public class AbyssCharger extends BaseEntityBlock {
 
     @Override
     public @Nullable <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
-        return level.isClientSide ? null : createTickerHelper(type, ProjectKBlockEntities.ABYSS_CHARGER.get(), AbyssChargerBlockEntity::tick);
+        return level.isClientSide ? null : createTickerHelper(type, ProjectKBlockEntities.ABYSS_CHARGER.get(),
+                AbyssChargerBlockEntity::tick);
     }
 
     public long getCapacity() {

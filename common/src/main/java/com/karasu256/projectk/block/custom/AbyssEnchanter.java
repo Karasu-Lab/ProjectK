@@ -11,6 +11,7 @@ import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.BaseEntityBlock;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -24,9 +25,10 @@ import org.jetbrains.annotations.Nullable;
 
 public class AbyssEnchanter extends BaseEntityBlock {
     public static final MapCodec<AbyssEnchanter> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
-            ProjectKBlock.CustomProperties.CODEC.fieldOf("properties").forGetter(AbyssEnchanter::getCustomProperties)
-    ).apply(instance, properties -> new AbyssEnchanter(BlockBehaviour.Properties.ofFullCopy(Blocks.ENCHANTING_TABLE),
-            properties)));
+                    ProjectKBlock.CustomProperties.CODEC.fieldOf("properties").forGetter(AbyssEnchanter::getCustomProperties))
+            .apply(instance,
+                    properties -> new AbyssEnchanter(BlockBehaviour.Properties.ofFullCopy(Blocks.ENCHANTING_TABLE),
+                            properties)));
 
     private static final VoxelShape SHAPE = box(0.0, 0.0, 0.0, 16.0, 12.0, 16.0);
 
@@ -46,6 +48,12 @@ public class AbyssEnchanter extends BaseEntityBlock {
     @Override
     public @Nullable BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
         return new AbyssEnchanterBlockEntity(pos, state);
+    }
+
+    @Override
+    @NotNull
+    public RenderShape getRenderShape(BlockState state) {
+        return RenderShape.MODEL;
     }
 
     @Override

@@ -11,6 +11,7 @@ import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.BaseEntityBlock;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
@@ -23,8 +24,9 @@ import org.jetbrains.annotations.Nullable;
 
 public class AbyssEnchantRemover extends BaseEntityBlock {
     public static final MapCodec<AbyssEnchantRemover> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
-            Properties.CODEC.fieldOf("properties").forGetter(AbyssEnchantRemover::getProperties)
-    ).apply(instance, properties -> new AbyssEnchantRemover(BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_BLOCK), properties)));
+            Properties.CODEC.fieldOf("properties").forGetter(AbyssEnchantRemover::getProperties)).apply(instance,
+            properties -> new AbyssEnchantRemover(BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_BLOCK),
+                    properties)));
 
     private static final VoxelShape SHAPE = box(0.0, 0.0, 0.0, 16.0, 16.0, 16.0);
     private final Properties properties;
@@ -38,6 +40,12 @@ public class AbyssEnchantRemover extends BaseEntityBlock {
     @NotNull
     protected MapCodec<? extends BaseEntityBlock> codec() {
         return CODEC;
+    }
+
+    @Override
+    @NotNull
+    public RenderShape getRenderShape(BlockState state) {
+        return RenderShape.MODEL;
     }
 
     @Override
@@ -58,7 +66,8 @@ public class AbyssEnchantRemover extends BaseEntityBlock {
     @Override
     @NotNull
     protected InteractionResult useWithoutItem(BlockState state, @NotNull Level level, BlockPos pos, Player player, BlockHitResult hitResult) {
-        if (level.isClientSide) return InteractionResult.SUCCESS;
+        if (level.isClientSide)
+            return InteractionResult.SUCCESS;
 
         BlockEntity be = level.getBlockEntity(pos);
         if (be instanceof AbyssEnchantRemoverBlockEntity remover) {
@@ -94,9 +103,9 @@ public class AbyssEnchantRemover extends BaseEntityBlock {
     }
 
     public static class Properties {
-        public static final com.mojang.serialization.Codec<Properties> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-                com.mojang.serialization.Codec.LONG.fieldOf("default_book_capacity").forGetter(Properties::defaultBookCapacity)
-        ).apply(instance, Properties::new));
+        public static final com.mojang.serialization.Codec<Properties> CODEC = RecordCodecBuilder.create(
+                instance -> instance.group(com.mojang.serialization.Codec.LONG.fieldOf("default_book_capacity")
+                        .forGetter(Properties::defaultBookCapacity)).apply(instance, Properties::new));
 
         private final long defaultBookCapacity;
 

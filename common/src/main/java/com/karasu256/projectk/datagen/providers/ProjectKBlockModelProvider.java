@@ -66,8 +66,8 @@ public class ProjectKBlockModelProvider implements DataProvider {
             futures.add(writeModel(output, "block/" + coreId, coreModel()));
 
             String bucketPath = "item/bucket_of_" + definition.idPath();
-            futures.add(writeModel(output, bucketPath,
-                    ProjectKModelUtils.bucketModel(ProjectK.MOD_ID + ":" + fluidId, ProjectK.MOD_ID + ":item/bucket_of_abyss_enrgy_fluid")));
+            futures.add(writeModel(output, bucketPath, ProjectKModelUtils.bucketModel(ProjectK.MOD_ID + ":" + fluidId,
+                    ProjectK.MOD_ID + ":item/bucket_of_abyss_enrgy_fluid")));
         }
 
         for (ResourceLocation itemId : ItemsRegistry.getEnergySuffixItems()) {
@@ -78,10 +78,8 @@ public class ProjectKBlockModelProvider implements DataProvider {
                 String modelPath = "item/" + itemId.getPath() + "_" + suffix;
                 futures.add(writeModel(output, modelPath,
                         ProjectKModelUtils.simpleItemModel(ProjectK.MOD_ID + ":item/abyss_ingot")));
-                overrides.add(
-                        ProjectKModelUtils.itemOverride(ABYSS_ENERGY_PROPERTY,
-                                ProjectKEnergies.getModelPredicateValue(definition.id()),
-                                ProjectK.MOD_ID + ":" + modelPath));
+                overrides.add(ProjectKModelUtils.itemOverride(ABYSS_ENERGY_PROPERTY,
+                        ProjectKEnergies.getModelPredicateValue(definition.id()), ProjectK.MOD_ID + ":" + modelPath));
             }
             String baseTexture = ProjectK.MOD_ID + ":item/" + itemId.getPath();
             futures.add(writeModel(output, "item/" + itemId.getPath(),
@@ -103,10 +101,14 @@ public class ProjectKBlockModelProvider implements DataProvider {
 
     private JsonObject abyssMagicTableModel() {
         JsonObject json = new JsonObject();
-        json.addProperty("parent", "minecraft:block/cube_all");
+        json.addProperty("parent", "block/block");
         JsonObject textures = new JsonObject();
         textures.addProperty("all", ProjectK.MOD_ID + ":block/abyss_magic_table");
+        textures.addProperty("particle", ProjectK.MOD_ID + ":block/abyss_magic_table");
         json.add("textures", textures);
+        JsonArray elements = new JsonArray();
+        elements.add(cubeElement(new double[]{0.0, 0.0, 0.0}, new double[]{16.0, 12.0, 16.0}, fullUv()));
+        json.add("elements", elements);
         return json;
     }
 
@@ -118,12 +120,16 @@ public class ProjectKBlockModelProvider implements DataProvider {
 
     private JsonObject abyssAlchemyBlendMachineModel() {
         JsonObject json = new JsonObject();
-        json.addProperty("parent", "minecraft:block/cube_bottom_top");
+        json.addProperty("parent", "block/block");
         JsonObject textures = new JsonObject();
         textures.addProperty("side", ProjectK.MOD_ID + ":block/abyss_alchemy_blend_machine_side");
         textures.addProperty("bottom", ProjectK.MOD_ID + ":block/abyss_alchemy_blend_machine_bottom");
         textures.addProperty("top", ProjectK.MOD_ID + ":block/abyss_alchemy_blend_machine_top");
+        textures.addProperty("particle", ProjectK.MOD_ID + ":block/abyss_alchemy_blend_machine_side");
         json.add("textures", textures);
+        JsonArray elements = new JsonArray();
+        elements.add(cubeBottomTopElement(new double[]{0.0, 0.0, 0.0}, new double[]{16.0, 12.0, 16.0}, fullUv()));
+        json.add("elements", elements);
         return json;
     }
 
@@ -135,12 +141,16 @@ public class ProjectKBlockModelProvider implements DataProvider {
 
     private JsonObject abyssEnchanterModel() {
         JsonObject json = new JsonObject();
-        json.addProperty("parent", "minecraft:block/cube_bottom_top");
+        json.addProperty("parent", "block/block");
         JsonObject textures = new JsonObject();
         textures.addProperty("side", ProjectK.MOD_ID + ":block/abyss_enchanter_side");
         textures.addProperty("bottom", ProjectK.MOD_ID + ":block/abyss_enchanter_bottom");
         textures.addProperty("top", ProjectK.MOD_ID + ":block/abyss_enchanter_top");
+        textures.addProperty("particle", ProjectK.MOD_ID + ":block/abyss_enchanter_side");
         json.add("textures", textures);
+        JsonArray elements = new JsonArray();
+        elements.add(cubeBottomTopElement(new double[]{0.0, 0.0, 0.0}, new double[]{16.0, 12.0, 16.0}, fullUv()));
+        json.add("elements", elements);
         return json;
     }
 
@@ -314,26 +324,45 @@ public class ProjectKBlockModelProvider implements DataProvider {
         return energyId.getNamespace() + "_" + energyId.getPath();
     }
 
+    private JsonObject cubeBottomTopElement(double[] from, double[] to, double[] uv) {
+        JsonObject element = new JsonObject();
+        element.add("from", array(from));
+        element.add("to", array(to));
+        JsonObject faces = new JsonObject();
+        faces.add("north", facedTexturedFace(uv, "#side"));
+        faces.add("south", facedTexturedFace(uv, "#side"));
+        faces.add("east", facedTexturedFace(uv, "#side"));
+        faces.add("west", facedTexturedFace(uv, "#side"));
+        faces.add("up", facedTexturedFace(uv, "#top"));
+        faces.add("down", facedTexturedFace(uv, "#bottom"));
+        element.add("faces", faces);
+        return element;
+    }
+
     private JsonObject cubeElement(double[] from, double[] to, double[] uv) {
         JsonObject element = new JsonObject();
         element.add("from", array(from));
         element.add("to", array(to));
         JsonObject faces = new JsonObject();
-        faces.add("north", texturedFace(uv));
-        faces.add("south", texturedFace(uv));
-        faces.add("east", texturedFace(uv));
-        faces.add("west", texturedFace(uv));
-        faces.add("up", texturedFace(uv));
-        faces.add("down", texturedFace(uv));
+        faces.add("north", facedTexturedFace(uv, "#all"));
+        faces.add("south", facedTexturedFace(uv, "#all"));
+        faces.add("east", facedTexturedFace(uv, "#all"));
+        faces.add("west", facedTexturedFace(uv, "#all"));
+        faces.add("up", facedTexturedFace(uv, "#all"));
+        faces.add("down", facedTexturedFace(uv, "#all"));
         element.add("faces", faces);
         return element;
     }
 
-    private JsonObject texturedFace(double[] uv) {
+    private JsonObject facedTexturedFace(double[] uv, String texture) {
         JsonObject face = new JsonObject();
         face.add("uv", array(uv));
-        face.addProperty("texture", "#all");
+        face.addProperty("texture", texture);
         return face;
+    }
+
+    private JsonObject texturedFace(double[] uv) {
+        return facedTexturedFace(uv, "#all");
     }
 
     private double[] fullUv() {
