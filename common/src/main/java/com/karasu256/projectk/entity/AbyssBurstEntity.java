@@ -1,6 +1,7 @@
 package com.karasu256.projectk.entity;
 
 import com.karasu256.projectk.energy.EnergyKeys;
+import com.karasu256.projectk.energy.ProjectKEnergies;
 import com.karasu256.projectk.particle.AbyssBurstParticleOptions;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -35,7 +36,7 @@ public class AbyssBurstEntity extends ThrowableProjectile {
     @Override
     protected void defineSynchedData(SynchedEntityData.Builder builder) {
         builder.define(ENERGY_AMOUNT, 0L);
-        builder.define(ENERGY_ID, "projectk:abyss_energy");
+        builder.define(ENERGY_ID, ProjectKEnergies.getEnergyIdByKind(ProjectKEnergies.EnergyKind.NEUTRAL).toString());
     }
 
     public long getEnergyAmount() {

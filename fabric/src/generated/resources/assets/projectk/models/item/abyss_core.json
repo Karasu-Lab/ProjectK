@@ -1,3 +1,133 @@
 {
-  "parent": "projectk:block/abyss_core"
+  "parent": "block/block",
+  "elements": [
+    {
+      "faces": {
+        "down": {
+          "texture": "#all",
+          "uv": [
+            0.0,
+            0.0,
+            16.0,
+            16.0
+          ]
+        },
+        "east": {
+          "texture": "#all",
+          "uv": [
+            0.0,
+            0.0,
+            16.0,
+            16.0
+          ]
+        },
+        "north": {
+          "texture": "#all",
+          "uv": [
+            0.0,
+            0.0,
+            16.0,
+            16.0
+          ]
+        },
+        "south": {
+          "texture": "#all",
+          "uv": [
+            0.0,
+            0.0,
+            16.0,
+            16.0
+          ]
+        },
+        "up": {
+          "texture": "#all",
+          "uv": [
+            0.0,
+            0.0,
+            16.0,
+            16.0
+          ]
+        },
+        "west": {
+          "texture": "#all",
+          "uv": [
+            0.0,
+            0.0,
+            16.0,
+            16.0
+          ]
+        }
+      },
+      "from": [
+        4.0,
+        0.0,
+        4.0
+      ],
+      "to": [
+        12.0,
+        8.0,
+        12.0
+      ]
+    }
+  ],
+  "overrides": [
+    {
+      "model": "projectk:item/abyss_core_projectk_abyss_energy",
+      "predicate": {
+        "projectk:abyss_energy": 0.001
+      }
+    },
+    {
+      "model": "projectk:item/abyss_core_projectk_yin_abyss_energy",
+      "predicate": {
+        "projectk:abyss_energy": 0.002
+      }
+    },
+    {
+      "model": "projectk:item/abyss_core_projectk_yang_abyss_energy",
+      "predicate": {
+        "projectk:abyss_energy": 0.003
+      }
+    },
+    {
+      "model": "projectk:item/abyss_core_projectk_god_energy",
+      "predicate": {
+        "projectk:abyss_energy": 0.004
+      }
+    },
+    {
+      "model": "projectk:item/abyss_core_projectk_extreme_energy",
+      "predicate": {
+        "projectk:abyss_energy": 0.005
+      }
+    },
+    {
+      "model": "projectk:item/abyss_core_projectk_evil_energy",
+      "predicate": {
+        "projectk:abyss_energy": 0.006
+      }
+    },
+    {
+      "model": "projectk:item/abyss_core_projectk_heat_energy",
+      "predicate": {
+        "projectk:abyss_energy": 0.007
+      }
+    },
+    {
+      "model": "projectk:item/abyss_core_projectk_cold_energy",
+      "predicate": {
+        "projectk:abyss_energy": 0.008
+      }
+    },
+    {
+      "model": "projectk:item/abyss_core_projectk_love_energy",
+      "predicate": {
+        "projectk:abyss_energy": 0.009
+      }
+    }
+  ],
+  "textures": {
+    "all": "projectk:block/abyss_core",
+    "particle": "projectk:block/abyss_core"
+  }
 }

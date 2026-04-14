@@ -2,8 +2,7 @@ package com.karasu256.projectk.item.custom;
 
 import com.karasu256.projectk.data.AbyssEnergyData;
 import com.karasu256.projectk.data.ProjectKDataComponets;
-import com.karasu256.projectk.energy.ProjectKEnergies;
-import net.minecraft.resources.ResourceLocation;
+import com.karasu256.projectk.energy.AbyssEnergyUtils;
 import net.minecraft.world.item.ItemStack;
 
 public class AbyssBraceletItem extends ProjectKItem {
@@ -26,9 +25,7 @@ public class AbyssBraceletItem extends ProjectKItem {
 
     @Override
     public int getBarColor(ItemStack stack) {
-        AbyssEnergyData data = stack.get(ProjectKDataComponets.ABYSS_ENERGY_DATA_COMPONENT_TYPE.get());
-        ResourceLocation id = data == null ? ProjectKEnergies.ABYSS.id() : data.energyId();
-        return ProjectKEnergies.getDefinition(id).map(ProjectKEnergies.EnergyDefinition::color).orElse(0xFFFFFFFF);
+        return AbyssEnergyUtils.getEnergyColor(stack);
     }
 
     private long getEnergyAmount(ItemStack stack) {

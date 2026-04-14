@@ -14,7 +14,8 @@ import org.jetbrains.annotations.NotNull;
 public record AbyssBurstParticleOptions(ResourceLocation energyId) implements ParticleOptions {
     public static final MapCodec<AbyssBurstParticleOptions> CODEC = RecordCodecBuilder.mapCodec(
             instance -> instance.group(
-                            ResourceLocation.CODEC.optionalFieldOf(EnergyKeys.ENERGY_ID.toString(), ProjectKEnergies.ABYSS.id())
+                            ResourceLocation.CODEC.optionalFieldOf(EnergyKeys.ENERGY_ID.toString(),
+                                            ProjectKEnergies.getEnergyIdByKind(ProjectKEnergies.EnergyKind.NEUTRAL))
                                     .forGetter(AbyssBurstParticleOptions::energyId))
                     .apply(instance, AbyssBurstParticleOptions::new));
 

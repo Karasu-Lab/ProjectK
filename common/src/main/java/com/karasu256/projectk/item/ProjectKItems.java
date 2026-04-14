@@ -1,7 +1,6 @@
 package com.karasu256.projectk.item;
 
 import com.karasu256.projectk.ProjectK;
-import com.karasu256.projectk.api.energy.PKMaterials;
 import com.karasu256.projectk.api.fluid.AbyssEnergyFluidConversion;
 import com.karasu256.projectk.data.AbyssEnergyData;
 import com.karasu256.projectk.data.ProjectKDataComponets;
@@ -36,9 +35,6 @@ public class ProjectKItems implements IKRegistryInitializerTarget {
                     return new ArchitecturyBucketItem(ProjectKFluids.getSource(definition.id()), properties);
                 }));
             });
-    public static final RegistrySupplier<Item> BUCKET_OF_ABYSS_ENERGY = getBucket(ProjectKEnergies.ABYSS.id());
-    public static final RegistrySupplier<Item> BUCKET_OF_YIN_ABYSS_ENERGY = getBucket(ProjectKEnergies.YIN.id());
-    public static final RegistrySupplier<Item> BUCKET_OF_YANG_ABYSS_ENERGY = getBucket(ProjectKEnergies.YANG.id());
     public static RegistrySupplier<Item> KARASIUM = item("karasium",
             () -> new ProjectKItem(new ProjectKItem.Properties().emc(128L)));
     public static RegistrySupplier<Item> RAW_KARASIUM = item("raw_karasium",
@@ -82,9 +78,6 @@ public class ProjectKItems implements IKRegistryInitializerTarget {
         return ABYSS_ENERGY_BUCKETS.get(energyId);
     }
 
-    public static RegistrySupplier<Item> getBucketByMaterial(PKMaterials material) {
-        return getBucket(ProjectKEnergies.getByMaterial(material).id());
-    }
 
     private static ItemStack buildAbyssIngotVariant(ProjectKEnergies.EnergyDefinition definition) {
         ItemStack stack = new ItemStack(ABYSS_INGOT.get());

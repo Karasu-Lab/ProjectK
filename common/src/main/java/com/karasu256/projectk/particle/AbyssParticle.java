@@ -1,6 +1,6 @@
 package com.karasu256.projectk.particle;
 
-import com.karasu256.projectk.api.energy.PKMaterials;
+import com.karasu256.projectk.energy.AbyssEnergyUtils;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.*;
 import org.jetbrains.annotations.NotNull;
@@ -23,8 +23,7 @@ public class AbyssParticle extends TextureSheetParticle {
         this.hasPhysics = false;
         this.lifetime = 40 + level.random.nextInt(20);
 
-        PKMaterials material = PKMaterials.getByEnergyId(options.energyId());
-        int color = material.color();
+        int color = AbyssEnergyUtils.getEnergyColor(options.energyId());
         this.rCol = (float) ((color >> 16) & 0xFF) / 255.0F;
         this.gCol = (float) ((color >> 8) & 0xFF) / 255.0F;
         this.bCol = (float) (color & 0xFF) / 255.0F;

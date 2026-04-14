@@ -1,6 +1,6 @@
 package com.karasu256.projectk.client.util;
 
-import com.karasu256.projectk.api.energy.PKMaterials;
+import com.karasu256.projectk.energy.AbyssEnergyUtils;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.resources.ResourceLocation;
 
@@ -12,12 +12,7 @@ public class PKColorUtils {
     }
 
     public static int getEnergyColor(ResourceLocation energyId, int alphaMask) {
-        for (PKMaterials material : PKMaterials.values()) {
-            if (material.energyIdPath().equals(energyId.getPath())) {
-                return material.color() | alphaMask;
-            }
-        }
-        return 0xFFFFFFFF;
+        return AbyssEnergyUtils.getEnergyColor(energyId, alphaMask);
     }
 
     public static float[] unpack(int color) {

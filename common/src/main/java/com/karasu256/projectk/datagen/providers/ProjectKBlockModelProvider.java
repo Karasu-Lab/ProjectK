@@ -3,7 +3,6 @@ package com.karasu256.projectk.datagen.providers;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.karasu256.projectk.ProjectK;
-import com.karasu256.projectk.api.energy.PKMaterials;
 import com.karasu256.projectk.datagen.utils.ProjectKModelUtils;
 import com.karasu256.projectk.energy.ProjectKEnergies;
 import com.karasu256.projectk.registry.ItemsRegistry;
@@ -57,13 +56,10 @@ public class ProjectKBlockModelProvider implements DataProvider {
         futures.add(writeModel(output, "block/abyss_portal_active", abyssPortalModel(true)));
         futures.add(writeModel(output, "item/abyss_portal", abyssPortalItemModel()));
         futures.add(writeModel(output, "block/abyss_core", coreModel()));
-        futures.add(writeModel(output, "item/abyss_core", abyssCoreItemModel()));
 
-        for (PKMaterials material : PKMaterials.values()) {
-            ProjectKEnergies.EnergyDefinition definition = ProjectKEnergies.getByMaterial(material);
+        for (ProjectKEnergies.EnergyDefinition definition : ProjectKEnergies.getDefinitions()) {
             String fluidId = "fluid_" + definition.idPath();
             futures.add(writeModel(output, "block/" + fluidId, fluidModel(fluidId)));
-
 
             String bucketPath = "item/bucket_of_" + definition.idPath();
             futures.add(writeModel(output, bucketPath, ProjectKModelUtils.bucketModel(ProjectK.MOD_ID + ":" + fluidId,
@@ -71,19 +67,7 @@ public class ProjectKBlockModelProvider implements DataProvider {
         }
 
         for (ResourceLocation itemId : ItemsRegistry.getEnergySuffixItems()) {
-            JsonArray overrides = new JsonArray();
-            for (PKMaterials material : PKMaterials.values()) {
-                ProjectKEnergies.EnergyDefinition definition = ProjectKEnergies.getByMaterial(material);
-                String suffix = energySuffix(definition.id());
-                String modelPath = "item/" + itemId.getPath() + "_" + suffix;
-                futures.add(writeModel(output, modelPath,
-                        ProjectKModelUtils.simpleItemModel(ProjectK.MOD_ID + ":item/abyss_ingot")));
-                overrides.add(ProjectKModelUtils.itemOverride(ABYSS_ENERGY_PROPERTY,
-                        ProjectKEnergies.getModelPredicateValue(definition.id()), ProjectK.MOD_ID + ":" + modelPath));
-            }
-            String baseTexture = ProjectK.MOD_ID + ":item/" + itemId.getPath();
-            futures.add(writeModel(output, "item/" + itemId.getPath(),
-                    ProjectKModelUtils.itemModelWithOverrides(baseTexture, overrides)));
+            writeEnergySuffixModels(output, itemId, futures);
         }
 
         return CompletableFuture.allOf(futures.toArray(CompletableFuture[]::new));
@@ -97,6 +81,32 @@ public class ProjectKBlockModelProvider implements DataProvider {
     private CompletableFuture<?> writeModel(CachedOutput output, String path, JsonObject json) {
         Path file = modelPathProvider.json(ResourceLocation.fromNamespaceAndPath(ProjectK.MOD_ID, path));
         return DataProvider.saveStable(output, json, file);
+    }
+
+    private void writeEnergySuffixModels(CachedOutput output, ResourceLocation itemId, List<CompletableFuture<?>> futures) {
+        JsonArray overrides = new JsonArray();
+        for (ProjectKEnergies.EnergyDefinition definition : ProjectKEnergies.getDefinitions()) {
+            String suffix = energySuffix(definition.id());
+            String modelPath = "item/" + itemId.getPath() + "_" + suffix;
+            futures.add(writeModel(output, modelPath, getEnergySuffixBaseModel(itemId, suffix)));
+            overrides.add(ProjectKModelUtils.itemOverride(ABYSS_ENERGY_PROPERTY,
+                    ProjectKEnergies.getModelPredicateValue(definition.id()), ProjectK.MOD_ID + ":" + modelPath));
+        }
+        JsonObject baseModel = getEnergySuffixBaseModel(itemId, "");
+        baseModel.add("overrides", overrides);
+        futures.add(writeModel(output, "item/" + itemId.getPath(), baseModel));
+    }
+
+    private JsonObject getEnergySuffixBaseModel(ResourceLocation itemId, String suffix) {
+        if (isBlockItem(itemId)) {
+            return coreItemModel();
+        }
+        String texturePath = ProjectK.MOD_ID + ":item/" + itemId.getPath();
+        return itemModel(texturePath);
+    }
+
+    private boolean isBlockItem(ResourceLocation itemId) {
+        return itemId.getPath().endsWith("_core");
     }
 
     private JsonObject abyssMagicTableModel() {
@@ -299,9 +309,16 @@ public class ProjectKBlockModelProvider implements DataProvider {
         return json;
     }
 
-    private JsonObject abyssCoreItemModel() {
+    private JsonObject coreItemModel() {
         JsonObject json = new JsonObject();
-        json.addProperty("parent", ProjectK.MOD_ID + ":block/abyss_core");
+        json.addProperty("parent", "block/block");
+        JsonObject textures = new JsonObject();
+        textures.addProperty("all", ProjectK.MOD_ID + ":block/abyss_core");
+        textures.addProperty("particle", ProjectK.MOD_ID + ":block/abyss_core");
+        json.add("textures", textures);
+        JsonArray elements = new JsonArray();
+        elements.add(cubeElement(new double[]{4.0, 0.0, 4.0}, new double[]{12.0, 8.0, 12.0}, fullUv()));
+        json.add("elements", elements);
         return json;
     }
 

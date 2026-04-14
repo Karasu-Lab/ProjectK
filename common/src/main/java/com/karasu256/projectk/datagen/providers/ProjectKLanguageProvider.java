@@ -2,7 +2,6 @@ package com.karasu256.projectk.datagen.providers;
 
 import com.google.gson.JsonObject;
 import com.karasu256.projectk.ProjectK;
-import com.karasu256.projectk.api.energy.PKMaterials;
 import com.karasu256.projectk.energy.ProjectKEnergies;
 import net.minecraft.data.CachedOutput;
 import net.minecraft.data.DataProvider;
@@ -182,17 +181,17 @@ public class ProjectKLanguageProvider implements DataProvider {
     }
 
     private void addEnergyTranslations(JsonObject en, JsonObject ja) {
-        for (PKMaterials material : PKMaterials.values()) {
-            String key = energyKey(material);
-            add(en, key, material.enName());
-            add(ja, key, material.jaName());
+        for (ProjectKEnergies.EnergyDefinition definition : ProjectKEnergies.getDefinitions()) {
+            String key = energyKey(definition);
+            add(en, key, definition.enName());
+            add(ja, key, definition.jaName());
 
             String typeKey = "tooltip.projectk.energy_type." +
-                    (material.kind() == ProjectKEnergies.EnergyKind.NEUTRAL ? "abyss" : material.kind().name()
+                    (definition.kind() == ProjectKEnergies.EnergyKind.NEUTRAL ? "abyss" : definition.kind().name()
                             .toLowerCase());
 
-            String enName = material.enName().replaceAll("§.", "");
-            String jaName = material.jaName().replaceAll("§.", "");
+            String enName = definition.enName().replaceAll("§.", "");
+            String jaName = definition.jaName().replaceAll("§.", "");
 
             add(en, typeKey, enName);
             add(ja, typeKey, jaName);
@@ -200,12 +199,12 @@ public class ProjectKLanguageProvider implements DataProvider {
     }
 
     private void addEnergyItemTranslations(JsonObject en, JsonObject ja) {
-        for (PKMaterials material : PKMaterials.values()) {
-            String energyLabelEn = energyNameWithReset(en, material);
-            String energyLabelJa = energyNameWithReset(ja, material);
+        for (ProjectKEnergies.EnergyDefinition definition : ProjectKEnergies.getDefinitions()) {
+            String energyLabelEn = energyNameWithReset(en, definition, definition.enName());
+            String energyLabelJa = energyNameWithReset(ja, definition, definition.jaName());
 
-            String bucketKey = "item.projectk.bucket_of_" + material.energyIdPath();
-            if (material.kind() == ProjectKEnergies.EnergyKind.NEUTRAL) {
+            String bucketKey = "item.projectk.bucket_of_" + definition.idPath();
+            if (definition.isBase()) {
                 add(en, bucketKey, "Bucket of Abyss Energy");
                 add(ja, bucketKey, "深淵入りバケツ");
             } else {
@@ -216,11 +215,14 @@ public class ProjectKLanguageProvider implements DataProvider {
     }
 
     private void addEnergyBlockTranslations(JsonObject en, JsonObject ja) {
-        for (PKMaterials material : PKMaterials.values()) {
-            String energyLabelEn = energyNameWithReset(en, material);
-            String energyLabelJa = energyNameWithReset(ja, material);
-            String coreKey = "block.projectk." + material.id() + "_core";
-            if (material.kind() == ProjectKEnergies.EnergyKind.NEUTRAL) {
+        add(en, "block.projectk.abyss_core", "Abyss Core");
+        add(ja, "block.projectk.abyss_core", "深淵コア");
+
+        for (ProjectKEnergies.EnergyDefinition definition : ProjectKEnergies.getDefinitions()) {
+            String energyLabelEn = energyNameWithReset(en, definition, definition.enName());
+            String energyLabelJa = energyNameWithReset(ja, definition, definition.jaName());
+            String coreKey = "block.projectk." + definition.idPath() + "_core";
+            if (definition.isBase()) {
                 add(en, coreKey, "Abyss Core");
                 add(ja, coreKey, "深淵コア");
             } else {
@@ -239,13 +241,13 @@ public class ProjectKLanguageProvider implements DataProvider {
         json.addProperty(key, value);
     }
 
-    private String energyKey(PKMaterials material) {
-        return "energy.projectk." + material.energyIdPath();
+    private String energyKey(ProjectKEnergies.EnergyDefinition definition) {
+        return "energy.projectk." + definition.idPath();
     }
 
-    private String energyNameWithReset(JsonObject lang, PKMaterials material) {
-        String key = energyKey(material);
-        String value = lang.has(key) ? lang.get(key).getAsString() : material.enName();
+    private String energyNameWithReset(JsonObject lang, ProjectKEnergies.EnergyDefinition definition, String defaultName) {
+        String key = energyKey(definition);
+        String value = lang.has(key) ? lang.get(key).getAsString() : defaultName;
         if (value == null || value.isEmpty()) {
             return "";
         }

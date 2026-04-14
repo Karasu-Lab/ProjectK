@@ -1,10 +1,9 @@
 package com.karasu256.projectk.block;
 
 import com.karasu256.projectk.ProjectK;
-import com.karasu256.projectk.api.energy.PKMaterials;
 import com.karasu256.projectk.block.custom.*;
-import com.karasu256.projectk.energy.ProjectKEnergies;
 import com.karasu256.projectk.fluid.ProjectKFluids;
+import com.karasu256.projectk.item.custom.AbyssCoreItem;
 import com.karasu256.projectk.platform.PlatformServices;
 import com.karasu256.projectk.registry.EnergyAutoRegistry;
 import dev.architectury.registry.registries.RegistrySupplier;
@@ -24,17 +23,13 @@ import static com.karasu256.projectk.registry.BlocksRegistry.block;
 
 @KRegistryInitializer(modId = ProjectK.MOD_ID, order = 1)
 public class ProjectKBlocks implements IKRegistryInitializerTarget {
-    public static RegistrySupplier<Block> ABYSS_CORE = block("abyss_core", () -> new AbyssCore(
-                    BlockBehaviour.Properties.ofFullCopy(Blocks.STONE).noOcclusion().sound(SoundType.STONE)),
-            new Item.Properties());
     public static final Map<ResourceLocation, RegistrySupplier<LiquidBlock>> FLUID_BLOCKS = EnergyAutoRegistry.mapByEnergy(
             definition -> "fluid_" + definition.idPath(), (definition, id, map) -> map.put(definition.id(), block(id,
                     () -> PlatformServices.platform().createFluidBlock(ProjectKFluids.getSource(definition.id()),
                             BlockBehaviour.Properties.ofFullCopy(Blocks.WATER).noLootTable()))));
-    public static final RegistrySupplier<LiquidBlock> FLUID_ABYSS_ENERGY = getFluidBlock(ProjectKEnergies.ABYSS.id());
-    public static final RegistrySupplier<LiquidBlock> FLUID_YIN_ABYSS_ENERGY = getFluidBlock(ProjectKEnergies.YIN.id());
-    public static final RegistrySupplier<LiquidBlock> FLUID_YANG_ABYSS_ENERGY = getFluidBlock(
-            ProjectKEnergies.YANG.id());
+    public static RegistrySupplier<Block> ABYSS_CORE = block("abyss_core", () -> new AbyssCore(
+                    BlockBehaviour.Properties.ofFullCopy(Blocks.STONE).noOcclusion().sound(SoundType.STONE)),
+            b -> new AbyssCoreItem(b, new Item.Properties()), true);
     public static RegistrySupplier<Block> ABYSS_GENERATOR = block("abyss_generator", () -> new AbyssGenerator(10000L),
             new Item.Properties());
     public static RegistrySupplier<Block> ABYSS_MAGIC_TABLE = block("abyss_magic_table",
@@ -86,15 +81,9 @@ public class ProjectKBlocks implements IKRegistryInitializerTarget {
         return ABYSS_CORE;
     }
 
-    public static RegistrySupplier<Block> getCoreByMaterial(PKMaterials material) {
-        return getCore(ProjectKEnergies.getByMaterial(material).id());
-    }
 
     public static RegistrySupplier<LiquidBlock> getFluidBlock(ResourceLocation energyId) {
         return FLUID_BLOCKS.get(energyId);
     }
 
-    public static RegistrySupplier<LiquidBlock> getFluidBlockByMaterial(PKMaterials material) {
-        return getFluidBlock(ProjectKEnergies.getByMaterial(material).id());
-    }
 }

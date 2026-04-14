@@ -25,8 +25,27 @@ public class BlocksRegistry implements IKRegistryTarget {
 
     @SuppressWarnings("unchecked")
     public static <T extends Block> RegistrySupplier<T> block(String id, Supplier<T> block, Item.Properties itemProperties) {
-        RegistrySupplier<T> registeredBlock = (RegistrySupplier<T>) KBlockRegistry.block(ProjectK.MOD_ID, id, (Supplier<Block>) block);
-        blockItem((RegistrySupplier<Block>) registeredBlock, itemProperties);
+        return block(id, block, itemProperties, false);
+    }
+
+    @SuppressWarnings("unchecked")
+    public static <T extends Block> RegistrySupplier<T> block(String id, Supplier<T> block, Item.Properties itemProperties, boolean energySuffixItem) {
+        RegistrySupplier<T> registeredBlock = (RegistrySupplier<T>) KBlockRegistry.block(ProjectK.MOD_ID, id,
+                (Supplier<Block>) block);
+        blockItem((RegistrySupplier<Block>) registeredBlock, itemProperties, energySuffixItem);
+        return registeredBlock;
+    }
+
+    @SuppressWarnings("unchecked")
+    public static <T extends Block, I extends Item> RegistrySupplier<T> block(String id, Supplier<T> block, java.util.function.Function<T, I> itemFactory) {
+        return block(id, block, itemFactory, false);
+    }
+
+    @SuppressWarnings("unchecked")
+    public static <T extends Block, I extends Item> RegistrySupplier<T> block(String id, Supplier<T> block, java.util.function.Function<T, I> itemFactory, boolean energySuffixItem) {
+        RegistrySupplier<T> registeredBlock = (RegistrySupplier<T>) KBlockRegistry.block(ProjectK.MOD_ID, id,
+                (Supplier<Block>) block);
+        ItemsRegistry.item(id, () -> itemFactory.apply(registeredBlock.get()), energySuffixItem);
         return registeredBlock;
     }
 }

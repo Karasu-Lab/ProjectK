@@ -29,9 +29,12 @@ public class AbyssSynthesizerRecipeProvider extends RecipeProvider {
     @Override
     public void buildRecipes(RecipeOutput output) {
         this.output = output;
-        addSynthesizerRecipe(new AbyssSynthesizerRecipe(List.of(new AbyssEnergyData(ProjectKEnergies.YIN.id(), 1000L),
-                new AbyssEnergyData(ProjectKEnergies.YANG.id(), 2000L),
-                new AbyssEnergyData(ProjectKEnergies.ABYSS.id(), 500L)),
+        addSynthesizerRecipe(new AbyssSynthesizerRecipe(
+                List.of(new AbyssEnergyData(ProjectKEnergies.getEnergyIdByKind(ProjectKEnergies.EnergyKind.YIN), 1000L),
+                        new AbyssEnergyData(ProjectKEnergies.getEnergyIdByKind(ProjectKEnergies.EnergyKind.YANG),
+                                2000L),
+                        new AbyssEnergyData(ProjectKEnergies.getEnergyIdByKind(ProjectKEnergies.EnergyKind.NEUTRAL),
+                                500L)),
                 List.of(new IngredientStack(Ingredient.of(ProjectKItems.ABYSS_INGOT.get()), 1),
                         new IngredientStack(Ingredient.of(ProjectKItems.ABYSS_INGOT.get()), 1),
                         new IngredientStack(Ingredient.of(ProjectKItems.ABYSS_INGOT.get()), 1),

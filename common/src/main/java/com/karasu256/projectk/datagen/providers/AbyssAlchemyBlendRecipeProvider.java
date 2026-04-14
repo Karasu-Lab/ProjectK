@@ -29,12 +29,13 @@ public class AbyssAlchemyBlendRecipeProvider extends RecipeProvider {
         this.output = output;
 
         ItemStack result = new ItemStack(ProjectKItems.TIER_UPGRADE.get());
-        AbyssEnergyData.applyToStack(result, ProjectKEnergies.ABYSS.id(), 2000L);
+        AbyssEnergyData.applyToStack(result, ProjectKEnergies.getEnergyIdByKind(ProjectKEnergies.EnergyKind.NEUTRAL),
+                2000L);
         addBlendRecipe(new AbyssAlchemyBlendRecipe(
-            ProjectKEnergies.YIN.id(), 1000L,
-            ProjectKEnergies.YANG.id(), 1000L,
-            new IngredientStack(Ingredient.of(Items.NETHERITE_UPGRADE_SMITHING_TEMPLATE), 1),
-            result
+                ProjectKEnergies.getEnergyIdByKind(ProjectKEnergies.EnergyKind.YIN), 1000L,
+                ProjectKEnergies.getEnergyIdByKind(ProjectKEnergies.EnergyKind.YANG), 1000L,
+                new IngredientStack(Ingredient.of(Items.NETHERITE_UPGRADE_SMITHING_TEMPLATE), 1),
+                result
         ));
     }
 

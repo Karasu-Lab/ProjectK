@@ -2,9 +2,8 @@ package com.karasu256.projectk.item.custom;
 
 import com.karasu256.projectk.data.AbyssEnergyData;
 import com.karasu256.projectk.data.ProjectKDataComponets;
-import com.karasu256.projectk.energy.ProjectKEnergies;
+import com.karasu256.projectk.energy.AbyssEnergyUtils;
 import com.karasu256.projectk.entity.AbyssBurstEntity;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.Entity;
@@ -56,7 +55,7 @@ public class AbyssStaffItem extends ProjectKItem {
         if (isCreative || currentEnergy >= energyToConsume) {
             if (!level.isClientSide) {
                 AbyssBurstEntity burst = new AbyssBurstEntity(level, player, energyToConsume,
-                        ProjectKEnergies.ABYSS.id());
+                        AbyssEnergyUtils.getEffectiveEnergyId(stack));
                 burst.shootFromRotation(player, player.getXRot(), player.getYRot(), 0.0F, 1.5F, 1.0F);
                 level.addFreshEntity(burst);
 
@@ -110,12 +109,14 @@ public class AbyssStaffItem extends ProjectKItem {
 
     private void consumeEnergy(ItemStack stack, long amount) {
         long current = getEnergyAmount(stack);
-        AbyssEnergyData.applyToStack(stack, ProjectKEnergies.ABYSS.id(), Math.max(0, current - amount));
+        AbyssEnergyData.applyToStack(stack, AbyssEnergyUtils.getEffectiveEnergyId(stack),
+                Math.max(0, current - amount));
     }
 
     private void addEnergy(ItemStack stack, long amount) {
         long current = getEnergyAmount(stack);
-        AbyssEnergyData.applyToStack(stack, ProjectKEnergies.ABYSS.id(), Math.min(MAX_CAPACITY, current + amount));
+        AbyssEnergyData.applyToStack(stack, AbyssEnergyUtils.getEffectiveEnergyId(stack),
+                Math.min(MAX_CAPACITY, current + amount));
     }
 
     @Override
@@ -130,8 +131,6 @@ public class AbyssStaffItem extends ProjectKItem {
 
     @Override
     public int getBarColor(ItemStack stack) {
-        AbyssEnergyData data = stack.get(ProjectKDataComponets.ABYSS_ENERGY_DATA_COMPONENT_TYPE.get());
-        ResourceLocation id = data == null ? ProjectKEnergies.ABYSS.id() : data.energyId();
-        return ProjectKEnergies.getDefinition(id).map(ProjectKEnergies.EnergyDefinition::color).orElse(0xFFFFFFFF);
+        return AbyssEnergyUtils.getEnergyColor(stack);
     }
 }

@@ -13,7 +13,8 @@ import org.jetbrains.annotations.NotNull;
 
 public record AbyssParticleOptions(ResourceLocation energyId) implements ParticleOptions {
     public static final MapCodec<AbyssParticleOptions> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
-            ResourceLocation.CODEC.optionalFieldOf(EnergyKeys.ENERGY_ID.toString(), ProjectKEnergies.ABYSS.id())
+            ResourceLocation.CODEC.optionalFieldOf(EnergyKeys.ENERGY_ID.toString(),
+                            ProjectKEnergies.getEnergyIdByKind(ProjectKEnergies.EnergyKind.NEUTRAL))
                     .forGetter(AbyssParticleOptions::energyId)).apply(instance, AbyssParticleOptions::new));
 
     public static final StreamCodec<RegistryFriendlyByteBuf, AbyssParticleOptions> STREAM_CODEC = StreamCodec.composite(

@@ -17,25 +17,18 @@ import java.util.*;
 @KRegistryInitializer(modId = ProjectK.MOD_ID, order = 2)
 public class ProjectKEnergies implements IKRegistryInitializerTarget {
     public static final long INFINITE_THRESHOLD = 1_000_000_000_000_000_000L;
+    public static final ResourceLocation BASE_ID = Id.id("abyss_energy");
     private static final Map<ResourceLocation, RegistrySupplier<IEnergy>> ENERGIES = new LinkedHashMap<>();
     private static final Map<ResourceLocation, EnergyDefinition> DEFINITIONS = new LinkedHashMap<>();
     private static final Map<ResourceLocation, Integer> MODEL_INDICES = new LinkedHashMap<>();
     private static final Map<PKMaterials, EnergyDefinition> MATERIAL_TO_DEFINITION = new EnumMap<>(PKMaterials.class);
     private static final Map<PKMaterials, RegistrySupplier<IEnergy>> MATERIAL_TO_ENERGY = new EnumMap<>(
             PKMaterials.class);
-    public static final EnergyDefinition ABYSS = registerFromMaterial(PKMaterials.ABYSS, 500L);
-    public static final RegistrySupplier<IEnergy> ABYSS_ENERGY = energy(PKMaterials.ABYSS);
-    public static final EnergyDefinition YIN = registerFromMaterial(PKMaterials.YIN, 500L);
-    public static final RegistrySupplier<IEnergy> YIN_ABYSS_ENERGY = energy(PKMaterials.YIN);
-    public static final EnergyDefinition YANG = registerFromMaterial(PKMaterials.YANG, 500L);
-    public static final RegistrySupplier<IEnergy> YANG_ABYSS_ENERGY = energy(PKMaterials.YANG);
     private static final float MODEL_PREDICATE_SCALE = 1000.0f;
 
     static {
         for (PKMaterials material : PKMaterials.values()) {
-            if (!MATERIAL_TO_DEFINITION.containsKey(material)) {
-                registerFromMaterial(material, 500L);
-            }
+            registerFromMaterial(material, 500L);
         }
     }
 
@@ -76,12 +69,15 @@ public class ProjectKEnergies implements IKRegistryInitializerTarget {
     }
 
     public static ResourceLocation getEnergyIdByKind(EnergyKind kind) {
-        for (EnergyDefinition definition : DEFINITIONS.values()) {
-            if (definition.kind() == kind) {
-                return definition.id();
-            }
-        }
-        return ABYSS.id();
+        return DEFINITIONS.values().stream()
+                .filter(d -> d.kind() == kind)
+                .map(EnergyDefinition::id)
+                .findFirst()
+                .orElseGet(() -> DEFINITIONS.values().stream()
+                        .filter(d -> d.kind() == EnergyKind.NEUTRAL)
+                        .map(EnergyDefinition::id)
+                        .findFirst()
+                        .orElse(null));
     }
 
     public static boolean isAbyssEnergyId(ResourceLocation id) {
@@ -113,11 +109,7 @@ public class ProjectKEnergies implements IKRegistryInitializerTarget {
         return ENERGIES.get(definition.id());
     }
 
-    public static RegistrySupplier<IEnergy> energy(PKMaterials material) {
-        return MATERIAL_TO_ENERGY.get(material);
-    }
-
-    public static EnergyDefinition getByMaterial(PKMaterials material) {
+    private static EnergyDefinition getByMaterial(PKMaterials material) {
         return MATERIAL_TO_DEFINITION.get(material);
     }
 
@@ -147,6 +139,10 @@ public class ProjectKEnergies implements IKRegistryInitializerTarget {
                                    long defaultAmount, int color) {
         public String idPath() {
             return id.getPath();
+        }
+
+        public boolean isBase() {
+            return id.equals(BASE_ID);
         }
 
         public String getTranslationKey() {

@@ -26,7 +26,16 @@ public class ItemsRegistry implements IKRegistryTarget {
     }
 
     public static @NotNull RegistrySupplier<BlockItem> blockItem(@NotNull RegistrySupplier<Block> block, Item.Properties properties) {
-        return CreativeTabsRegistry.tab(KItemRegistry.blockItem(ProjectK.MOD_ID, block, properties));
+        return blockItem(block, properties, false);
+    }
+
+    public static @NotNull RegistrySupplier<BlockItem> blockItem(@NotNull RegistrySupplier<Block> block, Item.Properties properties, boolean energySuffixTexture) {
+        RegistrySupplier<BlockItem> registered = CreativeTabsRegistry.tab(
+                KItemRegistry.blockItem(ProjectK.MOD_ID, block, properties));
+        if (energySuffixTexture) {
+            ENERGY_SUFFIX_ITEMS.add(block.getId());
+        }
+        return registered;
     }
 
     public static <T extends Item> @NotNull RegistrySupplier<T> item(String id, Supplier<T> item) {

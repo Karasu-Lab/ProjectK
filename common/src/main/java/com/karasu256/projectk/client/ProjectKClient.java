@@ -1,6 +1,5 @@
 package com.karasu256.projectk.client;
 
-import com.karasu256.projectk.api.energy.PKMaterials;
 import com.karasu256.projectk.block.ProjectKBlocks;
 import com.karasu256.projectk.block.entity.ProjectKBlockEntities;
 import com.karasu256.projectk.client.render.block.AbyssAbsorptionPrismRenderer;
@@ -57,17 +56,17 @@ public class ProjectKClient {
         ItemPropertiesRegistry.register(ProjectKBlocks.ABYSS_PORTAL.get().asItem(), propertyId,
                 (stack, level, entity, seed) -> getAbyssEnergyModelIndex(stack));
 
-        for (PKMaterials material : PKMaterials.values()) {
+        for (ProjectKEnergies.EnergyDefinition definition : ProjectKEnergies.getDefinitions()) {
             ColorHandlerRegistry.registerItemColors((stack, tintIndex) -> {
                 if (tintIndex == 1) {
-                    return PKColorUtils.getEnergyColor(Id.id(material.energyIdPath()), PKColorUtils.SEMI_TRANSPARENT);
+                    return PKColorUtils.getEnergyColor(definition.id(), PKColorUtils.SEMI_TRANSPARENT);
                 }
                 return 0xFFFFFFFF;
-            }, ProjectKItems.getBucketByMaterial(material).get());
+            }, ProjectKItems.getBucket(definition.id()).get());
 
             ColorHandlerRegistry.registerBlockColors((state, world, pos, tintIndex) -> {
-                return PKColorUtils.getEnergyColor(Id.id(material.energyIdPath()), PKColorUtils.SEMI_TRANSPARENT);
-            }, ProjectKBlocks.getFluidBlockByMaterial(material).get());
+                return PKColorUtils.getEnergyColor(definition.id(), PKColorUtils.SEMI_TRANSPARENT);
+            }, ProjectKBlocks.getFluidBlock(definition.id()).get());
         }
     }
 
@@ -92,19 +91,19 @@ public class ProjectKClient {
         registrar.register(ProjectKBlocks.ABYSS_GENERATOR, RenderType.cutout());
         registrar.register(ProjectKBlocks.ABYSS_ENERGY_CABLE, RenderType.translucent());
 
-        for (PKMaterials material : PKMaterials.values()) {
-            registrar.register(ProjectKBlocks.getFluidBlockByMaterial(material), RenderType.translucent());
-            registrar.registerFluid(ProjectKFluids.getSource(Id.id(material.energyIdPath())), RenderType.translucent());
-            registrar.registerFluid(ProjectKFluids.getFlowing(Id.id(material.energyIdPath())),
+        for (ProjectKEnergies.EnergyDefinition definition : ProjectKEnergies.getDefinitions()) {
+            registrar.register(ProjectKBlocks.getFluidBlock(definition.id()), RenderType.translucent());
+            registrar.registerFluid(ProjectKFluids.getSource(definition.id()), RenderType.translucent());
+            registrar.registerFluid(ProjectKFluids.getFlowing(definition.id()),
                     RenderType.translucent());
         }
     }
 
     public static void registerFluidRendering(PKRenderProxy.PKFluidRenderingRegistrar registrar) {
-        for (PKMaterials material : PKMaterials.values()) {
-            registrar.register(ProjectKFluids.getSource(Id.id(material.energyIdPath())),
-                    ProjectKFluids.getFlowing(Id.id(material.energyIdPath())),
-                    PKColorUtils.getEnergyColor(Id.id(material.energyIdPath()), PKColorUtils.OPAQUE));
+        for (ProjectKEnergies.EnergyDefinition definition : ProjectKEnergies.getDefinitions()) {
+            registrar.register(ProjectKFluids.getSource(definition.id()),
+                    ProjectKFluids.getFlowing(definition.id()),
+                    PKColorUtils.getEnergyColor(definition.id(), PKColorUtils.OPAQUE));
         }
     }
 
