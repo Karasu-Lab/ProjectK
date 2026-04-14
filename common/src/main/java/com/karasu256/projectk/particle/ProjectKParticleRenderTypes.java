@@ -41,7 +41,7 @@ public interface ProjectKParticleRenderTypes {
             RenderSystem.defaultBlendFunc();
             RenderSystem.depthMask(false);
             RenderSystem.setShader(ProjectKCoreShaders::getAbyssBurstShader);
-            RenderSystem.setShaderTexture(0, InventoryMenu.BLOCK_ATLAS);
+            RenderSystem.setShaderTexture(0, AbyssBurstParticle.TEXTURE);
             RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, 1.0f);
             return tesselator.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX_COLOR);
         }

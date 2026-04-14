@@ -5,6 +5,7 @@ import com.karasu256.projectk.block.entity.ProjectKBlockEntities;
 import com.karasu256.projectk.client.render.block.AbyssAbsorptionPrismRenderer;
 import com.karasu256.projectk.client.render.block.AbyssEnergyCableRenderer;
 import com.karasu256.projectk.client.render.block.geckolib.AbyssGeoBlockRenderer;
+import com.karasu256.projectk.client.render.entity.AbyssBurstEntityRenderer;
 import com.karasu256.projectk.client.render.entity.AbyssEnergyEntityRenderer;
 import com.karasu256.projectk.client.render.entity.AbyssLaserEntityRenderer;
 import com.karasu256.projectk.client.util.PKColorUtils;
@@ -24,7 +25,6 @@ import dev.architectury.registry.client.rendering.BlockEntityRendererRegistry;
 import dev.architectury.registry.client.rendering.ColorHandlerRegistry;
 import dev.architectury.registry.item.ItemPropertiesRegistry;
 import net.minecraft.client.renderer.RenderType;
-import net.minecraft.client.renderer.entity.NoopRenderer;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 
@@ -33,7 +33,7 @@ public class ProjectKClient {
         EntityRendererRegistry.register(ProjectKEntities.ABYSS_ENERGY_ENTITY, AbyssEnergyEntityRenderer::new);
         EntityRendererRegistry.register(ProjectKEntities.ABYSS_PORTAL_ENERGY_ENTITY, AbyssEnergyEntityRenderer::new);
         EntityRendererRegistry.register(ProjectKEntities.ABYSS_LASER_ENTITY, AbyssLaserEntityRenderer::new);
-        EntityRendererRegistry.register(ProjectKEntities.ABYSS_BURST_ENTITY, NoopRenderer::new);
+        EntityRendererRegistry.register(ProjectKEntities.ABYSS_BURST_ENTITY, AbyssBurstEntityRenderer::new);
 
         ResourceLocation propertyId = Id.id("abyss_energy");
         for (ResourceLocation itemId : ItemsRegistry.getEnergySuffixItems()) {

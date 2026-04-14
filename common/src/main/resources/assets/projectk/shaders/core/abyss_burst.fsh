@@ -13,13 +13,13 @@ in vec2 texCoord;
 out vec4 fragColor;
 
 void main() {
-    float angle = GameTime * 1000.0;
+    float angle = GameTime * 2000.0;
     float s = sin(angle);
     float c = cos(angle);
-    vec2 pos = texCoord - 0.5;
-    vec2 rotatedPos = vec2(pos.x * c - pos.y * s, pos.x * s + pos.y * c) + 0.5;
-    
-    vec4 texColor = texture(Sampler0, rotatedPos);
+    mat2 rot = mat2(c, -s, s, c);
+    vec2 rotatedUV = (rot * (texCoord - 0.5)) + 0.5;
+ 
+    vec4 texColor = texture(Sampler0, rotatedUV);
     if (texColor.a < 0.1) discard;
 
     vec3 vibrantColor = vertexColor.rgb * 1.5;
