@@ -1,8 +1,0 @@
-{
-  "parent": "minecraft:block/cube_bottom_top",
-  "textures": {
-    "bottom": "projectk:block/abyss_generator/evil_energy/bottom",
-    "side": "projectk:block/abyss_generator/evil_energy/side",
-    "top": "projectk:block/abyss_generator/evil_energy/top"
-  }
-}

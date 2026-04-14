@@ -1,6 +1,6 @@
 {
-  "parent": "minecraft:block/cube_all",
+  "parent": "builtin/entity",
   "textures": {
-    "all": "projectk:block/abyss_core"
+    "particle": "projectk:block/abyss_core"
   }
 }

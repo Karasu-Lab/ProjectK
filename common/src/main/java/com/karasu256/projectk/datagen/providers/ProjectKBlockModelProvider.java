@@ -307,9 +307,9 @@ public class ProjectKBlockModelProvider implements DataProvider {
 
     private JsonObject coreModel() {
         JsonObject json = new JsonObject();
-        json.addProperty("parent", "minecraft:block/cube_all");
+        json.addProperty("parent", "builtin/entity");
         JsonObject textures = new JsonObject();
-        textures.addProperty("all", ProjectK.MOD_ID + ":block/abyss_core");
+        textures.addProperty("particle", ProjectK.MOD_ID + ":block/abyss_core");
         json.add("textures", textures);
         return json;
     }
