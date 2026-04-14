@@ -1,0 +1,11 @@
+{
+  "parent": "minecraft:item/generated",
+  "fluid": "projectk:fluid_love_energy",
+  "loader": "neoforge:fluid_container",
+  "textures": {
+    "base": "minecraft:item/bucket",
+    "fluid": "projectk:item/bucket_of_abyss_enrgy_fluid",
+    "layer0": "minecraft:item/bucket",
+    "layer1": "projectk:item/bucket_of_abyss_enrgy_fluid"
+  }
+}

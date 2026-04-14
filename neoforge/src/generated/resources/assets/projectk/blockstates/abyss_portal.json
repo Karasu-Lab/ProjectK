@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "active=false": {
+      "model": "projectk:block/abyss_portal"
+    },
+    "active=true": {
+      "model": "projectk:block/abyss_portal_active"
+    }
+  }
+}
