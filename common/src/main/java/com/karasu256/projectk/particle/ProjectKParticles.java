@@ -14,7 +14,7 @@ import org.jetbrains.annotations.NotNull;
 @KRegistryInitializer(modId = ProjectK.MOD_ID, order = 1)
 public class ProjectKParticles implements IKRegistryInitializerTarget {
     public static final RegistrySupplier<ParticleType<AbyssParticleOptions>> ABYSS_PARTICLE = KParticleRegistry.particle(
-            ProjectK.MOD_ID, "abyss_particle", () -> new ParticleType<>(false) {
+            ProjectK.MOD_ID, "abyss", () -> new ParticleType<>(false) {
                 @Override
                 @NotNull
                 public MapCodec<AbyssParticleOptions> codec() {
@@ -29,7 +29,7 @@ public class ProjectKParticles implements IKRegistryInitializerTarget {
             });
 
     public static final RegistrySupplier<ParticleType<AbyssPortalParticleOptions>> ABYSS_PORTAL_PARTICLE = KParticleRegistry.particle(
-            ProjectK.MOD_ID, "abyss_portal_particle", () -> new ParticleType<>(false) {
+            ProjectK.MOD_ID, "abyss_portal", () -> new ParticleType<>(false) {
                 @Override
                 @NotNull
                 public MapCodec<AbyssPortalParticleOptions> codec() {
@@ -44,7 +44,7 @@ public class ProjectKParticles implements IKRegistryInitializerTarget {
             });
 
     public static final RegistrySupplier<ParticleType<LaserParticleOptions>> ABYSS_LASER_PARTICLE = KParticleRegistry.particle(
-            ProjectK.MOD_ID, "abyss_laser_particle", () -> new ParticleType<>(false) {
+            ProjectK.MOD_ID, "abyss_laser", () -> new ParticleType<>(false) {
                 @Override
                 @NotNull
                 public MapCodec<LaserParticleOptions> codec() {
@@ -55,6 +55,21 @@ public class ProjectKParticles implements IKRegistryInitializerTarget {
                 @NotNull
                 public StreamCodec<? super RegistryFriendlyByteBuf, LaserParticleOptions> streamCodec() {
                     return LaserParticleOptions.STREAM_CODEC;
+                }
+            });
+
+    public static final RegistrySupplier<ParticleType<AbyssBurstParticleOptions>> ABYSS_BURST_PARTICLE = KParticleRegistry.particle(
+            ProjectK.MOD_ID, "abyss_burst", () -> new ParticleType<>(false) {
+                @Override
+                @NotNull
+                public MapCodec<AbyssBurstParticleOptions> codec() {
+                    return AbyssBurstParticleOptions.CODEC;
+                }
+
+                @Override
+                @NotNull
+                public StreamCodec<? super RegistryFriendlyByteBuf, AbyssBurstParticleOptions> streamCodec() {
+                    return AbyssBurstParticleOptions.STREAM_CODEC;
                 }
             });
 

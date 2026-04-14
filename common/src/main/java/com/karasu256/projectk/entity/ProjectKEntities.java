@@ -26,6 +26,11 @@ public class ProjectKEntities implements IKRegistryInitializerTarget {
             () -> EntityType.Builder.of(AbyssLaserEntity::new, MobCategory.MISC).sized(0.1f, 0.1f)
                     .clientTrackingRange(64).build(Id.id("abyss_laser_entity").toString()));
 
+    public static final RegistrySupplier<EntityType<AbyssBurstEntity>> ABYSS_BURST_ENTITY = KEntityRegistry.entity(
+            ProjectK.MOD_ID, "abyss_burst_entity",
+            () -> EntityType.Builder.<AbyssBurstEntity>of(AbyssBurstEntity::new, MobCategory.MISC).sized(0.5f, 0.5f)
+                    .clientTrackingRange(64).build(Id.id("abyss_burst_entity").toString()));
+
     public static void init() {
     }
 }

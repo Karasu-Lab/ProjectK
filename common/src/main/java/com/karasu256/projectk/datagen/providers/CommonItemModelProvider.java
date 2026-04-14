@@ -19,6 +19,7 @@ public class CommonItemModelProvider {
         generator.simpleItem(ProjectKItems.ABYSS_WRENCH);
         generator.simpleItem(ProjectKItems.TIER_UPGRADE);
         generator.simpleItem(ProjectKItems.ABYSS_BRACELET);
+        generator.simpleItem(ProjectKItems.ABYSS_STAFF);
         generator.simpleItem(ProjectKItems.ABYSS_ABSORPTION_PRISM_SHARD);
     }
 

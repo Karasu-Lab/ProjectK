@@ -123,16 +123,16 @@ public class ProjectKEnergies implements IKRegistryInitializerTarget {
 
     private static EnergyDefinition registerFromMaterial(PKMaterials material, long defaultAmount) {
         EnergyDefinition definition = registerDefinition(material.energyIdPath(), material.enName(), material.jaName(),
-                material.kind(), defaultAmount);
+                material.kind(), defaultAmount, material.color());
         MATERIAL_TO_DEFINITION.put(material, definition);
         MATERIAL_TO_ENERGY.put(material, ENERGIES.get(definition.id()));
         return definition;
     }
 
-    private static EnergyDefinition registerDefinition(String idPath, String enName, String jaName, EnergyKind kind, long defaultAmount) {
+    public static EnergyDefinition registerDefinition(String idPath, String enName, String jaName, EnergyKind kind, long defaultAmount, int color) {
         ResourceLocation id = Id.id(idPath);
         RegistrySupplier<IEnergy> energy = EnergiesRegistry.registerEnergy(idPath, () -> new AbyssEnergy(id, 0L));
-        EnergyDefinition definition = new EnergyDefinition(id, enName, jaName, kind, defaultAmount);
+        EnergyDefinition definition = new EnergyDefinition(id, enName, jaName, kind, defaultAmount, color);
         ENERGIES.put(id, energy);
         DEFINITIONS.put(id, definition);
         MODEL_INDICES.put(id, MODEL_INDICES.size() + 1);
@@ -140,13 +140,11 @@ public class ProjectKEnergies implements IKRegistryInitializerTarget {
     }
 
     public enum EnergyKind {
-        NEUTRAL,
-        YIN,
-        YANG,
+        NEUTRAL, YIN, YANG,
     }
 
     public record EnergyDefinition(ResourceLocation id, String enName, String jaName, EnergyKind kind,
-                                   long defaultAmount) {
+                                   long defaultAmount, int color) {
         public String idPath() {
             return id.getPath();
         }

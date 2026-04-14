@@ -33,4 +33,22 @@ public interface ProjectKParticleRenderTypes {
             return "PROJECTK_LASER";
         }
     };
+
+    ParticleRenderType ABYSS_BURST = new ParticleRenderType() {
+        @Override
+        public BufferBuilder begin(Tesselator tesselator, TextureManager textureManager) {
+            RenderSystem.enableBlend();
+            RenderSystem.defaultBlendFunc();
+            RenderSystem.depthMask(false);
+            RenderSystem.setShader(ProjectKCoreShaders::getAbyssBurstShader);
+            RenderSystem.setShaderTexture(0, InventoryMenu.BLOCK_ATLAS);
+            RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, 1.0f);
+            return tesselator.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX_COLOR);
+        }
+
+        @Override
+        public String toString() {
+            return "PROJECTK_ABYSS_BURST";
+        }
+    };
 }

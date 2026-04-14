@@ -14,6 +14,7 @@ public class ProjectKCoreShaders {
     public static void init(TriConsumer<ResourceLocation, VertexFormat, Consumer<ShaderInstance>> registrations) {
         registrations.accept(Id.id("abyss_energy"), DefaultVertexFormat.NEW_ENTITY, inst -> abyssEnergyShader = inst);
         registrations.accept(Id.id("abyss_laser"), DefaultVertexFormat.NEW_ENTITY, inst -> abyssLaserShader = inst);
+        registrations.accept(Id.id("abyss_burst"), DefaultVertexFormat.POSITION_TEX_COLOR, inst -> abyssBurstShader = inst);
     }
 
     private static ShaderInstance abyssLaserShader;
@@ -24,6 +25,12 @@ public class ProjectKCoreShaders {
 
     public static ShaderInstance getAbyssEnergyShader() {
         return abyssEnergyShader;
+    }
+
+    private static ShaderInstance abyssBurstShader;
+
+    public static ShaderInstance getAbyssBurstShader() {
+        return abyssBurstShader;
     }
 
     @FunctionalInterface

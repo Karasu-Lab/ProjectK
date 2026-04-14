@@ -164,6 +164,7 @@ public class ProjectKLanguageProvider implements DataProvider {
         add(en, "item.projectk.abyss_ingot", "Abyss Ingot");
         add(en, "item.projectk.tier_upgrade", "Tier Upgrade");
         add(en, "item.projectk.abyss_bracelet", "Abyss Bracelet");
+        add(en, "item.projectk.abyss_staff", "Abyss Staff");
         add(en, "item.projectk.abyss_absorption_prism_shard", "Abyss Absorption Prism Shard");
 
         add(ja, "item.projectk.wither_bone", "ウィザーの骨");
@@ -173,6 +174,7 @@ public class ProjectKLanguageProvider implements DataProvider {
         add(ja, "item.projectk.abyss_ingot", "深淵インゴット");
         add(ja, "item.projectk.tier_upgrade", "ティアアップグレード");
         add(ja, "item.projectk.abyss_bracelet", "深淵ブレスレット");
+        add(ja, "item.projectk.abyss_staff", "深淵の杖");
         add(ja, "item.projectk.abyss_absorption_prism_shard", "深淵吸収プリズムの欠片");
 
         add(en, "enchantment.projectk.abyss_booster", "Abyss Booster");

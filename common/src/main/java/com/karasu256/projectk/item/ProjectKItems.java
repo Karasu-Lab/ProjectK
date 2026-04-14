@@ -62,6 +62,10 @@ public class ProjectKItems implements IKRegistryInitializerTarget {
         ProjectKItem.Properties properties = (ProjectKItem.Properties) new ProjectKItem.Properties().stacksTo(1);
         return new AbyssBraceletItem(properties);
     });
+    public static RegistrySupplier<Item> ABYSS_STAFF = item("abyss_staff", () -> {
+        ProjectKItem.Properties properties = (ProjectKItem.Properties) new ProjectKItem.Properties().stacksTo(1);
+        return new AbyssStaffItem(properties, 0, 30, 100L, 200L);
+    });
     public static RegistrySupplier<Item> ABYSS_ABSORPTION_PRISM_SHARD = item("abyss_absorption_prism_shard",
             () -> new AbyssAbsorptionPrismShard(new ProjectKItem.Properties().emc(128L)));
 

@@ -16,10 +16,7 @@ import com.karasu256.projectk.energy.ProjectKEnergies;
 import com.karasu256.projectk.entity.ProjectKEntities;
 import com.karasu256.projectk.fluid.ProjectKFluids;
 import com.karasu256.projectk.item.ProjectKItems;
-import com.karasu256.projectk.particle.AbyssLaserParticle;
-import com.karasu256.projectk.particle.AbyssParticle;
-import com.karasu256.projectk.particle.AbyssParticleOptions;
-import com.karasu256.projectk.particle.ProjectKParticles;
+import com.karasu256.projectk.particle.*;
 import com.karasu256.projectk.registry.ItemsRegistry;
 import com.karasu256.projectk.utils.Id;
 import dev.architectury.registry.client.level.entity.EntityRendererRegistry;
@@ -28,6 +25,7 @@ import dev.architectury.registry.client.rendering.BlockEntityRendererRegistry;
 import dev.architectury.registry.client.rendering.ColorHandlerRegistry;
 import dev.architectury.registry.item.ItemPropertiesRegistry;
 import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.entity.NoopRenderer;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 
@@ -36,6 +34,7 @@ public class ProjectKClient {
         EntityRendererRegistry.register(ProjectKEntities.ABYSS_ENERGY_ENTITY, AbyssEnergyEntityRenderer::new);
         EntityRendererRegistry.register(ProjectKEntities.ABYSS_PORTAL_ENERGY_ENTITY, AbyssEnergyEntityRenderer::new);
         EntityRendererRegistry.register(ProjectKEntities.ABYSS_LASER_ENTITY, AbyssLaserEntityRenderer::new);
+        EntityRendererRegistry.register(ProjectKEntities.ABYSS_BURST_ENTITY, NoopRenderer::new);
 
         ResourceLocation propertyId = Id.id("abyss_energy");
         for (ResourceLocation itemId : ItemsRegistry.getEnergySuffixItems()) {
@@ -79,6 +78,8 @@ public class ProjectKClient {
                         spriteSet, new AbyssParticleOptions(options.energyId())));
         ParticleProviderRegistry.register(ProjectKParticles.ABYSS_LASER_PARTICLE.get(),
                 context -> new AbyssLaserParticle.Provider());
+        ParticleProviderRegistry.register(ProjectKParticles.ABYSS_BURST_PARTICLE.get(),
+                AbyssBurstParticle.Provider::new);
         BlockEntityRendererRegistry.register(ProjectKBlockEntities.ABYSS_CORE.get(),
                 context -> new AbyssGeoBlockRenderer<>());
         BlockEntityRendererRegistry.register(ProjectKBlockEntities.ABYSS_ENERGY_CABLE.get(),
