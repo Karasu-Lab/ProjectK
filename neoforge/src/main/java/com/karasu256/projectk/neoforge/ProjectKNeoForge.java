@@ -4,7 +4,7 @@ import com.karasu256.projectk.ProjectK;
 import com.karasu256.projectk.client.ProjectKClient;
 import com.karasu256.projectk.client.ProjectKCoreShaders;
 import com.karasu256.projectk.client.screen.*;
-import com.karasu256.projectk.client.util.PKRenderProxy;
+import com.karasu256.projectk.client.PKRenderProxy;
 import com.karasu256.projectk.item.ProjectKItems;
 import com.karasu256.projectk.menu.ProjectKMenus;
 import com.karasu256.projectk.neoforge.config.ProjectKNeoForgeConfig;

@@ -1,10 +1,10 @@
-package com.karasu256.projectk.client.util;
+package com.karasu256.projectk.utils;
 
 import com.karasu256.projectk.energy.AbyssEnergyUtils;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.resources.ResourceLocation;
 
-public class PKColorUtils {
+public final class PKColorUtils {
     public static final int OPAQUE = 0xFF000000;
     public static final int SEMI_TRANSPARENT = 0x80000000;
 

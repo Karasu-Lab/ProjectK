@@ -19,7 +19,7 @@
 package com.karasu256.projectk.client.render.entity;
 
 import com.karasu256.projectk.client.ProjectKRenderTypes;
-import com.karasu256.projectk.client.util.PKColorUtils;
+import com.karasu256.projectk.utils.PKColorUtils;
 import com.karasu256.projectk.entity.AbyssLaserEntity;
 import com.karasu256.projectk.fluid.ProjectKFluids;
 import com.mojang.blaze3d.vertex.PoseStack;

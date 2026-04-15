@@ -8,8 +8,7 @@ import com.karasu256.projectk.client.render.block.geckolib.AbyssGeoBlockRenderer
 import com.karasu256.projectk.client.render.entity.AbyssBurstEntityRenderer;
 import com.karasu256.projectk.client.render.entity.AbyssEnergyEntityRenderer;
 import com.karasu256.projectk.client.render.entity.AbyssLaserEntityRenderer;
-import com.karasu256.projectk.client.util.PKColorUtils;
-import com.karasu256.projectk.client.util.PKRenderProxy;
+import com.karasu256.projectk.utils.PKColorUtils;
 import com.karasu256.projectk.data.AbyssEnergyData;
 import com.karasu256.projectk.data.ProjectKDataComponets;
 import com.karasu256.projectk.energy.ProjectKEnergies;

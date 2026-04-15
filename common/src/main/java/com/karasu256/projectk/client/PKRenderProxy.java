@@ -1,4 +1,4 @@
-package com.karasu256.projectk.client.util;
+package com.karasu256.projectk.client;
 
 import dev.architectury.registry.registries.RegistrySupplier;
 import net.minecraft.client.renderer.RenderType;

@@ -2,7 +2,7 @@ package com.karasu256.projectk.fluid;
 
 import com.karasu256.projectk.ProjectK;
 import com.karasu256.projectk.block.ProjectKBlocks;
-import com.karasu256.projectk.client.util.PKColorUtils;
+import com.karasu256.projectk.utils.PKColorUtils;
 import com.karasu256.projectk.item.ProjectKItems;
 import com.karasu256.projectk.registry.EnergyAutoRegistry;
 import com.karasu256.projectk.registry.FluidsRegistry;

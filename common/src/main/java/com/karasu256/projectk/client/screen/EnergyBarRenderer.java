@@ -1,6 +1,6 @@
 package com.karasu256.projectk.client.screen;
 
-import com.karasu256.projectk.client.util.PKColorUtils;
+import com.karasu256.projectk.utils.PKColorUtils;
 import com.karasu256.projectk.data.AbyssEnergyData;
 import com.karasu256.projectk.data.EnergyCapacityData;
 import com.karasu256.projectk.energy.ProjectKEnergies;
