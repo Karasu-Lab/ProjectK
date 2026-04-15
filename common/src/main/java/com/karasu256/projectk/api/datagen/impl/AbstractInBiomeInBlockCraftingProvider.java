@@ -12,8 +12,10 @@ public abstract class AbstractInBiomeInBlockCraftingProvider extends AbstractPro
         super(packOutput, name, completableFuture);
     }
 
+    @SuppressWarnings("DataFlowIssue")
     public void addInBiomeInBlockCrafting(InBiomeInBlockCraftingRecipe recipe) {
-        getOutput().accept(Id.id("in_biome_in_block_" + recipe.biome().id().getNamespace() + "_" + recipe.biome().id()
-                .getPath() + "_" + recipe.result().getItem().arch$registryName()), recipe, null);
+        getOutput().accept(Id.id(getName() + "_" + recipe.biome().id().getNamespace() + "_" + recipe.inputs().getFirst()
+                .count() + "_" + recipe.biome().id().getPath() + "_" + recipe.result().getItem().arch$registryName()
+                .getNamespace() + "_" + recipe.result().getItem().arch$registryName().getPath()), recipe, null);
     }
 }

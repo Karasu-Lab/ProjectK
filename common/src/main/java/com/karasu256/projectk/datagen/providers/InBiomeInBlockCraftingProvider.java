@@ -26,6 +26,7 @@ public class InBiomeInBlockCraftingProvider extends AbstractInBiomeInBlockCrafti
 
     @Override
     public void buildRecipes(RecipeOutput output) {
+        super.buildRecipes(output);
         addWitherRoseRecipe();
     }
 
