@@ -20,9 +20,9 @@ public class AbyssLaserParticle extends Particle {
     private final ResourceLocation energyId;
     private final Vec3 origin;
     private final Vec3 target;
-    private final LaserParticleOptions options;
+    private final AbyssLaserParticleOptions options;
 
-    protected AbyssLaserParticle(ClientLevel level, double x, double y, double z, LaserParticleOptions options) {
+    protected AbyssLaserParticle(ClientLevel level, double x, double y, double z, AbyssLaserParticleOptions options) {
         super(level, x, y, z);
         this.options = options;
         this.energyId = options.energyId();
@@ -100,10 +100,10 @@ public class AbyssLaserParticle extends Particle {
         consumer.addVertex((float) pos.x, (float) pos.y, (float) pos.z).setUv(u, v).setColor(r, g, b, a);
     }
 
-    public static class Provider implements ParticleProvider<LaserParticleOptions> {
+    public static class Provider implements ParticleProvider<AbyssLaserParticleOptions> {
         @Nullable
         @Override
-        public Particle createParticle(LaserParticleOptions options, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
+        public Particle createParticle(AbyssLaserParticleOptions options, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
             return new AbyssLaserParticle(level, x, y, z, options);
         }
     }

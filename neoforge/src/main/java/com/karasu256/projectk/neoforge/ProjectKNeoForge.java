@@ -9,8 +9,11 @@ import com.karasu256.projectk.item.ProjectKItems;
 import com.karasu256.projectk.menu.ProjectKMenus;
 import com.karasu256.projectk.neoforge.config.ProjectKNeoForgeConfig;
 import com.karasu256.projectk.neoforge.integrations.NeoForgeModIntegrationSupplier;
+import com.karasu256.projectk.neoforge.particle.NeoForgeProjectKParticles;
 import com.karasu256.projectk.neoforge.platform.NeoForgeProjectKPlatform;
+import com.karasu256.projectk.particle.*;
 import com.karasu256.projectk.platform.PlatformServices;
+import com.karasu256.projectk.utils.Id;
 import dev.architectury.registry.registries.RegistrarManager;
 import dev.architectury.registry.registries.RegistrySupplier;
 import net.karasuniki.karasunikilib.api.KarasunikiLib;
@@ -29,6 +32,7 @@ import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import net.neoforged.fml.loading.FMLEnvironment;
 import net.neoforged.neoforge.client.event.ModelEvent;
 import net.neoforged.neoforge.client.event.RegisterMenuScreensEvent;
+import net.neoforged.neoforge.client.event.RegisterParticleProvidersEvent;
 import net.neoforged.neoforge.client.event.RegisterShadersEvent;
 import net.neoforged.neoforge.client.extensions.common.IClientFluidTypeExtensions;
 import net.neoforged.neoforge.client.extensions.common.RegisterClientExtensionsEvent;
@@ -50,12 +54,16 @@ public final class ProjectKNeoForge {
                 new NeoForgeModIntegrationSupplier<>(
                         "com.karasu256.projectk.neoforge.integrations.forge.ForgeEnergyIntegration"));
 
+
         if (FMLEnvironment.dist.isClient()) {
+            ProjectKClient.init();
+            ProjectKClient.initLate();
             container.getEventBus().addListener(this::onClientSetup);
             container.getEventBus().addListener(this::onRegisterScreens);
             container.getEventBus().addListener(this::onRegisterShaders);
             container.getEventBus().addListener(this::onModelRegisterAdditional);
             container.getEventBus().addListener(this::onRegisterClientExtensions);
+            container.getEventBus().addListener(this::onRegisterParticleProviders);
         }
     }
 
@@ -79,8 +87,7 @@ public final class ProjectKNeoForge {
 
     @SuppressWarnings({"deprecation", "Convert2Lambda"})
     private void onClientSetup(FMLClientSetupEvent event) {
-        ProjectKClient.init();
-        ProjectKClient.initLate();
+        NeoForgeProjectKParticles.init();
         ProjectKItems.init();
         ProjectKClient.registerRenderLayers(new PKRenderProxy.PKRenderTypeRegistrar() {
             @Override
@@ -103,8 +110,8 @@ public final class ProjectKNeoForge {
     @SubscribeEvent
     public void onRegisterClientExtensions(RegisterClientExtensionsEvent event) {
         ProjectKClient.registerFluidRendering((source, flowing, color) -> {
-            ResourceLocation still = ResourceLocation.fromNamespaceAndPath(ProjectK.MOD_ID, "block/base_fluid_still");
-            ResourceLocation flow = ResourceLocation.fromNamespaceAndPath(ProjectK.MOD_ID, "block/base_fluid_flow");
+            ResourceLocation still = Id.id("block/base_fluid_still");
+            ResourceLocation flow = Id.id("block/base_fluid_flow");
             event.registerFluidType(new IClientFluidTypeExtensions() {
                 @Override
                 public ResourceLocation getStillTexture() {
@@ -122,5 +129,17 @@ public final class ProjectKNeoForge {
                 }
             }, source.get().getFluidType());
         });
+    }
+
+    @SubscribeEvent
+    public void onRegisterParticleProviders(RegisterParticleProvidersEvent event) {
+        event.registerSpriteSet(ProjectKParticles.ABYSS_PARTICLE.get(), AbyssParticle.Provider::new);
+        event.registerSpriteSet(ProjectKParticles.ABYSS_PORTAL_PARTICLE.get(),
+                spriteSet -> (options, level, x, y, z, vx, vy, vz) -> new AbyssParticle(level, x, y, z, vx, vy, vz,
+                        spriteSet, new AbyssParticleOptions(options.energyId())));
+        event.registerSpecial(ProjectKParticles.ABYSS_LASER_PARTICLE.get(), new AbyssLaserParticle.Provider());
+        event.registerSpecial(ProjectKParticles.ABYSS_BURST_PARTICLE.get(), new AbyssBurstParticle.Provider());
+        event.registerSpriteSet(ProjectKParticles.ABYSS_BURST_RESIDUAL_PARTICLE.get(),
+                AbyssBurstResidualParticle.Provider::new);
     }
 }

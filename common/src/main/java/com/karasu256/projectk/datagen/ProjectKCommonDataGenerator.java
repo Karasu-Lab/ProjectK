@@ -27,6 +27,10 @@ public class ProjectKCommonDataGenerator {
         registry.register(output -> new ProjectKLootTableProvider(output, registries));
     }
 
+    public static void gatherClientData(ProviderRegistry registry) {
+        registry.register(ProjectKParticleDescriptionProvider::new);
+    }
+
     @FunctionalInterface
     public interface ProviderRegistry {
         <T extends DataProvider> T register(DataProvider.Factory<T> factory);

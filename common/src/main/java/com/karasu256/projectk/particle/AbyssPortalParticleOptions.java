@@ -13,18 +13,31 @@ import org.jetbrains.annotations.NotNull;
 
 public record AbyssPortalParticleOptions(ResourceLocation energyId) implements ParticleOptions {
     public static final MapCodec<AbyssPortalParticleOptions> CODEC = RecordCodecBuilder.mapCodec(
-            instance -> instance.group(
-                            ResourceLocation.CODEC.optionalFieldOf(EnergyKeys.ENERGY_ID.toString(),
-                                            ProjectKEnergies.getEnergyIdByKind(ProjectKEnergies.EnergyKind.NEUTRAL))
-                                    .forGetter(AbyssPortalParticleOptions::energyId))
-                    .apply(instance, AbyssPortalParticleOptions::new));
+            instance -> instance.group(ResourceLocation.CODEC.optionalFieldOf(EnergyKeys.ENERGY_ID.toString(),
+                            ProjectKEnergies.getEnergyIdByKind(ProjectKEnergies.EnergyKind.NEUTRAL))
+                    .forGetter(AbyssPortalParticleOptions::energyId)).apply(instance, AbyssPortalParticleOptions::new));
 
     public static final StreamCodec<RegistryFriendlyByteBuf, AbyssPortalParticleOptions> STREAM_CODEC = StreamCodec.composite(
             ResourceLocation.STREAM_CODEC, AbyssPortalParticleOptions::energyId, AbyssPortalParticleOptions::new);
+    public static final String ID = "abyss_portal";
 
     @Override
     @NotNull
     public ParticleType<?> getType() {
-        return ProjectKParticles.ABYSS_PORTAL_PARTICLE.get();
+        return TYPE;
     }
+
+    public static ParticleType<AbyssPortalParticleOptions> TYPE = new ParticleType<>(false) {
+        @Override
+        @NotNull
+        public MapCodec<AbyssPortalParticleOptions> codec() {
+            return AbyssPortalParticleOptions.CODEC;
+        }
+
+        @Override
+        @NotNull
+        public StreamCodec<? super RegistryFriendlyByteBuf, AbyssPortalParticleOptions> streamCodec() {
+            return AbyssPortalParticleOptions.STREAM_CODEC;
+        }
+    };
 }

@@ -27,6 +27,9 @@ public class ProjectKFabricDataGenerator implements DataGeneratorEntrypoint {
         pack.addProvider(ProjectKFabricModelProvider::new);
         pack.addProvider((DataProvider.Factory<ProjectKBlockModelProvider>) ProjectKBlockModelProvider::new);
         pack.addProvider((DataProvider.Factory<ProjectKLanguageProvider>) ProjectKLanguageProvider::new);
+
+        ProjectKCommonDataGenerator.gatherClientData(pack::addProvider);
+
         pack.addProvider(InBiomeInBlockCraftingProvider::new);
         pack.addProvider(AbyssSynthesizerRecipeProvider::new);
     }

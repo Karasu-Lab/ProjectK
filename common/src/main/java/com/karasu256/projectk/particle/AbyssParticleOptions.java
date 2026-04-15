@@ -20,9 +20,25 @@ public record AbyssParticleOptions(ResourceLocation energyId) implements Particl
     public static final StreamCodec<RegistryFriendlyByteBuf, AbyssParticleOptions> STREAM_CODEC = StreamCodec.composite(
             ResourceLocation.STREAM_CODEC, AbyssParticleOptions::energyId, AbyssParticleOptions::new);
 
+    public static final String ID = "abyss";
+
     @Override
     @NotNull
     public ParticleType<?> getType() {
-        return ProjectKParticles.ABYSS_PARTICLE.get();
+        return TYPE;
     }
+
+    public static ParticleType<AbyssParticleOptions> TYPE = new ParticleType<>(false) {
+        @Override
+        @NotNull
+        public MapCodec<AbyssParticleOptions> codec() {
+            return AbyssParticleOptions.CODEC;
+        }
+
+        @Override
+        @NotNull
+        public StreamCodec<? super RegistryFriendlyByteBuf, AbyssParticleOptions> streamCodec() {
+            return AbyssParticleOptions.STREAM_CODEC;
+        }
+    };
 }

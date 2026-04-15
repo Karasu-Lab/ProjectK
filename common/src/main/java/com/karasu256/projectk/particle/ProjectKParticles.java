@@ -3,76 +3,21 @@ package com.karasu256.projectk.particle;
 import com.karasu256.projectk.ProjectK;
 import com.mojang.serialization.MapCodec;
 import dev.architectury.registry.registries.RegistrySupplier;
-import net.karasuniki.karasunikilib.api.registry.IKRegistryInitializerTarget;
-import net.karasuniki.karasunikilib.api.registry.KParticleRegistry;
-import net.karasuniki.karasunikilib.api.registry.KRegistryInitializer;
+import net.karasuniki.karasunikilib.api.registry.IKRegistryTarget;
+import net.karasuniki.karasunikilib.api.registry.KRegistry;
 import net.minecraft.core.particles.ParticleType;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import org.jetbrains.annotations.NotNull;
 
-@KRegistryInitializer(modId = ProjectK.MOD_ID, order = 1)
-public class ProjectKParticles implements IKRegistryInitializerTarget {
-    public static final RegistrySupplier<ParticleType<AbyssParticleOptions>> ABYSS_PARTICLE = KParticleRegistry.particle(
-            ProjectK.MOD_ID, "abyss", () -> new ParticleType<>(false) {
-                @Override
-                @NotNull
-                public MapCodec<AbyssParticleOptions> codec() {
-                    return AbyssParticleOptions.CODEC;
-                }
+@KRegistry(modId = ProjectK.MOD_ID, order = 1)
+public class ProjectKParticles implements IKRegistryTarget {
+    public static RegistrySupplier<ParticleType<AbyssParticleOptions>> ABYSS_PARTICLE;
+    public static RegistrySupplier<ParticleType<AbyssPortalParticleOptions>> ABYSS_PORTAL_PARTICLE;
+    public static RegistrySupplier<ParticleType<AbyssLaserParticleOptions>> ABYSS_LASER_PARTICLE;
+    public static RegistrySupplier<ParticleType<AbyssBurstParticleOptions>> ABYSS_BURST_PARTICLE;
+    public static RegistrySupplier<ParticleType<AbyssBurstResidualParticleOptions>> ABYSS_BURST_RESIDUAL_PARTICLE;
 
-                @Override
-                @NotNull
-                public StreamCodec<? super RegistryFriendlyByteBuf, AbyssParticleOptions> streamCodec() {
-                    return AbyssParticleOptions.STREAM_CODEC;
-                }
-            });
-
-    public static final RegistrySupplier<ParticleType<AbyssPortalParticleOptions>> ABYSS_PORTAL_PARTICLE = KParticleRegistry.particle(
-            ProjectK.MOD_ID, "abyss_portal", () -> new ParticleType<>(false) {
-                @Override
-                @NotNull
-                public MapCodec<AbyssPortalParticleOptions> codec() {
-                    return AbyssPortalParticleOptions.CODEC;
-                }
-
-                @Override
-                @NotNull
-                public StreamCodec<? super RegistryFriendlyByteBuf, AbyssPortalParticleOptions> streamCodec() {
-                    return AbyssPortalParticleOptions.STREAM_CODEC;
-                }
-            });
-
-    public static final RegistrySupplier<ParticleType<LaserParticleOptions>> ABYSS_LASER_PARTICLE = KParticleRegistry.particle(
-            ProjectK.MOD_ID, "abyss_laser", () -> new ParticleType<>(false) {
-                @Override
-                @NotNull
-                public MapCodec<LaserParticleOptions> codec() {
-                    return LaserParticleOptions.CODEC;
-                }
-
-                @Override
-                @NotNull
-                public StreamCodec<? super RegistryFriendlyByteBuf, LaserParticleOptions> streamCodec() {
-                    return LaserParticleOptions.STREAM_CODEC;
-                }
-            });
-
-    public static final RegistrySupplier<ParticleType<AbyssBurstParticleOptions>> ABYSS_BURST_PARTICLE = KParticleRegistry.particle(
-            ProjectK.MOD_ID, "abyss_burst", () -> new ParticleType<>(false) {
-                @Override
-                @NotNull
-                public MapCodec<AbyssBurstParticleOptions> codec() {
-                    return AbyssBurstParticleOptions.CODEC;
-                }
-
-                @Override
-                @NotNull
-                public StreamCodec<? super RegistryFriendlyByteBuf, AbyssBurstParticleOptions> streamCodec() {
-                    return AbyssBurstParticleOptions.STREAM_CODEC;
-                }
-            });
-
-    public static void init() {
+    public static void register() {
     }
 }

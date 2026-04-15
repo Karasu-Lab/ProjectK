@@ -39,6 +39,7 @@ public interface ProjectKParticleRenderTypes {
         public BufferBuilder begin(Tesselator tesselator, TextureManager textureManager) {
             RenderSystem.enableBlend();
             RenderSystem.defaultBlendFunc();
+            RenderSystem.disableCull();
             RenderSystem.depthMask(false);
             RenderSystem.setShader(ProjectKCoreShaders::getAbyssBurstShader);
             RenderSystem.setShaderTexture(0, AbyssBurstParticle.TEXTURE);

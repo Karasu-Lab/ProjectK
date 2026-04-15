@@ -44,6 +44,14 @@ public class ProjectKNeoForgeDataGenerator {
                 new NeoForgeBlockStateProvider(generator.getPackOutput(), event.getExistingFileHelper()));
         generator.addProvider(event.includeClient(), new ProjectKBlockModelProvider(generator.getPackOutput()));
         generator.addProvider(event.includeClient(), new ProjectKLanguageProvider(generator.getPackOutput()));
+
+        ProjectKCommonDataGenerator.gatherClientData(new ProjectKCommonDataGenerator.ProviderRegistry() {
+            @Override
+            public <T extends DataProvider> T register(DataProvider.Factory<T> factory) {
+                return generator.addProvider(event.includeClient(), factory);
+            }
+        });
+
         generator.addProvider(event.includeClient(),
                 new ProjectEConversionProvider(generator.getPackOutput(), event.getLookupProvider()));
         generator.addProvider(event.includeServer(),

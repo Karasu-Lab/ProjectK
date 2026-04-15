@@ -10,14 +10,19 @@ import java.util.function.Consumer;
 
 public class ProjectKCoreShaders {
     private static ShaderInstance abyssEnergyShader;
+    private static ShaderInstance abyssLaserShader;
+    private static ShaderInstance abyssBurstShader;
+    private static ShaderInstance abyssBurstResidualShader;
 
     public static void init(TriConsumer<ResourceLocation, VertexFormat, Consumer<ShaderInstance>> registrations) {
         registrations.accept(Id.id("abyss_energy"), DefaultVertexFormat.NEW_ENTITY, inst -> abyssEnergyShader = inst);
-        registrations.accept(Id.id("abyss_laser"), DefaultVertexFormat.NEW_ENTITY, inst -> abyssLaserShader = inst);
-        registrations.accept(Id.id("abyss_burst"), DefaultVertexFormat.POSITION_TEX_COLOR, inst -> abyssBurstShader = inst);
+        registrations.accept(Id.id("abyss_laser"), DefaultVertexFormat.POSITION_TEX_COLOR,
+                inst -> abyssLaserShader = inst);
+        registrations.accept(Id.id("abyss_burst"), DefaultVertexFormat.POSITION_TEX_COLOR,
+                inst -> abyssBurstShader = inst);
+        registrations.accept(Id.id("abyss_burst_residual"), DefaultVertexFormat.POSITION_TEX_COLOR,
+                inst -> abyssBurstResidualShader = inst);
     }
-
-    private static ShaderInstance abyssLaserShader;
 
     public static ShaderInstance getAbyssLaserShader() {
         return abyssLaserShader;
@@ -27,10 +32,12 @@ public class ProjectKCoreShaders {
         return abyssEnergyShader;
     }
 
-    private static ShaderInstance abyssBurstShader;
-
     public static ShaderInstance getAbyssBurstShader() {
         return abyssBurstShader;
+    }
+
+    public static ShaderInstance getAbyssBurstResidualShader() {
+        return abyssBurstResidualShader;
     }
 
     @FunctionalInterface
