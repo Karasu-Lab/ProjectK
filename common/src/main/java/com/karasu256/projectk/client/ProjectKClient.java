@@ -67,9 +67,7 @@ public class ProjectKClient {
                 return PKColorUtils.getEnergyColor(definition.id(), PKColorUtils.SEMI_TRANSPARENT);
             }, ProjectKBlocks.getFluidBlock(definition.id()).get());
         }
-    }
 
-    public static void initLate() {
         BlockEntityRendererRegistry.register(ProjectKBlockEntities.ABYSS_CORE.get(),
                 context -> new AbyssGeoBlockRenderer<>());
         BlockEntityRendererRegistry.register(ProjectKBlockEntities.ABYSS_ENERGY_CABLE.get(),

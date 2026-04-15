@@ -44,20 +44,37 @@ import java.io.UncheckedIOException;
 @Mod(ProjectK.MOD_ID)
 public final class ProjectKNeoForge {
     public ProjectKNeoForge(ModContainer container) {
+        initServices();
+        initializeCommon();
+        initializeConfig(container);
+        initializeBootStrap();
+        initializeClient(container);
+    }
+
+    private void initServices() {
         PlatformServices.register(new NeoForgeProjectKPlatform());
+    }
+
+    private void initializeCommon() {
         ProjectK.init();
+    }
+
+    private void initializeConfig(ModContainer container) {
         ProjectKNeoForgeConfig.init(container);
+    }
+
+    private void initializeBootStrap() {
         ModIntegrationBootstrapper.bootstrap(new NeoForgeModIntegrationSupplier<>(
                         "com.karasu256.projectk.neoforge.integrations.projecte.ProjectEIntegration"),
                 new NeoForgeModIntegrationSupplier<>(
                         "com.karasu256.projectk.neoforge.integrations.mekanism.MekanismIntegration"),
                 new NeoForgeModIntegrationSupplier<>(
                         "com.karasu256.projectk.neoforge.integrations.forge.ForgeEnergyIntegration"));
+    }
 
-
+    private void initializeClient(ModContainer container) {
         if (FMLEnvironment.dist.isClient()) {
             ProjectKClient.init();
-            ProjectKClient.initLate();
             container.getEventBus().addListener(this::onClientSetup);
             container.getEventBus().addListener(this::onRegisterScreens);
             container.getEventBus().addListener(this::onRegisterShaders);
