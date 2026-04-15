@@ -75,6 +75,8 @@ dependencies {
 
     modRuntimeOnly "mcp.mobius.waila:wthit:fabric-${wthit_version}"
     modRuntimeOnly "lol.bai:badpackets:fabric-${badpackets_version}"
+
+    modImplementation "curse.maven:selene-499980:7928092"
 }
 
 processResources {

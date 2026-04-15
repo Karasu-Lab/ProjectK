@@ -19,6 +19,7 @@ dependencies {
     modImplementation "software.bernie.geckolib:geckolib-fabric-${minecraft_version}:${geckolib_version}"
 
     modCompileOnly "mcp.mobius.waila:wthit-api:fabric-${wthit_version}"
+    modImplementation "curse.maven:selene-499980:7928092"
 
     modImplementation("net.karasuniki.karasunikilib:karasunikilib-common")
     annotationProcessor("net.karasuniki.karasunikilib:karasunikilib-common")

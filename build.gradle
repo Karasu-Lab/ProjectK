@@ -55,6 +55,9 @@ subprojects {
                 includeGroup "mcp.mobius.waila"
             }
         }
+        maven {
+            url "https://cursemaven.com"
+        }
     }
 
     dependencies {
