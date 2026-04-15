@@ -3,6 +3,7 @@ package com.karasu256.projectk.entity;
 import com.karasu256.projectk.energy.EnergyKeys;
 import com.karasu256.projectk.energy.ProjectKEnergies;
 import com.karasu256.projectk.particle.AbyssBurstParticleOptions;
+import com.karasu256.projectk.utils.MathUtils;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -22,21 +23,25 @@ public class AbyssBurstEntity extends ThrowableProjectile {
             EntityDataSerializers.LONG);
     private static final EntityDataAccessor<String> ENERGY_ID = SynchedEntityData.defineId(AbyssBurstEntity.class,
             EntityDataSerializers.STRING);
+    private static final EntityDataAccessor<Float> SHOOT_POWER_PROGRESS = SynchedEntityData.defineId(AbyssBurstEntity.class,
+            EntityDataSerializers.FLOAT);
 
     public AbyssBurstEntity(EntityType<? extends AbyssBurstEntity> type, Level level) {
         super(type, level);
     }
 
-    public AbyssBurstEntity(Level level, LivingEntity shooter, long energyAmount, ResourceLocation energyId) {
+    public AbyssBurstEntity(Level level, LivingEntity shooter, long energyAmount, ResourceLocation energyId, float progress) {
         super(ProjectKEntities.ABYSS_BURST_ENTITY.get(), shooter, level);
         this.entityData.set(ENERGY_AMOUNT, energyAmount);
         this.entityData.set(ENERGY_ID, energyId.toString());
+        this.entityData.set(SHOOT_POWER_PROGRESS, progress);
     }
 
     @Override
     protected void defineSynchedData(SynchedEntityData.Builder builder) {
         builder.define(ENERGY_AMOUNT, 0L);
         builder.define(ENERGY_ID, ProjectKEnergies.getEnergyIdByKind(ProjectKEnergies.EnergyKind.NEUTRAL).toString());
+        builder.define(SHOOT_POWER_PROGRESS, 0f);
     }
 
     public long getEnergyAmount() {
@@ -47,6 +52,10 @@ public class AbyssBurstEntity extends ThrowableProjectile {
         return ResourceLocation.parse(this.entityData.get(ENERGY_ID));
     }
 
+    public Float getProgress() {
+        return this.entityData.get(SHOOT_POWER_PROGRESS);
+    }
+
     @Override
     public void tick() {
         super.tick();
@@ -55,7 +64,7 @@ public class AbyssBurstEntity extends ThrowableProjectile {
             spawnParticles();
         }
 
-        if (this.tickCount > 16) {
+        if (this.tickCount > MathUtils.percentTo(getProgress(), 16)) {
             this.setDeltaMovement(this.getDeltaMovement().add(0, -0.05, 0));
         } else {
             this.setNoGravity(true);
@@ -67,7 +76,7 @@ public class AbyssBurstEntity extends ThrowableProjectile {
     }
 
     private void spawnParticles() {
-        for (int i = 0; i < 2; i++) {
+        for (int i = 0; i < Math.random(); i++) {
             this.level().addParticle(new AbyssBurstParticleOptions(getEnergyId()),
                     this.getX() + (random.nextDouble() - 0.5) * 0.2, this.getY() + (random.nextDouble() - 0.5) * 0.2,
                     this.getZ() + (random.nextDouble() - 0.5) * 0.2, 0, 0, 0);
@@ -98,6 +107,7 @@ public class AbyssBurstEntity extends ThrowableProjectile {
         super.addAdditionalSaveData(tag);
         tag.putLong(EnergyKeys.ENERGY_VALUE.toString(), getEnergyAmount());
         tag.putString(EnergyKeys.ENERGY_ID.toString(), getEnergyId().toString());
+        tag.putFloat(EnergyKeys.PROGRESS.toString(), getProgress());
     }
 
     @Override
@@ -107,5 +117,6 @@ public class AbyssBurstEntity extends ThrowableProjectile {
         if (tag.contains(EnergyKeys.ENERGY_ID.toString())) {
             this.entityData.set(ENERGY_ID, tag.getString(EnergyKeys.ENERGY_ID.toString()));
         }
+        this.entityData.set(SHOOT_POWER_PROGRESS, tag.getFloat(EnergyKeys.PROGRESS.toString()));
     }
 }

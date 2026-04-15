@@ -55,7 +55,7 @@ public class AbyssStaffItem extends ProjectKItem {
         if (isCreative || currentEnergy >= energyToConsume) {
             if (!level.isClientSide) {
                 AbyssBurstEntity burst = new AbyssBurstEntity(level, player, energyToConsume,
-                        AbyssEnergyUtils.getEffectiveEnergyId(stack));
+                        AbyssEnergyUtils.getEffectiveEnergyId(stack), progress);
                 burst.shootFromRotation(player, player.getXRot(), player.getYRot(), 0.0F, 1.5F, 1.0F);
                 level.addFreshEntity(burst);
 
