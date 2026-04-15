@@ -11,8 +11,7 @@ public abstract class AbstractProjectKRecipeProvider extends RecipeProvider {
     private RecipeOutput output;
     private final String name;
 
-    public AbstractProjectKRecipeProvider(PackOutput packOutput,
-                                          CompletableFuture<HolderLookup.Provider> completableFuture, String name) {
+    public AbstractProjectKRecipeProvider(PackOutput packOutput, String name, CompletableFuture<HolderLookup.Provider> completableFuture) {
         super(packOutput, completableFuture);
         this.name = name;
     }
@@ -25,5 +24,9 @@ public abstract class AbstractProjectKRecipeProvider extends RecipeProvider {
     @Override
     public String getName() {
         return name;
+    }
+
+    public RecipeOutput getOutput() {
+        return output;
     }
 }

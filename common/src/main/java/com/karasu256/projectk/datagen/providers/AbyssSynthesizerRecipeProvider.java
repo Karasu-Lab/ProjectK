@@ -1,17 +1,15 @@
 package com.karasu256.projectk.datagen.providers;
 
+import com.karasu256.projectk.api.datagen.impl.AbstractAbyssSynthesizerRecipeProvider;
 import com.karasu256.projectk.block.ProjectKBlocks;
 import com.karasu256.projectk.data.AbyssEnergyData;
 import com.karasu256.projectk.energy.ProjectKEnergies;
 import com.karasu256.projectk.item.ProjectKItems;
 import com.karasu256.projectk.recipe.AbyssSynthesizerRecipe;
 import com.karasu256.projectk.recipe.IngredientStack;
-import com.karasu256.projectk.utils.Id;
 import net.minecraft.core.HolderLookup;
-import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.recipes.RecipeOutput;
-import net.minecraft.data.recipes.RecipeProvider;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
@@ -19,16 +17,14 @@ import net.minecraft.world.item.crafting.Ingredient;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
-public class AbyssSynthesizerRecipeProvider extends RecipeProvider {
-    private RecipeOutput output;
-
+public class AbyssSynthesizerRecipeProvider extends AbstractAbyssSynthesizerRecipeProvider {
     public AbyssSynthesizerRecipeProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> registries) {
-        super(output, registries);
+        super(output, "abyss_synthesizer", registries);
     }
 
     @Override
     public void buildRecipes(RecipeOutput output) {
-        this.output = output;
+        super.buildRecipes(output);
         addSynthesizerRecipe(new AbyssSynthesizerRecipe(
                 List.of(new AbyssEnergyData(ProjectKEnergies.getEnergyIdByKind(ProjectKEnergies.EnergyKind.YIN), 1000L),
                         new AbyssEnergyData(ProjectKEnergies.getEnergyIdByKind(ProjectKEnergies.EnergyKind.YANG),
@@ -54,15 +50,5 @@ public class AbyssSynthesizerRecipeProvider extends RecipeProvider {
                                 1000L),
                         new IngredientStack(Ingredient.of(ProjectKBlocks.ABYSS_ABSORPTION_PRISM.get()), 1, List.of(), 1,
                                 1000L)), new ItemStack(ProjectKBlocks.ABYSS_PORTAL.get()), 0, 0, 6000L));
-    }
-
-    @Override
-    public String getName() {
-        return "ProjectK Abyss Synthesizer Recipes";
-    }
-
-    private void addSynthesizerRecipe(AbyssSynthesizerRecipe recipe) {
-        String resultPath = BuiltInRegistries.ITEM.getKey(recipe.result().getItem()).getPath();
-        output.accept(Id.id(resultPath + "_from_abyss_synthesizer"), recipe, null);
     }
 }
