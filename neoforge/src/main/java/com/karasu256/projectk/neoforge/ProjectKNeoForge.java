@@ -44,14 +44,14 @@ import java.io.UncheckedIOException;
 @Mod(ProjectK.MOD_ID)
 public final class ProjectKNeoForge {
     public ProjectKNeoForge(ModContainer container) {
-        initServices();
+        initializeServices();
         initializeCommon();
         initializeConfig(container);
         initializeBootStrap();
         initializeClient(container);
     }
 
-    private void initServices() {
+    private void initializeServices() {
         PlatformServices.register(new NeoForgeProjectKPlatform());
     }
 
