@@ -57,11 +57,10 @@ public class ProjectKFluids implements IKRegistryInitializerTarget {
         Supplier<Fluid> sourceFluid = () -> sourceRef.get().get();
         Supplier<Fluid> flowingFluid = () -> flowingRef.get().get();
 
-        ResourceLocation stillTexture = Id.id("block/base_fluid_still");
-        ResourceLocation flowTexture = Id.id("block/base_fluid_flow");
-        int color = PKColorUtils.getEnergyColor(energyId, PKColorUtils.SEMI_TRANSPARENT);
+        ResourceLocation stillTexture = Id.id("block/fluid_" + energyId.getPath() + "_still");
+        ResourceLocation flowTexture = Id.id("block/fluid_" + energyId.getPath() + "_flow");
         SimpleArchitecturyFluidAttributes attributes = new ProjectKFluidAttributes(sourceFluid,
-                flowingFluid).sourceTexture(stillTexture).flowingTexture(flowTexture).color(color)
+                flowingFluid).sourceTexture(stillTexture).flowingTexture(flowTexture)
                 .blockSupplier(blockSupplier);
 
         if (bucketSupplier != null) {

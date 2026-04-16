@@ -8,18 +8,16 @@ import com.karasu256.projectk.client.render.block.geckolib.AbyssGeoBlockRenderer
 import com.karasu256.projectk.client.render.entity.AbyssBurstEntityRenderer;
 import com.karasu256.projectk.client.render.entity.AbyssEnergyEntityRenderer;
 import com.karasu256.projectk.client.render.entity.AbyssLaserEntityRenderer;
-import com.karasu256.projectk.utils.PKColorUtils;
+import com.karasu256.projectk.client.resource.ProjectKDynamicResources;
 import com.karasu256.projectk.data.AbyssEnergyData;
 import com.karasu256.projectk.data.ProjectKDataComponets;
 import com.karasu256.projectk.energy.ProjectKEnergies;
 import com.karasu256.projectk.entity.ProjectKEntities;
 import com.karasu256.projectk.fluid.ProjectKFluids;
-import com.karasu256.projectk.item.ProjectKItems;
 import com.karasu256.projectk.registry.ItemsRegistry;
 import com.karasu256.projectk.utils.Id;
 import dev.architectury.registry.client.level.entity.EntityRendererRegistry;
 import dev.architectury.registry.client.rendering.BlockEntityRendererRegistry;
-import dev.architectury.registry.client.rendering.ColorHandlerRegistry;
 import dev.architectury.registry.item.ItemPropertiesRegistry;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -28,6 +26,7 @@ import net.minecraft.world.item.ItemStack;
 
 public class ProjectKClient {
     public static void init() {
+        ProjectKDynamicResources.init();
         EntityRendererRegistry.register(ProjectKEntities.ABYSS_ENERGY_ENTITY, AbyssEnergyEntityRenderer::new);
         EntityRendererRegistry.register(ProjectKEntities.ABYSS_PORTAL_ENERGY_ENTITY, AbyssEnergyEntityRenderer::new);
         EntityRendererRegistry.register(ProjectKEntities.ABYSS_LASER_ENTITY, AbyssLaserEntityRenderer::new);
@@ -39,33 +38,11 @@ public class ProjectKClient {
                     propertyId, (stack, level, entity, seed) -> getAbyssEnergyModelIndex(stack));
         }
 
-        ColorHandlerRegistry.registerItemColors((stack, tintIndex) -> {
-            if (tintIndex == 0) {
-                AbyssEnergyData data = stack.get(ProjectKDataComponets.ABYSS_ENERGY_DATA_COMPONENT_TYPE.get());
-                if (data != null) {
-                    return PKColorUtils.getEnergyColor(data.energyId(), PKColorUtils.OPAQUE);
-                }
-            }
-            return 0xFFFFFFFF;
-        }, ProjectKItems.ABYSS_INGOT.get(), ProjectKBlocks.ABYSS_CORE.get(), ProjectKBlocks.ABYSS_PORTAL.get());
-
         ItemPropertiesRegistry.register(ProjectKBlocks.ABYSS_CORE.get().asItem(), propertyId,
                 (stack, level, entity, seed) -> getAbyssEnergyModelIndex(stack));
         ItemPropertiesRegistry.register(ProjectKBlocks.ABYSS_PORTAL.get().asItem(), propertyId,
                 (stack, level, entity, seed) -> getAbyssEnergyModelIndex(stack));
 
-        for (ProjectKEnergies.EnergyDefinition definition : ProjectKEnergies.getDefinitions()) {
-            ColorHandlerRegistry.registerItemColors((stack, tintIndex) -> {
-                if (tintIndex == 1) {
-                    return PKColorUtils.getEnergyColor(definition.id(), PKColorUtils.SEMI_TRANSPARENT);
-                }
-                return 0xFFFFFFFF;
-            }, ProjectKItems.getBucket(definition.id()).get());
-
-            ColorHandlerRegistry.registerBlockColors((state, world, pos, tintIndex) -> {
-                return PKColorUtils.getEnergyColor(definition.id(), PKColorUtils.SEMI_TRANSPARENT);
-            }, ProjectKBlocks.getFluidBlock(definition.id()).get());
-        }
 
         BlockEntityRendererRegistry.register(ProjectKBlockEntities.ABYSS_CORE.get(),
                 context -> new AbyssGeoBlockRenderer<>());
@@ -91,7 +68,7 @@ public class ProjectKClient {
         for (ProjectKEnergies.EnergyDefinition definition : ProjectKEnergies.getDefinitions()) {
             registrar.register(ProjectKFluids.getSource(definition.id()),
                     ProjectKFluids.getFlowing(definition.id()),
-                    PKColorUtils.getEnergyColor(definition.id(), PKColorUtils.OPAQUE));
+                    0xFFFFFFFF);
         }
     }
 

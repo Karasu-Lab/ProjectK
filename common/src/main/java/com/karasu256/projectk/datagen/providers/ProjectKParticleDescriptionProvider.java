@@ -4,6 +4,7 @@ import com.karasu256.projectk.api.datagen.impl.AbstractParticleDescriptionProvid
 import com.karasu256.projectk.particle.ProjectKParticles;
 import net.minecraft.data.CachedOutput;
 import net.minecraft.data.PackOutput;
+import net.minecraft.resources.ResourceLocation;
 
 import java.util.concurrent.CompletableFuture;
 

@@ -14,13 +14,17 @@ import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
 
 public abstract class AbstractProjectKDataProvider<T> implements DataProvider {
-    private CachedOutput cache;
+    protected CachedOutput cache;
     private final PackOutput.PathProvider pathProvider;
     private final List<CompletableFuture<?>> futures;
     private final String name;
 
     public AbstractProjectKDataProvider(PackOutput output, String name) {
-        this.pathProvider = output.createPathProvider(PackOutput.Target.DATA_PACK, name);
+        this(output, PackOutput.Target.DATA_PACK, name);
+    }
+
+    public AbstractProjectKDataProvider(PackOutput output, PackOutput.Target target, String name) {
+        this.pathProvider = output.createPathProvider(target, name);
         this.futures = new ArrayList<>();
         this.name = name;
     }
