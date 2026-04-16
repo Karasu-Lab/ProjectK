@@ -18,6 +18,9 @@ public class CommonBlockStateProvider {
         generator.simpleBlock(ProjectKBlocks.DEEPSLATE_KARASIUM_ORE.get());
         generator.simpleBlockItem(ProjectKBlocks.DEEPSLATE_KARASIUM_ORE.get());
 
+        generator.simpleBlock(ProjectKBlocks.POLISHED_NETHERRACK.get());
+        generator.simpleBlockItem(ProjectKBlocks.POLISHED_NETHERRACK.get());
+
         generator.cubeBottomTop(ProjectKBlocks.ABYSS_GENERATOR.get(), "abyss_generator", "abyss_energy/side",
                 "abyss_energy/bottom", "abyss_energy/top");
         generator.simpleBlockItem(ProjectKBlocks.ABYSS_GENERATOR.get());
@@ -73,7 +76,8 @@ public class CommonBlockStateProvider {
             generator.existingModelBlockAllStates(ProjectKBlocks.getFluidBlock(definition.id()).get(),
                     "projectk:block/" + fluidId);
         }
-        generator.activeBlock(ProjectKBlocks.ABYSS_PORTAL.get(), "projectk:block/abyss_portal", "projectk:block/abyss_portal_active");
+        generator.activeBlock(ProjectKBlocks.ABYSS_PORTAL.get(), "projectk:block/abyss_portal",
+                "projectk:block/abyss_portal_active");
         generator.simpleBlockItem(ProjectKBlocks.ABYSS_PORTAL.get());
     }
 

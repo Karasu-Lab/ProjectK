@@ -11,6 +11,8 @@ import net.mehvahdjukaar.moonlight.api.resources.pack.DynamicClientResourceProvi
 import net.mehvahdjukaar.moonlight.api.resources.pack.PackGenerationStrategy;
 import net.mehvahdjukaar.moonlight.api.resources.pack.ResourceGenTask;
 import net.mehvahdjukaar.moonlight.api.resources.pack.ResourceSink;
+import net.mehvahdjukaar.moonlight.api.resources.textures.Palette;
+import net.mehvahdjukaar.moonlight.api.resources.textures.Respriter;
 import net.mehvahdjukaar.moonlight.api.resources.textures.TextureImage;
 import net.mehvahdjukaar.moonlight.api.resources.textures.TextureOps;
 import net.minecraft.resources.ResourceLocation;
@@ -46,6 +48,26 @@ public class ProjectKDynamicResources extends DynamicClientResourceProvider {
         executor.accept(this::generateAbyssIngots);
         executor.accept(this::generateAbyssBuckets);
         executor.accept(this::generateAbyssFluids);
+        executor.accept(this::generatePolishedNetherrack);
+    }
+
+    private void generatePolishedNetherrack(ResourceManager manager, ResourceSink sink) {
+        ResourceLocation netherrackId = ResourceLocation.withDefaultNamespace("block/netherrack");
+        ResourceLocation templateId = ResourceLocation.withDefaultNamespace("block/polished_andesite");
+        ResourceLocation textureId = Id.id("block/polished_netherrack");
+
+        try (TextureImage netherrack = TextureImage.open(manager,
+                netherrackId); TextureImage template = TextureImage.open(manager, templateId)) {
+
+            TextureOps.grayscale(template);
+
+            Palette palette = Palette.fromImage(netherrack);
+            try (TextureImage recolored = Respriter.of(template).recolor(palette)) {
+                sink.addTexture(textureId, recolored);
+            }
+
+        } catch (Exception ignored) {
+        }
     }
 
     private void generateAbyssIngots(ResourceManager manager, ResourceSink sink) {

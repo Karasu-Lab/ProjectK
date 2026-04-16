@@ -41,6 +41,12 @@ public class ProjectKLanguageProvider implements DataProvider {
 
     private void addCommonTranslations(JsonObject en, JsonObject ja) {
         add(en, "category.projectk", "ProjectK");
+        add(en, "category.projectk.general", "ProjectK General");
+        add(en, "category.projectk.building_blocks", "ProjectK Building Blocks");
+        add(en, "category.projectk.ingot", "ProjectK Ingot");
+        add(en, "category.projectk.fluids", "ProjectK Fluids");
+        add(en, "category.projectk.machines", "ProjectK Machines");
+        add(en, "category.projectk.materials", "ProjectK Materials");
         add(en, "gui.configscreen.title", "ProjectK Config");
 
         add(en, "rei.category.projectk.in_biome_in_block_crafting", "In-Biome Block Crafting");
@@ -56,6 +62,13 @@ public class ProjectKLanguageProvider implements DataProvider {
         add(ja, "rei.category.projectk.abyss_magic_table", "深淵魔術テーブル");
         add(ja, "rei.category.projectk.abyss_alchemy_blend_machine", "深淵錬金合成機");
         add(ja, "rei.category.projectk.abyss_synthesizer", "深淵合成機");
+
+        add(ja, "category.projectk.general", "ProjectK 全般");
+        add(ja, "category.projectk.building_blocks", "ProjectK 建築ブロック");
+        add(ja, "category.projectk.ingot", "ProjectK インゴット");
+        add(ja, "category.projectk.fluids", "ProjectK 液体");
+        add(ja, "category.projectk.machines", "ProjectK 機械");
+        add(ja, "category.projectk.materials", "ProjectK 材料");
 
         add(en, "energy.projectk.abyss_energy_format", "%s Abyss Energy");
         add(ja, "energy.projectk.abyss_energy_format", "%sの深淵エネルギー");
@@ -139,6 +152,7 @@ public class ProjectKLanguageProvider implements DataProvider {
         add(en, "block.projectk.abyss_laser_emitter", "Abyss Laser Emitter");
         add(en, "block.projectk.abyss_absorption_prism", "Abyss Absorption Prism");
         add(en, "block.projectk.abyss_portal", "Abyss Portal");
+        add(en, "block.projectk.polished_netherrack", "Polished Netherrack");
         add(ja, "block.projectk.abyss_enchant_remover", "深淵エンチャントリムーバー");
 
         add(ja, "block.projectk.abyss_generator", "深淵発電機");
@@ -153,6 +167,7 @@ public class ProjectKLanguageProvider implements DataProvider {
         add(ja, "block.projectk.abyss_laser_emitter", "深淵レーザー発射機");
         add(ja, "block.projectk.abyss_absorption_prism", "深淵吸収プリズム");
         add(ja, "block.projectk.abyss_portal", "深淵ポータル");
+        add(ja, "block.projectk.polished_netherrack", "磨かれたネザーラック");
         add(ja, "block.projectk.karasium_ore", "カラシウム鉱石");
         add(ja, "block.projectk.deepslate_karasium_ore", "深層カラシウム鉱石");
 

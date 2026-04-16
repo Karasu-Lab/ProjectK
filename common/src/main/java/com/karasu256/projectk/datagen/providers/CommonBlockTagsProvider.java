@@ -22,6 +22,7 @@ public class CommonBlockTagsProvider extends IntrinsicHolderTagsProvider<Block> 
     @Override
     protected void addTags(HolderLookup.Provider provider) {
         tag(BlockTags.MINEABLE_WITH_PICKAXE).add(ProjectKBlocks.KARASIUM_ORE.getKey()).add(ProjectKBlocks.DEEPSLATE_KARASIUM_ORE.getKey())
+                .add(ProjectKBlocks.POLISHED_NETHERRACK.getKey())
                 .add(ProjectKBlocks.CREATIVE_ABYSS_STORAGE.getKey());
         tag(BlockTags.NEEDS_IRON_TOOL).add(ProjectKBlocks.KARASIUM_ORE.getKey()).add(ProjectKBlocks.DEEPSLATE_KARASIUM_ORE.getKey());
 

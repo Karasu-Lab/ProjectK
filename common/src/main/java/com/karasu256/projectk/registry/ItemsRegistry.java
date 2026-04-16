@@ -26,12 +26,20 @@ public class ItemsRegistry implements IKRegistryTarget {
     }
 
     public static @NotNull RegistrySupplier<BlockItem> blockItem(@NotNull RegistrySupplier<Block> block, Item.Properties properties) {
-        return blockItem(block, properties, false);
+        return blockItem(block, properties, false, CreativeTabsRegistry.GENERAL);
+    }
+
+    public static @NotNull RegistrySupplier<BlockItem> blockItem(@NotNull RegistrySupplier<Block> block, Item.Properties properties, CreativeTabsRegistry.TabCategory category) {
+        return blockItem(block, properties, false, category);
     }
 
     public static @NotNull RegistrySupplier<BlockItem> blockItem(@NotNull RegistrySupplier<Block> block, Item.Properties properties, boolean energySuffixTexture) {
+        return blockItem(block, properties, energySuffixTexture, CreativeTabsRegistry.GENERAL);
+    }
+
+    public static @NotNull RegistrySupplier<BlockItem> blockItem(@NotNull RegistrySupplier<Block> block, Item.Properties properties, boolean energySuffixTexture, CreativeTabsRegistry.TabCategory category) {
         RegistrySupplier<BlockItem> registered = CreativeTabsRegistry.tab(
-                KItemRegistry.blockItem(ProjectK.MOD_ID, block, properties));
+                KItemRegistry.blockItem(ProjectK.MOD_ID, block, properties), category);
         if (energySuffixTexture) {
             ENERGY_SUFFIX_ITEMS.add(block.getId());
         }
@@ -39,11 +47,19 @@ public class ItemsRegistry implements IKRegistryTarget {
     }
 
     public static <T extends Item> @NotNull RegistrySupplier<T> item(String id, Supplier<T> item) {
-        return CreativeTabsRegistry.tab(KItemRegistry.item(ProjectK.MOD_ID, id, item));
+        return item(id, item, false, CreativeTabsRegistry.GENERAL);
+    }
+
+    public static <T extends Item> @NotNull RegistrySupplier<T> item(String id, Supplier<T> item, CreativeTabsRegistry.TabCategory category) {
+        return item(id, item, false, category);
     }
 
     public static <T extends Item> @NotNull RegistrySupplier<T> item(String id, Supplier<T> item, boolean energySuffixTexture) {
-        RegistrySupplier<T> registered = CreativeTabsRegistry.tab(KItemRegistry.item(ProjectK.MOD_ID, id, item));
+        return item(id, item, energySuffixTexture, CreativeTabsRegistry.GENERAL);
+    }
+
+    public static <T extends Item> @NotNull RegistrySupplier<T> item(String id, Supplier<T> item, boolean energySuffixTexture, CreativeTabsRegistry.TabCategory category) {
+        RegistrySupplier<T> registered = CreativeTabsRegistry.tab(KItemRegistry.item(ProjectK.MOD_ID, id, item), category);
         if (energySuffixTexture) {
             ENERGY_SUFFIX_ITEMS.add(Id.id(id));
         }
