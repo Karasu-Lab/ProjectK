@@ -16,8 +16,7 @@ public class ProjectKCoreShaders {
 
     public static void init(TriConsumer<ResourceLocation, VertexFormat, Consumer<ShaderInstance>> registrations) {
         registrations.accept(Id.id("abyss_energy"), DefaultVertexFormat.NEW_ENTITY, inst -> abyssEnergyShader = inst);
-        registrations.accept(Id.id("abyss_laser"), DefaultVertexFormat.POSITION_TEX_COLOR,
-                inst -> abyssLaserShader = inst);
+        registrations.accept(Id.id("abyss_laser"), DefaultVertexFormat.NEW_ENTITY, inst -> abyssLaserShader = inst);
         registrations.accept(Id.id("abyss_burst"), DefaultVertexFormat.POSITION_TEX_COLOR,
                 inst -> abyssBurstShader = inst);
         registrations.accept(Id.id("abyss_burst_residual"), DefaultVertexFormat.POSITION_TEX_COLOR,

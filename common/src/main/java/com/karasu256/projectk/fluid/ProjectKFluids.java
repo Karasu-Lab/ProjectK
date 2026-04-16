@@ -28,7 +28,7 @@ public class ProjectKFluids implements IKRegistryInitializerTarget {
             definition -> "fluid_" + definition.idPath(), (definition, id, map) -> {
                 String flowingId = "flowing_" + id;
                 map.put(definition.id(),
-                        registerFluidSet(id, flowingId, definition.id(),
+                        registerFluidSet(id, flowingId, definition.id(), definition.color(),
                                 () -> ProjectKBlocks.getFluidBlock(definition.id()),
                                 () -> ProjectKItems.getBucket(definition.id())));
             });
@@ -50,7 +50,7 @@ public class ProjectKFluids implements IKRegistryInitializerTarget {
     }
 
 
-    private static FluidSet registerFluidSet(String sourceId, String flowingId, ResourceLocation energyId, Supplier<RegistrySupplier<? extends LiquidBlock>> blockSupplier, Supplier<RegistrySupplier<Item>> bucketSupplier) {
+    private static FluidSet registerFluidSet(String sourceId, String flowingId, ResourceLocation energyId, int color, Supplier<RegistrySupplier<? extends LiquidBlock>> blockSupplier, Supplier<RegistrySupplier<Item>> bucketSupplier) {
         AtomicReference<RegistrySupplier<FlowingFluid>> sourceRef = new AtomicReference<>();
         AtomicReference<RegistrySupplier<FlowingFluid>> flowingRef = new AtomicReference<>();
 
@@ -61,6 +61,7 @@ public class ProjectKFluids implements IKRegistryInitializerTarget {
         ResourceLocation flowTexture = Id.id("block/fluid_" + energyId.getPath() + "_flow");
         SimpleArchitecturyFluidAttributes attributes = new ProjectKFluidAttributes(sourceFluid,
                 flowingFluid).sourceTexture(stillTexture).flowingTexture(flowTexture)
+                .color(color)
                 .blockSupplier(blockSupplier);
 
         if (bucketSupplier != null) {
@@ -81,7 +82,6 @@ public class ProjectKFluids implements IKRegistryInitializerTarget {
     private static ResourceLocation fluidTexture(String baseName, String suffix) {
         return ResourceLocation.fromNamespaceAndPath(ProjectK.MOD_ID, "block/" + baseName + "_" + suffix);
     }
-
 
     public record FluidSet(ArchitecturyFluidAttributes attributes, RegistrySupplier<FlowingFluid> source,
                            RegistrySupplier<FlowingFluid> flowing) {
