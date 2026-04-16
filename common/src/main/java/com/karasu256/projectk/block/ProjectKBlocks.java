@@ -33,7 +33,7 @@ public class ProjectKBlocks implements IKRegistryInitializerTarget {
 
     public static final RegistrySupplier<Block> ABYSS_CORE = block("abyss_core", () -> new AbyssCore(
                     BlockBehaviour.Properties.ofFullCopy(Blocks.STONE).noOcclusion().sound(SoundType.STONE)),
-            b -> new AbyssCoreItem(b, new Item.Properties()), true, MATERIALS);
+            b -> new AbyssCoreItem(b, new Item.Properties()), true, MACHINES);
 
     public static final RegistrySupplier<Block> ABYSS_GENERATOR = block("abyss_generator", () -> new AbyssGenerator(10000L),
             new Item.Properties(), MACHINES);
