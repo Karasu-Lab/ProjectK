@@ -2,6 +2,7 @@ package com.karasu256.projectk.fabric.client;
 
 import com.karasu256.projectk.client.ProjectKClient;
 import com.karasu256.projectk.client.ProjectKCoreShaders;
+import com.karasu256.projectk.client.resource.ProjectKDynamicResources;
 import com.karasu256.projectk.client.screen.*;
 import com.karasu256.projectk.client.PKRenderProxy;
 import com.karasu256.projectk.item.ProjectKItems;
@@ -28,6 +29,7 @@ import java.io.UncheckedIOException;
 public class ProjectkFabricClient implements ClientModInitializer {
     @Override
     public void onInitializeClient() {
+        ProjectKDynamicResources.init();
         initializeCommoon();
         registerParticles(ParticleFactoryRegistry.getInstance());
         registerMenus();
@@ -66,9 +68,7 @@ public class ProjectkFabricClient implements ClientModInitializer {
     }
 
     private void registerFluidRendering() {
-        ProjectKClient.registerFluidRendering((source, flowing, color) -> {
-            ResourceLocation still = Id.id("block/base_fluid_still");
-            ResourceLocation flow = Id.id("block/base_fluid_flow");
+        ProjectKClient.registerFluidRendering((source, flowing, color, still, flow) -> {
             FluidRenderHandlerRegistry.INSTANCE.register(source.get(), flowing.get(),
                     new SimpleFluidRenderHandler(still, flow, color));
         });

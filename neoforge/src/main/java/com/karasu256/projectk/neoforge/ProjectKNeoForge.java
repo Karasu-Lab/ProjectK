@@ -4,6 +4,7 @@ import com.karasu256.projectk.ProjectK;
 import com.karasu256.projectk.client.PKRenderProxy;
 import com.karasu256.projectk.client.ProjectKClient;
 import com.karasu256.projectk.client.ProjectKCoreShaders;
+import com.karasu256.projectk.client.resource.ProjectKDynamicResources;
 import com.karasu256.projectk.client.screen.*;
 import com.karasu256.projectk.item.ProjectKItems;
 import com.karasu256.projectk.menu.ProjectKMenus;
@@ -48,6 +49,9 @@ public final class ProjectKNeoForge {
         initializeConfig(container);
         initializeBootStrap();
         initializeClient(container);
+        if (FMLEnvironment.dist.isClient()) {
+            ProjectKDynamicResources.init();
+        }
     }
 
     private void initializeServices() {
@@ -124,9 +128,7 @@ public final class ProjectKNeoForge {
 
     @SubscribeEvent
     public void onRegisterClientExtensions(RegisterClientExtensionsEvent event) {
-        ProjectKClient.registerFluidRendering((source, flowing, color) -> {
-            ResourceLocation still = Id.id("block/base_fluid_still");
-            ResourceLocation flow = Id.id("block/base_fluid_flow");
+        ProjectKClient.registerFluidRendering((source, flowing, color, still, flow) -> {
             event.registerFluidType(new IClientFluidTypeExtensions() {
                 @Override
                 public ResourceLocation getStillTexture() {

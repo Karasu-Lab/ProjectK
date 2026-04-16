@@ -117,6 +117,12 @@ public class ProjectKDynamicResources extends DynamicClientResourceProvider {
                 tint(flow, energy.color());
                 sink.addTexture(stillId, still);
                 sink.addTexture(flowId, flow);
+
+                ResourceLocation blockModelId = Id.id("fluid_" + energyPath);
+                JsonObject blockModel = new JsonObject();
+                blockModel.addProperty("loader", "neoforge:fluid");
+                blockModel.addProperty("fluid", "projectk:fluid_" + energyPath);
+                sink.addBlockModel(blockModelId, blockModel);
             } catch (Exception ignored) {
             }
         }

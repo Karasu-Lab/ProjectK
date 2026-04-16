@@ -16,6 +16,7 @@ import com.karasu256.projectk.entity.ProjectKEntities;
 import com.karasu256.projectk.fluid.ProjectKFluids;
 import com.karasu256.projectk.registry.ItemsRegistry;
 import com.karasu256.projectk.utils.Id;
+import dev.architectury.core.fluid.ArchitecturyFluidAttributes;
 import dev.architectury.registry.client.level.entity.EntityRendererRegistry;
 import dev.architectury.registry.client.rendering.BlockEntityRendererRegistry;
 import dev.architectury.registry.item.ItemPropertiesRegistry;
@@ -26,7 +27,6 @@ import net.minecraft.world.item.ItemStack;
 
 public class ProjectKClient {
     public static void init() {
-        ProjectKDynamicResources.init();
         EntityRendererRegistry.register(ProjectKEntities.ABYSS_ENERGY_ENTITY, AbyssEnergyEntityRenderer::new);
         EntityRendererRegistry.register(ProjectKEntities.ABYSS_PORTAL_ENERGY_ENTITY, AbyssEnergyEntityRenderer::new);
         EntityRendererRegistry.register(ProjectKEntities.ABYSS_LASER_ENTITY, AbyssLaserEntityRenderer::new);
@@ -66,9 +66,13 @@ public class ProjectKClient {
 
     public static void registerFluidRendering(PKRenderProxy.PKFluidRenderingRegistrar registrar) {
         for (ProjectKEnergies.EnergyDefinition definition : ProjectKEnergies.getDefinitions()) {
-            registrar.register(ProjectKFluids.getSource(definition.id()),
-                    ProjectKFluids.getFlowing(definition.id()),
-                    0xFFFFFFFF);
+            ResourceLocation energyId = definition.id();
+            ArchitecturyFluidAttributes attributes = ProjectKFluids.getAttributes(energyId);
+            registrar.register(ProjectKFluids.getSource(energyId),
+                    ProjectKFluids.getFlowing(energyId),
+                    0xFFFFFFFF,
+                    attributes.getSourceTexture(),
+                    attributes.getFlowingTexture());
         }
     }
 
