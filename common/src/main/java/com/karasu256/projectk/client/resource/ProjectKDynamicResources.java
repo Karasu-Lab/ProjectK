@@ -2,6 +2,7 @@ package com.karasu256.projectk.client.resource;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
+import com.karasu256.projectk.ProjectK;
 import com.karasu256.projectk.energy.ProjectKEnergies;
 import com.karasu256.projectk.utils.Id;
 import net.mehvahdjukaar.moonlight.api.events.AfterLanguageLoadEvent;
@@ -21,7 +22,6 @@ import java.util.List;
 import java.util.function.Consumer;
 
 public class ProjectKDynamicResources extends DynamicClientResourceProvider {
-
     public static final ProjectKDynamicResources INSTANCE = new ProjectKDynamicResources();
 
     private ProjectKDynamicResources() {
@@ -34,7 +34,7 @@ public class ProjectKDynamicResources extends DynamicClientResourceProvider {
 
     @Override
     protected Collection<String> gatherSupportedNamespaces() {
-        return List.of("projectk", "minecraft");
+        return List.of(ProjectK.MOD_ID, "minecraft");
     }
 
     @Override
