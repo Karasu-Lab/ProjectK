@@ -4,10 +4,12 @@
   "compatibilityLevel": "JAVA_21",
   "minVersion": "0.8",
   "client": [
+    "client.LivingEntityRendererMixin"
   ],
   "mixins": [
     "ItemMixin",
-    "ItemEntityMixin"
+    "ItemEntityMixin",
+    "entity.LivingEntityMixin"
   ],
   "injectors": {
     "defaultRequire": 1
