@@ -1,15 +1,14 @@
 package com.karasu256.projectk.neoforge;
 
 import com.karasu256.projectk.ProjectK;
+import com.karasu256.projectk.client.PKRenderProxy;
 import com.karasu256.projectk.client.ProjectKClient;
 import com.karasu256.projectk.client.ProjectKCoreShaders;
 import com.karasu256.projectk.client.screen.*;
-import com.karasu256.projectk.client.PKRenderProxy;
 import com.karasu256.projectk.item.ProjectKItems;
 import com.karasu256.projectk.menu.ProjectKMenus;
 import com.karasu256.projectk.neoforge.config.ProjectKNeoForgeConfig;
 import com.karasu256.projectk.neoforge.integrations.NeoForgeModIntegrationSupplier;
-import com.karasu256.projectk.neoforge.particle.NeoForgeProjectKParticles;
 import com.karasu256.projectk.neoforge.platform.NeoForgeProjectKPlatform;
 import com.karasu256.projectk.particle.*;
 import com.karasu256.projectk.platform.PlatformServices;
@@ -74,7 +73,6 @@ public final class ProjectKNeoForge {
 
     private void initializeClient(ModContainer container) {
         if (FMLEnvironment.dist.isClient()) {
-            ProjectKClient.init();
             container.getEventBus().addListener(this::onClientSetup);
             container.getEventBus().addListener(this::onRegisterScreens);
             container.getEventBus().addListener(this::onRegisterShaders);
@@ -104,7 +102,7 @@ public final class ProjectKNeoForge {
 
     @SuppressWarnings({"deprecation", "Convert2Lambda"})
     private void onClientSetup(FMLClientSetupEvent event) {
-        NeoForgeProjectKParticles.init();
+        ProjectKClient.init();
         ProjectKItems.init();
         ProjectKClient.registerRenderLayers(new PKRenderProxy.PKRenderTypeRegistrar() {
             @Override
