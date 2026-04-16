@@ -85,7 +85,7 @@ dependencies {
 
     modImplementation("net.karasuniki.karasunikilib:karasunikilib-neoforge")
 
-    implementation "curse.maven:selene-499980:7928091"
+    modImplementation "curse.maven:selene-499980:7928091"
 }
 
 processResources {
