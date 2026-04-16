@@ -9,14 +9,11 @@ in vec3 Normal;
 
 uniform mat4 ModelViewMat;
 uniform mat4 ProjMat;
-uniform vec4 ColorModulator;
 
-out vec4 vertexColor;
 out vec2 texCoord;
 
 void main() {
     gl_Position = ProjMat * ModelViewMat * vec4(Position, 1.0);
 
-    vertexColor = Color * ColorModulator;
     texCoord = UV0;
 }
