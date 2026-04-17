@@ -27,6 +27,31 @@ public abstract class AbstractResourceGenerator implements IResourceGenerator {
         });
     }
 
+    protected final void brightenedAdditiveTint(TextureImage img, int tint) {
+        int tintR = (tint >> 16) & 0xFF;
+        int tintG = (tint >> 8) & 0xFF;
+        int tintB = tint & 0xFF;
+
+        img.forEachPixel(pixel -> {
+            int color = pixel.getValue();
+            int alpha = FastColor.ABGR32.alpha(color);
+            if (alpha > 0) {
+                int r = FastColor.ABGR32.red(color);
+                int g = FastColor.ABGR32.green(color);
+                int b = FastColor.ABGR32.blue(color);
+
+                int gray = (int) ((r * 0.299f + g * 0.587f + b * 0.114f) * 1.5f);
+                gray = Math.min(255, gray);
+
+                int resR = Math.min(255, gray + tintR);
+                int resG = Math.min(255, gray + tintG);
+                int resB = Math.min(255, gray + tintB);
+
+                pixel.setValue(FastColor.ABGR32.color(alpha, resB, resG, resR));
+            }
+        });
+    }
+
     protected final JsonObject createGeneratedModel(ResourceLocation texture) {
         JsonObject model = new JsonObject();
         model.addProperty("parent", "minecraft:item/generated");
