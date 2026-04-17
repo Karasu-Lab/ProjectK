@@ -1,4 +1,4 @@
-package com.karasu256.projectk.datagen.providers;
+package com.karasu256.projectk.datagen.providers.tier;
 
 import com.google.gson.JsonElement;
 import com.karasu256.projectk.data.AbyssEnchanterTier;

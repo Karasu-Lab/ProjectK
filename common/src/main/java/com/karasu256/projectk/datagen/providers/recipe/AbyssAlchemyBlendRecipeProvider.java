@@ -1,4 +1,4 @@
-package com.karasu256.projectk.datagen.providers;
+package com.karasu256.projectk.datagen.providers.recipe;
 
 import com.karasu256.projectk.data.AbyssEnergyData;
 import com.karasu256.projectk.energy.ProjectKEnergies;

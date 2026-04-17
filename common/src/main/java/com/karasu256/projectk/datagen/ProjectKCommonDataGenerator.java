@@ -1,6 +1,12 @@
 package com.karasu256.projectk.datagen;
 
 import com.karasu256.projectk.datagen.providers.*;
+import com.karasu256.projectk.datagen.providers.recipe.AbyssAlchemyBlendRecipeProvider;
+import com.karasu256.projectk.datagen.providers.recipe.AbyssMagicTableRecipeProvider;
+import com.karasu256.projectk.datagen.providers.recipe.AbyssSynthesizerRecipeProvider;
+import com.karasu256.projectk.datagen.providers.recipe.CommonRecipeProvider;
+import com.karasu256.projectk.datagen.providers.tier.AbyssEnchanterTierProvider;
+import com.karasu256.projectk.datagen.providers.tier.AbyssLaserEmitterTierProvider;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.DataProvider;
 

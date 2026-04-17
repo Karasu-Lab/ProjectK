@@ -2,6 +2,10 @@ package com.karasu256.projectk.neoforge.datagen;
 
 import com.karasu256.projectk.datagen.ProjectKCommonDataGenerator;
 import com.karasu256.projectk.datagen.providers.*;
+import com.karasu256.projectk.datagen.providers.lang.ProjectKLanguageProvider;
+import com.karasu256.projectk.datagen.providers.recipe.AbyssAlchemyBlendRecipeProvider;
+import com.karasu256.projectk.datagen.providers.recipe.AbyssMagicTableRecipeProvider;
+import com.karasu256.projectk.datagen.providers.recipe.AbyssSynthesizerRecipeProvider;
 import com.karasu256.projectk.neoforge.datagen.providers.NeoForgeBlockStateProvider;
 import com.karasu256.projectk.neoforge.datagen.providers.NeoForgeModIntegrationProvider;
 import com.karasu256.projectk.neoforge.datagen.providers.NeoForgeRecipeProvider;

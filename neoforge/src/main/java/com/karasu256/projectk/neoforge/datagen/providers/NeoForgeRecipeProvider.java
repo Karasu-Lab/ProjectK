@@ -1,6 +1,6 @@
 package com.karasu256.projectk.neoforge.datagen.providers;
 
-import com.karasu256.projectk.datagen.providers.CommonRecipeProvider;
+import com.karasu256.projectk.datagen.providers.recipe.CommonRecipeProvider;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.recipes.RecipeOutput;

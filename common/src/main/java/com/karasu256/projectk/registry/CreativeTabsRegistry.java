@@ -2,8 +2,7 @@ package com.karasu256.projectk.registry;
 
 import com.karasu256.projectk.ProjectK;
 import com.karasu256.projectk.block.ProjectKBlocks;
-import com.karasu256.projectk.data.AbyssEnergyData;
-import com.karasu256.projectk.energy.ProjectKEnergies;
+import com.karasu256.projectk.item.IVariantItem;
 import com.karasu256.projectk.item.ProjectKItems;
 import dev.architectury.registry.registries.DeferredRegister;
 import dev.architectury.registry.registries.RegistrySupplier;
@@ -16,8 +15,8 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ItemLike;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.LinkedHashSet;
+import java.util.Set;
 import java.util.function.Supplier;
 
 @KRegistry(modId = ProjectK.MOD_ID, order = 7)
@@ -37,8 +36,8 @@ public class CreativeTabsRegistry implements IKRegistryTarget {
 
     public abstract static class AbstractTabCategory implements TabCategory {
         private final String id;
-        protected final List<RegistrySupplier<? extends ItemLike>> items = new ArrayList<>();
-        protected final List<Supplier<ItemStack>> stacks = new ArrayList<>();
+        protected final Set<RegistrySupplier<? extends ItemLike>> items = new LinkedHashSet<>();
+        protected final Set<Supplier<ItemStack>> stacks = new LinkedHashSet<>();
         private final TabCategory parent;
 
         public AbstractTabCategory(String id) {
@@ -71,12 +70,22 @@ public class CreativeTabsRegistry implements IKRegistryTarget {
 
         @Override
         public void display(CreativeModeTab.ItemDisplayParameters params, CreativeModeTab.Output output) {
-            items.forEach(i -> output.accept(i.get()));
+            items.forEach(i -> {
+                Item item = i.get().asItem();
+                if (item instanceof IVariantItem variantItem && variantItem.shouldSkipDefault())
+                    return;
+                output.accept(item);
+            });
             stacks.forEach(s -> output.accept(s.get()));
             displayExtra(params, output);
         }
 
         protected void displayExtra(CreativeModeTab.ItemDisplayParameters params, CreativeModeTab.Output output) {
+            items.forEach(i -> {
+                if (i.get().asItem() instanceof IVariantItem variantItem) {
+                    variantItem.displayVariants(output);
+                }
+            });
         }
 
         public abstract ItemStack getIcon();
@@ -86,12 +95,6 @@ public class CreativeTabsRegistry implements IKRegistryTarget {
         @Override
         public ItemStack getIcon() {
             return new ItemStack(ProjectKBlocks.ABYSS_GENERATOR.get());
-        }
-
-        @Override
-        protected void displayExtra(CreativeModeTab.ItemDisplayParameters params, CreativeModeTab.Output output) {
-            displayAbyssCores(output);
-            displayCreativeStorage(output);
         }
     };
 
@@ -121,22 +124,12 @@ public class CreativeTabsRegistry implements IKRegistryTarget {
         public ItemStack getIcon() {
             return new ItemStack(ProjectKBlocks.ABYSS_MAGIC_TABLE.get());
         }
-
-        @Override
-        protected void displayExtra(CreativeModeTab.ItemDisplayParameters params, CreativeModeTab.Output output) {
-            displayCreativeStorage(output);
-        }
     };
 
     public static final TabCategory MATERIALS = new DelegatingCategory("materials", GENERAL) {
         @Override
         public ItemStack getIcon() {
             return new ItemStack(ProjectKItems.ABYSS_WRENCH.get());
-        }
-
-        @Override
-        protected void displayExtra(CreativeModeTab.ItemDisplayParameters params, CreativeModeTab.Output output) {
-            displayAbyssCores(output);
         }
     };
 
@@ -159,22 +152,6 @@ public class CreativeTabsRegistry implements IKRegistryTarget {
         TABS.register(category.id(), () -> CreativeModeTab.builder(CreativeModeTab.Row.BOTTOM, 0)
                 .title(Component.translatable("category.projectk." + category.id()))
                 .icon(((AbstractTabCategory) category)::getIcon).displayItems(category::display).build());
-    }
-
-    private static void displayAbyssCores(CreativeModeTab.Output output) {
-        for (ProjectKEnergies.EnergyDefinition def : ProjectKEnergies.getDefinitions()) {
-            ItemStack stack = new ItemStack(ProjectKBlocks.ABYSS_CORE.get());
-            AbyssEnergyData.applyToStack(stack, def.id(), 0L);
-            output.accept(stack);
-        }
-    }
-
-    private static void displayCreativeStorage(CreativeModeTab.Output output) {
-        for (ProjectKEnergies.EnergyDefinition def : ProjectKEnergies.getDefinitions()) {
-            ItemStack stack = new ItemStack(ProjectKBlocks.CREATIVE_ABYSS_STORAGE.get());
-            AbyssEnergyData.applyToStack(stack, def.id(), Long.MAX_VALUE / 2);
-            output.accept(stack);
-        }
     }
 
     public static <T extends Item> RegistrySupplier<T> tab(RegistrySupplier<T> registrySupplier, TabCategory category) {

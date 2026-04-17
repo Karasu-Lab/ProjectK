@@ -3,6 +3,7 @@ package com.karasu256.projectk.item.custom;
 import com.karasu256.projectk.data.AbyssEnergyData;
 import com.karasu256.projectk.data.EMCData;
 import com.karasu256.projectk.data.ProjectKDataComponets;
+import com.karasu256.projectk.item.IVariantItem;
 import dev.architectury.registry.registries.RegistrySupplier;
 import net.karasuniki.karasunikilib.api.data.IEnergy;
 import net.minecraft.resources.ResourceLocation;
@@ -11,7 +12,7 @@ import net.minecraft.world.item.Item;
 import java.math.BigInteger;
 import java.util.Optional;
 
-public class ProjectKItem extends Item implements IEMCConfig {
+public class ProjectKItem extends Item implements IEMCConfig, IVariantItem {
     public ProjectKItem(Properties properties) {
         super(properties);
     }

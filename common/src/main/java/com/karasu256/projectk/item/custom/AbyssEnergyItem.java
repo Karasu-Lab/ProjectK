@@ -1,13 +1,17 @@
 package com.karasu256.projectk.item.custom;
 
+import com.karasu256.projectk.data.AbyssEnergyData;
 import com.karasu256.projectk.data.EnergyCapacityData;
 import com.karasu256.projectk.energy.IProjectKEnergy;
 import com.karasu256.projectk.energy.ProjectKEnergies;
+import com.karasu256.projectk.item.IVariantItem;
 import dev.architectury.registry.registries.RegistrarManager;
 import net.karasuniki.karasunikilib.api.KarasunikiLib;
 import net.karasuniki.karasunikilib.api.registry.KarasunikiRegistries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
@@ -15,6 +19,20 @@ import java.util.List;
 public class AbyssEnergyItem extends ProjectKItem {
     public AbyssEnergyItem(Properties properties) {
         super(properties);
+    }
+
+    @Override
+    public boolean shouldSkipDefault() {
+        return true;
+    }
+
+    @Override
+    public void displayVariants(CreativeModeTab.Output output) {
+        for (ProjectKEnergies.EnergyDefinition def : ProjectKEnergies.getDefinitions()) {
+            ItemStack stack = new ItemStack(this);
+            AbyssEnergyData.applyToStack(stack, def.id(), def.defaultAmount());
+            output.accept(stack);
+        }
     }
 
     public static Component buildTooltip(ResourceLocation energyId, long amount, @Nullable EnergyCapacityData capacityData) {

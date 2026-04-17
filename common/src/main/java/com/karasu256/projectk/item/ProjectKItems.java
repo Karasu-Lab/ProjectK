@@ -2,6 +2,7 @@ package com.karasu256.projectk.item;
 
 import com.karasu256.projectk.ProjectK;
 import com.karasu256.projectk.api.fluid.AbyssEnergyFluidConversion;
+import com.karasu256.projectk.block.ProjectKBlocks;
 import com.karasu256.projectk.data.AbyssEnergyData;
 import com.karasu256.projectk.data.ProjectKDataComponets;
 import com.karasu256.projectk.data.TierUpgradeData;
@@ -19,6 +20,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.level.block.Block;
 
 import java.util.Map;
 
@@ -78,12 +80,13 @@ public class ProjectKItems implements IKRegistryInitializerTarget {
             () -> new AbyssAbsorptionPrismShard(new ProjectKItem.Properties().emc(128L)), MATERIALS);
 
     static {
-        for (ProjectKEnergies.EnergyDefinition definition : ProjectKEnergies.getDefinitions()) {
-            CreativeTabsRegistry.tabStack(() -> buildAbyssIngotVariant(definition), INGOT);
-        }
     }
 
+    @SuppressWarnings("unchecked")
     public static void init() {
+        for (ProjectKBlocks.BlockItemInfo info : ProjectKBlocks.getBlockItemInfos()) {
+            ItemsRegistry.blockItem((RegistrySupplier<Block>) info.block(), info.properties(), info.category());
+        }
     }
 
     public static RegistrySupplier<Item> getBucket(ResourceLocation energyId) {

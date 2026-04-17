@@ -1,19 +1,19 @@
 package com.karasu256.projectk.item.custom;
 
 import com.karasu256.projectk.data.AbyssEnergyData;
-import com.karasu256.projectk.energy.AbyssEnergyUtils;
 import com.karasu256.projectk.energy.ProjectKEnergies;
 import com.karasu256.projectk.item.IVariantItem;
-import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
-import org.jetbrains.annotations.NotNull;
 
-public class AbyssCoreItem extends ProjectKBlockItem {
-    public AbyssCoreItem(Block block, Properties properties) {
+public class AbyssMachineBlockItem extends ProjectKBlockItem {
+    private final long initialAmount;
+
+    public AbyssMachineBlockItem(Block block, Properties properties, long initialAmount) {
         super(block, properties);
+        this.initialAmount = initialAmount;
     }
 
     @Override
@@ -25,15 +25,8 @@ public class AbyssCoreItem extends ProjectKBlockItem {
     public void displayVariants(CreativeModeTab.Output output) {
         for (ProjectKEnergies.EnergyDefinition def : ProjectKEnergies.getDefinitions()) {
             ItemStack stack = new ItemStack(this);
-            AbyssEnergyData.applyToStack(stack, def.id(), 0L);
+            AbyssEnergyData.applyToStack(stack, def.id(), initialAmount);
             output.accept(stack);
         }
-    }
-
-    @Override
-    public @NotNull Component getName(ItemStack stack) {
-        return ProjectKEnergies.getDefinition(AbyssEnergyUtils.getEffectiveEnergyId(stack))
-                .<Component>map(def -> Component.translatable("block.projectk." + def.idPath() + "_core"))
-                .orElse(super.getName(stack));
     }
 }

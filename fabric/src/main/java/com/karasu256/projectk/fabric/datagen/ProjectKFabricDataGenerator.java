@@ -2,6 +2,10 @@ package com.karasu256.projectk.fabric.datagen;
 
 import com.karasu256.projectk.datagen.ProjectKCommonDataGenerator;
 import com.karasu256.projectk.datagen.providers.*;
+import com.karasu256.projectk.datagen.providers.lang.ProjectKLanguageProvider;
+import com.karasu256.projectk.datagen.providers.recipe.AbyssAlchemyBlendRecipeProvider;
+import com.karasu256.projectk.datagen.providers.recipe.AbyssMagicTableRecipeProvider;
+import com.karasu256.projectk.datagen.providers.recipe.AbyssSynthesizerRecipeProvider;
 import com.karasu256.projectk.enchant.ProjectKEnchantmentBootstrap;
 import com.karasu256.projectk.energy.ProjectKEnergies;
 import com.karasu256.projectk.fabric.datagen.providers.FabricModIntegrationProvider;

@@ -23,12 +23,18 @@ import net.minecraft.data.models.model.TextureSlot;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.SlabBlock;
+import net.minecraft.world.level.block.StairBlock;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class ProjectKFabricModelProvider extends FabricModelProvider implements CommonBlockStateProvider.Generator, CommonItemModelProvider.ItemGenerator {
 
     private BlockModelGenerators blockModelGenerators;
     private ItemModelGenerators itemModelGenerators;
+    private final Map<Block, BlockModelGenerators.BlockFamilyProvider> familyCache = new HashMap<>();
 
     public ProjectKFabricModelProvider(FabricDataOutput output) {
         super(output);
@@ -141,24 +147,40 @@ public class ProjectKFabricModelProvider extends FabricModelProvider implements 
         this.blockModelGenerators.blockStateOutput.accept(
                 MultiVariantGenerator.multiVariant(block).with(propertyDispatch));
     }
+
     @Override
     public void activeBlock(Block block, String modelPath, String activeModelPath) {
         ResourceLocation inactive = ResourceLocation.parse(modelPath);
         ResourceLocation active = ResourceLocation.parse(activeModelPath);
-        this.blockModelGenerators.blockStateOutput.accept(
-                MultiVariantGenerator.multiVariant(block)
-                        .with(PropertyDispatch.property(AbyssPortal.ACTIVE)
-                                .select(false, Variant.variant().with(VariantProperties.MODEL, inactive))
-                                .select(true, Variant.variant().with(VariantProperties.MODEL, active)))
-        );
+        this.blockModelGenerators.blockStateOutput.accept(MultiVariantGenerator.multiVariant(block)
+                .with(PropertyDispatch.property(AbyssPortal.ACTIVE)
+                        .select(false, Variant.variant().with(VariantProperties.MODEL, inactive))
+                        .select(true, Variant.variant().with(VariantProperties.MODEL, active))));
+    }
+
+    private BlockModelGenerators.BlockFamilyProvider getFamily(Block fullBlock) {
+        return familyCache.computeIfAbsent(fullBlock, this.blockModelGenerators::family);
+    }
+
+    @Override
+    public void fullBlockByFamily(Block block) {
+        getFamily(block);
+    }
+
+    @Override
+    public void stairsBlock(StairBlock block, Block fullBlock) {
+        getFamily(fullBlock).stairs(block);
+    }
+
+    @Override
+    public void slabBlock(SlabBlock block, Block fullBlock) {
+        getFamily(fullBlock).slab(block);
     }
 
     @Override
     public void existingModelBlock(Block block, String modelPath) {
-        ResourceLocation modelLocation = ResourceLocation.parse(modelPath);
-        TextureMapping textures = TextureMapping.cube(block);
-        ModelTemplates.CUBE_ALL.create(modelLocation, textures, this.blockModelGenerators.modelOutput);
-        this.blockModelGenerators.blockStateOutput.accept(BlockModelGenerators.createSimpleBlock(block, modelLocation));
+        this.blockModelGenerators.blockStateOutput.accept(
+                BlockModelGenerators.createSimpleBlock(block, ResourceLocation.parse(modelPath)));
     }
 
     @Override

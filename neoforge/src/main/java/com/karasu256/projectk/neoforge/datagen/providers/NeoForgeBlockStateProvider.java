@@ -14,6 +14,8 @@ import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.SlabBlock;
+import net.minecraft.world.level.block.StairBlock;
 import net.neoforged.neoforge.client.model.generators.BlockStateProvider;
 import net.neoforged.neoforge.client.model.generators.ConfiguredModel;
 import net.neoforged.neoforge.client.model.generators.ModelFile;
@@ -31,11 +33,6 @@ public class NeoForgeBlockStateProvider extends BlockStateProvider implements Co
     protected void registerStatesAndModels() {
         CommonBlockStateProvider.generate(this);
         CommonItemModelProvider.generate(this);
-    }
-
-    @Override
-    public void simpleBlock(@NotNull Block block) {
-        super.simpleBlock(block);
     }
 
     @Override
@@ -90,10 +87,6 @@ public class NeoForgeBlockStateProvider extends BlockStateProvider implements Co
         ResourceLocation baseTex = ResourceLocation.fromNamespaceAndPath(ProjectK.MOD_ID, "block/multipart/" + id);
         ResourceLocation sideTex = ResourceLocation.fromNamespaceAndPath(ProjectK.MOD_ID,
                 "block/multipart/" + id + "_vertical");
-        ResourceLocation inputTex = ResourceLocation.fromNamespaceAndPath(ProjectK.MOD_ID,
-                "block/multipart/" + id + "_input");
-        ResourceLocation outputTex = ResourceLocation.fromNamespaceAndPath(ProjectK.MOD_ID,
-                "block/multipart/" + id + "_output");
 
         ModelFile centerModel = models().getBuilder(id + "_center")
                 .parent(models().getExistingFile(ResourceLocation.withDefaultNamespace("block/block")))
@@ -104,20 +97,6 @@ public class NeoForgeBlockStateProvider extends BlockStateProvider implements Co
                 .parent(models().getExistingFile(ResourceLocation.withDefaultNamespace("block/block")))
                 .texture("particle", sideTex).texture("all", sideTex).element().from(5, 5, 0).to(11, 11, 5)
                 .allFaces((d, f) -> f.uvs(0, 0, 16, 16).texture("#all")).end();
-
-        ModelFile inputModel = models().getBuilder(id + "_input")
-                .parent(models().getExistingFile(ResourceLocation.withDefaultNamespace("block/block")))
-                .texture("particle", inputTex).texture("all", inputTex).element().from(4, 4, 0).to(12, 12, 2)
-                .allFaces((d, f) -> f.uvs(4, 0, 12, 2).texture("#all")).end().element().from(6, 6, 2).to(10, 10, 4)
-                .allFaces((d, f) -> f.uvs(6, 2, 10, 4).texture("#all")).end().element().from(5, 5, 4).to(11, 11, 5)
-                .allFaces((d, f) -> f.uvs(5, 4, 11, 5).texture("#all")).end();
-
-        ModelFile outputModel = models().getBuilder(id + "_output")
-                .parent(models().getExistingFile(ResourceLocation.withDefaultNamespace("block/block")))
-                .texture("particle", outputTex).texture("all", outputTex).element().from(7, 7, 0).to(9, 9, 2)
-                .allFaces((d, f) -> f.uvs(7, 0, 9, 2).texture("#all")).end().element().from(6, 6, 2).to(10, 10, 3)
-                .allFaces((d, f) -> f.uvs(6, 2, 10, 3).texture("#all")).end().element().from(5, 5, 3).to(11, 11, 5)
-                .allFaces((d, f) -> f.uvs(5, 3, 11, 5).texture("#all")).end();
 
         MultiPartBlockStateBuilder builder = getMultipartBuilder(block);
         builder.part().modelFile(centerModel).addModel().end();
@@ -155,6 +134,23 @@ public class NeoForgeBlockStateProvider extends BlockStateProvider implements Co
         });
     }
 
+    @Override
+    public void fullBlockByFamily(Block block) {
+        this.simpleBlock(block);
+    }
+
+    @Override
+    public void stairsBlock(StairBlock block, Block fullBlock) {
+        stairsBlock(block, blockTexture(fullBlock));
+        this.simpleBlockItem(block);
+    }
+
+    @Override
+    public void slabBlock(SlabBlock block, Block fullBlock) {
+        slabBlock(block, BuiltInRegistries.BLOCK.getKey(fullBlock), blockTexture(fullBlock));
+        this.simpleBlockItem(block);
+    }
+
     private int getRotationY(Direction dir) {
         return switch (dir) {
             case EAST -> 90;
@@ -172,11 +168,9 @@ public class NeoForgeBlockStateProvider extends BlockStateProvider implements Co
         };
     }
 
-
     @Override
     public void simpleItem(@NotNull RegistrySupplier<Item> item) {
         itemModels().withExistingParent(item.getId().getPath(), "item/generated").texture("layer0",
                 ResourceLocation.fromNamespaceAndPath(ProjectK.MOD_ID, "item/" + item.getId().getPath()));
     }
-
 }
