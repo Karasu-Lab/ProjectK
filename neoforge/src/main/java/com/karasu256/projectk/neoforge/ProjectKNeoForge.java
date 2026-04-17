@@ -6,14 +6,12 @@ import com.karasu256.projectk.client.ProjectKClient;
 import com.karasu256.projectk.client.ProjectKCoreShaders;
 import com.karasu256.projectk.client.resource.ProjectKDynamicResources;
 import com.karasu256.projectk.client.screen.*;
-import com.karasu256.projectk.item.ProjectKItems;
 import com.karasu256.projectk.menu.ProjectKMenus;
 import com.karasu256.projectk.neoforge.config.ProjectKNeoForgeConfig;
 import com.karasu256.projectk.neoforge.integrations.NeoForgeModIntegrationSupplier;
 import com.karasu256.projectk.neoforge.platform.NeoForgeProjectKPlatform;
 import com.karasu256.projectk.particle.*;
 import com.karasu256.projectk.platform.PlatformServices;
-import com.karasu256.projectk.utils.Id;
 import dev.architectury.registry.registries.RegistrarManager;
 import dev.architectury.registry.registries.RegistrySupplier;
 import net.karasuniki.karasunikilib.api.KarasunikiLib;
@@ -107,7 +105,6 @@ public final class ProjectKNeoForge {
     @SuppressWarnings({"deprecation", "Convert2Lambda"})
     private void onClientSetup(FMLClientSetupEvent event) {
         ProjectKClient.init();
-        ProjectKItems.init();
         ProjectKClient.registerRenderLayers(new PKRenderProxy.PKRenderTypeRegistrar() {
             @Override
             public void register(RegistrySupplier<? extends Block> block, RenderType type) {

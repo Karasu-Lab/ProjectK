@@ -1,6 +1,8 @@
 {
-  "parent": "builtin/entity",
+  "parent": "minecraft:block/cube_bottom_top",
   "textures": {
-    "particle": "projectk:block/abyss_core"
+    "bottom": "projectk:block/abyss_core/abyss_core_bottom",
+    "side": "projectk:block/abyss_core/abyss_core_side",
+    "top": "projectk:block/abyss_core/abyss_core_top"
   }
 }

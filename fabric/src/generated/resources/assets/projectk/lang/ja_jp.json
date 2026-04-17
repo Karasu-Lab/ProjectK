@@ -23,6 +23,8 @@
   "block.projectk.karasium_ore": "カラシウム鉱石",
   "block.projectk.love_energy_core": "愛の深淵コア",
   "block.projectk.polished_netherrack": "磨かれたネザーラック",
+  "block.projectk.polished_netherrack_slab": "磨かれたネザーラックのハーフブロック",
+  "block.projectk.polished_netherrack_stairs": "磨かれたネザーラックの階段",
   "block.projectk.yang_abyss_energy_core": "陽の深淵コア",
   "block.projectk.yin_abyss_energy_core": "陰の深淵コア",
   "category.projectk.building_blocks": "ProjectK 建築ブロック",
