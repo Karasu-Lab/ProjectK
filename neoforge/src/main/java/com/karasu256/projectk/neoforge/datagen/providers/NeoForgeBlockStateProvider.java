@@ -142,11 +142,11 @@ public class NeoForgeBlockStateProvider extends BlockStateProvider implements Co
                 "block/" + baseName + "_back");
 
         ModelFile pulseModel = models().withExistingParent("block/" + baseName + "_pulse",
-                        "minecraft:block/cube_orientable_top_bottom").texture("top", pulseTex).texture("front", pulseTex)
+                        "minecraft:block/orientable_with_bottom").texture("top", pulseTex).texture("front", pulseTex)
                 .texture("side", sideTex).texture("bottom", backTex);
 
         ModelFile dcModel = models().withExistingParent("block/" + baseName + "_dc",
-                        "minecraft:block/cube_orientable_top_bottom").texture("top", dcTex).texture("front", dcTex)
+                        "minecraft:block/orientable_with_bottom").texture("top", dcTex).texture("front", dcTex)
                 .texture("side", sideTex).texture("bottom", backTex);
 
         getVariantBuilder(block).forAllStates(state -> {

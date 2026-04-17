@@ -32,9 +32,6 @@ public class ProjectKNeoForgeDataGenerator {
     @SubscribeEvent
     public static void gatherData(@NotNull GatherDataEvent event) {
         DataGenerator generator = event.getGenerator();
-        ProjectKEnergies.init();
-        ProjectKBlocks.init();
-        ProjectKItems.init();
 
         ProjectKCommonDataGenerator.gatherData(new ProjectKCommonDataGenerator.ProviderRegistry() {
             @Override
