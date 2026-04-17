@@ -13,6 +13,7 @@ public class JaJpLanguage implements ProjectKLanguage {
 
     @Override
     public void addCommon(BiConsumer<String, String> adder) {
+        adder.accept("category.projectk", "ProjectK");
         adder.accept("category.projectk.general", "ProjectK 全般");
         adder.accept("category.projectk.building_blocks", "ProjectK 建築ブロック");
         adder.accept("category.projectk.ingot", "ProjectK インゴット");

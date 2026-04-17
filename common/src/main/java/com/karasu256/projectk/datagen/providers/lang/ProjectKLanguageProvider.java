@@ -61,10 +61,18 @@ public class ProjectKLanguageProvider implements DataProvider {
         });
     }
 
-    private void addEnergyTranslations(ProjectKLanguage lang, JsonObject json, BiConsumer<String, String> adder) {
-        for (ProjectKEnergies.EnergyDefinition definition : ProjectKEnergies.getDefinitions()) {
-            lang.addEnergy(definition, adder);
-        }
+    private void addEnergyTranslations(ProjectKLanguage language, JsonObject json, BiConsumer<String, String> adder) {
+        ProjectKEnergies.getDefinitions().forEach(definition -> {
+            language.addEnergy(definition, (key, value) -> {
+                if (key.contains("energy_type.abyss")) {
+                    if (definition.id().equals(ProjectKEnergies.BASE_ID)) {
+                        adder.accept(key, value);
+                    }
+                } else {
+                    adder.accept(key, value);
+                }
+            });
+        });
     }
 
     private void addEnergyItemTranslations(ProjectKLanguage lang, JsonObject json, BiConsumer<String, String> adder) {
