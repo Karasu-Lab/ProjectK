@@ -27,6 +27,10 @@ public class CreativeTabsRegistry implements IKRegistryTarget {
     public interface TabCategory {
         String id();
 
+        default String getTranslationKey() {
+            return "category.projectk." + id();
+        }
+
         void add(RegistrySupplier<? extends ItemLike> item);
 
         void addStack(Supplier<ItemStack> stack);

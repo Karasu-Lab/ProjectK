@@ -149,6 +149,10 @@ public class ProjectKBlocks implements IKRegistryInitializerTarget {
             () -> new Block(BlockBehaviour.Properties.ofFullCopy(Blocks.NETHERRACK)), new Item.Properties(),
             BUILDING_BLOCKS);
 
+    public static final RegistrySupplier<Block> POLISHED_GLOWSTONE = registerBlockSet("polished_glowstone",
+            () -> new Block(BlockBehaviour.Properties.ofFullCopy(Blocks.GLOWSTONE)), new Item.Properties(),
+            BUILDING_BLOCKS);
+
     public static void init() {
     }
 

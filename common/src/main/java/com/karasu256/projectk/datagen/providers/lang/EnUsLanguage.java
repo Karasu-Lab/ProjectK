@@ -1,9 +1,10 @@
 package com.karasu256.projectk.datagen.providers.lang;
 
 import com.karasu256.projectk.block.BlockMaterials;
+import com.karasu256.projectk.block.ProjectKBlocks;
 import com.karasu256.projectk.energy.ProjectKEnergies;
-
-import java.util.function.BiConsumer;
+import com.karasu256.projectk.item.ProjectKItems;
+import com.karasu256.projectk.registry.CreativeTabsRegistry;
 
 public class EnUsLanguage implements ProjectKLanguage {
     @Override
@@ -12,122 +13,122 @@ public class EnUsLanguage implements ProjectKLanguage {
     }
 
     @Override
-    public void addCommon(BiConsumer<String, String> adder) {
-        adder.accept("category.projectk", "ProjectK");
-        adder.accept("category.projectk.general", "ProjectK General");
-        adder.accept("category.projectk.building_blocks", "ProjectK Building Blocks");
-        adder.accept("category.projectk.ingot", "ProjectK Ingot");
-        adder.accept("category.projectk.fluids", "ProjectK Fluids");
-        adder.accept("category.projectk.machines", "ProjectK Machines");
-        adder.accept("category.projectk.materials", "ProjectK Materials");
-        adder.accept("gui.configscreen.title", "ProjectK Config");
+    public void addCommon(TranslationAdder adder) {
+        adder.add("category.projectk", "ProjectK");
+        adder.add(CreativeTabsRegistry.GENERAL, "ProjectK General");
+        adder.add(CreativeTabsRegistry.BUILDING_BLOCKS, "ProjectK Building Blocks");
+        adder.add(CreativeTabsRegistry.INGOT, "ProjectK Ingot");
+        adder.add(CreativeTabsRegistry.FLUIDS, "ProjectK Fluids");
+        adder.add(CreativeTabsRegistry.MACHINES, "ProjectK Machines");
+        adder.add(CreativeTabsRegistry.MATERIALS, "ProjectK Materials");
+        adder.add("gui.configscreen.title", "ProjectK Config");
 
-        adder.accept("rei.category.projectk.in_biome_in_block_crafting", "In-Biome Block Crafting");
-        adder.accept("rei.category.projectk.in_biome_in_block_crafting.requirement", "Biome required: %s");
-        adder.accept("rei.category.projectk.in_biome_in_block_crafting.requirement_tag", "Biome tag required: %s");
-        adder.accept("rei.category.projectk.abyss_magic_table", "Abyss Magic Table");
-        adder.accept("rei.category.projectk.abyss_alchemy_blend_machine", "Abyss Alchemy Blend Machine");
-        adder.accept("rei.category.projectk.abyss_synthesizer", "Abyss Synthesizer");
+        adder.add("rei.category.projectk.in_biome_in_block_crafting", "In-Biome Block Crafting");
+        adder.add("rei.category.projectk.in_biome_in_block_crafting.requirement", "Biome required: %s");
+        adder.add("rei.category.projectk.in_biome_in_block_crafting.requirement_tag", "Biome tag required: %s");
+        adder.add("rei.category.projectk.abyss_magic_table", "Abyss Magic Table");
+        adder.add("rei.category.projectk.abyss_alchemy_blend_machine", "Abyss Alchemy Blend Machine");
+        adder.add("rei.category.projectk.abyss_synthesizer", "Abyss Synthesizer");
 
-        adder.accept("energy.projectk.abyss_energy_format", "%s Abyss Energy");
+        adder.add("energy.projectk.abyss_energy_format", "%s Abyss Energy");
 
-        adder.accept("tooltip.projectk.abyss_wrench_behavior", "Mode: %s");
-        adder.accept("tooltip.projectk.wthit.energy_none", "None");
-        adder.accept("tooltip.projectk.wthit.energy_no_limit", "Energy: %s");
-        adder.accept("tooltip.projectk.wthit.held_item", "Item: %s");
-        adder.accept("tooltip.projectk.wthit.input_item", "Input: %s");
-        adder.accept("tooltip.projectk.wthit.output_item", "Output: %s");
-        adder.accept("tooltip.projectk.wthit.progress", "Progress: %s%%");
-        adder.accept("tooltip.projectk.wthit.tier", "Tier: %s/%s");
+        adder.add("tooltip.projectk.abyss_wrench_behavior", "Mode: %s");
+        adder.add("tooltip.projectk.wthit.energy_none", "None");
+        adder.add("tooltip.projectk.wthit.energy_no_limit", "Energy: %s");
+        adder.add("tooltip.projectk.wthit.held_item", "Item: %s");
+        adder.add("tooltip.projectk.wthit.input_item", "Input: %s");
+        adder.add("tooltip.projectk.wthit.output_item", "Output: %s");
+        adder.add("tooltip.projectk.wthit.progress", "Progress: %s%%");
+        adder.add("tooltip.projectk.wthit.tier", "Tier: %s/%s");
 
-        adder.accept("container.projectk.abyss_magic_table", "Abyss Magic Table");
-        adder.accept("container.projectk.abyss_alchemy_blend_machine", "Abyss Alchemy Blend Machine");
-        adder.accept("container.projectk.abyss_enchanter", "Abyss Enchanter");
-        adder.accept("container.projectk.abyss_charger", "Abyss Charger");
-        adder.accept("container.projectk.abyss_storage", "Abyss Storage");
-        adder.accept("container.projectk.abyss_enchant_remover", "Abyss Enchant Remover");
-        adder.accept("container.projectk.abyss_synthesizer", "Abyss Synthesizer");
-        adder.accept("container.projectk.creative_abyss_storage", "Creative Abyss Storage");
+        adder.add("container.projectk.abyss_magic_table", "Abyss Magic Table");
+        adder.add("container.projectk.abyss_alchemy_blend_machine", "Abyss Alchemy Blend Machine");
+        adder.add("container.projectk.abyss_enchanter", "Abyss Enchanter");
+        adder.add("container.projectk.abyss_charger", "Abyss Charger");
+        adder.add("container.projectk.abyss_storage", "Abyss Storage");
+        adder.add("container.projectk.abyss_enchant_remover", "Abyss Enchant Remover");
+        adder.add("container.projectk.abyss_synthesizer", "Abyss Synthesizer");
+        adder.add("container.projectk.creative_abyss_storage", "Creative Abyss Storage");
 
-        adder.accept("gui.projectk.dump", "Dump");
-        adder.accept("tooltip.projectk.infinite", "Infinite");
-        adder.accept("tooltip.projectk.energy_unit", "AE");
-        adder.accept("tooltip.projectk.synthesizer.energy_total", "Total Energy: %s/%s");
+        adder.add("gui.projectk.dump", "Dump");
+        adder.add("tooltip.projectk.infinite", "Infinite");
+        adder.add("tooltip.projectk.energy_unit", "AE");
+        adder.add("tooltip.projectk.synthesizer.energy_total", "Total Energy: %s/%s");
 
-        adder.accept("item.projectk.abyss_wrench", "Abyss Wrench");
+        adder.add(ProjectKItems.ABYSS_WRENCH.get(), "Abyss Wrench");
 
-        adder.accept("wrench_behavior.projectk.input", "Input");
-        adder.accept("wrench_behavior.projectk.output", "Output");
-        adder.accept("wrench_behavior.projectk.normal", "Normal");
-        adder.accept("wrench_behavior.projectk.none", "None");
-        adder.accept("wrench_behavior.projectk.downgrade", "Downgrade");
+        adder.add("wrench_behavior.projectk.input", "Input");
+        adder.add("wrench_behavior.projectk.output", "Output");
+        adder.add("wrench_behavior.projectk.normal", "Normal");
+        adder.add("wrench_behavior.projectk.none", "None");
+        adder.add("wrench_behavior.projectk.downgrade", "Downgrade");
 
-        adder.accept("block.projectk.abyss_generator", "Abyss Generator");
-        adder.accept("block.projectk.abyss_magic_table", "Abyss Magic Table");
-        adder.accept("block.projectk.abyss_alchemy_blend_machine", "Abyss Alchemy Blend Machine");
-        adder.accept("block.projectk.abyss_enchanter", "Abyss Enchanter");
-        adder.accept("block.projectk.abyss_charger", "Abyss Charger");
-        adder.accept("block.projectk.abyss_storage", "Abyss Storage");
-        adder.accept("block.projectk.creative_abyss_storage", "Creative Abyss Storage");
-        adder.accept("block.projectk.abyss_energy_cable", "Abyss Energy Cable");
-        adder.accept("block.projectk.karasium_ore", "Karasium Ore");
-        adder.accept("block.projectk.deepslate_karasium_ore", "Deepslate Karasium Ore");
-        adder.accept("block.projectk.abyss_enchant_remover", "Abyss Enchant Remover");
-        adder.accept("block.projectk.abyss_synthesizer", "Abyss Synthesizer");
-        adder.accept("block.projectk.abyss_laser_emitter", "Abyss Laser Emitter");
-        adder.accept("block.projectk.abyss_absorption_prism", "Abyss Absorption Prism");
-        adder.accept("block.projectk.abyss_portal", "Abyss Portal");
-        adder.accept("block.projectk.polished_netherrack", "Polished Netherrack");
+        adder.add(ProjectKBlocks.ABYSS_GENERATOR.get(), "Abyss Generator");
+        adder.add(ProjectKBlocks.ABYSS_MAGIC_TABLE.get(), "Abyss Magic Table");
+        adder.add(ProjectKBlocks.ABYSS_ALCHEMY_BLEND_MACHINE.get(), "Abyss Alchemy Blend Machine");
+        adder.add(ProjectKBlocks.ABYSS_ENCHANTER.get(), "Abyss Enchanter");
+        adder.add(ProjectKBlocks.ABYSS_CHARGER.get(), "Abyss Charger");
+        adder.add(ProjectKBlocks.ABYSS_STORAGE.get(), "Abyss Storage");
+        adder.add(ProjectKBlocks.CREATIVE_ABYSS_STORAGE.get(), "Creative Abyss Storage");
+        adder.add(ProjectKBlocks.ABYSS_ENERGY_CABLE.get(), "Abyss Energy Cable");
+        adder.add(ProjectKBlocks.KARASIUM_ORE.get(), "Karasium Ore");
+        adder.add(ProjectKBlocks.DEEPSLATE_KARASIUM_ORE.get(), "Deepslate Karasium Ore");
+        adder.add(ProjectKBlocks.ABYSS_ENCHANT_REMOVER.get(), "Abyss Enchant Remover");
+        adder.add(ProjectKBlocks.ABYSS_SYNTHESIZER.get(), "Abyss Synthesizer");
+        adder.add(ProjectKBlocks.ABYSS_LASER_EMITTER.get(), "Abyss Laser Emitter");
+        adder.add(ProjectKBlocks.ABYSS_ABSORPTION_PRISM.get(), "Abyss Absorption Prism");
+        adder.add(ProjectKBlocks.ABYSS_PORTAL.get(), "Abyss Portal");
+        adder.add(ProjectKBlocks.POLISHED_NETHERRACK.get(), "Polished Netherrack");
 
-        adder.accept("block.projectk.abyss_core", "Abyss Core");
+        adder.add(ProjectKBlocks.ABYSS_CORE.get(), "Abyss Core");
 
-        adder.accept("item.projectk.wither_bone", "Wither Bone");
-        adder.accept("item.projectk.karasium", "Karasium");
-        adder.accept("item.projectk.raw_karasium", "Raw Karasium");
-        adder.accept("item.projectk.karasium_dust", "Karasium Dust");
-        adder.accept("item.projectk.abyss_ingot", "Abyss Ingot");
-        adder.accept("item.projectk.tier_upgrade", "Tier Upgrade");
-        adder.accept("item.projectk.abyss_bracelet", "Abyss Bracelet");
-        adder.accept("item.projectk.abyss_staff", "Abyss Staff");
-        adder.accept("item.projectk.abyss_absorption_prism_shard", "Abyss Absorption Prism Shard");
+        adder.add(ProjectKItems.WITHER_BONE.get(), "Wither Bone");
+        adder.add(ProjectKItems.KARASIUM.get(), "Karasium");
+        adder.add(ProjectKItems.RAW_KARASIUM.get(), "Raw Karasium");
+        adder.add(ProjectKItems.KARASIUM_DUST.get(), "Karasium Dust");
+        adder.add(ProjectKItems.ABYSS_INGOT.get(), "Abyss Ingot");
+        adder.add(ProjectKItems.TIER_UPGRADE.get(), "Tier Upgrade");
+        adder.add(ProjectKItems.ABYSS_BRACELET.get(), "Abyss Bracelet");
+        adder.add(ProjectKItems.ABYSS_STAFF.get(), "Abyss Staff");
+        adder.add(ProjectKItems.ABYSS_ABSORPTION_PRISM_SHARD.get(), "Abyss Absorption Prism Shard");
 
-        adder.accept("enchantment.projectk.abyss_booster", "Abyss Booster");
+        adder.add("enchantment.projectk.abyss_booster", "Abyss Booster");
     }
 
     @Override
-    public void addEnergy(ProjectKEnergies.EnergyDefinition definition, BiConsumer<String, String> adder) {
-        adder.accept("energy.projectk." + definition.idPath(), definition.enName());
+    public void addEnergy(ProjectKEnergies.EnergyDefinition definition, TranslationAdder adder) {
+        adder.add("energy.projectk." + definition.idPath(), definition.enName());
         String typeKey = "tooltip.projectk.energy_type." + (definition.kind() == ProjectKEnergies.EnergyKind.NEUTRAL ? "abyss" : definition.kind()
                 .name().toLowerCase());
-        adder.accept(typeKey, definition.enName().replaceAll("§.", ""));
+        adder.add(typeKey, definition.enName().replaceAll("§.", ""));
     }
 
     @Override
-    public void addEnergyItem(ProjectKEnergies.EnergyDefinition definition, String energyName, BiConsumer<String, String> adder) {
+    public void addEnergyItem(ProjectKEnergies.EnergyDefinition definition, String energyName, TranslationAdder adder) {
         String bucketKey = "item.projectk.bucket_of_" + definition.idPath();
         if (definition.isBase()) {
-            adder.accept(bucketKey, "Bucket of Abyss Energy");
+            adder.add(bucketKey, "Bucket of Abyss Energy");
         } else {
-            adder.accept(bucketKey, "Bucket of " + energyName + " Abyss Energy");
+            adder.add(bucketKey, "Bucket of " + energyName + " Abyss Energy");
         }
     }
 
     @Override
-    public void addEnergyBlock(ProjectKEnergies.EnergyDefinition definition, String energyName, BiConsumer<String, String> adder) {
+    public void addEnergyBlock(ProjectKEnergies.EnergyDefinition definition, String energyName, TranslationAdder adder) {
         String coreKey = "block.projectk." + definition.idPath() + "_core";
         if (definition.isBase()) {
-            adder.accept(coreKey, "Abyss Core");
+            adder.add(coreKey, "Abyss Core");
         } else {
-            adder.accept(coreKey, energyName + " Abyss Core");
+            adder.add(coreKey, energyName + " Abyss Core");
         }
     }
 
     @Override
-    public void addBlockSet(String baseName, BlockMaterials material, String key, BiConsumer<String, String> adder) {
+    public void addBlockSet(String baseName, BlockMaterials material, String key, TranslationAdder adder) {
         if (material == BlockMaterials.STAIR) {
-            adder.accept(key, baseName + " Stairs");
+            adder.add(key, baseName + " Stairs");
         } else if (material == BlockMaterials.HALF) {
-            adder.accept(key, baseName + " Slab");
+            adder.add(key, baseName + " Slab");
         }
     }
 }
