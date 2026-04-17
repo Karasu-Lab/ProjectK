@@ -140,16 +140,16 @@ public class CreativeTabsRegistry implements IKRegistryTarget {
     }
 
     static {
-        registerTab(GENERAL);
-        registerTab(BUILDING_BLOCKS);
-        registerTab(INGOT);
-        registerTab(FLUIDS);
-        registerTab(MACHINES);
-        registerTab(MATERIALS);
+        registerTab(GENERAL, 0);
+        registerTab(BUILDING_BLOCKS, 1);
+        registerTab(INGOT, 2);
+        registerTab(MACHINES, 3);
+        registerTab(MATERIALS, 4);
+        registerTab(FLUIDS, 5);
     }
 
-    private static void registerTab(TabCategory category) {
-        TABS.register(category.id(), () -> CreativeModeTab.builder(CreativeModeTab.Row.BOTTOM, 0)
+    private static void registerTab(TabCategory category, int index) {
+        TABS.register(category.id(), () -> CreativeModeTab.builder(CreativeModeTab.Row.BOTTOM, index)
                 .title(Component.translatable("category.projectk." + category.id()))
                 .icon(((AbstractTabCategory) category)::getIcon).displayItems(category::display).build());
     }
