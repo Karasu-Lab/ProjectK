@@ -55,7 +55,7 @@ public class EnUsLanguage implements ProjectKLanguage {
         adder.add("tooltip.projectk.energy_unit", "AE");
         adder.add("tooltip.projectk.synthesizer.energy_total", "Total Energy: %s/%s");
 
-        adder.add(ProjectKItems.ABYSS_WRENCH.get(), "Abyss Wrench");
+        adder.add(ProjectKItems.ABYSS_WRENCH, "Abyss Wrench");
 
         adder.add("wrench_behavior.projectk.input", "Input");
         adder.add("wrench_behavior.projectk.output", "Output");
@@ -63,35 +63,35 @@ public class EnUsLanguage implements ProjectKLanguage {
         adder.add("wrench_behavior.projectk.none", "None");
         adder.add("wrench_behavior.projectk.downgrade", "Downgrade");
 
-        adder.add(ProjectKBlocks.ABYSS_GENERATOR.get(), "Abyss Generator");
-        adder.add(ProjectKBlocks.ABYSS_MAGIC_TABLE.get(), "Abyss Magic Table");
-        adder.add(ProjectKBlocks.ABYSS_ALCHEMY_BLEND_MACHINE.get(), "Abyss Alchemy Blend Machine");
-        adder.add(ProjectKBlocks.ABYSS_ENCHANTER.get(), "Abyss Enchanter");
-        adder.add(ProjectKBlocks.ABYSS_CHARGER.get(), "Abyss Charger");
-        adder.add(ProjectKBlocks.ABYSS_STORAGE.get(), "Abyss Storage");
-        adder.add(ProjectKBlocks.CREATIVE_ABYSS_STORAGE.get(), "Creative Abyss Storage");
-        adder.add(ProjectKBlocks.ABYSS_ENERGY_CABLE.get(), "Abyss Energy Cable");
-        adder.add(ProjectKBlocks.KARASIUM_ORE.get(), "Karasium Ore");
-        adder.add(ProjectKBlocks.DEEPSLATE_KARASIUM_ORE.get(), "Deepslate Karasium Ore");
-        adder.add(ProjectKBlocks.ABYSS_ENCHANT_REMOVER.get(), "Abyss Enchant Remover");
-        adder.add(ProjectKBlocks.ABYSS_SYNTHESIZER.get(), "Abyss Synthesizer");
-        adder.add(ProjectKBlocks.ABYSS_LASER_EMITTER.get(), "Abyss Laser Emitter");
-        adder.add(ProjectKBlocks.ABYSS_ABSORPTION_PRISM.get(), "Abyss Absorption Prism");
-        adder.add(ProjectKBlocks.ABYSS_PORTAL.get(), "Abyss Portal");
-        adder.add(ProjectKBlocks.POLISHED_NETHERRACK.get(), "Polished Netherrack");
-        adder.add(ProjectKBlocks.POLISHED_GLOWSTONE.get(), "Polished Growstone");
+        adder.add(ProjectKBlocks.ABYSS_GENERATOR, "Abyss Generator");
+        adder.add(ProjectKBlocks.ABYSS_MAGIC_TABLE, "Abyss Magic Table");
+        adder.add(ProjectKBlocks.ABYSS_ALCHEMY_BLEND_MACHINE, "Abyss Alchemy Blend Machine");
+        adder.add(ProjectKBlocks.ABYSS_ENCHANTER, "Abyss Enchanter");
+        adder.add(ProjectKBlocks.ABYSS_CHARGER, "Abyss Charger");
+        adder.add(ProjectKBlocks.ABYSS_STORAGE, "Abyss Storage");
+        adder.add(ProjectKBlocks.CREATIVE_ABYSS_STORAGE, "Creative Abyss Storage");
+        adder.add(ProjectKBlocks.ABYSS_ENERGY_CABLE, "Abyss Energy Cable");
+        adder.add(ProjectKBlocks.KARASIUM_ORE, "Karasium Ore");
+        adder.add(ProjectKBlocks.DEEPSLATE_KARASIUM_ORE, "Deepslate Karasium Ore");
+        adder.add(ProjectKBlocks.ABYSS_ENCHANT_REMOVER, "Abyss Enchant Remover");
+        adder.add(ProjectKBlocks.ABYSS_SYNTHESIZER, "Abyss Synthesizer");
+        adder.add(ProjectKBlocks.ABYSS_LASER_EMITTER, "Abyss Laser Emitter");
+        adder.add(ProjectKBlocks.ABYSS_ABSORPTION_PRISM, "Abyss Absorption Prism");
+        adder.add(ProjectKBlocks.ABYSS_PORTAL, "Abyss Portal");
+        adder.add(ProjectKBlocks.POLISHED_NETHERRACK, "Polished Netherrack");
+        adder.add(ProjectKBlocks.POLISHED_GLOWSTONE, "Polished Growstone");
 
-        adder.add(ProjectKBlocks.ABYSS_CORE.get(), "Abyss Core");
+        adder.add(ProjectKBlocks.ABYSS_CORE, "Abyss Core");
 
-        adder.add(ProjectKItems.WITHER_BONE.get(), "Wither Bone");
-        adder.add(ProjectKItems.KARASIUM.get(), "Karasium");
-        adder.add(ProjectKItems.RAW_KARASIUM.get(), "Raw Karasium");
-        adder.add(ProjectKItems.KARASIUM_DUST.get(), "Karasium Dust");
-        adder.add(ProjectKItems.ABYSS_INGOT.get(), "Abyss Ingot");
-        adder.add(ProjectKItems.TIER_UPGRADE.get(), "Tier Upgrade");
-        adder.add(ProjectKItems.ABYSS_BRACELET.get(), "Abyss Bracelet");
-        adder.add(ProjectKItems.ABYSS_STAFF.get(), "Abyss Staff");
-        adder.add(ProjectKItems.ABYSS_ABSORPTION_PRISM_SHARD.get(), "Abyss Absorption Prism Shard");
+        adder.add(ProjectKItems.WITHER_BONE, "Wither Bone");
+        adder.add(ProjectKItems.KARASIUM, "Karasium");
+        adder.add(ProjectKItems.RAW_KARASIUM, "Raw Karasium");
+        adder.add(ProjectKItems.KARASIUM_DUST, "Karasium Dust");
+        adder.add(ProjectKItems.ABYSS_INGOT, "Abyss Ingot");
+        adder.add(ProjectKItems.TIER_UPGRADE, "Tier Upgrade");
+        adder.add(ProjectKItems.ABYSS_BRACELET, "Abyss Bracelet");
+        adder.add(ProjectKItems.ABYSS_STAFF, "Abyss Staff");
+        adder.add(ProjectKItems.ABYSS_ABSORPTION_PRISM_SHARD, "Abyss Absorption Prism Shard");
 
         adder.add("enchantment.projectk.abyss_booster", "Abyss Booster");
     }
