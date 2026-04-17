@@ -35,7 +35,7 @@ public class ProjectKDynamicResources extends AbstractProjectKDynamicResources {
         addGenerator(new PolishedBlockResourceGenerator(ResourceLocation.withDefaultNamespace("block/netherrack"),
                 Id.id("block/polished_netherrack")));
         addGenerator(new PolishedBlockResourceGenerator(ResourceLocation.withDefaultNamespace("block/glowstone"),
-                Id.id("block/polished_netherrack")));
+                Id.id("block/polished_glowstone")));
         addGenerator(new DustResourceGenerator(Id.id("item/karasium_dust"), Id.id("karasium_dust"), 0xADFF2F));
     }
 
