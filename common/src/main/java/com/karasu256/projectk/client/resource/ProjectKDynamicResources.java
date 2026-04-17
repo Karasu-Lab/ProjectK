@@ -2,7 +2,7 @@ package com.karasu256.projectk.client.resource;
 
 import com.karasu256.projectk.ProjectK;
 import com.karasu256.projectk.client.resource.block.AbyssFluidGenerator;
-import com.karasu256.projectk.client.resource.block.PolishedBlockGenerator;
+import com.karasu256.projectk.client.resource.block.PolishedBlockResourceGenerator;
 import com.karasu256.projectk.client.resource.impl.AbstractProjectKDynamicResources;
 import com.karasu256.projectk.client.resource.item.AbyssBucketGenerator;
 import com.karasu256.projectk.client.resource.item.AbyssIngotGenerator;
@@ -32,18 +32,18 @@ public class ProjectKDynamicResources extends AbstractProjectKDynamicResources {
         addGenerator(new AbyssIngotGenerator());
         addGenerator(new AbyssBucketGenerator());
         addGenerator(new AbyssFluidGenerator());
-        addGenerator(new PolishedBlockGenerator(ResourceLocation.withDefaultNamespace("block/netherrack"),
+        addGenerator(new PolishedBlockResourceGenerator(ResourceLocation.withDefaultNamespace("block/netherrack"),
                 Id.id("block/polished_netherrack")));
         addGenerator(new DustResourceGenerator(Id.id("item/karasium_dust"), Id.id("karasium_dust"), 0xADFF2F));
     }
 
     @Override
-    protected Collection<String> gatherSupportedNamespaces() {
-        return List.of(ProjectK.MOD_ID, "minecraft");
+    protected void addDynamicTranslations(AfterLanguageLoadEvent event) {
+
     }
 
     @Override
-    protected void addDynamicTranslations(AfterLanguageLoadEvent event) {
-
+    protected Collection<String> gatherSupportedNamespaces() {
+        return List.of(ProjectK.MOD_ID, "minecraft");
     }
 }

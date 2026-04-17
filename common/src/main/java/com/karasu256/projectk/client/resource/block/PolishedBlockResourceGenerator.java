@@ -9,11 +9,11 @@ import net.mehvahdjukaar.moonlight.api.resources.textures.TextureOps;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.ResourceManager;
 
-public class PolishedBlockGenerator extends AbstractResourceGenerator {
+public class PolishedBlockResourceGenerator extends AbstractResourceGenerator {
     private final ResourceLocation blockResourceLocation;
     private final ResourceLocation outputResourceLocation;
 
-    public PolishedBlockGenerator(ResourceLocation blockResourceLocation, ResourceLocation outputResourceLocation) {
+    public PolishedBlockResourceGenerator(ResourceLocation blockResourceLocation, ResourceLocation outputResourceLocation) {
         super();
         this.blockResourceLocation = blockResourceLocation;
         this.outputResourceLocation = outputResourceLocation;
