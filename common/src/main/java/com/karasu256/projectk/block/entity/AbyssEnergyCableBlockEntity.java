@@ -7,6 +7,9 @@ import com.karasu256.projectk.data.AbyssEnergyData;
 import com.karasu256.projectk.registry.ProjectKMachineCapacities;
 import net.karasuniki.karasunikilib.api.block.ICableInputable;
 import net.karasuniki.karasunikilib.api.block.ICableOutputable;
+import net.mehvahdjukaar.moonlight.api.client.model.ExtraModelData;
+import net.mehvahdjukaar.moonlight.api.client.model.IExtraModelDataProvider;
+import net.mehvahdjukaar.moonlight.api.client.model.ModelDataKey;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
@@ -19,7 +22,8 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
 
-public class AbyssEnergyCableBlockEntity extends AbstractAbyssMachineBlockEntity implements ICableInputable, ICableOutputable {
+public class AbyssEnergyCableBlockEntity extends AbstractAbyssMachineBlockEntity implements ICableInputable, ICableOutputable, IExtraModelDataProvider {
+    public static final ModelDataKey<ConnectionMode[]> MODES_KEY = new ModelDataKey<>(ConnectionMode[].class);
     private static final WeakHashMap<Level, Long> LAST_TICK = new WeakHashMap<>();
     private static final WeakHashMap<Level, Set<BlockPos>> PROCESSED = new WeakHashMap<>();
     private final ConnectionMode[] sideModes = new ConnectionMode[6];
@@ -286,6 +290,9 @@ public class AbyssEnergyCableBlockEntity extends AbstractAbyssMachineBlockEntity
         BlockState state = AbyssEnergyCable.updateConnections(level, worldPosition, getBlockState());
         level.setBlock(worldPosition, state, 3);
         syncToClient();
+        if (level.isClientSide) {
+            this.requestModelReload();
+        }
     }
 
     private boolean isCableConnected(ConnectionMode mode) {
@@ -366,6 +373,11 @@ public class AbyssEnergyCableBlockEntity extends AbstractAbyssMachineBlockEntity
         private long energy;
         private long capacity;
         private boolean mixedEnergy;
+    }
+
+    @Override
+    public void addExtraModelData(ExtraModelData.Builder builder) {
+        builder.with(MODES_KEY, Arrays.copyOf(sideModes, 6));
     }
 
     private record AcceptorRef(BlockPos cablePos, Direction direction, BlockEntity neighbor) {

@@ -1,5 +1,6 @@
 package com.karasu256.projectk.datagen.providers;
 
+import com.karasu256.projectk.ProjectK;
 import com.karasu256.projectk.block.BlockMaterials;
 import com.karasu256.projectk.block.ProjectKBlocks;
 import com.karasu256.projectk.energy.ProjectKEnergies;
@@ -57,7 +58,7 @@ public class CommonBlockStateProvider {
                     "projectk:block/" + fluidId);
         }
 
-        gen.multipartCable(ProjectKBlocks.ABYSS_ENERGY_CABLE.get(), "abyss_energy_cable");
+        gen.existingModelBlock(ProjectKBlocks.ABYSS_ENERGY_CABLE.get(), ProjectK.MOD_ID + ":block/abyss_energy_cable");
         gen.simpleBlockItem(ProjectKBlocks.ABYSS_ENERGY_CABLE.get());
 
         gen.directionalModeBlock(ProjectKBlocks.ABYSS_LASER_EMITTER.get(), "abyss_laser_emitter");

@@ -1,14 +1,14 @@
 package com.karasu256.projectk.client;
 
+import com.karasu256.projectk.ProjectK;
 import com.karasu256.projectk.block.ProjectKBlocks;
 import com.karasu256.projectk.block.entity.ProjectKBlockEntities;
 import com.karasu256.projectk.client.render.block.AbyssAbsorptionPrismRenderer;
-import com.karasu256.projectk.client.render.block.AbyssEnergyCableRenderer;
 import com.karasu256.projectk.client.render.block.geckolib.AbyssGeoBlockRenderer;
 import com.karasu256.projectk.client.render.entity.AbyssBurstEntityRenderer;
 import com.karasu256.projectk.client.render.entity.AbyssEnergyEntityRenderer;
 import com.karasu256.projectk.client.render.entity.AbyssLaserEntityRenderer;
-import com.karasu256.projectk.client.resource.ProjectKDynamicResources;
+import com.karasu256.projectk.client.render.model.AbyssEnergyCableModel;
 import com.karasu256.projectk.data.AbyssEnergyData;
 import com.karasu256.projectk.data.ProjectKDataComponets;
 import com.karasu256.projectk.energy.ProjectKEnergies;
@@ -20,6 +20,7 @@ import dev.architectury.core.fluid.ArchitecturyFluidAttributes;
 import dev.architectury.registry.client.level.entity.EntityRendererRegistry;
 import dev.architectury.registry.client.rendering.BlockEntityRendererRegistry;
 import dev.architectury.registry.item.ItemPropertiesRegistry;
+import net.mehvahdjukaar.moonlight.api.platform.ClientHelper;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
@@ -46,10 +47,13 @@ public class ProjectKClient {
 
         BlockEntityRendererRegistry.register(ProjectKBlockEntities.ABYSS_CORE.get(),
                 context -> new AbyssGeoBlockRenderer<>());
-        BlockEntityRendererRegistry.register(ProjectKBlockEntities.ABYSS_ENERGY_CABLE.get(),
-                AbyssEnergyCableRenderer::new);
         BlockEntityRendererRegistry.register(ProjectKBlockEntities.ABYSS_ABSORPTION_PRISM.get(),
                 AbyssAbsorptionPrismRenderer::new);
+
+        ClientHelper.addModelLoaderRegistration(event -> {
+            event.register(ResourceLocation.fromNamespaceAndPath(ProjectK.MOD_ID, "abyss_energy_cable_loader"),
+                    new AbyssEnergyCableModel.Loader());
+        });
     }
 
     public static void registerRenderLayers(PKRenderProxy.PKRenderTypeRegistrar registrar) {

@@ -267,7 +267,11 @@ public class ProjectKBlockModelProvider implements DataProvider {
 
     private JsonObject cableModel(String id) {
         JsonObject json = new JsonObject();
-        json.addProperty("parent", ProjectK.MOD_ID + ":block/" + id + "_center");
+        json.addProperty("loader", ProjectK.MOD_ID + ":abyss_energy_cable_loader");
+        json.addProperty("center", ProjectK.MOD_ID + ":block/" + id + "_center");
+        json.addProperty("side", ProjectK.MOD_ID + ":block/" + id + "_side");
+        json.addProperty("input", ProjectK.MOD_ID + ":block/multipart/" + id + "_input");
+        json.addProperty("output", ProjectK.MOD_ID + ":block/multipart/" + id + "_output");
         return json;
     }
 
