@@ -1,0 +1,9 @@
+{
+  "parent": "minecraft:block/orientable_with_bottom",
+  "textures": {
+    "bottom": "projectk:block/abyss_laser_emitter_back",
+    "front": "projectk:block/abyss_laser_emitter_pulse",
+    "side": "projectk:block/abyss_laser_emitter_side",
+    "top": "projectk:block/abyss_laser_emitter_pulse"
+  }
+}
