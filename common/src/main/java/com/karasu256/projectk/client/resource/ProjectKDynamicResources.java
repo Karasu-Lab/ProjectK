@@ -6,6 +6,7 @@ import com.karasu256.projectk.client.resource.block.PolishedNetherrackGenerator;
 import com.karasu256.projectk.client.resource.impl.AbstractProjectKDynamicResources;
 import com.karasu256.projectk.client.resource.item.AbyssBucketGenerator;
 import com.karasu256.projectk.client.resource.item.AbyssIngotGenerator;
+import com.karasu256.projectk.client.resource.item.KarasiumDustGenerator;
 import com.karasu256.projectk.utils.Id;
 import net.mehvahdjukaar.moonlight.api.events.AfterLanguageLoadEvent;
 import net.mehvahdjukaar.moonlight.api.platform.RegHelper;
@@ -31,6 +32,7 @@ public class ProjectKDynamicResources extends AbstractProjectKDynamicResources {
         addGenerator(new AbyssBucketGenerator());
         addGenerator(new AbyssFluidGenerator());
         addGenerator(new PolishedNetherrackGenerator());
+        addGenerator(new KarasiumDustGenerator());
     }
 
     @Override

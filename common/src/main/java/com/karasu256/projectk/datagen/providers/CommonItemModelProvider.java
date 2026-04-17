@@ -11,7 +11,6 @@ public class CommonItemModelProvider {
     public static void generate(@NotNull ItemGenerator generator) {
         generator.simpleItem(ProjectKItems.KARASIUM);
         generator.simpleItem(ProjectKItems.RAW_KARASIUM);
-        generator.simpleItem(ProjectKItems.KARASIUM_DUST);
         generator.simpleItem(ProjectKItems.WITHER_BONE);
         if (!ItemsRegistry.getEnergySuffixItems().contains(ProjectKItems.ABYSS_INGOT.getId())) {
             generator.simpleItem(ProjectKItems.ABYSS_INGOT);
