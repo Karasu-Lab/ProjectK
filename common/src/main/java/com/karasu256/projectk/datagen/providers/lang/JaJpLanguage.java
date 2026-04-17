@@ -76,6 +76,7 @@ public class JaJpLanguage implements ProjectKLanguage {
         adder.add(ProjectKBlocks.ABYSS_ABSORPTION_PRISM.get(), "深淵吸収プリズム");
         adder.add(ProjectKBlocks.ABYSS_PORTAL.get(), "深淵ポータル");
         adder.add(ProjectKBlocks.POLISHED_NETHERRACK.get(), "磨かれたネザーラック");
+        adder.add(ProjectKBlocks.POLISHED_GLOWSTONE.get(), "磨かれたグロウストーン");
         adder.add(ProjectKBlocks.KARASIUM_ORE.get(), "カラシウム鉱石");
         adder.add(ProjectKBlocks.DEEPSLATE_KARASIUM_ORE.get(), "深層カラシウム鉱石");
         adder.add(ProjectKBlocks.ABYSS_ENCHANT_REMOVER.get(), "深淵エンチャントリムーバー");

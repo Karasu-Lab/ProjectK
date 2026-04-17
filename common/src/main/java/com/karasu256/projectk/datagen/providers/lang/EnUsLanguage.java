@@ -79,6 +79,7 @@ public class EnUsLanguage implements ProjectKLanguage {
         adder.add(ProjectKBlocks.ABYSS_ABSORPTION_PRISM.get(), "Abyss Absorption Prism");
         adder.add(ProjectKBlocks.ABYSS_PORTAL.get(), "Abyss Portal");
         adder.add(ProjectKBlocks.POLISHED_NETHERRACK.get(), "Polished Netherrack");
+        adder.add(ProjectKBlocks.POLISHED_GLOWSTONE.get(), "Polished Growstone");
 
         adder.add(ProjectKBlocks.ABYSS_CORE.get(), "Abyss Core");
 
