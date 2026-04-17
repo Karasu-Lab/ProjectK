@@ -82,6 +82,7 @@ public class NeoForgeBlockStateProvider extends BlockStateProvider implements Co
                 state -> ConfiguredModel.builder().modelFile(new ModelFile.UncheckedModelFile(modelLocation)).build());
     }
 
+    @SuppressWarnings("unused")
     @Override
     public void multipartCable(Block block, String id) {
         ResourceLocation baseTex = ResourceLocation.fromNamespaceAndPath(ProjectK.MOD_ID, "block/multipart/" + id);
@@ -99,6 +100,27 @@ public class NeoForgeBlockStateProvider extends BlockStateProvider implements Co
                 .allFaces((d, f) -> f.uvs(0, 0, 16, 16).texture("#all")).end();
 
         MultiPartBlockStateBuilder builder = getMultipartBuilder(block);
+
+        ModelFile inputModel = models().getBuilder(id + "_input")
+                .parent(models().getExistingFile(ResourceLocation.withDefaultNamespace("block/block")))
+                .texture("particle",
+                        ResourceLocation.fromNamespaceAndPath(ProjectK.MOD_ID, "block/multipart/" + id + "_input"))
+                .texture("all",
+                        ResourceLocation.fromNamespaceAndPath(ProjectK.MOD_ID, "block/multipart/" + id + "_input"))
+                .element().from(4, 4, 0).to(12, 12, 2).allFaces((d, f) -> f.uvs(4, 0, 12, 2).texture("#all")).end()
+                .element().from(6, 6, 2).to(10, 10, 4).allFaces((d, f) -> f.uvs(6, 2, 10, 4).texture("#all")).end()
+                .element().from(5, 5, 4).to(11, 11, 5).allFaces((d, f) -> f.uvs(5, 4, 11, 5).texture("#all")).end();
+
+        ModelFile outputModel = models().getBuilder(id + "_output")
+                .parent(models().getExistingFile(ResourceLocation.withDefaultNamespace("block/block")))
+                .texture("particle",
+                        ResourceLocation.fromNamespaceAndPath(ProjectK.MOD_ID, "block/multipart/" + id + "_output"))
+                .texture("all",
+                        ResourceLocation.fromNamespaceAndPath(ProjectK.MOD_ID, "block/multipart/" + id + "_output"))
+                .element().from(7, 7, 0).to(9, 9, 2).allFaces((d, f) -> f.uvs(7, 0, 9, 2).texture("#all")).end()
+                .element().from(6, 6, 2).to(10, 10, 3).allFaces((d, f) -> f.uvs(6, 2, 10, 3).texture("#all")).end()
+                .element().from(5, 5, 3).to(11, 11, 5).allFaces((d, f) -> f.uvs(5, 3, 11, 5).texture("#all")).end();
+
         builder.part().modelFile(centerModel).addModel().end();
 
         for (Direction dir : Direction.values()) {
@@ -111,14 +133,26 @@ public class NeoForgeBlockStateProvider extends BlockStateProvider implements Co
 
     @Override
     public void directionalModeBlock(Block block, String baseName) {
-        ResourceLocation pulse = ResourceLocation.fromNamespaceAndPath(ProjectK.MOD_ID, "block/" + baseName + "_pulse");
-        ResourceLocation dc = ResourceLocation.fromNamespaceAndPath(ProjectK.MOD_ID, "block/" + baseName + "_dc");
+        ResourceLocation pulseTex = ResourceLocation.fromNamespaceAndPath(ProjectK.MOD_ID,
+                "block/" + baseName + "_pulse");
+        ResourceLocation dcTex = ResourceLocation.fromNamespaceAndPath(ProjectK.MOD_ID, "block/" + baseName + "_dc");
+        ResourceLocation sideTex = ResourceLocation.fromNamespaceAndPath(ProjectK.MOD_ID,
+                "block/" + baseName + "_side");
+        ResourceLocation backTex = ResourceLocation.fromNamespaceAndPath(ProjectK.MOD_ID,
+                "block/" + baseName + "_back");
+
+        ModelFile pulseModel = models().withExistingParent("block/" + baseName + "_pulse",
+                        "minecraft:block/cube_orientable_top_bottom").texture("top", pulseTex).texture("front", pulseTex)
+                .texture("side", sideTex).texture("bottom", backTex);
+
+        ModelFile dcModel = models().withExistingParent("block/" + baseName + "_dc",
+                        "minecraft:block/cube_orientable_top_bottom").texture("top", dcTex).texture("front", dcTex)
+                .texture("side", sideTex).texture("bottom", backTex);
 
         getVariantBuilder(block).forAllStates(state -> {
             Direction facing = state.getValue(AbyssLaserEmitter.FACING);
             AbyssLaserEmitter.Mode mode = state.getValue(AbyssLaserEmitter.MODE);
-            return ConfiguredModel.builder()
-                    .modelFile(new ModelFile.UncheckedModelFile(mode == AbyssLaserEmitter.Mode.PULSE ? pulse : dc))
+            return ConfiguredModel.builder().modelFile(mode == AbyssLaserEmitter.Mode.PULSE ? pulseModel : dcModel)
                     .rotationX(facing == Direction.DOWN ? 90 : facing == Direction.UP ? 270 : 0)
                     .rotationY(facing.getAxis().isVertical() ? 0 : (((int) facing.toYRot()) + 180) % 360).build();
         });
