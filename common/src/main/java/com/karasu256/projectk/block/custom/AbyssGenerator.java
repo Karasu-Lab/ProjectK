@@ -18,6 +18,11 @@ public class AbyssGenerator extends AbstractEnergyBlock {
         super(BlockBehaviour.Properties.ofFullCopy(Blocks.STONE), new AbstractEnergyBlock.Properties(capacity));
     }
 
+    public AbyssGenerator(long capacity, ProjectKBlock.CustomProperties pkProperties) {
+        super(BlockBehaviour.Properties.ofFullCopy(Blocks.STONE),
+                new AbstractEnergyBlock.Properties(capacity).withTags(pkProperties.getTags()));
+    }
+
     @Override
     public @Nullable BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
         return new AbyssGeneratorBlockEntity(pos, state);

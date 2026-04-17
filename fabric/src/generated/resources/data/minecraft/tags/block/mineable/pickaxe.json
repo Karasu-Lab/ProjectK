@@ -1,9 +1,13 @@
 {
   "values": [
+    "projectk:abyss_generator",
+    "projectk:abyss_storage",
+    "projectk:creative_abyss_storage",
+    "projectk:abyss_enchant_remover",
+    "projectk:abyss_laser_emitter",
     "projectk:karasium_ore",
     "projectk:deepslate_karasium_ore",
     "projectk:polished_netherrack",
-    "projectk:polished_glowstone",
-    "projectk:creative_abyss_storage"
+    "projectk:polished_glowstone"
   ]
 }

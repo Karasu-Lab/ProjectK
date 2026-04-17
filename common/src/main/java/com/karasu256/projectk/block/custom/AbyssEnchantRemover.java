@@ -1,15 +1,19 @@
 package com.karasu256.projectk.block.custom;
 
 import com.karasu256.projectk.block.entity.AbyssEnchantRemoverBlockEntity;
+import com.karasu256.projectk.registry.AbstractBlockProperties;
+import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.Containers;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.BaseEntityBlock;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -22,7 +26,10 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public class AbyssEnchantRemover extends BaseEntityBlock {
+import java.util.ArrayList;
+import java.util.List;
+
+public class AbyssEnchantRemover extends AbstractProjectKEntityBlock {
     public static final MapCodec<AbyssEnchantRemover> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
             Properties.CODEC.fieldOf("properties").forGetter(AbyssEnchantRemover::getProperties)).apply(instance,
             properties -> new AbyssEnchantRemover(BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_BLOCK),
@@ -32,13 +39,13 @@ public class AbyssEnchantRemover extends BaseEntityBlock {
     private final Properties properties;
 
     public AbyssEnchantRemover(BlockBehaviour.Properties blockProperties, Properties properties) {
-        super(blockProperties);
+        super(blockProperties, properties);
         this.properties = properties;
     }
 
     @Override
     @NotNull
-    protected MapCodec<? extends BaseEntityBlock> codec() {
+    protected MapCodec<? extends AbstractProjectKEntityBlock> codec() {
         return CODEC;
     }
 
@@ -102,14 +109,20 @@ public class AbyssEnchantRemover extends BaseEntityBlock {
         return properties;
     }
 
-    public static class Properties {
-        public static final com.mojang.serialization.Codec<Properties> CODEC = RecordCodecBuilder.create(
-                instance -> instance.group(com.mojang.serialization.Codec.LONG.fieldOf("default_book_capacity")
+    public static class Properties extends AbstractBlockProperties<Properties> {
+        public static final Codec<Properties> CODEC = RecordCodecBuilder.create(
+                instance -> instance.group(Codec.LONG.fieldOf("default_book_capacity")
                         .forGetter(Properties::defaultBookCapacity)).apply(instance, Properties::new));
 
         private final long defaultBookCapacity;
 
         private Properties(long defaultBookCapacity) {
+            super();
+            this.defaultBookCapacity = defaultBookCapacity;
+        }
+
+        private Properties(long defaultBookCapacity, List<TagKey<Block>> tags) {
+            super(tags);
             this.defaultBookCapacity = defaultBookCapacity;
         }
 
@@ -118,7 +131,12 @@ public class AbyssEnchantRemover extends BaseEntityBlock {
         }
 
         public Properties defaultBookCapacity(long capacity) {
-            return new Properties(capacity);
+            return new Properties(capacity, tags);
+        }
+
+        @Override
+        public Properties withTags(List<TagKey<Block>> tags) {
+            return new Properties(defaultBookCapacity, tags);
         }
 
         public long defaultBookCapacity() {

@@ -5,19 +5,22 @@ import com.karasu256.projectk.block.entity.AbyssStorageBlockEntity;
 import com.karasu256.projectk.block.entity.ProjectKBlockEntities;
 import com.karasu256.projectk.energy.ITierInfo;
 import com.karasu256.projectk.item.ProjectKItems;
+import com.karasu256.projectk.registry.AbstractBlockProperties;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.Containers;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.BaseEntityBlock;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
@@ -27,7 +30,10 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public class AbyssStorage extends BaseEntityBlock {
+import java.util.ArrayList;
+import java.util.List;
+
+public class AbyssStorage extends AbstractGeneratorBlock {
     public static final MapCodec<AbyssStorage> CODEC = RecordCodecBuilder.mapCodec(
             instance -> instance.group(Properties.CODEC.fieldOf("properties").forGetter(AbyssStorage::getProperties))
                     .apply(instance,
@@ -38,25 +44,19 @@ public class AbyssStorage extends BaseEntityBlock {
     private final Properties properties;
 
     public AbyssStorage(BlockBehaviour.Properties blockProperties, Properties properties) {
-        super(blockProperties);
+        super(blockProperties, properties);
         this.properties = properties;
     }
 
     @Override
     @NotNull
-    protected MapCodec<? extends BaseEntityBlock> codec() {
+    protected MapCodec<? extends AbstractGeneratorBlock> codec() {
         return CODEC;
     }
 
     @Override
     public @Nullable BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
         return new AbyssStorageBlockEntity(pos, state);
-    }
-
-    @Override
-    @NotNull
-    protected RenderShape getRenderShape(BlockState state) {
-        return RenderShape.MODEL;
     }
 
     @Override
@@ -104,7 +104,7 @@ public class AbyssStorage extends BaseEntityBlock {
     }
 
     @Override
-    public @Nullable <T extends BlockEntity> net.minecraft.world.level.block.entity.BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
+    public @Nullable <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
         return level.isClientSide ? null : createTickerHelper(type, ProjectKBlockEntities.ABYSS_STORAGE.get(),
                 AbyssStorageBlockEntity::tick);
     }
@@ -125,26 +125,27 @@ public class AbyssStorage extends BaseEntityBlock {
         return properties;
     }
 
-    public static class Properties implements ITieredMachineProperties {
+    public static class Properties extends AbstractBlockProperties<Properties> implements ITieredMachineProperties {
         public static final Codec<Properties> CODEC = RecordCodecBuilder.create(
                 instance -> instance.group(Codec.LONG.fieldOf("capacity").forGetter(Properties::capacity),
                                 Codec.INT.fieldOf("max_types").forGetter(Properties::maxTypes),
                                 Codec.DOUBLE.optionalFieldOf("capacityScaling", 2.5).forGetter(Properties::capacityScaling),
                                 Codec.INT.optionalFieldOf("maxTier", 3).forGetter(Properties::maxTier),
                                 Codec.INT.optionalFieldOf("defaultTier", 1).forGetter(Properties::defaultTier))
-                        .apply(instance, Properties::new));
+                        .apply(instance, (capacity, maxTypes, capacityScaling, maxTier, defaultTier) -> new Properties(capacity, maxTypes, capacityScaling, maxTier, defaultTier, new ArrayList<>())));
 
         private final long capacity;
         private final int maxTypes;
         private final double capacityScaling;
         private final int maxTier;
         private final int defaultTier;
-
+ 
         private Properties(long capacity, int maxTypes) {
-            this(capacity, maxTypes, 2.5, 3, 1);
+            this(capacity, maxTypes, 2.5, 3, 1, new ArrayList<>());
         }
 
-        private Properties(long capacity, int maxTypes, double capacityScaling, int maxTier, int defaultTier) {
+        private Properties(long capacity, int maxTypes, double capacityScaling, int maxTier, int defaultTier, List<TagKey<Block>> tags) {
+            super(tags);
             this.capacity = capacity;
             this.maxTypes = maxTypes;
             this.capacityScaling = capacityScaling;
@@ -157,23 +158,28 @@ public class AbyssStorage extends BaseEntityBlock {
         }
 
         public Properties capacity(long capacity) {
-            return new Properties(capacity, maxTypes, capacityScaling, maxTier, defaultTier);
+            return new Properties(capacity, maxTypes, capacityScaling, maxTier, defaultTier, tags);
         }
-
+ 
         public Properties maxTypes(int maxTypes) {
-            return new Properties(capacity, maxTypes, capacityScaling, maxTier, defaultTier);
+            return new Properties(capacity, maxTypes, capacityScaling, maxTier, defaultTier, tags);
         }
-
+ 
         public Properties capacityScaling(double capacityScaling) {
-            return new Properties(capacity, maxTypes, capacityScaling, maxTier, defaultTier);
+            return new Properties(capacity, maxTypes, capacityScaling, maxTier, defaultTier, tags);
         }
-
+ 
         public Properties maxTier(int maxTier) {
-            return new Properties(capacity, maxTypes, capacityScaling, maxTier, defaultTier);
+            return new Properties(capacity, maxTypes, capacityScaling, maxTier, defaultTier, tags);
+        }
+ 
+        public Properties defaultTier(int defaultTier) {
+            return new Properties(capacity, maxTypes, capacityScaling, maxTier, defaultTier, tags);
         }
 
-        public Properties defaultTier(int defaultTier) {
-            return new Properties(capacity, maxTypes, capacityScaling, maxTier, defaultTier);
+        @Override
+        public Properties withTags(List<TagKey<Block>> tags) {
+            return new Properties(capacity, maxTypes, capacityScaling, maxTier, defaultTier, tags);
         }
 
         public long capacity() {

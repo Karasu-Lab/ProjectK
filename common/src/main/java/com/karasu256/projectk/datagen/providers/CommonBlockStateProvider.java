@@ -14,11 +14,11 @@ import net.minecraft.world.level.block.StairBlock;
 public class CommonBlockStateProvider {
     public static void generate(Generator gen) {
         ProjectKBlocks.getBlockModelInfos().forEach((supplier, info) -> {
-            Block block = supplier.get();
-            if (ProjectKBlocks.getBlockSets()
-                    .containsKey(supplier) && info instanceof ProjectKBlocks.ModelInfo.Simple) {
+            if (ProjectKBlocks.getBlockSets().values().stream()
+                    .anyMatch(variants -> variants.containsValue(supplier))) {
                 return;
             }
+            Block block = supplier.get();
             if (info instanceof ProjectKBlocks.ModelInfo.Simple) {
                 gen.simpleBlock(block);
                 gen.simpleBlockItem(block);

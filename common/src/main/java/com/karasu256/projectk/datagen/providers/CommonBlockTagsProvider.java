@@ -1,12 +1,12 @@
 package com.karasu256.projectk.datagen.providers;
 
 import com.karasu256.projectk.block.ProjectKBlocks;
+import com.karasu256.projectk.registry.IProjectKPropertiesProvider;
 import com.karasu256.projectk.registry.ProjectKTags;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.tags.IntrinsicHolderTagsProvider;
-import net.minecraft.tags.BlockTags;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 
@@ -20,12 +20,15 @@ public class CommonBlockTagsProvider extends IntrinsicHolderTagsProvider<Block> 
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     protected void addTags(HolderLookup.Provider provider) {
-        tag(BlockTags.MINEABLE_WITH_PICKAXE).add(ProjectKBlocks.KARASIUM_ORE.getKey()).add(ProjectKBlocks.DEEPSLATE_KARASIUM_ORE.getKey())
-                .add(ProjectKBlocks.POLISHED_NETHERRACK.getKey())
-                .add(ProjectKBlocks.POLISHED_GLOWSTONE.getKey())
-                .add(ProjectKBlocks.CREATIVE_ABYSS_STORAGE.getKey());
-        tag(BlockTags.NEEDS_IRON_TOOL).add(ProjectKBlocks.KARASIUM_ORE.getKey()).add(ProjectKBlocks.DEEPSLATE_KARASIUM_ORE.getKey());
+        ProjectKBlocks.getBlocks().forEach(supplier -> {
+            Block block = supplier.get();
+            if (block instanceof IProjectKPropertiesProvider<?> providerObj) {
+                IProjectKPropertiesProvider<Block> pkProvider = (IProjectKPropertiesProvider<Block>) providerObj;
+                pkProvider.getProjectKProperties().getTags().forEach(tagKey -> tag(tagKey).add(block));
+            }
+        });
 
         tag(ProjectKTags.Blocks.IN_BIOME_IN_BLOCK_CRAFTING).add(Blocks.FIRE).add(Blocks.SOUL_FIRE);
     }

@@ -14,6 +14,7 @@ import dev.architectury.registry.registries.RegistrySupplier;
 import net.karasuniki.karasunikilib.api.registry.IKRegistryInitializerTarget;
 import net.karasuniki.karasunikilib.api.registry.KRegistryInitializer;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockBehaviour;
@@ -71,62 +72,62 @@ public class ProjectKBlocks implements IKRegistryInitializerTarget {
             MACHINES);
 
     public static final RegistrySupplier<Block> ABYSS_GENERATOR = registerBlock("abyss_generator",
-            () -> new AbyssGenerator(10000L), b -> new AbyssMachineBlockItem(b, new Item.Properties(), 0L), false,
+            () -> new AbyssGenerator(10000L, ProjectKBlock.CustomProperties.of().tags(BlockTags.MINEABLE_WITH_PICKAXE)), b -> new AbyssMachineBlockItem(b, new Item.Properties(), 0L), false,
             new ModelInfo.CubeBottomTop("abyss_generator", "abyss_energy/side", "abyss_energy/bottom",
                     "abyss_energy/top"), MACHINES);
 
     public static final RegistrySupplier<Block> ABYSS_MAGIC_TABLE = registerBlock("abyss_magic_table",
             () -> new AbyssMagicTable(BlockBehaviour.Properties.ofFullCopy(Blocks.ENCHANTING_TABLE),
-                    ProjectKBlock.CustomProperties.of().capacity(10000L)), new Item.Properties(),
+                    ProjectKBlock.CustomProperties.of().capacity(10000L).tags(BlockTags.MINEABLE_WITH_PICKAXE)), new Item.Properties(),
             new ModelInfo.Existing("projectk:block/abyss_magic_table"), MACHINES);
 
     public static final RegistrySupplier<Block> ABYSS_ALCHEMY_BLEND_MACHINE = registerBlock(
             "abyss_alchemy_blend_machine",
             () -> new AbyssAlchemyBlendMachine(BlockBehaviour.Properties.ofFullCopy(Blocks.ENCHANTING_TABLE),
-                    ProjectKBlock.CustomProperties.of().capacity(10000L)), new Item.Properties(),
+                    ProjectKBlock.CustomProperties.of().capacity(10000L).tags(BlockTags.MINEABLE_WITH_PICKAXE)), new Item.Properties(),
             new ModelInfo.Existing("projectk:block/abyss_alchemy_blend_machine"), MACHINES);
 
     public static final RegistrySupplier<Block> ABYSS_ENCHANTER = registerBlock("abyss_enchanter",
             () -> new AbyssEnchanter(BlockBehaviour.Properties.ofFullCopy(Blocks.ENCHANTING_TABLE),
-                    ProjectKBlock.CustomProperties.of().capacity(30000L)), new Item.Properties(),
+                    ProjectKBlock.CustomProperties.of().capacity(30000L).tags(BlockTags.MINEABLE_WITH_PICKAXE)), new Item.Properties(),
             new ModelInfo.Existing("projectk:block/abyss_enchanter"), MACHINES);
 
     public static final RegistrySupplier<Block> ABYSS_CHARGER = registerBlock("abyss_charger",
             () -> new AbyssCharger(BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_BLOCK),
-                    ProjectKBlock.CustomProperties.of().capacity(30000L).transferRate(1000L)), new Item.Properties(),
+                    ProjectKBlock.CustomProperties.of().capacity(30000L).transferRate(1000L).tags(BlockTags.MINEABLE_WITH_PICKAXE)), new Item.Properties(),
             new ModelInfo.Existing("projectk:block/abyss_charger"), MACHINES);
 
     public static final RegistrySupplier<Block> ABYSS_STORAGE = registerBlock("abyss_storage",
             () -> new AbyssStorage(BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_BLOCK),
-                    AbyssStorage.Properties.of().capacity(30000L).maxTypes(3)),
+                    AbyssStorage.Properties.of().capacity(30000L).maxTypes(3).tags(BlockTags.MINEABLE_WITH_PICKAXE)),
             b -> new AbyssMachineBlockItem(b, new Item.Properties(), 0L), false,
             new ModelInfo.Existing("projectk:block/abyss_storage"), MACHINES);
 
     public static final RegistrySupplier<Block> CREATIVE_ABYSS_STORAGE = registerBlock("creative_abyss_storage",
             () -> new CreativeAbyssStorage(BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_BLOCK),
-                    AbyssStorage.Properties.of().capacity(0L).maxTypes(1)),
+                    AbyssStorage.Properties.of().capacity(0L).maxTypes(1).tags(BlockTags.MINEABLE_WITH_PICKAXE)),
             b -> new AbyssMachineBlockItem(b, new Item.Properties(), Long.MAX_VALUE / 2), false,
             new ModelInfo.Existing("projectk:block/abyss_storage"), MACHINES);
 
     public static final RegistrySupplier<Block> ABYSS_ENCHANT_REMOVER = registerBlock("abyss_enchant_remover",
             () -> new AbyssEnchantRemover(BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_BLOCK),
-                    AbyssEnchantRemover.Properties.of().defaultBookCapacity(30000L)), new Item.Properties(),
+                    AbyssEnchantRemover.Properties.of().defaultBookCapacity(30000L).tags(BlockTags.MINEABLE_WITH_PICKAXE)), new Item.Properties(),
             new ModelInfo.Existing("projectk:block/abyss_enchant_remover"), MACHINES);
 
     public static final RegistrySupplier<Block> ABYSS_ENERGY_CABLE = registerBlock("abyss_energy_cable",
             () -> new AbyssEnergyCable(
                     BlockBehaviour.Properties.ofFullCopy(Blocks.STONE).noOcclusion().sound(SoundType.STONE),
-                    ProjectKBlock.CustomProperties.of().capacity(10000L).transferRate(1000L)), new Item.Properties(),
+                    ProjectKBlock.CustomProperties.of().capacity(10000L).transferRate(1000L).tags(BlockTags.MINEABLE_WITH_PICKAXE)), new Item.Properties(),
             new ModelInfo.Custom(), MACHINES);
 
     public static final RegistrySupplier<Block> ABYSS_SYNTHESIZER = registerBlock("abyss_synthesizer",
             () -> new AbyssSynthesizer(BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_BLOCK),
-                    ProjectKBlock.CustomProperties.of().capacity(100000L)), new Item.Properties(),
+                    ProjectKBlock.CustomProperties.of().capacity(100000L).tags(BlockTags.MINEABLE_WITH_PICKAXE)), new Item.Properties(),
             new ModelInfo.Existing("projectk:block/abyss_synthesizer"), MACHINES);
 
     public static final RegistrySupplier<Block> ABYSS_LASER_EMITTER = registerBlock("abyss_laser_emitter",
             () -> new AbyssLaserEmitter(BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_BLOCK),
-                    new AbstractEnergyBlock.Properties(30000L)), new Item.Properties(), new ModelInfo.Custom(),
+                    new AbstractEnergyBlock.Properties(30000L).tags(BlockTags.MINEABLE_WITH_PICKAXE)), new Item.Properties(), new ModelInfo.Custom(),
             MACHINES);
 
     public static final RegistrySupplier<Block> ABYSS_ABSORPTION_PRISM = registerBlock("abyss_absorption_prism",
@@ -134,11 +135,14 @@ public class ProjectKBlocks implements IKRegistryInitializerTarget {
                     BlockBehaviour.Properties.ofFullCopy(Blocks.GLASS).noOcclusion().sound(SoundType.GLASS)),
             new Item.Properties(), new ModelInfo.Simple(), MACHINES);
 
-    public static final RegistrySupplier<Block> KARASIUM_ORE = registerSimpleBlock("karasium_ore", ProjectKBlock::new,
+    public static final RegistrySupplier<Block> KARASIUM_ORE = registerSimpleBlock("karasium_ore",
+            () -> new ProjectKBlock(Block.Properties.ofFullCopy(Blocks.STONE),
+                    ProjectKBlock.CustomProperties.of().tags(BlockTags.MINEABLE_WITH_PICKAXE).tags(BlockTags.NEEDS_IRON_TOOL)),
             new Item.Properties(), BUILDING_BLOCKS);
 
     public static final RegistrySupplier<Block> DEEPSLATE_KARASIUM_ORE = registerSimpleBlock("deepslate_karasium_ore",
-            () -> new ProjectKBlock(Block.Properties.ofFullCopy(Blocks.DEEPSLATE)), new Item.Properties(),
+            () -> new ProjectKBlock(Block.Properties.ofFullCopy(Blocks.DEEPSLATE).sound(SoundType.DEEPSLATE),
+                    ProjectKBlock.CustomProperties.of().tags(BlockTags.MINEABLE_WITH_PICKAXE).tags(BlockTags.NEEDS_IRON_TOOL)), new Item.Properties(),
             BUILDING_BLOCKS);
 
     public static final RegistrySupplier<Block> ABYSS_PORTAL = registerBlock("abyss_portal", () -> new AbyssPortal(
@@ -146,11 +150,13 @@ public class ProjectKBlocks implements IKRegistryInitializerTarget {
             new Item.Properties(), new ModelInfo.Custom(), BUILDING_BLOCKS);
 
     public static final RegistrySupplier<Block> POLISHED_NETHERRACK = registerBlockSet("polished_netherrack",
-            () -> new Block(BlockBehaviour.Properties.ofFullCopy(Blocks.NETHERRACK)), new Item.Properties(),
+            () -> BlockBehaviour.Properties.ofFullCopy(Blocks.NETHERRACK),
+            () -> ProjectKBlock.CustomProperties.of().tags(BlockTags.MINEABLE_WITH_PICKAXE), new Item.Properties(),
             BUILDING_BLOCKS);
 
     public static final RegistrySupplier<Block> POLISHED_GLOWSTONE = registerBlockSet("polished_glowstone",
-            () -> new Block(BlockBehaviour.Properties.ofFullCopy(Blocks.GLOWSTONE)), new Item.Properties(),
+            () -> BlockBehaviour.Properties.ofFullCopy(Blocks.GLOWSTONE),
+            () -> ProjectKBlock.CustomProperties.of().tags(BlockTags.MINEABLE_WITH_PICKAXE), new Item.Properties(),
             BUILDING_BLOCKS);
 
     public static void init() {
@@ -186,14 +192,18 @@ public class ProjectKBlocks implements IKRegistryInitializerTarget {
         return registered;
     }
 
-    public static RegistrySupplier<Block> registerBlockSet(String name, Supplier<Block> fullBlockSupplier, Item.Properties itemProperties, CreativeTabsRegistry.TabCategory category) {
-        RegistrySupplier<Block> full = registerBlock(name, fullBlockSupplier, itemProperties, new ModelInfo.Simple(),
-                category);
+    public static RegistrySupplier<Block> registerBlockSet(String name, Supplier<BlockBehaviour.Properties> propertiesSupplier, Supplier<com.karasu256.projectk.registry.ProjectKProperties<Block>> pkPropertiesSupplier, Item.Properties itemProperties, CreativeTabsRegistry.TabCategory category) {
+        RegistrySupplier<Block> full = registerBlock(name, () -> {
+            return new ProjectKBlock(propertiesSupplier.get(), (ProjectKBlock.CustomProperties) pkPropertiesSupplier.get());
+        }, itemProperties, new ModelInfo.Simple(), category);
         BLOCKS_BY_MATERIAL.get(BlockMaterials.FULL).add(full);
-        RegistrySupplier<StairBlock> stairs = BlocksRegistry.block(name + "_stairs",
-                () -> new StairBlock(full.get().defaultBlockState(), BlockBehaviour.Properties.ofFullCopy(full.get())));
-        RegistrySupplier<SlabBlock> slab = BlocksRegistry.block(name + "_slab",
-                () -> new SlabBlock(BlockBehaviour.Properties.ofFullCopy(full.get())));
+
+        RegistrySupplier<StairBlock> stairs = registerBlock(name + "_stairs",
+                () -> new StairBlock(full.get().defaultBlockState(), BlockBehaviour.Properties.ofFullCopy(full.get())),
+                itemProperties, category);
+        RegistrySupplier<SlabBlock> slab = registerBlock(name + "_slab",
+                () -> new SlabBlock(BlockBehaviour.Properties.ofFullCopy(full.get())),
+                itemProperties, category);
 
         Map<BlockMaterials, RegistrySupplier<? extends Block>> set = new EnumMap<>(BlockMaterials.class);
         set.put(BlockMaterials.FULL, full);
@@ -202,13 +212,8 @@ public class ProjectKBlocks implements IKRegistryInitializerTarget {
 
         BLOCK_SET_MAP.put(full, set);
 
-        ALL_BLOCKS.add(stairs);
         BLOCKS_BY_MATERIAL.get(BlockMaterials.STAIR).add(stairs);
-        BLOCK_ITEM_INFOS.add(new BlockItemInfo(stairs, itemProperties, category));
-
-        ALL_BLOCKS.add(slab);
         BLOCKS_BY_MATERIAL.get(BlockMaterials.HALF).add(slab);
-        BLOCK_ITEM_INFOS.add(new BlockItemInfo(slab, itemProperties, category));
 
         return full;
     }

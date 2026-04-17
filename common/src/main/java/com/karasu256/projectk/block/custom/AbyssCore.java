@@ -23,16 +23,16 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-public class AbyssCore extends BaseEntityBlock implements ILaserEnergyReactiveBlock {
-    public static final MapCodec<AbyssCore> CODEC = simpleCodec(AbyssCore::new);
+public class AbyssCore extends AbstractProjectKEntityBlock implements ILaserEnergyReactiveBlock {
+    public static final MapCodec<AbyssCore> CODEC = simpleCodec(properties -> new AbyssCore(properties));
 
     public AbyssCore(Properties properties) {
-        super(properties);
+        super(properties, ProjectKBlock.CustomProperties.of());
     }
 
     @Override
     @NotNull
-    protected MapCodec<? extends BaseEntityBlock> codec() {
+    protected MapCodec<? extends AbstractProjectKEntityBlock> codec() {
         return CODEC;
     }
 
