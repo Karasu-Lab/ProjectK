@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "type=bottom": {
+      "model": "projectk:block/polished_glowstone_slab"
+    },
+    "type=double": {
+      "model": "projectk:block/polished_glowstone"
+    },
+    "type=top": {
+      "model": "projectk:block/polished_glowstone_slab_top"
+    }
+  }
+}

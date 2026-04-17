@@ -81,7 +81,7 @@
   "rei.category.projectk.in_biome_in_block_crafting.requirement": "Biome required: %s",
   "rei.category.projectk.in_biome_in_block_crafting.requirement_tag": "Biome tag required: %s",
   "tooltip.projectk.abyss_wrench_behavior": "Mode: %s",
-  "tooltip.projectk.energy_type.abyss": "Love",
+  "tooltip.projectk.energy_type.abyss": "Abyss",
   "tooltip.projectk.energy_type.yang": "Yang",
   "tooltip.projectk.energy_type.yin": "Yin",
   "tooltip.projectk.energy_unit": "AE",
