@@ -2,15 +2,16 @@ package com.karasu256.projectk.client.resource;
 
 import com.karasu256.projectk.ProjectK;
 import com.karasu256.projectk.client.resource.block.AbyssFluidGenerator;
-import com.karasu256.projectk.client.resource.block.PolishedNetherrackGenerator;
+import com.karasu256.projectk.client.resource.block.PolishedBlockGenerator;
 import com.karasu256.projectk.client.resource.impl.AbstractProjectKDynamicResources;
 import com.karasu256.projectk.client.resource.item.AbyssBucketGenerator;
 import com.karasu256.projectk.client.resource.item.AbyssIngotGenerator;
-import com.karasu256.projectk.client.resource.item.KarasiumDustGenerator;
+import com.karasu256.projectk.client.resource.item.DustResourceGenerator;
 import com.karasu256.projectk.utils.Id;
 import net.mehvahdjukaar.moonlight.api.events.AfterLanguageLoadEvent;
 import net.mehvahdjukaar.moonlight.api.platform.RegHelper;
 import net.mehvahdjukaar.moonlight.api.resources.pack.PackGenerationStrategy;
+import net.minecraft.resources.ResourceLocation;
 
 import java.util.Collection;
 import java.util.List;
@@ -31,8 +32,9 @@ public class ProjectKDynamicResources extends AbstractProjectKDynamicResources {
         addGenerator(new AbyssIngotGenerator());
         addGenerator(new AbyssBucketGenerator());
         addGenerator(new AbyssFluidGenerator());
-        addGenerator(new PolishedNetherrackGenerator());
-        addGenerator(new KarasiumDustGenerator());
+        addGenerator(new PolishedBlockGenerator(ResourceLocation.withDefaultNamespace("block/netherrack"),
+                Id.id("block/polished_netherrack")));
+        addGenerator(new DustResourceGenerator(Id.id("item/karasium_dust"), Id.id("karasium_dust"), 0xADFF2F));
     }
 
     @Override

@@ -1,5 +1,6 @@
-package com.karasu256.projectk.client.resource.impl;
+package com.karasu256.projectk.client.resource.block;
 
+import com.karasu256.projectk.client.resource.impl.AbstractResourceGenerator;
 import net.mehvahdjukaar.moonlight.api.resources.pack.ResourceSink;
 import net.mehvahdjukaar.moonlight.api.resources.textures.Palette;
 import net.mehvahdjukaar.moonlight.api.resources.textures.Respriter;
@@ -8,11 +9,11 @@ import net.mehvahdjukaar.moonlight.api.resources.textures.TextureOps;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.ResourceManager;
 
-public abstract class AbstractPolishedBlockGenerator extends AbstractResourceGenerator {
+public class PolishedBlockGenerator extends AbstractResourceGenerator {
     private final ResourceLocation blockResourceLocation;
     private final ResourceLocation outputResourceLocation;
 
-    public AbstractPolishedBlockGenerator(ResourceLocation blockResourceLocation, ResourceLocation outputResourceLocation) {
+    public PolishedBlockGenerator(ResourceLocation blockResourceLocation, ResourceLocation outputResourceLocation) {
         super();
         this.blockResourceLocation = blockResourceLocation;
         this.outputResourceLocation = outputResourceLocation;

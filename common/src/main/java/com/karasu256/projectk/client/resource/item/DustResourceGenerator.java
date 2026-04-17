@@ -1,4 +1,4 @@
-package com.karasu256.projectk.client.resource.item.impl;
+package com.karasu256.projectk.client.resource.item;
 
 import com.karasu256.projectk.client.resource.impl.AbstractResourceGenerator;
 import net.mehvahdjukaar.moonlight.api.resources.pack.ResourceSink;
@@ -8,16 +8,16 @@ import net.minecraft.server.packs.resources.ResourceManager;
 
 import java.awt.*;
 
-public abstract class AbstractDustResourceGenerator extends AbstractResourceGenerator {
+public class DustResourceGenerator extends AbstractResourceGenerator {
     private final ResourceLocation input;
     private final ResourceLocation output;
     private final int color;
 
-    public AbstractDustResourceGenerator(ResourceLocation input, ResourceLocation output, Color color) {
+    public DustResourceGenerator(ResourceLocation input, ResourceLocation output, Color color) {
         this(input, output, color.getRGB());
     }
 
-    public AbstractDustResourceGenerator(ResourceLocation input, ResourceLocation output, int color) {
+    public DustResourceGenerator(ResourceLocation input, ResourceLocation output, int color) {
         this.input = input;
         this.output = output;
         this.color = color;
